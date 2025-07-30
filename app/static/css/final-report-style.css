@@ -1,0 +1,1052 @@
+@font-face {
+    font-family: 'Yekan';
+    src: url('/static/fonts/Yekan.woff2') format('woff2'),
+         url('/static/fonts/Yekan.woff') format('woff');
+}
+
+/* برای حذف اسکرول بار عمودی */
+::-webkit-scrollbar {
+    width: 0px;  /* عرض اسکرول بار را صفر می‌کند */
+    background: transparent;  /* رنگ پس‌زمینه را شفاف می‌کند */
+}
+
+/* استایل برای کلیت صفحه */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Yekan';
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+}
+
+.titleBox {
+    width: 22rem;
+    height: 4rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 20px;
+    position: absolute;
+    font-family: 'Yekan';
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-left: 52rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userInfoBox {
+    width: 27rem;
+    height: 4rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 20px;
+    position: absolute;
+    font-family: 'Yekan';
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-left: 23rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userInfoSection, .userInfoName {
+    width: -webkit-fill-available;
+}
+
+/* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر */
+/* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر */
+/* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر */
+
+.boxha {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 0 auto;
+    width: 106%;
+    position: absolute;
+    top: 7rem;
+    left: 60.6rem;
+    transform: translateX(-50%);
+}
+
+.hozoorBox {
+    width: 48rem;
+    max-height: 27rem;
+    background-color: #fbfff9;
+    padding: 17px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hozoorBox h2 {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ezafeBox, .passBox, .hourlyPassBox {
+    width: 45rem;
+    height: auto;
+    max-height: 19rem;
+    background-color: #fbfff9;
+    padding: 17px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.passBox, .hourlyPassBox {
+    margin-top: min(2.85rem, max(0.8rem, 1rem));
+}
+
+.ezafeBox h2, .passBox h2, .hourlyPassBox h2 {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.stn1-passBox {
+    width: 2.5%;
+}
+
+.stn2-passBox {
+    width: 3.5%;
+}
+
+.stn3-passBox {
+    width: 3.5%;
+}
+
+.stn4-passBox {
+    width: 3.5%;
+}
+
+.stn5-passBox {
+    width: 4%;
+}
+
+/* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر */
+/* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر */
+/* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر */
+
+/* تنظیمات جدول حضور و غیاب */
+.hozoorUsersReport-table {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 13px;
+}
+
+.hozoorUsersReport-table thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+.hozoorUsersReport-table th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+.hozoorUsersReport-table th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+.hozoorUsersReport-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.hozoorUsersReport-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.hozoorUsersReport-table th {
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 14px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+.hozoorUsersReport-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.hozoorUsersReport-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+#hozoorUsersReportTable {
+    display: block;
+    max-height: 22rem; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
+    overflow-y: auto;
+    border-collapse: collapse;
+}
+
+#hozoorUsersReportTable thead, 
+#hozoorUsersReportTable tbody, 
+#hozoorUsersReportTable tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.stn1 { width: 1.1%; }
+.hozoorUsersReport-table td:nth-child(9) { width: 1.1%; }
+
+.stn2 { width: 2%; }
+.hozoorUsersReport-table td:nth-child(8) { width: 2%; }
+
+.stn3 { width: 2%; }
+.hozoorUsersReport-table td:nth-child(7) { width: 2%; }
+
+.stn4 { width: 2%; }
+.hozoorUsersReport-table td:nth-child(6) { width: 2%; }
+
+.stn5 { width: 2%; }
+.hozoorUsersReport-table td:nth-child(5) { width: 2%; }
+
+.stn6 { width: 3%; }
+.hozoorUsersReport-table td:nth-child(4) { width: 3%; }
+
+.stn7 { width: 3%; }
+.hozoorUsersReport-table td:nth-child(3) { width: 3%; }
+
+.stn8 { width: 2.1%; }
+.hozoorUsersReport-table td:nth-child(2) { width: 2.1%; }
+
+.stn9 { width: 3.1%; }
+.hozoorUsersReport-table td:nth-child(1) { width: 3.1%; }
+
+/* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
+/* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
+/* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
+
+/* تنظیمات جدول حضور و غیاب */
+.ezafeKarUsersReport-table {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 13px;
+}
+
+.ezafeKarUsersReport-table thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+.ezafeKarUsersReport-table th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+.ezafeKarUsersReport-table th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+.ezafeKarUsersReport-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.ezafeKarUsersReport-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.ezafeKarUsersReport-table th {
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 14px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+.ezafeKarUsersReport-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ezafeKarUsersReport-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+#hozoorUsersReportTable {
+    display: block;
+    max-height: 22rem; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
+    overflow-y: auto;
+    border-collapse: collapse;
+}
+
+#hozoorUsersReportTable thead, 
+#hozoorUsersReportTable tbody, 
+#hozoorUsersReportTable tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.ezafeKarUsersReport-table td:nth-child(1) { width: 3%; }
+.ezafeKarUsersReport-table td:nth-child(2) { width: 2.5%; }
+.ezafeKarUsersReport-table td:nth-child(3) { width: 2.5%; }
+.ezafeKarUsersReport-table td:nth-child(4) { width: 3%; }
+.ezafeKarUsersReport-table td:nth-child(5) { width: 4%; }
+.ezafeKarUsersReport-table td:nth-child(6) { width: 1.5%; }
+
+.stn1-ezafeBox {
+    width: 1.5%;
+}
+
+.stn2-ezafeBox {
+    width: 4%;
+}
+
+.stn3-ezafeBox {
+    width: 3%;
+}
+
+.stn4-ezafeBox {
+    width: 2.5%;
+}
+
+.stn5-ezafeBox {
+    width: 2.5%;
+}
+
+.stn6-ezafeBox {
+    width: 3%;
+}
+
+/* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر */
+/* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر */
+/* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر */
+
+.morkhcUsersReport-table {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 13px;
+}
+
+.morkhcUsersReport-table thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+.morkhcUsersReport-table th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+.morkhcUsersReport-table th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+.morkhcUsersReport-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.morkhcUsersReport-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.morkhcUsersReport-table th {
+    padding: 3px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 14px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+.morkhcUsersReport-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.morkhcUsersReport-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+#morkhcUsersReportTable {
+    display: block;
+    max-height: 22rem; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
+    overflow-y: auto;
+    border-collapse: collapse;
+}
+
+#morkhcUsersReportTable thead, 
+#morkhcUsersReportTable tbody, 
+#morkhcUsersReportTable tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.morkhcUsersReport-table td:nth-child(1) { width: 2.5%; }
+.morkhcUsersReport-table td:nth-child(2) { width: 2.5%; }
+.morkhcUsersReport-table td:nth-child(3) { width: 3%; }
+.morkhcUsersReport-table td:nth-child(4) { width: 4%; }
+.morkhcUsersReport-table td:nth-child(5) { width: 1.5%; }
+
+.stn1-morkhcBox {
+    width: 1.5%;
+}
+
+.stn2-morkhcBox {
+    width: 4%;
+}
+
+.stn3-morkhcBox {
+    width: 3%;
+}
+
+.stn4-morkhcBox {
+    width: 2.5%;
+}
+
+.stn5-morkhcBox {
+    width: 2.5%;
+}
+
+.stn6-morkhcBox {
+    width: 3%;
+}
+
+/* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر */
+/* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر */
+/* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر */
+
+.hourlyPassUsersReport-table {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 13px;
+}
+
+.hourlyPassUsersReport-table thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+.hourlyPassUsersReport-table th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+.hourlyPassUsersReport-table th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+.hourlyPassUsersReport-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.hourlyPassUsersReport-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.hourlyPassUsersReport-table th {
+    padding: 3px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 14px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+.hourlyPassUsersReport-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.hourlyPassUsersReport-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+#hourlyPassUsersReportTable {
+    display: block;
+    max-height: 22rem; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
+    overflow-y: auto;
+    border-collapse: collapse;
+}
+
+#hourlyPassUsersReportTable thead, 
+#hourlyPassUsersReportTable tbody, 
+#hourlyPassUsersReportTable tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.hourlyPassUsersReport-table td:nth-child(1) { width: 2.5%; }
+.hourlyPassUsersReport-table td:nth-child(2) { width: 3%; }
+.hourlyPassUsersReport-table td:nth-child(3) { width: 4%; }
+.hourlyPassUsersReport-table td:nth-child(4) { width: 1.5%; }
+
+.stn1-hourlyPassBox {
+    width: 1.5%;
+}
+
+.stn2-hourlyPassBox {
+    width: 4%;
+}
+
+.stn3-hourlyPassBox {
+    width: 3%;
+}
+
+.stn4-hourlyPassBox {
+    width: 2.5%;
+}
+
+.stn5-hourlyPassBox {
+    width: 2.5%;
+}
+
+.stn6-hourlyPassBox {
+    width: 3%;
+}
+
+/* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها */
+/* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها */
+/* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها *//* تنظیمات باکس دکمه ها */
+
+.exportButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: absolute;
+    width: 36rem;
+    background-color: #fbfff9;
+    padding: 16px;
+    padding-right: 26px;
+    justify-content: center;
+    bottom: 2.5rem;
+    right: 12rem;
+    border-radius: 20px;
+}
+
+.btn {
+    padding: 7px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 11rem;
+    font-family: 'Yekan';
+    margin-left: 17px;
+}
+
+.exportButtons .btn:nth-child(1), 
+.exportButtons .btn:nth-child(2), 
+.exportButtons .btn:nth-child(3) {
+    order: 1; /* این دکمه‌ها در بالا قرار می‌گیرند */
+}
+
+.exportButtons .btn:nth-child(4), 
+.exportButtons .btn:nth-child(5), 
+.exportButtons .btn:nth-child(6) {
+    order: 2; /* این دکمه‌ها در پایین قرار می‌گیرند */
+}
+
+/* تنطیمات باکس مدت زمان های محاسبه شده *//* تنطیمات باکس مدت زمان های محاسبه شده *//* تنطیمات باکس مدت زمان های محاسبه شده */
+/* تنطیمات باکس مدت زمان های محاسبه شده *//* تنطیمات باکس مدت زمان های محاسبه شده *//* تنطیمات باکس مدت زمان های محاسبه شده */
+/* تنطیمات باکس مدت زمان های محاسبه شده *//* تنطیمات باکس مدت زمان های محاسبه شده *//* تنطیمات باکس مدت زمان های محاسبه شده */
+
+.numberReport {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* چهار ستون در هر ردیف */
+    gap: 17px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 48rem; /* عرض بیشتر برای جای‌گیری ۴ ستون */
+    max-width: 64rem;
+    position: absolute;
+    bottom: 9.2rem;
+    right: 5rem;
+    background-color: #fbfff9;
+    border-radius: 20px;
+}
+
+.numBox, .numBoxInput, .numBoxEzafeh {
+    background: #badbf5;
+    padding: 9px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 174px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 73px;
+}
+
+/* استایل مخصوص برای جعبه مجموع اضافه کاری */
+.numBoxEzafeh {
+    align-items: center;
+    text-align: center;
+}
+
+/* عنوان */
+.numBox .title, .numBoxInput .title, .numBoxEzafeh .title {
+    font-size: 14px;
+    font-weight: normal;
+    color: #333;
+    position: absolute;
+    top: -12px;
+    right: 10px;
+    background: white;
+    padding: 0 5px;
+    border: 1px solid #cbcbcb;
+    border-radius: 7px;
+}
+
+/* مقدار دهی در همه باکس‌ها */
+.numBox .value, .numBoxInput .value, .numBoxEzafeh .value {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+/* تنظیم مقدار سیستم و سامانه در مجموع اضافه کاری */
+.numBoxEzafeh .overtimeContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+}
+
+/* استایل مخصوص "سامانه" */
+.overtimeSamaneh {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.overtimeSamanehTitle {
+    font-size: 14px;
+    font-weight: normal;
+    color: #333;
+    margin: 0;
+    margin-top: 7px;
+    margin-bottom: -3px;
+}
+
+.overtimeSamanehValue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* استایل مخصوص "سیستم" */
+.overtimeSystem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.overtimeSystemTitle {
+    font-size: 14px;
+    font-weight: normal;
+    color: #333;
+    margin: 0;
+    margin-top: 7px;
+    margin-bottom: -3px;
+}
+
+.overtimeSystemValue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* استایل مخصوص برای ورودی تعداد روزهای کاری */
+.numBoxInput input {
+    border: 1px solid #afafaf;
+    border-radius: 10px;
+    height: 33px;
+    font-size: 23px;
+    font-family: 'Yekan';
+    width: 10rem;
+    text-align: center;
+    margin-top: 19px;
+}
+
+.attendanceContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.attendanceSystem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 7px;
+}
+
+.attendanceSamaneh {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 7px;
+}
+
+.attendanceSystemTitle, .attendanceSamanehTitle {
+    font-size: 14px;
+    font-weight: normal;
+    color: #333;
+    margin: 0;
+    margin-top: 7px;
+    margin-bottom: -3px;
+    margin-left: 2px;
+}
+
+.attendanceSamanehTitlemovazafi {
+    font-size: 14px;
+    font-weight: normal;
+    color: #333;
+    margin: 0;
+    margin-top: 7px;
+    margin-bottom: -3px;
+    margin-left: 2px;
+}
+
+.attendanceSystemValue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.attendanceSamanehValueInput {
+    font-size: 18px;
+    font-weight: bold;
+    width: 53px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    margin-top: 1px;
+    padding: 1px;
+    text-align: center;
+    font-family: 'Yekan';
+    height: 26px;
+}
+
+/* استایل مخصوص برای فیلد ورودی سامانه */
+.attendanceSamanehInput {
+    border: 1px solid #afafaf;
+    border-radius: 10px;
+    height: 33px;
+    font-size: 23px;
+    font-family: 'Yekan';
+    width: 10rem;
+    text-align: center;
+    margin-top: 19px;
+    padding: 0 10px;
+}
+
+.numBox .jscode {
+    display: flex;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.jscode span:last-child {
+    margin-left: 5px; /* یا هر مقداری که می‌خواهید */
+}
+
+/* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی */
+/* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی */
+/* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی *//* تنظیمات فیلد ورودی */
+
+.input-container {
+    position: relative;
+    width: 100%;
+    font-size: 15px;
+}
+
+.input-container input {
+    width: 100%;
+    padding-right: 11px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    text-align: right;
+    transition: 0.3s;
+    font-family: 'Yekan';
+}
+
+.input-container label {
+    position: absolute;
+    right: 10px; /* تنظیم به سمت راست */
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 0 5px;
+    color: #999;
+    transition: 0.3s;
+    pointer-events: none;
+    border-radius: 5px;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    color: #007bff;
+    right: 10px; /* باقی ماندن در سمت راست */
+}
+
+
+
+.signature-box {
+    display: none;
+}
+
+.signature-box-hamkar {
+    display: none;
+}
+
+
+@media print {
+
+    /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
+    /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
+    /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
+
+    .titleBox {
+        margin-left: 39.5rem;
+        margin-top: 2rem;
+        font-size: 19px;
+        padding: 0;
+        height: 4rem;
+        width: 25rem;
+    }
+
+    .userInfoBox{
+        margin-left: 10.5rem;
+        margin-top: 2rem;
+        font-size: 19px;
+        padding: 0;
+        height: 4rem;
+        width: 25rem;
+    }
+
+    /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
+    /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
+    /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
+
+    .hozoorBox {
+        left: -17.7rem;
+        position: absolute;
+        height: auto;
+        max-height: 80rem;
+        padding: 10px;
+        margin-top: 1rem;
+        width: 68rem;
+    }
+
+    .hozoorBox h2 {
+        font-size: 15px;
+        display: none;
+    }
+
+    .hozoorUsersReport-table {margin-top: 5px;}
+
+    #hozoorUsersReportTable {
+        height: auto;
+        max-height: 79rem;
+    }
+
+    .hozoorUsersReport-table td {font-size: 17px;}
+
+    .hozoorUsersReport-table th {font-size: 15px;}
+
+    .stn1 {width: 0.5%;}
+    .hozoorUsersReport-table td:nth-child(9) { width: 0.5%; }
+
+    .stn2 { width: 0.8%; }
+    .hozoorUsersReport-table td:nth-child(8) { width: 0.8%; }
+
+    .stn3 {width: 1%;}
+    .hozoorUsersReport-table td:nth-child(7) { width: 1%; }
+
+    .stn4 {width: 1%;}
+    .hozoorUsersReport-table td:nth-child(6) { width: 1%; }
+
+    .stn5 {width: 1%;}
+    .hozoorUsersReport-table td:nth-child(5) { width: 1%; }
+
+    .stn6 { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(4) { width: 1%; }
+
+    .stn7 { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(3) { width: 1%; }
+
+    .stn8 { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(2) { width: 1%; }
+
+    .stn9 { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(1) { width: 1%; }
+
+    /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
+    /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
+    /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
+
+    .left-section {
+        margin-top: 102rem;
+        margin-left: -14rem;
+    }
+
+    .ezafeBox, .passBox, .hourlyPassBox {
+        width: 60rem;
+    }
+
+    .ezafeBox h2, .passBox h2, .hourlyPassBox h2 {
+        font-size: 25px;
+    }
+
+    .ezafeKarUsersReport-table th {
+        font-size: 18px;
+    }
+
+    .morkhcUsersReport-table th {
+        font-size: 18px;
+    }
+
+    .hourlyPassUsersReport-table th {
+        font-size: 18px;
+    }
+
+    /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
+    /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
+    /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
+
+    .numberReport {
+        top: 89rem;
+        left: 11rem;
+        height: 13rem;
+        width: 51rem;
+        gap: 22px;
+    }
+
+    .numBox {
+        padding: 7px;
+        font-size: 20px;
+        width: 11rem;
+    }
+
+    .attendanceSamanehTitlemovazafi {
+        margin-top: 7px;
+    }
+
+    .attendanceSamanehValueInput {
+        margin-top: 4px;
+    }
+
+    /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
+    /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
+    /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
+
+    .signature-box {
+        width: 18rem;
+        border: 2px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+        font-family: 'Yekan', sans-serif;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 8rem;
+        background-color: white;
+        position: absolute;
+        left: 7rem;
+        top: 170rem;
+    }
+
+    .signature-box-hamkar {
+        width: 18rem;
+        border: 2px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+        font-family: 'Yekan', sans-serif;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 8rem;
+        background-color: white;
+        position: absolute;
+        right: 7rem;
+        top: 170rem;
+    }
+
+    .exportButtons {
+        display: none;
+    }
+
+    @page {
+        margin: 0; /* حذف حاشیه‌های پیش‌فرض */
+    }
+}

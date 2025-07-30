@@ -1,0 +1,850 @@
+/* افزودن فونت یکان */
+@font-face {
+    font-family: 'Yekan';
+    src: url('/static/fonts/Yekan.woff2') format('woff2'),
+         url('/static/fonts/Yekan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* اندازه‌گیری با احتساب مرزها و پدینگ */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Yekan'; /* فونت پیش‌فرض برای کل صفحه */
+    background-color: #f7fff4;
+    overflow-x: hidden; /* جلوگیری از اسکرول افقی */
+}
+
+/* استایل هدر */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #669dc8;
+    padding: 10px 20px;
+    color: white;
+    position: absolute; /* هدر را از حالت معمولی خارج می‌کنیم */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10; /* به هدر اولویت بالاتری می‌دهیم تا روی اسلایدر باشد */
+}
+
+/* بخش چپ هدر (آیکون‌ها) */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-text-gozaresh {
+    display: none;
+    position: absolute;
+    top: 40px; /* فاصله متن از بالای آیکون */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* پس‌زمینه نیمه‌شفاف */
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+}
+
+/* مخفی کردن متن به‌طور پیش‌فرض */
+.icon-text {
+    display: none;
+    position: absolute;
+    top: 40px; /* فاصله متن از بالای آیکون */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* پس‌زمینه نیمه‌شفاف */
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 85px;
+    text-align: center;
+}
+
+/* نمایش متن هنگام hover روی آیکون */
+.icon:hover .icon-text {
+    display: block;
+}
+
+.icon:hover .icon-text-gozaresh {
+    display: block;
+}
+
+/* استایل برای آیکون‌ها */
+.icon {
+    position: relative; /* موقعیت نسبی برای متن زیر آیکون */
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.icon img {
+    width: 100%;
+    height: 100%;
+}
+
+/* استایل container برای آیکون‌ها */
+.icon-container {
+    display: flex;
+    gap: 20px;
+    align-items: center; /* برای تراز کردن آیکون‌ها */
+}
+
+
+/* بخش وسط هدر (عنوان برنامه) */
+.header-center {
+    flex-grow: 1;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* بخش راست هدر (دکمه پنل کاربری) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* استایل برای اسلایدر */
+.slider {
+    width: 50rem;
+    height: 28rem;
+    overflow: hidden;
+    position: fixed;
+    margin: 12% auto 0 10%;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+/* تنظیم صحیح عرض برای نمایش کامل هر تصویر */
+.slider-container {
+    display: grid;
+    grid-template-columns: repeat(6, 50rem);
+    width: 250rem;
+    height: 100%;
+    animation: slide 20s infinite linear;
+}
+
+.slider-container img {
+    width: 50rem;
+    height: 84.5%;
+    object-fit: cover;
+    border-radius: 0px;
+}
+
+/* تنظیم تصاویر به اندازه‌ی کامل اسلایدر */
+.slider-item {
+    position: relative;
+}
+
+/* افزودن لایه تیره */
+.overlay {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 97.5%;
+    background-color: rgb(0 0 0 / 50%); /* رنگ تیره با شفافیت */
+    border-radius: 0px;
+}
+
+/* انیمیشن اسلایدر */
+@keyframes slide {
+    0% { transform: translateX(0); } /* نمایش اولین تصویر */
+    20% { transform: translateX(-800px); } /* حرکت به تصویر 2 */
+    40% { transform: translateX(-1600px); } /* حرکت به تصویر 3 */
+    60% { transform: translateX(-2400px); } /* حرکت به تصویر 4 */
+    80% { transform: translateX(-3200px); } /* حرکت به تصویر 5 */
+    100% { transform: translateX(-4000px); } /* حرکت به تصویر 6 */
+}
+
+/* استایل پاپ‌آپ */
+#loginPopup {
+    position: fixed;
+    margin-top: 22.7%;
+    margin-left: 62%;
+    max-width: 100%;
+    height: 100%;
+    align-items: center;
+    z-index: 1000; /* بالاتر از دیگر محتوا */
+}
+
+/* استایل محتوای پاپ‌آپ */
+.popup-content {
+    background-color: #ffffff;
+    padding: 26px 34px 12px 30px;
+    border-radius: 20px;
+    text-align: center;
+    position: fixed;
+    max-width: 20vw;
+    margin: 43vh auto auto 62.1vw;
+    font-family: 'Yekan', Arial, sans-serif;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.5);
+}
+
+.popup-content h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.popup-content input {
+    margin-bottom: 0.6rem;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+}
+
+.popup-content button {
+    padding: 6px 20px;
+    margin: 5px;
+    background-color: #6c9ec7;
+    color: white;
+    border: none;
+    border-radius: 27px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+/* فونت دکمه‌ها */
+.popup-content button,
+.popup-content input {
+    font-family: 'Yekan', Arial, sans-serif; /* تنظیم فونت برای ورودی‌ها و دکمه‌ها */
+    font-size: 0.82rem;
+}
+
+.popup-content button:hover {
+    background-color: #4e7a9e;
+}
+
+#bastn-login-popup {
+    background-color: #d9534f;
+    font-size: 0.8rem;
+    padding: 6px 20px;
+}
+
+/* استایل برای نمایش متن بزرگ در وسط صفحه */
+.center-text {
+    position: fixed;
+    margin-top: 41vh;
+    left: 40vw;
+    transform: translate(-50%, -50%); /* قرار دادن متن در وسط صفحه */
+    font-size: 3.2vw; /* اندازه بزرگ متن */
+    font-weight: bold;
+    color: #ffffff; /* رنگ متن */
+    text-align: center;
+    font-family: 'Yekan', Arial, sans-serif; /* فونت یکان */
+    z-index: 1000; /* بالاتر از دیگر محتوا */
+    text-shadow: 0 0 9px black;
+}
+
+.small-text {
+    position: fixed;
+    margin-top: 49vh;
+    left: 40%;
+    transform: translate(-50%, -50%); /* قرار دادن متن در وسط صفحه */
+    font-size: 1.5vw; /* اندازه بزرگ متن */
+    font-weight: bold;
+    color: #ffffff; /* رنگ متن */
+    text-align: center;
+    font-family: 'Yekan', Arial, sans-serif; /* فونت یکان */
+    z-index: 1000; /* بالاتر از دیگر محتوا */
+    text-shadow: 0 0 9px black;
+}
+
+.down-text {
+    position: fixed;
+    margin-top: 21.4rem;
+    margin-left: 72.2rem;
+    width: 6rem;
+}
+
+/* انیمیشن اسلایدر */
+@keyframes slide {
+    0% { transform: translateX(0); } /* تصویر 1 */
+    20% { transform: translateX(0); } /* تصویر 1 به مدت 4 ثانیه */
+    25% { transform: translateX(-20%); } /* انتقال به تصویر 2 */
+    45% { transform: translateX(-20%); } /* تصویر 2 به مدت 4 ثانیه */
+    50% { transform: translateX(-40%); } /* انتقال به تصویر 3 */
+    70% { transform: translateX(-40%); } /* تصویر 3 به مدت 4 ثانیه */
+    75% { transform: translateX(-60%); } /* انتقال به تصویر 4 */
+    95% { transform: translateX(-60%); } /* تصویر 4 به مدت 4 ثانیه */
+    100% { transform: translateX(-80%); } /* انتقال به تصویر 5 */
+}
+
+/* استایل برای آیکون گزارشات */
+.header-left .icon:nth-child(1) {
+    cursor: pointer;  /* تغییر حالت موس به دست هنگام قرار گرفتن روی آیکون */
+}
+
+/* استایل برای آیکون همکاران */
+.header-left .icon:nth-child(2) {
+    cursor: pointer;  /* تغییر حالت موس به دست هنگام قرار گرفتن روی آیکون */
+}
+
+.khatvasat {
+    position: fixed;
+    margin-left: 59.7%;
+    margin-top: 13rem;
+    width: 2px;
+    height: 29rem;
+    background-color: #bbbbbb;
+    z-index: 500;
+    clip-path: polygon(50% 0%, 100% 10%, 100% 90%, 50% 100%, 0% 90%, 0% 10%);
+}
+
+.samaneh {
+    position: fixed;
+    float: right;
+    display: grid;
+    margin-left: 65.3%;
+    margin-top: 13rem;
+    justify-items: center;
+}
+
+.samaneh img {
+    width: 6rem;
+    height: 6rem;
+    z-index: 1;
+}
+
+.samaneh p {
+    margin-top: -10px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.koleObject {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.footertxt {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #669dc8;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (min-width: 1700px) and (max-width: 1800px) {
+    .samaneh {
+        margin-left: 65.5%;
+        margin-top: 11rem;
+    }
+
+    .samaneh img {
+        width: 7rem;
+        height: 7rem;
+        z-index: 1;
+    }
+
+    .popup-content {
+        margin: 47vh auto auto 62.1vw;
+        padding: 2rem 1rem 1rem 1rem;
+    }
+
+    .popup-content input {
+        width: 90%;
+        font-size: 0.86rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        padding: 7px;
+    }
+
+    .slider {
+        height: 59vh;
+        margin: 10% auto 0 10.7%;
+    }
+
+    .small-text {
+        margin-top: 51vh;
+    }
+
+    .khatvasat {
+        margin-top: 11rem;
+    }
+
+    .down-text {
+        position: fixed;
+        margin-top: 20.5rem;
+        margin-left: 73.7rem;
+        width: 6rem;
+    }
+
+}
+
+@media (min-width: 1400px) and (max-width: 1680px) {
+    
+}
+
+@media (min-width: 1300px) and (max-width: 1620px) {
+
+    .samaneh {
+        margin-left: 57rem;
+        margin-top: 9rem;
+    }
+
+    .samaneh p{
+        font-size: 1.5rem;
+    }
+
+    .samaneh img {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .popup-content {
+        padding: 11px 17px 12px 15px;
+        max-width: 22vw;
+        margin: 44.45vh auto auto 62.1vw;
+    }
+
+    .popup-content h2 {
+        font-size: 1.2rem;
+    }
+
+    .popup-content input {
+        width: 90%;
+        font-size: 0.86rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        padding: 7px;
+    }
+
+    .slider {
+        height: 59vh;
+        width: 40.5rem;
+        margin: 10% auto 0 10%;
+    }
+
+    .khatvasat {
+        margin-top: 6rem;
+    }
+
+    .small-text {
+        margin-top: 51vh;
+    }
+    
+    .down-text {
+        margin-top: 15.4rem;
+        margin-left: 59.7rem;
+        font-size: 0.8rem;
+    }
+    
+}
+
+@media (min-width: 1220px) and (max-width: 1300px) {
+
+    #bastn-login-popup {
+        font-size: 0.7rem;
+    }
+
+    .popup-content input {
+        font-size: 0.7rem;
+    }
+
+    .popup-content {
+        max-width: 23vw;
+        margin-top: 21.5rem;
+    }
+
+    .koleObject {
+        margin: 3% auto;
+    }
+
+    .samaneh {
+        margin-top: 10rem;
+        margin-left: 52rem;
+    }
+
+    .samaneh img {
+        width: 7rem;
+        height: 7rem;
+    }
+    
+    .slider {
+        width: 40rem;
+        height: 28rem;
+        margin-left: 8%;
+    }
+
+    .center-text {
+        margin-top: 19rem;
+    }
+
+    .small-text {
+        margin-top: 23rem;
+    }
+
+    .down-text {
+        margin-top: 19.2rem;
+        margin-left: 56.5rem;
+        font-size: 0.8rem;
+    }
+
+    .khatvasat {
+        margin-left: 59.7%;
+        margin-top: 10rem;
+    }
+}
+
+@media (min-width: 760px) and (max-width: 1220px) {
+
+}
+
+@media (min-height: 930px) and (max-height: 1000px)  {
+    
+    .popup-content {
+        margin: 40.7vh auto auto 63.6vw;
+        padding: 15px 15px 12px 18px;
+    }
+
+    .popup-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .popup-content {
+        max-width: 29vw;
+    }
+
+    .center-text {
+        margin-top: 23%;
+    }
+
+    .small-text {
+        margin-top: 28%;
+    }
+
+    .slider {
+        max-width: 50.7%;
+        height: 45vh;
+        margin: 12% auto 0 7%;
+    }
+
+    .samaneh img {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .samaneh p {
+        font-size: 3rem;
+    }
+
+    .khatvasat {
+        margin-top: 11%;
+    }
+}
+
+
+
+@media (max-width: 768px) {
+
+    .koleObject {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        margin: 0 auto;
+        top: 0;
+    }
+    .slider {
+        width: 83%;
+        height: 11rem;
+        margin: 0 auto;
+        position: static;
+    }
+
+    .khatvasat {
+        position: fixed;
+        margin-left: 4rem;
+        margin-top: 1.5rem;
+        width: 71%;
+        height: 2px;
+        background-color: #bbbbbb;
+        z-index: 500;
+        clip-path: polygon(0% 50%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+    }
+
+    .samaneh {
+        display: block;
+        margin: 0;
+        position: relative;
+        float: none;
+        margin-top: 1rem;
+        justify-items: center;
+    }
+
+    .samaneh img {
+        width: 7rem;
+        height: 7rem;
+    }
+
+    .samaneh p {
+        font-size: 2.5rem;
+        font-family: 'Yekan';
+        margin-bottom: 0px;
+        margin-top: -20px;
+    }
+    
+    .popup-content {
+        width: 82%;
+        max-width: 500px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 30px;
+        text-align: center;
+        margin: 3rem auto;
+        position: relative;
+    }
+    
+
+    .popup-content button, .popup-content input {
+        font-family: 'Yekan', Arial, sans-serif;
+        font-size: 0.89rem;
+    }
+
+    .custom-margin {
+        margin-top: -2rem; /* به دلخواه مقدار را تنظیم کنید */
+    }
+
+    .center-text {
+        margin-top: 4.3rem;
+        left: 15.5rem;
+        width: max-content;
+        font-size: 1.3rem;
+    }
+
+    .small-text {
+        margin-top: 6rem;
+        left: 15.5rem;
+        width: max-content;
+        font-size: 0.6rem;
+        position: absolute;
+    }
+
+    
+
+    .overlay {
+        height: 11rem;
+    }
+
+    .slider-container img {
+        height: 11rem;
+        width: 23rem;
+    }
+
+    .slider-container {
+        grid-template-columns: repeat(6, 23rem);
+        width: 116rem;
+    }
+
+    .slider-item {
+        height: 11rem;
+    }
+    
+    .down-text {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%); /* برای وسط‌چین کردن دقیق */
+        bottom: 3rem; /* برای چسباندن به پایین صفحه */
+        margin: 0; /* حذف فاصله‌های اضافی */
+    }
+
+    .footertxt {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        background-color: #669dc8;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+
+    body {
+        display: flex;
+        justify-content: center; /* قرارگیری وسط از چپ و راست */
+        align-items: center; /* قرارگیری وسط از بالا و پایین (اختیاری) */
+         /* برای اینکه کل صفحه را بگیرد */
+        margin: 0;
+    }
+    
+}
+
+
+@media (max-width: 768px) and (max-height: 670px) {
+    .slider {
+        width: 91%;
+        height: 11rem;
+        margin: 3% 1rem 0rem 1rem;
+    }
+
+    .khatvasat {
+        position: fixed;
+        margin-left: 4rem;
+        margin-top: 13.5rem;
+        width: 71%;
+        height: 2px;
+        background-color: #bbbbbb;
+        z-index: 500;
+        clip-path: polygon(0% 50%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+    }
+
+    .samaneh {
+        display: block;
+        margin: 1rem 0px 0px 9rem;
+        position: relative;
+        float: none;
+        position: fixed;
+        float: right;
+        display: grid;
+        margin-left: 65.3%;
+        margin-top: 13rem;
+        justify-items: center;
+    }
+
+    .samaneh img {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .samaneh p {
+        font-size: 1.5rem;
+        font-family: 'Yekan';
+        margin-bottom: 0px;
+        margin-right: 10rem;
+    }
+    
+    .popup-content {
+        width: 79%;
+        max-width: 500px;
+        padding: 21px;
+        padding-top: 7px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+        margin: 15rem 2.5rem 0
+    }
+    
+
+    .popup-content button, .popup-content input {
+        font-family: 'Yekan', Arial, sans-serif;
+        font-size: 0.5rem;
+    }
+
+    .popup-content h2 {
+        margin-top: 0;
+        font-size: 1.2rem;
+        font-family: 'Yekan';
+    }
+
+    .custom-margin {
+        margin-top: -2rem; /* به دلخواه مقدار را تنظیم کنید */
+    }
+
+    .center-text {
+        margin-top: 4.3rem;
+        left: 15.5rem;
+        width: max-content;
+        font-size: 1.3rem;
+    }
+
+    .small-text {
+        margin-top: 6rem;
+        left: 15.5rem;
+        width: max-content;
+        font-size: 0.6rem;
+        position: absolute;
+    }
+
+    .down-text {
+        margin-top: 29.5rem;
+        margin-left: 9.2rem;
+    }
+    
+}
+
+

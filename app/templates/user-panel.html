@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل کاربری</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/user-panel-style.css') }}">
+    <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
+</head>
+
+    <body>
+        <!-- باکس لوگو -->
+        <div class="logo-top">
+            <div class="left-text">
+                <span>هستما سامانه جامع حضور و غیاب <span class="small-text">(نسخه آزمایشی)</span></span>
+                <span>آزمــایــشـــگاه دکــتـــر امـــیـنــی</span>
+            </div>
+        
+            <div class="right-logo">
+                <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="Logo">
+            </div>
+        </div>
+
+        <!-- باکس صندوق -->
+        <div class="header-left">
+            <div class="icon" id="massageBoxIcon">
+                <img src="{{ url_for('static', path='images/answer-icon.png') }}" alt="گزارشات">
+                <span class="icon-text-gozaresh">صندوق پیام</span>
+                <span class="NumberNotif">{{ unread_count }}</span>
+            </div>
+            <div class="icon" id="hozoorReport">
+                <img src="{{ url_for('static', path='images/coworker-icon.png') }}" alt="ساعت زن">
+                <span class="icon-text">ساعت زن</span>
+            </div>
+            <p class="welcome-text">{{ username }}، خوش آمدید</p>
+        </div>
+
+        <!-- باکس صندوق پیام پاپ آپ -->
+        <div class="popup-box-massageBox" id="massageBoxPopup">
+            <h2>پیام‌ها</h2>
+                {% if message_records %}
+                {% for message in message_records %}
+                    <div class="userMassage" id="userMassageBox" onclick="openViewMassageBoxDialog(this)" data-id="{{ message.id }}">
+                        <div class="right">
+                            <div class="onvanMassage">{{ message.ticket_title }}</div>
+                            <div class="daryafkonandeMassage">{{ message.target_username }}</div>
+                        </div>
+                        <div class="tozihatMassage">{{ message.ticket_description }}</div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>هیچ پیام جدیدی یافت نشد.</p>
+                {% endif %}
+            <button class="close-massage-box-btn" id="closeMassageBoxPopup">بستن</button>
+        </div>
+
+        <!-- نوار سمت راست -->
+        <div class="header-right">
+            <div class="icon-container">
+                <img src="/static/images/leaveRequest.png" alt="منو" class="leaveRequest-icon" onclick="openLeaveModal()">
+                <span class="tooltipIconHeader leave-tooltip">درخواست مرخصی</span>
+            </div>
+        
+            <div class="icon-container">
+                <img src="/static/images/overtime.png" alt="منو" class="overtime-icon" onclick="openOvertimeModal()">
+                <span class="tooltipIconHeader overtime-tooltip">ثبت اضافه‌کار</span>
+            </div>
+        
+            <div class="icon-container">
+                <img src="/static/images/clock.png" alt="منو" class="hourlyPass-icon" onclick="openHourlyPassModal()">
+                <span class="tooltipIconHeader hourlyPass-tooltip">درخواست ساعتی</span>
+            </div>
+        
+            <div class="icon-container">
+                <img src="/static/images/chat.png" alt="منو" class="ticket-icon" onclick="openTicketModal()">
+                <span class="tooltipIconHeader ticket-tooltip">ثبت تیکت</span>
+            </div>
+        
+            <!-- دکمه خروج -->
+            <button class="logout-btn" onclick="logout()">
+                <img src="/static/images/exit.png" alt="خروج">
+                <span class="tooltipIconHeader exit-tooltip">خروج</span>
+            </button>
+        </div>
+
+        <!-- نوار سمت چپ -->
+        <div class="leftSidebar">
+            <div class="icon-container-leftSidebar">
+                <img src="/static/images/leaveRequest.png" alt="منو" class="leaveRequest-icon" id="showMoreMorakhc">
+                <span class="tooltipIconHeader-leftSidebar leave-tooltip-leftSidebar">مدیریت مرخصی ها</span>
+            </div>
+            <div class="icon-container-leftSidebar">
+                <img src="/static/images/overtime.png" alt="منو" class="overtime-icon" id="showMoreEzafetime">
+                <span class="tooltipIconHeader-leftSidebar overtime-tooltip-leftSidebar">مدیریت اضافه کاری ها</span>
+            </div>
+            <div class="icon-container-leftSidebar">
+                <img src="/static/images/clock.png" alt="منو" class="hourlyPass-icon" id="showMorepopuphourbox">
+                <span class="tooltipIconHeader-leftSidebar hourlyPass-tooltip-leftSidebar">مدیریت پاس ها</span>
+            </div>
+        </div>
+
+        <!-- پاپ‌آپ ثبت مرخصی -->
+        <div id="leaveModal" class="morakhaci-sabt" style="display: none;">
+            <div  class="modal">
+                <div class="modal-content">
+                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeLeaveModal()">
+                    <h2>ثبت مرخصی</h2>
+                    <form id="leaveForm">
+                        <label for="startDate">: از تاریخ</label>
+                        <input type="text" id="startDate" name="startDate" placeholder="1403/01/01">
+
+                        <label for="endDate">: تا تاریخ</label>
+                        <input type="text" id="endDate" name="endDate" placeholder="1403/01/01">
+
+                        <div class="input-container">
+                            <input type="text" id="days" name="days" value="۱" required oninput="formatPersianNumbers(event)">
+                            <button type="button" class="decrease" onclick="changeValue(-1)">&#x2193;</button>
+                            <button type="button" class="increase" onclick="changeValue(1)">&#x2191;</button>
+                        </div>
+
+                        <label for="substitute">: جانشین</label>
+                        <input type="text" id="substitute" name="substitute" placeholder="انتخاب جانشین" readonly
+                            onclick="toggleSubstituteDropdown()" required>
+                        <div id="substituteDropdown" class="dropdown-content" style="display: none;">
+                            <div class="dropdown-option" data-value="بدون جانشین" onclick="selectSubstitute(this)">بدون جانشین</div>
+                            <div class="dropdown-option" data-value="فاطمه سالاری فر" onclick="selectSubstitute(this)">فاطمه سالاری فر</div>
+                            <div class="dropdown-option" data-value="مریم براتی" onclick="selectSubstitute(this)">مریم براتی</div>
+                            <div class="dropdown-option" data-value="زهره محمودی" onclick="selectSubstitute(this)">زهره محمودی</div>
+                            <div class="dropdown-option" data-value="محدثه گنجمه" onclick="selectSubstitute(this)">محدثه گنجمه</div>
+                            <div class="dropdown-option" data-value="عالیه سقایی" onclick="selectSubstitute(this)">عالیه سقایی</div>
+                            <div class="dropdown-option" data-value="فرشته ایزدی" onclick="selectSubstitute(this)">فرشته ایزدی</div>
+                            <div class="dropdown-option" data-value="مرتضی کمالی" onclick="selectSubstitute(this)">مرتضی کمالی</div>
+                            <div class="dropdown-option" data-value="فاطمه پاک نفس" onclick="selectSubstitute(this)">فاطمه پاک نفس</div>
+                            <div class="dropdown-option" data-value="سیدمرتضی موسوی پور" onclick="selectSubstitute(this)">سیدمرتضی موسوی پور</div>
+                            <div class="dropdown-option" data-value="محمدمهدی صمدیان" onclick="selectSubstitute(this)">محمدمهدی صمدیان</div>
+                            <div class="dropdown-option" data-value="صبا حلاجی" onclick="selectSubstitute(this)">صبا حلاجی</div>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-confirm">تایید</button>
+                            <button type="button" class="btn-cancel" onclick="closeLeaveModal()">انصراف</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- پاپ‌آپ ثبت اضافه کار -->
+        <div id="overtimeModal" class="morakhaci-sabt" style="display: none;">
+            <div  class="modal">
+                <div class="modal-content">
+                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeOvertimeModal()">
+                    <h2>ثبت اضافه کار</h2>
+                    <form id="overtimeForm">
+                        <label for="overtimeDate">: تاریخ اضافه‌کار</label>
+                        <input type="text" id="overtimeDate" name="overtimeDate" placeholder="1403/01/01" required
+                            oninput="convertToPersian(this)">
+
+                        <label for="fromTime">: از ساعت</label>
+                        <input type="text" id="fromTime" name="fromTime" placeholder="08:00" required
+                            oninput="convertToPersian(this)">
+
+                        <label for="toTime">: تا ساعت</label>
+                        <input type="text" id="toTime" name="toTime" placeholder="16:00" required
+                            oninput="convertToPersian(this)">
+
+                        <label for="description">: توضیحات</label>
+                        <input type="text" id="description" name="description" placeholder="توضیحات" required>
+
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-confirm">تایید</button>
+                            <button type="button" class="btn-cancel" onclick="closeOvertimeModal()">انصراف</button>
+                        </div>
+                    </form>
+
+                    <!-- پیام نمایش موفقیت یا خطا -->
+                    <div id="overtimeMessage" style="color: red; display: none; margin-top: 15px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- پاپ‌آپ پاس ساعتی -->
+        <div id="hourlyPassModal" class="morakhaci-sabt" style="display: none;">
+            <div  class="modal">
+                <div class="modal-content">
+                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeHourlyPassModal()">
+                    <h2>پاس ساعتی</h2>
+                    <form id="hourlyPassForm">
+                        <label for="passType">نوع پاس</label>
+                        <input type="text" id="passType" name="passType" placeholder="انتخاب نوع پاس" readonly
+                            onclick="togglePassTypeDropdown()" required>
+                        <div id="passTypeDropdown" class="dropdown-content" style="display: none;">
+                            <div class="dropdown-option" data-value="first">پاس اول وقت</div>
+                            <div class="dropdown-option" data-value="mid">پاس بین وقت</div>
+                            <div class="dropdown-option" data-value="last">پاس آخر وقت</div>
+                        </div>
+
+                        <div id="dynamicFields"></div>
+
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-confirm">تایید</button>
+                            <button type="button" class="btn-cancel" onclick="closeHourlyPassModal()">انصراف</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- پاپ‌آپ ثبت تیکت -->
+        <div id="ticketModal" class="morakhaci-sabt" style="display: none;">
+            <div  class="modal">
+                <div class="modal-content">
+                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeTicketModal()">
+                    <h2>ثبت تیکت</h2>
+                    <form id="ticketForm" class="tikcet-popup-Req">
+                        <label for="ticketReceiver">دریافت کننده</label>
+                        <select id="ticketReceiver" name="ticketReceiver" required>
+                            <option value="" disabled selected>انتخاب کنید</option>
+                        </select>
+                    
+                        <label for="ticketTitle">عنوان تیکت</label>
+                        <input type="text" id="ticketTitle" name="ticketTitle" required>
+                    
+                        <label for="ticketDescription">توضیحات</label>
+                        <textarea id="ticketDescription" name="ticketDescription" rows="4" required></textarea>
+                    
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-confirm">تایید</button>
+                            <button type="button" class="btn-cancel" onclick="closeTicketModal()">انصراف</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- باکس اطلاعات فردی کاربر -->
+        <div class="Information-box">
+            <div class="info-calendar-container">
+                <div id="userInfoBox">
+                    <p>نام : <span id="userName"></span></p>
+                    <p>نام خانوادگی : <span id="userLastName"></span></p>
+                    <p>بخش فعالیت : <span id="userDepartment"></span></p>
+                    <p>ساعت‌های کاری : <span id="userWorkHours"></span></p>
+                    <p>جانشین : <span id="userSubstitute"></span></p>
+                </div>
+                <div id="calender">
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <span class="prev-month">&#10094;</span>
+                            <span class="month-year"></span>
+                            <span class="next-month">&#10095;</span>
+                        </div>
+                        <div class="calendar-grid">
+                            <!-- روز های هفته به همراه اعداد ماه -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- پاپ اپ جدول مرخصی های کاربر -->
+        <div id="popupOverlayMorakhsi" class="popup-overlay" style="display: none;">
+            <div id="reportMorakhaciKarbariBox" class="report-hour-box">
+                <h2>مشروح گزارش</h2>
+                <div class="mrkhc">
+                    <p id="approvedLeaves">تعداد مرخصی‌های تایید شده : <span id="approvedCount">{{ approved_count }}</span></p>
+                    <p id="remainingLeaves">تعداد مرخصی‌های باقی‌مانده : <span id="remainingCount">{{ remaining_count }}</span>
+                    </p>
+                </div>
+                <table id="leaveTable">
+                    <thead>
+                        <tr>
+                            <th class="vazeiyat-morkhc">وضعیت درخواست</th>
+                            <th class="tedadrooz-morkhc">تعداد روز</th>
+                            <th class="taTarikh-morkhc">تا تاریخ</th>
+                            <th class="azTarikh-morkhc">از تاریخ</th>
+                            <th class="radif-morkhc">ردیف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for leave in leave_details %}
+                        <tr>
+                            <td class="vazeiyat-morkhc">{{ leave.status }}</td>
+                            <td class="tedadrooz-morkhc">{{ leave.days }}</td>
+                            <td class="taTarikh-morkhc">{{ leave.end_date }}</td>
+                            <td class="azTarikh-morkhc">{{ leave.start_date }}</td>
+                            <td class="radif-morkhc">{{ loop.index }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="#" id="closePopupMorakhciPopuppbox">بستن</a>
+            </div>
+        </div>
+
+        <!-- پاپ اپ جدول اضافه کاری های کاربر -->
+        <div id="popupOverlayezafe" class="popup-overlay" style="display: none;">
+            <div id="reportezafekariBox" class="report-hour-box">
+                <h2>مشروح گزارش</h2>
+                <div id="overtimeBox">
+                    <p><span id="dailyOvertime">{{ total_overtime }} جمع ساعت اضافه کاری ماهانه</span></p>
+                </div>
+                
+                    <table id="OverTimeTable">
+                        <thead>
+                            <tr>
+                                <th class="vazeiyat-ezafetime">وضعیت</th>
+                                <th class="tozihat-ezafetime">توضیحات</th>
+                                <th class="ezafemodat-ezafetime">مدت زمان اضافه کاری</th>
+                                <th class="darkhst-ezafetime">تاریخ درخواست</th>
+                                <th class="radif-ezafetime">ردیف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="overtimeTableBody">
+                            {% for record in overtime_records %}
+                                <tr>
+                                    <td class="vazeiyat-ezafetime">{{ record.status }}</td>
+                                    <td class="tozihat-ezafetime">{{ record.description }}</td>
+                                    <td class="ezafemodat-ezafetime">{{ record.time }}</td>
+                                    <td class="darkhst-ezafetime">{{ record.date }}</td>
+                                    <td class="radif-ezafetime">{{ record.index }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>                
+                    </table>
+                
+                <a href="#" id="closePopupezafekarijadvalbox">بستن</a>
+            </div>
+        </div>
+
+        <!-- پاپ اپ جدول پاس های ساعتی -->
+        <div id="popupOverlay" class="popup-overlay" style="display: none;">
+            <div id="reportHourBox" class="report-hour-box">
+                <h2>مشروح گزارش</h2>
+                <div id="text-hour-box">
+                    <p>مدت زمان پاس های ساعتی: {{ total_approved_pass_duration }}</p>
+                </div>
+                <table class="passsaatiReport-table" id="passsaatiReportTable">
+                    <thead>
+                        <tr>
+                            <th>وضعیت درخواست</th>
+                            <th>مدت زمان پاس</th>
+                            <th>عنوان پاس</th>
+                            <th>تاریخ درخواست</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in pass_records %}
+                        <tr>
+                            <td>{{ record.status }}</td>
+                            <td>{{ record.duration }}</td>
+                            <td>{{ record.title }}</td>
+                            <td>{{ record.date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>                
+                </table>
+                <a href="#" id="closePopup">بستن</a>
+            </div>
+        </div>
+
+        <!-- باکس وضعیت تیکت ها -->
+        <div class="ticket-status-box">
+            <h3>وضعیت تیکت‌ها</h3>
+            <div class="ticket-container">
+                {% if ticket_records %}
+                    {% for ticket in ticket_records %}
+                    <div class="mobile-box">
+                        <div class="onvaneticket">
+                            <div class="subjectTicket">عنوان تیکت</div>
+                            <div class="contentTicket">{{ ticket.ticket_title }}</div>
+                        </div>
+                        <div class="tatikhticket">
+                            <div class="subjectTarikh">تاریخ تیکت</div>
+                            <div class="contentTarikh">{{ ticket.ticket_date }}</div>
+                        </div>
+                        <div class="tatikhticket">
+                            <div class="subjectTarikh">دریافت کننده</div>
+                            <div class="contentTarikh">{{ ticket.target_username }}</div>
+                        </div>
+                        <div class="tatikhticket">
+                            <div class="subjectTarikh">وضعیت</div>
+                            <div class="contentTarikh">{{ ticket.ticket_status }}</div>
+                        </div>
+                        <div class="tatikhticket">
+                            <div class="subjectTarikh">توضیحات</div>
+                            <div class="contentTarikh">{{ ticket.ticket_description }}</div>
+                        </div>
+                        <div class="virayeshVAhazf">
+                            <button class="trash-btn" onclick="showConfirmDialog('{{ ticket.ticket_id }}')">
+                                <img src="/static/images/trash.png" alt="حذف">
+                                <span class="tooltip-text-table-del">حذف</span>
+                            </button>
+                            {% if ticket.ticket_status == 'ارسال شده' %}
+                            <button class="edit-btn" 
+                                    onclick="openEditTicketModal(this)" 
+                                    data-id="{{ ticket.ticket_id }}"
+                                    data-receiver="{{ ticket.target_username }}" 
+                                    data-title="{{ ticket.ticket_title }}" 
+                                    data-description="{{ ticket.ticket_description }}">
+                                <img src="/static/images/writing.png" alt="ویرایش">
+                                <span class="tooltip-text-table-edit">ویرایش</span>
+                            </button>
+                            {% else %}
+                            <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
+                                <img src="/static/images/view.png" alt="مشاهده">
+                                <span class="tooltip-text-table-view">مشاهده</span>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-ticket-message">تیکتی موجود نیست</div>
+                {% endif %}
+            </div>
+            
+            <div class="Jadvale-ticket">
+                <table id="ticket-status-table">
+                    <thead>
+                        <tr>
+                            <th class="virayesh-ticket">ویرایش</th>
+                            <th class="tozihat-ticket">توضیحات</th>
+                            <th class="vazeiyat-ticket">وضعیت</th>
+                            <th class="daryaft-ticket">دریافت کننده</th>
+                            <th class="tarikh-ticket">تاریخ درخواست</th>
+                            <th class="noe-ticket">عنوان درخواست</th>
+                            <th class="radif-ticket">ردیف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in ticket_records %}
+                        <tr>
+                            <td class="virayesh-ticket">
+                                <button class="trash-btn" onclick="showConfirmDialog('{{ ticket.ticket_id }}')">
+                                    <img src="/static/images/trash.png" alt="حذف">
+                                    <span class="tooltip-text-table-del">حذف</span>
+                                </button>
+                                {% if ticket.ticket_status == 'ارسال شده' %}
+                                    <button class="edit-btn" 
+                                            onclick="openEditTicketModal(this)" 
+                                            data-id="{{ ticket.ticket_id }}"
+                                            data-receiver="{{ ticket.target_username }}" 
+                                            data-title="{{ ticket.ticket_title }}" 
+                                            data-description="{{ ticket.ticket_description }}">
+                                        <img src="/static/images/writing.png" alt="ویرایش">
+                                        <span class="tooltip-text-table-edit">ویرایش</span>
+                                    </button>
+                                {% endif %}
+                                {% if ticket.ticket_status != 'ارسال شده' %}
+                                <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
+                                    <img src="/static/images/view.png" alt="مشاهده">
+                                    <span class="tooltip-text-table-view">مشاهده</span>
+                                </button>
+                                {% endif %}
+                                <button class="check-btn">
+                                    <img src="/static/images/check-mark.png">
+                                    <span class="tooltip-text-table-chk">تایید</span>
+                                </button>
+                            </td>
+                            <td class="tozihat-ticket">{{ ticket.ticket_description }}</td>
+                            <td class="vazeiyat-ticket" onclick="toggleDropdown(event)">
+                                <span id="ticket-status">{{ ticket.ticket_status }}</span>
+                                <div class="dropdown">
+                                <div class="goz1" onclick="changeStatus(this, 'خوانده شده'); event.stopPropagation();">خوانده شده</div>
+                                <div class="goz2" onclick="changeStatus(this, 'پاسخ داده شده'); event.stopPropagation();">پاسخ داده شده</div>
+                                <div class="goz3" onclick="changeStatus(this, 'در حال پیگیری'); event.stopPropagation();">در حال پیگیری</div>
+                                </div>
+                            </td>
+                            <td class="daryaft-ticket">{{ ticket.target_username }}</td>
+                            <td class="tarikh-ticket">{{ ticket.ticket_date }}</td>
+                            <td class="noe-ticket">{{ ticket.ticket_title }}</td>
+                            <td class="radif-ticket">{{ ticket.index }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>                
+                </table>
+            </div>
+        </div>
+
+        <!-- پنجره مدال تایید حذف تیکت -->
+        <div id="confirmDeleteModal" class="modal-hazf">
+            <div class="modal-content-hazfPopup">
+                <h2>آیا مطمئن به حذف تیکت هستید؟</h2>
+                <button id="confirmDeleteBtn" class="ok-btn">تایید</button>
+                <button class="cancel-btn" onclick="closeConfirmDialog()">انصراف</button>
+            </div>
+        </div>
+
+        <!-- پاپ‌آپ ثبت ویرایش تیکت -->
+        <div id="ticketEditModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditTicketModal()">&times;</span>
+                <h2>ثبت تیکت</h2>
+                <form id="ticketEditeForm" class="tikcet-popup-Req">
+                    <label for="ticketEditReceiver">دریافت کننده</label>
+                    <select id="ticketEditReceiver" name="ticketEditReceiver" required>
+                        <option value="" disabled selected>انتخاب کنید</option>
+                        <option value="admin" >admin</option>
+                    </select>
+                
+                    <label for="ticketEditTitle">عنوان تیکت</label>
+                    <input type="text" id="ticketEditTitle" name="ticketEditTitle" required>
+                
+                    <label for="ticketEditDescription">توضیحات</label>
+                    <textarea id="ticketEditDescription" name="ticketEditDescription" rows="4" required></textarea>
+                
+                    <div class="modal-buttons">
+                        <button type="submitEditticket" class="btn-confirm">تایید</button>
+                        <button type="button" class="btn-cancel" onclick="closeEditTicketModal()">انصراف</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- پاپ‌آپ مشاهده تیکت ارسال شده -->
+        <div id="popupMoshahedeoverlay" class="MoshahedeOverlay" onclick="hideViewDialog()"></div>
+        <div id="MoshahedePopupbox" class="MoshahdePopup">
+            <p id="ticketTitle">عنوان تیکت</p>
+            <div class="bishtar">
+                <div class="kadr-matn">
+                
+                
+                </div>
+                <hr class="line-separator">
+                <input type="text" id="matnErsali" name="matnErsali" required>
+                <img src="/static/images/send.png" alt="ارسال" class="ersal-icon">
+            </div>
+            <button onclick="hideViewDialog()">بستن</button>
+        </div>
+
+        <!-- پاپ اپ گزارش ساعت زن -->
+        <div id="popupHozoor" class="popupHozoor-overlay">
+            <div class="popupHozoor-content">
+                <h2>جدول ساعت زن</h2>
+                <table id="HozoorTableReport">
+                    <thead>
+                        <tr>
+                            <th class="vazeiyat-hozoorTime">وضعیت</th>
+                            <th class="zmnkhrj-hozoorTime">زمان خروج</th>
+                            <th class="zmnvrd-hozoorTime">زمان ورود</th>
+                            <th class="trkhsbt-hozoorTime">تاریخ ثبت</th>
+                            <th class="radif-hozoorTime">ردیف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- داده‌ها در اینجا پر می‌شوند -->
+                    </tbody>                
+                </table>            
+                <a id="close-popupHozoor">بستن</a>
+            </div>
+        </div>
+
+        <script src="{{ url_for('static', path='js/user-panel-script.js') }}"></script>
+
+    </body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه هستما</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
+</head>
+
+<body>
+
+    <!-- کل اجزاء -->
+    <div class="koleObject">
+
+        <!-- پنل لوگو -->
+        <div class="samaneh">
+            <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="Logo">
+            <p>ســامـانـه هســتما</p>
+        </div>
+
+        <!-- متن بزرگ وسط صفحه -->
+        <div class="center-text">
+            آزمایشگاه دکتر امینی
+        </div>
+
+        <!-- متن کوچک زیر آن -->
+        <div class="small-text">
+            همگام با تکنولوژی روز، به پشتوانه تجربه دیروز
+        </div>
+
+        <!-- متن بزرگ وسط صفحه -->
+        <div class="down-text">
+            <span>نسخه آزمایشی</span>
+        </div>
+
+        <!-- اسلایدر  -->
+        <div class="slider">
+            <div class="slider-container">
+                <div class="slider-item">
+                    <img src="{{ url_for('static', path='images/slider4.jpg') }}" alt="تصویر 4 (کپی)">
+                    <div class="overlay"></div>
+                </div>
+                <div class="slider-item">
+                    <img src="{{ url_for('static', path='images/slider1.jpg') }}" alt="تصویر 1">
+                    <div class="overlay"></div>
+                </div>
+                <div class="slider-item">
+                    <img src="{{ url_for('static', path='images/slider2.jpg') }}" alt="تصویر 2">
+                    <div class="overlay"></div>
+                </div>
+                <div class="slider-item">
+                    <img src="{{ url_for('static', path='images/slider3.jpg') }}" alt="تصویر 3">
+                    <div class="overlay"></div>
+                </div>
+                <div class="slider-item">
+                    <img src="{{ url_for('static', path='images/slider4.jpg') }}" alt="تصویر 4">
+                    <div class="overlay"></div>
+                </div>
+                <div class="slider-item">
+                    <img src="{{ url_for('static', path='images/slider1.jpg') }}" alt="تصویر 1 (کپی)">
+                    <div class="overlay"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- خط وسط -->
+        <div class="khatvasat"></div>
+
+        <!-- پاپ‌آپ پنل کاربری -->
+        <div class="popup-content">
+            <h2 id="popupTitle">ورود به محیط کاربری</h2>
+            <input type="text" id="username" placeholder="نام کاربری" required>
+            <input type="password" id="password" placeholder="رمز عبور" required>
+            <button id="bastn-login-popup">فراموشی رمز عبور</button>
+            <button onclick="login()">ورود</button>
+        </div>
+
+        <!-- فوتر با جمله حق نشر -->
+        <div class="footertxt">
+           © کلیه حقوق این سامانه متعلق به شرکت هنرافزار ایرانیان می‌باشد 
+        </div>
+
+    </div>
+    
+    <script src="{{ url_for('static', path='js/script.js') }}"></script>
+
+</body>
+
+</html>

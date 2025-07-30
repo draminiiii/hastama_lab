@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>گزارش مرخصی فردی</title>
+        <link rel="stylesheet" href="{{ url_for('static', path='css/leave-report-style.css') }}">
+        <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
+    </head>
+
+    <body>
+        <div class="report-container">
+            <!-- تصویر پس‌زمینه -->
+            <div class="background-image"></div>
+            <img src="/static/images/report-bg.jpg" alt="test image" />
+            <div class="report-box">
+                <h2>گزارش مرخصی</h2>
+                <div class="personal-info">
+                    <div class="info-item-month">
+                        <div class="custom-dropdown" id="dropdownToggle">
+                            انتخاب ماه
+                        </div>
+                        <div class="dropdown-options" id="dropdownOptions">
+                            <div class="dropdown-option">فروردین</div>
+                            <div class="dropdown-option">اردیبهشت</div>
+                            <div class="dropdown-option">خرداد</div>
+                            <div class="dropdown-option">تیر</div>
+                            <div class="dropdown-option">مرداد</div>
+                            <div class="dropdown-option">شهریور</div>
+                            <div class="dropdown-option">مهر</div>
+                            <div class="dropdown-option">آبان</div>
+                            <div class="dropdown-option">آذر</div>
+                            <div class="dropdown-option">دی</div>
+                            <div class="dropdown-option">بهمن</div>
+                            <div class="dropdown-option">اسفند</div>
+                        </div>
+                        <strong>: ماه</strong>
+                    </div>
+                    <div class="info-item">
+                        <strong>دپارتمان :</strong> <span id="department">فناوری اطلاعات</span>
+                    </div>
+                    <!-- اطلاعات کاربر -->
+                    <div class="info-item">
+                        <strong>نام خانوادگی :</strong> <span id="lastName">رضایی</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>نام :</strong> <span id="firstName">محمد</span>
+                    </div>
+                </div>
+            </div>
+            
+            <table class="individual-report-table">
+                <thead>
+                    <tr>
+                        <th>جانشین</th>
+                        <th>تعداد روز</th>
+                        <th>تا تاریخ</th>
+                        <th>از تاریخ</th>
+                        <th>ردیف</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <!-- ردیف‌ها در اینجا اضافه می‌شوند -->
+                </tbody>
+            </table>
+    
+            <div class="signature-container">
+                <div class="signature-box-hamkar">
+                    <strong>امضای همکار</strong>
+                    <div class="signature-space">
+                        <span>نام و نام خانوادگی</span>
+                    </div>
+                </div>
+                <div class="signature-box">
+                    <strong>امضای مدیر آزمایشگاه</strong>
+                </div>
+            </div>
+    
+            <!-- دکمه چاپ گزارش -->
+            <button id="printReportBtn">چاپ گزارش</button>
+        </div>
+
+        <script src="{{ url_for('static', path='js/leave-report-script.js') }}"></script>
+
+    </body>
+
+</html>

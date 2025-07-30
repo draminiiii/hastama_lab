@@ -1,0 +1,2494 @@
+/* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان */
+/* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان */
+/* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان */
+
+@font-face {
+    font-family: 'Yekan';
+    src: url('/static/fonts/Yekan.woff2') format('woff2'),
+         url('/static/fonts/Yekan.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* اندازه‌گیری با احتساب مرزها و پدینگ */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Yekan'; /* فونت پیش‌فرض برای کل صفحه */
+    background-color: #f0f9ff;
+    overflow-x: hidden;
+}
+/* مخفی کردن نوار اسکرول */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ */
+/* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ */
+/* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ *//* هدر سمت چپ */
+
+/* بخش چپ هدر (آیکون‌ها) */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #618eb3;
+    width: 18rem;
+    padding: 18px 0px 19px 37px;
+    position: fixed;
+    top: 0.5rem;
+    left: 1rem;
+    border-radius: 20px 20px 20px 20px;
+    z-index: 500;
+}
+
+/* استایل برای آیکون‌ها */
+.icon {
+    position: relative; /* موقعیت نسبی برای متن زیر آیکون */
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer; /* تغییر نشانگر موس به حالت لینک */
+}
+
+.icon img {
+    width: 100%;
+    height: 100%;
+}
+
+/* مخفی کردن متن به‌طور پیش‌فرض */
+.icon-text {
+    display: none;
+    position: absolute;
+    top: 40px; /* فاصله متن از بالای آیکون */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* پس‌زمینه نیمه‌شفاف */
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 54px;
+}
+
+/* نمایش متن هنگام hover روی آیکون */
+.icon:hover .icon-text {
+    display: block;
+}
+
+.icon-text-gozaresh{
+    display: none;
+    position: absolute;
+    top: 40px; /* فاصله متن از بالای آیکون */
+    left: 45%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* پس‌زمینه نیمه‌شفاف */
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 67px;
+}
+
+/* نمایش متن هنگام hover روی آیکون */
+.icon:hover .icon-text-gozaresh{
+    display: block;
+}
+
+.welcome-text {
+    font-size: 16px;
+    color: #ffffff;
+    margin: 0; /* حذف فاصله اضافی */
+    white-space: nowrap; /* جلوگیری از شکستگی متن */
+    text-shadow: 0 0 13px #000000;
+}
+
+/* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست */
+/* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست */
+/* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست *//* تنظیمات نوار سمت راست */
+
+/* بخش راست هدر (دکمه پنل کاربری) */
+.header-right {
+    width: 5%;
+    float: right;
+    height: 90vh;
+    background-color: #92c168;
+    top: 3rem;
+    right: 1rem;
+    border-radius: 25px 25px 25px 25px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+    position: fixed;
+}
+
+.icon-container {
+    position: relative;
+    margin-top: 8rem;
+    text-align: center;
+}
+
+.icon-container img {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.icon-container img:hover {
+    transform: scale(1.1);
+}
+
+.logout-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 9rem; /* فاصله بیشتر از بقیه */
+    text-align: center;
+}
+
+/* استایل آیکون خروج */
+.logout-btn img {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.logout-btn:hover img {
+    transform: scale(1.1);
+}
+
+/* استایل کلی برای متن */
+.tooltipIconHeader {
+    position: absolute;
+    background-color: rgb(150, 193, 108);
+    color: #000000;
+    padding: 8px 23px;
+    border-radius: 16px 0px 0px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    font-family: 'Yekan';
+}
+
+/* هنگام هاور، متن از راست ظاهر شود */
+.icon-container:hover .tooltipIconHeader,
+.logout-btn:hover .tooltipIconHeader {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-50%) translateX(0px);
+}
+
+/* موقعیت متن‌ها */
+.leave-tooltip {
+    right: 3rem;
+    top: 1.3rem;
+}
+.overtime-tooltip {
+    right: 3rem;
+    top: 1.3rem;
+}
+.hourlyPass-tooltip {
+    right: 3rem;
+    top: 1.3rem;
+}
+.ticket-tooltip {
+    right: 3rem;
+    top: 1.3rem;
+}
+.exit-tooltip {
+    right: 4rem;
+    top: 1.3rem;
+}
+
+/* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه */
+/* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه */
+/* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه *//* تنظیمات باکس لوگوی سامانه */
+
+.logo-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    right: 15.95rem;
+    top: 1.5rem;
+    background-color: #fbfff9;
+    border-radius: 20px;
+    padding: 20px 20px 10px 20px;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
+}
+
+.right-logo img {
+    width: 6rem;
+    height: 6rem;
+    margin-left: 10px; /* فاصله بین لوگو و متن */
+}
+
+.left-text {
+    display: flex;
+    flex-direction: column; /* متن‌ها زیر هم قرار بگیرند */
+    text-align: right;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: -18px;
+}
+
+.small-text {
+    font-size: 0.9rem;
+}
+
+/* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی */
+/* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی */
+/* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی *//* محتویات پاپ اپ مرخصی */
+
+.morakhaci-sabt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* استایل پاپ‌آپ در وسط صفحه */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+}
+
+.modal-content {
+    text-align: right;
+}
+
+.modal-content h2 {
+    text-align: center;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Yekan';
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-confirm {
+    font-family: 'Yekan', sans-serif;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+.btn-confirm:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    font-family: 'Yekan', sans-serif;
+    padding: 10px 20px;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+
+.close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    color: #000;
+    cursor: pointer;
+    width: 20px;
+}
+
+/* استایل برای فیلد جانشین */
+#substitute {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Yekan';
+}
+
+#substituteDropdown {
+    max-height: 160px; /* تعیین ارتفاع برای نوار */
+    overflow-y: auto; /* فعال کردن اسکرول */
+    display: none; /* پنهان کردن نوار به صورت پیش‌فرض */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    position: absolute;
+    width: 90%;
+    z-index: 100;
+    margin-top: -7px;
+}
+
+.dropdown-option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover {
+    background-color: #f0f0f0;
+}
+
+/* استایل کشو */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 359px;
+    border: 1px solid #ddd;
+    z-index: 1;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.dropdown-option {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.dropdown-option:hover {
+    background-color: #f1f1f1;
+}
+
+#passType {
+    cursor: pointer; /* تغییر حالت اشاره‌گر به شکل لینک */
+}
+
+#userInfoBox {
+    text-align: right; /* راست‌چین کردن متن */
+    direction: rtl; /* تعیین جهت نوشتار به صورت راست به چپ */
+    padding: 15px; /* کمی فضا برای ظاهر بهتر */
+    border: 1px solid #ccc; /* اضافه کردن حاشیه برای مشخص کردن باکس */
+    border-radius: 36px; /* گوشه‌های باکس گرد */
+    background-color: #fbfff9; /* رنگ پس‌زمینه */
+    width: 36vw;
+    height: 347px;
+    float: right;
+    margin-right: 2%;
+}
+
+#userInfoBox p {
+    margin: 20px 0;
+    font-size: 20px;
+    line-height: 1.9;
+    color: black;
+}
+
+/*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
+/*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
+/*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.decrease, .increase {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.decrease:hover, .increase:hover {
+    background-color: #e0e0e0;
+}
+
+#days[type="text"] {
+    width: 70px;
+    text-align: center;
+    margin: 0 5px;
+    padding: 7px;
+}
+
+/*تقویم*//*------------------------------------------------------------------------------------------------------*//*تقویم*/
+/*تقویم*//*------------------------------------------------------------------------------------------------------*//*تقویم*/
+/*تقویم*//*------------------------------------------------------------------------------------------------------*//*تقویم*/
+/*تقویم*//*------------------------------------------------------------------------------------------------------*//*تقویم*/
+/*تقویم*//*------------------------------------------------------------------------------------------------------*//*تقویم*/
+
+#calender {
+    text-align: center; /* راست‌چین کردن متن */
+    direction: rtl; /* تعیین جهت نوشتار به صورت راست به چپ */
+    padding: 15px; /* کمی فضا برای ظاهر بهتر */
+    border: 1px solid #ccc; /* اضافه کردن حاشیه برای مشخص کردن باکس */
+    border-radius: 30px; /* گوشه‌های باکس گرد */
+    background-color: #fbfff9; /* رنگ پس‌زمینه */
+    width: 28rem;
+    float: left;
+    margin-left: 2%;
+    height: 22rem; /* تنظیم ارتفاع ثابت برای تقویم */
+    overflow: hidden; /* جلوگیری از نمایش محتوای خارج از باکس */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-container {
+    width: 96%;
+    height: 19.7rem; /* ارتفاع تقویم را به ارتفاع والد خود اختصاص می‌دهد */
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    background-color: rgb(102 157 200);
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.calendar-header .prev-month,
+.calendar-header .next-month {
+    font-size: 17px;
+    cursor: pointer;
+    border: 1px solid #0000003b;;
+    border-radius: 50%;
+    padding: 10px;
+    width: 35px;
+    height: 35px;
+    justify-content: center; /* مرکز کردن محتوا افقی */
+    align-items: center; /* مرکز کردن محتوا عمودی */
+    display: flex;
+    box-shadow: 0px 0px 20px 0.3px rgba(0, 0, 0, 0.3);
+}
+
+.calendar-header .prev-month {
+    margin-right: 25px;
+}
+
+.calendar-header .next-month {
+    margin-left: 25px;
+}
+
+.calendar-header .month-year {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+    padding: 10px;
+    height: calc(100% - 51px); /* ارتفاع گرید به اندازه باقی‌مانده از باکس */
+    overflow-y: scroll; /* فعال بودن اسکرول عمودی */
+    background-color: #fbfffd;
+    border-radius: 20px;
+}
+
+/* مخفی کردن نوار اسکرول */
+.calendar-grid::-webkit-scrollbar {display: none;}
+
+.day-name {
+    font-weight: bold;
+    font-size: 12px;
+    padding: 1px;
+    background-color: #396e87; /* رنگ پس‌زمینه */
+    color: white; /* رنگ متن */
+    text-align: center;
+    border-radius: 5px; /* گوشه‌های گرد */
+}
+
+.day {
+    text-align: center;
+    padding: 0px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    line-height: 31px;
+    margin-right: 7px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.day:hover {background-color: #e0e0e0;}
+
+.today:hover {background-color: #7aa756;}
+
+.red-day {color: red;}
+
+.today {
+    background-color: #8ec164;
+    color: white;
+    font-weight: bold;
+}
+
+/* استایل تعطیلات */
+.holiday {
+    background-color: #FFCDD2; /* رنگ پس‌زمینه تعطیلات */
+    color: #B71C1C; /* رنگ متن قرمز */
+    font-weight: bold;
+}
+
+/* تغییر استایل برای روزهای تعطیلات وقتی روی آنها کلیک می‌شود */
+.holiday:hover {background-color: #EF9A9A; /* تغییر رنگ پس‌زمینه در هنگام هاور */}
+
+#overtimeBox {
+    width: 61%;
+    padding: 10px;
+    border: 1px solid #8a8a8a4d;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+    background-color: #fbfff9;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 52px;
+}
+
+/* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  */
+/* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  */
+/* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  *//* توابع باکس اطلاعات فردی  */
+
+.Information-box {
+    padding: 15px 15px 0px 15px;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    transition: max-height 1s ease-out, padding 0.5s ease-out, width 0.25s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    width: 73.3rem;
+    max-height: 383px;
+    z-index: 1;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 13rem auto 0;
+    height: 700px;
+}
+
+.Information-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.Information-box h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    color: #333;
+}
+
+.Information-box p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #777;
+}
+
+.Information-box a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.Information-box a:hover {text-decoration: underline;}
+
+/* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ */
+/* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ */
+/* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ */
+
+#OverTimeTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+#OverTimeTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    background-color: #bbdba1;
+    color: black;
+}
+
+#OverTimeTable thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#OverTimeTable tbody {
+    display: block;
+    max-height: 176px; /* برای نمایش حداکثر 5 ردیف */
+    overflow-y: auto;
+    width: 100%;
+}
+
+#OverTimeTable tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#OverTimeTable th:first-child {
+    border-top-left-radius: 20px;
+}
+
+#OverTimeTable th:last-child {
+    border-top-right-radius: 20px;
+}
+
+#OverTimeTable tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+#OverTimeTable tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+#OverTimeTable th {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+    visibility: visible;
+}
+
+#OverTimeTable td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#OverTimeTable tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* عرض ستون‌ها */
+.radif-ezafetime { width: 6%; }
+.darkhst-ezafetime { width: 20%; }
+.ezafemodat-ezafetime { width: 20%; }
+.tozihat-ezafetime { width: 22%; }
+.vazeiyat-ezafetime { width: 15%; }
+
+
+/* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها */
+/* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها */
+/* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها *//* توابع باکس ساعت کاری ها */
+
+#text-hour-box {
+    width: 61%;
+    padding: 10px;
+    border: 1px solid #8a8a8a4d;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+    background-color: #fbfff9;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 52px;
+}
+
+/* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها */
+/* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها */
+/* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها *//* توابع باکس وضعیت تیکت ها */
+
+.ticket-status-box {
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fbfff9;
+    transition: max-height 1s ease-out, padding 0.5s ease-out, width 0.25s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    width: 69.8%;
+    max-height: 500px;
+    z-index: 1;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 3rem auto 0;
+    margin-bottom: 30px;
+}
+
+.ticket-status-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-status-box h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    color: #333;
+}
+
+.ticket-status-box p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #777;
+}
+
+.ticket-status-box a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.ticket-status-box a:hover {text-decoration: underline;}
+
+/* تنظیمات بستن پاپ اپ جدول پاس های ساعتی *//* تنظیمات بستن پاپ اپ جدول پاس های ساعتی *//* تنظیمات بستن پاپ اپ جدول پاس های ساعتی */
+/* تنظیمات بستن پاپ اپ جدول پاس های ساعتی *//* تنظیمات بستن پاپ اپ جدول پاس های ساعتی *//* تنظیمات بستن پاپ اپ جدول پاس های ساعتی */
+/* تنظیمات بستن پاپ اپ جدول پاس های ساعتی *//* تنظیمات بستن پاپ اپ جدول پاس های ساعتی *//* تنظیمات بستن پاپ اپ جدول پاس های ساعتی */
+
+#closePopup {
+    background-color: #d9534f;
+    text-decoration: none;
+    left: 1rem;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    position: absolute;
+}
+
+#closePopup:hover {background-color: #c24b47;}
+
+/* تنظیمات بستن پاپ اپ جدول اضافه کاری *//* تنظیمات بستن پاپ اپ جدول اضافه کاری *//* تنظیمات بستن پاپ اپ جدول اضافه کاری */
+/* تنظیمات بستن پاپ اپ جدول اضافه کاری *//* تنظیمات بستن پاپ اپ جدول اضافه کاری *//* تنظیمات بستن پاپ اپ جدول اضافه کاری */
+/* تنظیمات بستن پاپ اپ جدول اضافه کاری *//* تنظیمات بستن پاپ اپ جدول اضافه کاری *//* تنظیمات بستن پاپ اپ جدول اضافه کاری */
+
+#closePopupezafekarijadvalbox {
+    background-color: #d9534f;
+    text-decoration: none;
+    left: 1rem;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    position: absolute;
+}
+
+#closePopupezafekarijadvalbox:hover {background-color: #c24b47;}
+
+/* محتویات مربوط به پاپ اپ ثبت تیکت*//* محتویات مربوط به پاپ اپ ثبت تیکت*//* محتویات مربوط به پاپ اپ ثبت تیکت*/
+/* محتویات مربوط به پاپ اپ ثبت تیکت*//* محتویات مربوط به پاپ اپ ثبت تیکت*//* محتویات مربوط به پاپ اپ ثبت تیکت*/
+/* محتویات مربوط به پاپ اپ ثبت تیکت*//* محتویات مربوط به پاپ اپ ثبت تیکت*//* محتویات مربوط به پاپ اپ ثبت تیکت*/
+
+.tikcet-popup-Req select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Yekan';
+    width: 100%;
+    direction: rtl;
+}
+
+/* جدول نمایش وضعیت تیکت های ثبت شده کاربر *//* جدول نمایش وضعیت تیکت های ثبت شده کاربر *//* جدول نمایش وضعیت تیکت های ثبت شده کاربر */
+/* جدول نمایش وضعیت تیکت های ثبت شده کاربر *//* جدول نمایش وضعیت تیکت های ثبت شده کاربر *//* جدول نمایش وضعیت تیکت های ثبت شده کاربر */
+/* جدول نمایش وضعیت تیکت های ثبت شده کاربر *//* جدول نمایش وضعیت تیکت های ثبت شده کاربر *//* جدول نمایش وضعیت تیکت های ثبت شده کاربر */
+
+#ticket-status-table {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 20px;
+}
+
+#ticket-status-table tbody {
+    display: block;
+    max-height: calc(4 * 46px); /* ارتفاع مورد نظر برای نمایش 4 ردیف */
+    overflow-y: scroll; /* اسکرول عمودی */
+    -ms-overflow-style: none; /* مخفی کردن اسکرول در اینترنت اکسپلورر */
+    scrollbar-width: none; /* مخفی کردن اسکرول در فایرفاکس */
+}
+
+#ticket-status-table tbody::-webkit-scrollbar {
+    display: none; /* مخفی کردن اسکرول در کروم و سایر مرورگرهای مبتنی بر WebKit */
+}
+
+#ticket-status-table thead, #ticket-status-table tbody tr {
+    display: table;
+    width: 100%; /* اطمینان از تطابق عرض */
+    table-layout: fixed; /* ثبات عرض ستون‌ها */
+}
+
+#ticket-status-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+#ticket-status-table thead {
+    font-size: 15px;
+}
+
+#ticket-status-table thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+#ticket-status-table th, #ticket-status-table td {
+    white-space: nowrap; /* جلوگیری از شکستن خط */
+}
+
+#ticket-status-table th {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+#ticket-status-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#ticket-status-table th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+#ticket-status-table th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+#ticket-status-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+#ticket-status-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.radif-ticket {
+    width: 1.5%;
+}
+
+.noe-ticket {
+    width: 4%;
+}
+
+.tarikh-ticket {
+    width: 3%;
+}
+
+.vazeiyat-ticket {
+    width: 2.5%;
+}
+
+.virayesh-ticket {
+    width: 2.5%;
+}
+
+.tozihat-ticket {
+    width: 5%;
+}
+
+.daryaft-ticket {
+    width: 3%;
+}
+
+/* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر */
+/* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر */
+/* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر */
+
+.passsaatiReport-table {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 20px;
+}
+
+.passsaatiReport-table thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+.passsaatiReport-table th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+.passsaatiReport-table th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+.passsaatiReport-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+.passsaatiReport-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.passsaatiReport-table th {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+.passsaatiReport-table td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.passsaatiReport-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها */
+/* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها */
+/* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها */
+
+/* استایل برای متن tooltip */
+.tooltip-text-table-edit {
+    visibility: hidden;
+    width: 44px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: fixed;
+    margin-top: 76px;
+    margin-left: 44px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-family: 'Yekan';
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 9999;
+}
+
+/* فلش کوچک برای بالا */
+.tooltip-text-table-edit::after {
+    content: "";
+    position: absolute;
+    top: -5px; /* بالا‌تر از tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgba(0, 0, 0, 0.8); /* رنگ فلش */
+}
+
+.tooltip-text-table-chk {
+    visibility: hidden;
+    width: 40px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: fixed;
+    margin-top: 76px;
+    margin-left: 40px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-family: 'Yekan';
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 200;
+}
+
+.tooltip-text-table-chk::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgba(0, 0, 0, 0.8);
+}
+
+/* استایل برای متن tooltip */
+.tooltip-text-table-del {
+    visibility: hidden;
+    width: 40px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.8); /* پس‌زمینه تیره برای tooltip */
+    color: #fff; /* رنگ متن */
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: fixed;
+    margin-top: 76px;
+    margin-left: 41px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-family: 'Yekan';
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 9999; /* بالاتر از سایر اجزاء */
+}
+
+/* فلش کوچک برای بالا */
+.tooltip-text-table-del::after {
+    content: "";
+    position: absolute;
+    top: -5px; /* بالا‌تر از tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgba(0, 0, 0, 0.8); /* رنگ فلش */
+}
+
+/* استایل برای متن tooltip */
+.tooltip-text-table-view {
+    visibility: hidden;
+    width: 46px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: fixed;
+    margin-top: 76px;
+    margin-left: 47px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-family: 'Yekan';
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 9999;
+}
+
+/* فلش کوچک برای بالا */
+.tooltip-text-table-view::after {
+    content: "";
+    position: absolute;
+    top: -5px; /* بالا‌تر از tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgba(0, 0, 0, 0.8); /* رنگ فلش */
+}
+
+/* نمایش tooltip هنگام هاور */
+.edit-btn:hover .tooltip-text-table-edit,
+.trash-btn:hover .tooltip-text-table-del,
+.view-btn:hover .tooltip-text-table-view,
+.check-btn:hover .tooltip-text-table-chk {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* استایل برای آیکون‌ها */
+.edit-btn img, .trash-btn img, .view-btn img, .check-btn img {
+    width: 20px; /* اندازه آیکون */
+    height: 20px;
+}
+
+/* استایل برای دکمه‌های تغییرات */
+.edit-btn, .trash-btn ,.view-btn, .check-btn {
+    padding: 5px;
+    font-size: 0.9em;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    background-color: transparent; /* حذف رنگ پس‌زمینه */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* برای نمایش tooltip در مکان درست */
+}
+
+/* استایل هاور */
+.edit-btn:hover, .trash-btn:hover , .view-btn:hover {
+    background-color: #f1f1f1; /* رنگ پس‌زمینه هنگام هاور */
+}
+
+/* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت */
+/* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت */
+/* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت *//* تنظیمات پاپ اپ حذف تیکت */
+
+.modal-hazf {
+    display: none; /* به طور پیش‌فرض مخفی است */
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content-hazfPopup {
+    background-color: white;
+    width: fit-content;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 15% auto;
+}
+
+.ok-btn {
+    padding: 4px 15px;
+    background-color: #6c9ec7;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Yekan';
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.ok-btn:hover {
+    background-color: #4e7a9e;
+}
+
+.cancel-btn {
+    padding: 4px 15px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Yekan';
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.cancel-btn:hover {
+    background-color: #d9534f;
+}
+
+/* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام */
+/* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام */
+/* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام */
+
+.popup-box-massageBox {
+    position: fixed;
+    top: -10%;  /* موقعیت اولیه بالا */
+    left: 12rem;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 0px 10px 10px 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 15;
+    text-align: center;
+    width: 340px;
+    opacity: 0;  /* شروع با پنهانی بودن */
+    transition: top 0.3s ease, opacity 0.3s ease; /* انیمیشن برای حرکت و تغییر شفافیت */
+}
+
+/* تنظیمات برای عنوان */
+.popup-box-massageBox h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.popup-box-massageBox p {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+/* دکمه بستن */
+.close-massage-box-btn {
+    margin-top: 20px;
+    padding: 3px 11px;
+    background-color: #6c9ec7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    float: left;
+    font-family: 'Yekan';
+}
+
+.close-massage-box-btn:hover {background-color: #4e7a9e;}
+
+/* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها */
+/* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها */
+/* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها */
+
+.NumberNotif {
+    position: absolute;
+    top: 1.76rem;
+    left: 24px;
+    transform: translateY(-50%);
+    background-color: #e0f1ff;
+    color: #000000;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    
+}
+
+.userMassage {
+    display: flex;
+    flex-direction: row-reverse; /* ترتیب را از راست به چپ تنظیم می‌کند */
+    justify-content: space-between;
+    align-items: stretch; /* برای هم ارتفاع کردن ستون‌ها */
+    gap: 0.2rem; /* فاصله بین ستون‌ها */
+    border: 1px solid #ccc; /* برای تست بهتر */
+    border-radius: 14px;
+    padding: 0.3rem;
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.2);
+}
+
+.userMassage:hover {
+    color: #000; /* رنگ متن را پررنگ‌تر کنید */
+    font-weight: bold; /* متن را پررنگ کنید */
+
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+    text-align: right; /* متن‌ها راست‌چین شوند */
+}
+
+.onvanMassage,
+.daryafkonandeMassage {
+    background: #f0f0f0;
+    padding: 0.3rem;
+    border-radius: 5px;
+    width: 7.5rem;
+}
+
+.tozihatMassage {
+    flex: 1; /* این بخش باعث می‌شود که توضیحات تمام فضای باقیمانده را بگیرد */
+    background: #e0f1ff;
+    padding: 0.5rem;
+    border-radius: 5px;
+    text-align: right; /* متن داخل توضیحات چپ‌چین می‌شود */
+}
+
+/* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول */
+/* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول */
+/* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول */
+
+/* پس‌زمینه تاریک */
+.MoshahedeOverlay {
+    display: none; /* مخفی بودن پیش‌فرض */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* رنگ تاریک نیمه شفاف */
+    z-index: 1000;
+}
+
+/* باکس پاپ‌آپ */
+.MoshahdePopup {
+    display: none; /* مخفی بودن پیش‌فرض */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* برای قرار دادن در مرکز صفحه */
+    background-color: #fff;
+    padding: 20px;
+    padding-top: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001; /* بالاتر از پس‌زمینه تاریک */
+    text-align: center;
+    width: 700px; /* عرض 700 پیکسل */
+    height: 550px; /* ارتفاع 500 پیکسل */
+}
+
+.MoshahdePopup p {
+    margin: 0;
+    font-size: 25px;
+    text-shadow: 0 0px 11px rgba(0, 0, 0, 0.2);
+}
+
+.MoshahdePopup button {
+    padding: 4px 15px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Yekan';
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 10px;
+    float: left;
+}
+
+.MoshahdePopup button:hover {background-color: #d9534f;}
+
+.bishtar {
+    width: 100%;
+    height: 81.2%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+    margin-top: 11px;
+    background-color: #fbfff9;
+    
+}
+
+.kadr-matn {
+    width: 100%;
+    height: 361px;
+    padding: 5px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* این باعث می‌شود باکس‌ها به صورت عمودی قرار بگیرند */
+    align-items: flex-start; /* باکس‌ها از سمت چپ شروع می‌شوند */
+    scrollbar-width: none;
+}
+
+.bishtar input {
+    width: 91%;
+    margin-left: 0.5rem;
+    font-size: 17px;
+    border: 1px solid #919090;
+    border-radius: 8px;
+    font-family: 'Yekan';
+    padding: 5px 8px 5px 8px;
+    box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.2);
+    direction: rtl;
+    font-weight: unset;
+    float: left;
+}
+
+.bishtar input:focus {
+    outline: none; /* حذف خط حاشیه پیش‌فرض */
+    border: 1px solid #919090; /* رنگ مرز حفظ شود یا تغییر دهید */
+    box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.2); /* سایه حفظ شود یا تغییر دهید */
+}
+
+.bishtar img {
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-top: 11px;
+    margin-left: 14px;
+}
+
+.matn1 {
+    align-self: flex-end; /* باکس اول به سمت راست قرار می‌گیرد */
+    width: 45%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    float: right;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    padding: 5px;
+    background-color: #ddffdd;
+    box-shadow: 0 0 9px 0px rgba(0, 0, 0, 0.2);
+}
+
+.matn1 p {font-size: 17px;}
+
+.zaman {
+    float: left;
+    font-size: 11px;
+}
+
+.matn2 {
+    width: 45%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    float: left;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    padding: 5px;
+    background-color: #cfeaff;
+    box-shadow: 0 0 9px 0px rgba(0, 0, 0, 0.2);
+}
+
+.matn2 p {font-size: 17px;}
+
+.line-separator {
+    width: 99%;
+    border-top: 2px solid #ddd;
+    margin-top: 0px;
+    margin-bottom: 6px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ */
+/* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ */
+/* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ */
+
+.leftSidebar {
+    width: 5%;
+    height: 52rem;
+    background-color: #92c168;
+    top: 5.7rem;
+    left: 1rem;
+    border-radius: 25px 25px 25px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5rem;
+    position: fixed;
+}
+
+.icon-container-leftSidebar {
+    position: relative;
+    margin-top: 8rem;
+    text-align: center;
+}
+
+.icon-container-leftSidebar img {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.icon-container-leftSidebar img:hover {
+    transform: scale(1.1);
+}
+
+/* استایل کلی برای متن */
+.tooltipIconHeader-leftSidebar {
+    position: absolute;
+    background-color: rgb(150, 193, 108);
+    color: #000000;
+    padding: 8px 23px;
+    border-radius: 0px 16px 16px 0px;
+    font-size: 14px;
+    white-space: nowrap;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    font-family: 'Yekan';
+}
+
+/* هنگام هاور، متن از چپ ظاهر شود */
+.icon-container-leftSidebar:hover .tooltipIconHeader-leftSidebar {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-50%) translateX(0px);
+}
+
+.leave-tooltip-leftSidebar {
+    left: 3rem;
+    top: 1.3rem;
+}
+
+.overtime-tooltip-leftSidebar {
+    left: 3rem;
+    top: 1.3rem;
+}
+.hourlyPass-tooltip-leftSidebar {
+    left: 3rem;
+    top: 1.3rem;
+}
+
+/* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها */
+/* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها */
+/* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها *//* باکس پاپ اپ مدیریت مرخصی ها */
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.report-hour-box {
+    background-color: #fbfff9;
+    padding: 20px;
+    border-radius: 25px;
+    width: 50%;
+    height: 29rem; /* ارتفاع ثابت */
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* چینش از بالا به پایین */
+    align-items: center; /* وسط چین کردن */
+    justify-content: flex-start; /* چیدمان از بالا */
+    gap: 10px; /* فاصله بین آیتم‌ها */
+    position: relative;
+    overflow: hidden;
+}
+
+/* وسط چین کردن عنوان */
+.report-hour-box h2 {
+    margin: 0;
+    padding: 0;
+}
+
+/* تنظیم باکس mrkhc */
+.mrkhc {
+    width: 61%;
+    padding: 10px;
+    border: 1px solid #8a8a8a4d;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+    background-color: #fbfff9;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 52px;
+}
+
+/* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها */
+/* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها */
+/* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها */
+
+/* قرار دادن جدول در پایین mrkhc */
+#leaveTable {
+    width: 100%;
+    border: 1px solid #afafaf;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 14px;
+}
+
+#leaveTable thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+#leaveTable th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+#leaveTable th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+#leaveTable tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+#leaveTable tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+#leaveTable th {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+#leaveTable td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#leaveTable tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.vazeiyat-morkhc {
+    width: 4%;
+}
+
+.tedadrooz-morkhc {
+    width: 2%;
+}
+
+.taTarikh-morkhc {
+    width: 3%;
+}
+
+.azTarikh-morkhc {
+    width: 3%;
+}
+
+.radif-morkhc {
+    width: 2%;
+}
+
+#closePopupMorakhciPopuppbox {
+    background-color: #d9534f;
+    text-decoration: none;
+    left: 1rem;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    position: absolute;
+}
+
+#closePopupMorakhciPopuppbox:hover {background-color: #c24b47;}
+
+/* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن */
+/* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن */
+/* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن *//* تنظیمات پاپ اپ گزارش ساعت زن */
+
+/* برای تیره‌تر کردن پس‌زمینه */
+.popupHozoor-overlay {
+    display: none; /* پاپ‌آپ به‌طور پیش‌فرض مخفی است */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* بالاتر از سایر محتوای صفحه */
+    justify-content: center;
+    align-items: center;
+}
+
+.popupHozoor-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 45vw;
+    height: 500px;
+}
+
+.popupHozoor-content h2{
+    margin: 0;
+}
+
+#close-popupHozoor {
+    background-color: #d9534f;
+    text-decoration: none;
+    left: 30rem;
+    top: 14.5rem;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    position: absolute;
+    border: 0px;
+    font-size: 1rem;
+    font-family: 'Yekan';
+}
+
+#close-popupHozoor:hover {
+    background-color: #c24b47;
+}
+
+/* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن */
+/* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن */
+/* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن */
+
+#HozoorTableReport {
+    width: 100%;
+    border-collapse: separate; /* برای اعمال border-radius لازم است */
+    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+    border-radius: 20px;
+    overflow: visible; /* برش گوشه‌ها */
+    background-color: #ffffff; /* پس‌زمینه جدول */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
+    margin-top: 20px;
+}
+
+#HozoorTableReport thead tr {
+    background-color: #bbdba1;
+    color: black;
+}
+
+#HozoorTableReport th:first-child {
+    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+}
+
+#HozoorTableReport th:last-child {
+    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+}
+
+#HozoorTableReport tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 20px;
+}
+
+#HozoorTableReport tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+#HozoorTableReport th {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
+    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
+    text-align: center;
+}
+
+#HozoorTableReport td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#HozoorTableReport tbody tr:hover {background-color: #f9f9f9;}
+
+.radif-hozoorTime {width: 0.3%;}
+
+.trkhsbt-hozoorTime {width: 0.6%;}
+
+.zmnvrd-hozoorTime {width: 0.5%;}
+
+.zmnkhrj-hozoorTime {width: 0.5%;}
+
+.vazeiyat-hozoorTime {width: 1%;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dropdown {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 4px;
+}
+
+.dropdown div {
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.dropdown .goz1:hover {
+    background: #42a937;
+}
+
+.dropdown .goz2:hover {
+    background: #c4cc35;
+}
+
+.dropdown .goz3:hover {
+    background: #3393c0;
+}
+
+.goz1 {
+    background-color: #3acb3d;
+}
+
+.goz2 {
+    background-color: #e4ed32;
+}
+
+.goz3 {
+    background-color: #2fa0d3;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن *//* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن *//* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن */
+/* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن *//* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن *//* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن */
+/* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن *//* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن *//* تنظیمات اندازه صفحه نمایش و ریسپانسیو شدن */
+
+@media (min-width: 1400px) and (max-width: 2000px) {
+
+}
+
+@media (min-width: 1300px) and (max-width: 1420px) {
+
+    .mrkhc {
+        width: 82%;
+    }
+
+    #overtimeBox {
+        width: 85%;
+    }
+
+    #text-hour-box {
+        width: 80%;
+    }
+
+    #userInfoBox {
+        width: 26rem;
+    }
+
+    .leftSidebar {
+        padding-top: 3rem;
+        height: 33.35rem;
+    }
+    
+    .icon-container-leftSidebar {
+        margin-top: 5rem;
+    }
+
+    .exit-tooltip {
+        right: 3rem;
+    }
+
+    .logo-top {
+        right: 12.95rem;
+    }
+
+    .right-logo img {
+        width: 5rem;
+        height: 5rem;
+    }
+}
+
+@media (min-width: 1220px) and (max-width: 1300px) {
+
+    .Information-box, .ticket-status-box, .request-status-box {
+        width: 78.8%;
+    }
+
+    .mrkhc {
+        width: 80%;
+    }
+
+    .day-name {
+        font-size: 12px;
+    }
+
+    #text-hour-box {
+        width: 80%;
+    }
+
+    .exit-tooltip {
+        right: 3rem;
+    }
+
+}
+
+@media (min-width: 700px) and (max-width: 1220px) {
+    .header-center h1 {
+        font-size: 18px; /* تغییر اندازه فونت برای موبایل */
+    }
+}
+
+@media (min-height: 700px) and (max-height: 1000px)  {
+    
+    .logout-btn {
+        margin-top: 6rem;
+    }
+
+    .icon-container {
+        margin-top: 6rem;
+    }
+
+    .header-right {
+        padding-top: 1rem;
+    }
+
+    .leftSidebar {
+        height: 47rem;
+    }
+    
+}
+
+@media (min-height: 500px) and (max-height: 700px)  {
+    
+    .logout-btn {
+        margin-top: 3rem;
+    }
+
+    .icon-container {
+        margin-top: 3rem;
+    }
+
+    .header-right {
+        padding-top: 1rem;
+    }
+
+    .leftSidebar {
+        height: 32rem;
+        padding-top: 2rem;
+    }
+    
+}
+
+@media (min-height: 700px) and (max-height: 950px)  {
+
+    .slider{height: 53rem;}
+
+    .popup-content {padding: 15px 34px 12px 34px;}
+}
+
+/* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل */
+/* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل */
+/* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل *//* تنظیمات حالت موبایل */
+
+.mobile-box {display: none;}
+
+.no-ticket-message {display: none;}
+
+/* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل */
+/* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل */
+/* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل *//* تنظیمات اصلی حالت موبایل */
+
+@media (max-width: 768px) {
+
+    body {
+        display: flex;
+        justify-content: center; /* قرارگیری وسط از چپ و راست */
+        align-items: center; /* قرارگیری وسط از بالا و پایین (اختیاری) */
+        margin: 0;
+    }
+
+    /* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف */
+    /* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف */
+    /* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف *//* تنظیمات باکس نوتیف */
+
+    .header-left {
+        position: absolute;
+        padding: 5px 0px 5px 18px;
+        width: 13rem;
+        border-radius: 10px;
+        gap: 14px;
+    }
+
+    .icon:hover .icon-text-gozaresh {
+        display: none;
+    }
+
+    .NumberNotif {
+        width: 15px;
+        height: 15px;
+        top: 1.45rem;
+        left: 16px;
+    }
+
+    .popup-box-massageBox {
+        top: 10.5rem;
+        left: 8rem;
+        width: 15rem;
+    }
+
+    /* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه */
+    /* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه */
+    /* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه *//* باکس لوگوی سامانه */
+
+    .logo-top {
+        right: auto;
+        top: 3.6rem;
+        padding: 5px 11px 0px 10px;
+    }
+
+    .right-logo img {
+        width: 4.7rem;
+        height: 4.7rem;
+    }
+
+    .right-logo {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .left-text {
+        font-size: 1rem;
+        margin-top: -8px;
+    }
+
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .icon img {
+        width: 1rem;
+        height: 100%;
+        margin-bottom: 6px;
+    }
+
+    .small-text {
+        font-size: 0.6rem;
+    }
+
+    .welcome-text {
+        font-size: 14px;
+    }
+
+    /* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست */
+    /* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست */
+    /* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست *//* منوبار سمت راست */
+
+    .header-right {
+        width: 9%;
+        height: 31rem;
+        right: 0.6rem;
+        top: 11.68rem;
+        position: absolute;
+    }
+
+    .icon-container {margin-top: 3rem;}
+
+    .icon-container img {
+        width: 27px;
+        height: 27px;
+    }
+
+    .logout-btn {margin-top: 3rem;}
+
+    .logout-btn img {
+        width: 27px;
+        height: 27px;
+    }
+
+    /* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ */
+    /* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ */
+    /* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ *//* منوبار سمت چپ */
+
+    .leftSidebar {
+        width: 9%;
+        height: 23rem;
+        top: 16.7rem;
+        left: 0.6rem;
+        padding-top: 0.3rem;
+        position: absolute;
+    }
+
+    .icon-container-leftSidebar {margin-top: 4rem;}
+
+    .icon-container-leftSidebar img {
+        width: 27px;
+        height: 27px;
+    }
+
+    /* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی */
+    /* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی */
+    /* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی */
+
+    .Information-box {
+        max-height: 247px;
+        position: absolute;
+        top: 10rem;
+        margin: 0;
+        width: 17rem;
+    }
+
+    #userInfoBox {
+        width: 14.4rem;
+        height: 212px;
+        padding-top: 3px;
+        padding-right: 25px;
+    }
+
+    #userInfoBox p {
+        font-size: 16px;
+        margin: 8px 0;
+    }
+
+    /* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم */
+    /* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم */
+    /* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم */
+
+    .day {
+        width: 28px;
+        height: 28px;
+        margin-right: -4px;
+        font-size: 11px;
+        line-height: 24px;
+    }
+
+    .day-name {font-size: 8px;}
+
+    #calender {
+        margin-left: -1rem;
+        margin-top: 4.1rem;
+        height: 17.3rem;
+        width: 17rem;
+    }
+
+    .calendar-header .month-year {font-size: 15px;}
+
+    .calendar-header .prev-month, .calendar-header .next-month {
+        width: 25px;
+        height: 25px;
+    }
+
+    .calendar-header{padding: 4px;}
+
+    .calendar-container {
+        height: 15.2rem;
+        width: 101%;
+    }
+
+    .calendar-grid {height: calc(100% - 39px);}
+    
+    /* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها */
+    /* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها */
+    /* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها */
+
+    .ticket-status-box {
+        margin-top: 47rem;
+        margin-bottom: 2rem;
+        width: 91.8%;
+        padding: 14px;
+        padding-top: 2px;
+        padding-bottom: 16px;
+        display: flex;
+        justify-content: center; /* قرارگیری وسط از چپ و راست */
+    }
+
+    .ticket-status-box h3 {
+        margin-bottom: 7rem;
+        position: absolute;
+        font-size: 19px;
+    }
+
+    .mobile-box {
+        display: block;
+        width: 20rem;
+        height: auto;
+        background-color: #e1f6ff;
+        border-radius: 20px;
+        margin-top: 2.4rem;
+    }
+
+    .onvaneticket {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%; /* تنظیم عرض بر اساس نیاز */
+        border-bottom: 1px solid #ccc; /* برای نمایش بهتر */
+        padding: 10px;
+        padding-top: 4px;
+        padding-bottom: 2px;
+        direction: rtl; /* برای تنظیم جهت راست‌به‌چپ */
+    }
+    
+    .subjectTicket {
+        font-weight: bold;
+        text-align: right;
+        font-size: 15px;
+    }
+    
+    .contentTicket {
+        text-align: left; /* قرار گرفتن متن به سمت چپ */
+        flex-grow: 1;
+        font-size: 14px;
+        padding-left: 10px;
+    }
+
+    .tatikhticket {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%; /* تنظیم عرض بر اساس نیاز */
+        border-bottom: 1px solid #ccc; /* برای نمایش بهتر */
+        padding: 10px;
+        padding-top: 4px;
+        padding-bottom: 2px;
+        direction: rtl; /* برای تنظیم جهت راست‌به‌چپ */
+    }
+    
+    .subjectTarikh {
+        font-weight: bold;
+        text-align: right;
+        font-size: 15px;
+    }
+    
+    .contentTarikh {
+        text-align: left; /* قرار گرفتن متن به سمت چپ */
+        flex-grow: 1;
+        font-size: 14px;
+        padding-left: 10px;
+    }
+
+    .virayeshVAhazf {padding-top: 6px;}
+
+    #ticket-status-table {display: none;}
+
+    #ticket-status-table {width: 309%;}
+
+    .MoshahdePopup {width: 21rem;}
+
+    .bishtar input {width: 80%;}
+
+    .matn1 {width: 66%;}
+
+    .no-ticket-message {
+        margin-top: 3rem;
+        display: block;
+    }
+
+    .report-hour-box {
+        width: 89%;
+    }
+
+    .mrkhc {
+        width: 100%;
+        gap: 15px;
+        font-size: 11px;
+    }
+
+    #leaveTable th {
+        font-size: 10px;
+    }
+
+    #leaveTable td {
+        font-size: 11px;
+    }
+
+    #closePopupMorakhciPopuppbox {
+        font-size: 11px;
+    }
+
+    #closePopupezafekarijadvalbox {
+        font-size: 11px;
+    }
+
+    #overtimeBox {
+        width: 95%;
+    }
+
+    #OverTimeTable th {
+        font-size: 8px;
+    }
+
+    #OverTimeTable td {
+        font-size: 9px;
+    }
+
+    #closePopup {
+        font-size: 11px;
+    }
+
+    #text-hour-box {
+        width: 86%;
+    }
+
+    .passsaatiReport-table th {
+        font-size: 10px;
+    }
+
+    .passsaatiReport-table td {
+        font-size: 11px;
+    }
+
+    .popupHozoor-content{
+        width: 85vw;
+        padding: 11px;
+    }
+
+    #HozoorTableReport th {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .trkhsbt-hozoorTime{
+        width: 0.9%;
+    }
+
+    .zmnkhrj-hozoorTime{
+        width: 0.9%;
+    }
+
+    .zmnvrd-hozoorTime {
+        width: 0.9%;
+    }
+
+    .vazeiyat-hozoorTime {
+        width: 0.5%;
+    }
+
+    #close-popupHozoor {
+        left: 2.5rem;
+        top: 4cm;
+        font-size: 11px;
+    }
+
+}
