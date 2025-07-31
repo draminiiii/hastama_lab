@@ -3036,6 +3036,24 @@ margin-left: 15%;
     position: relative;
 }
 
+#usernamedast {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #919191;
+    font-family: 'Yekan';
+}
+
+#sabtdastHozoor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+}
+
+
 .vorodiha {
     background-color: #bbdba1;
     border-radius: 13px;
@@ -3043,14 +3061,6 @@ margin-left: 15%;
     font-weight: 700;
 }
 
-
-
-
-
-
-.test{
-    position: relative;
-}
 
 
 /* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت *//* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت */

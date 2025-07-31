@@ -17,7 +17,7 @@ from app.api.routes.auth import router as auth_router
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
 from core.events import create_start_app_handler
 
-from fastapi import FastAPI, HTTPException, Request, Form, Query, Response, Path
+from fastapi import FastAPI, HTTPException, Request, Form, Query, Response, Path, Body
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, StreamingResponse
 from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
@@ -1958,6 +1958,45 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
 
     return list(attendance.values())
 
+# ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن
+# ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن
+# ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن
+
+@app.post("/sabt_hozoor")
+async def sabt_hozoor(request: Request):
+    data = await request.json()
+
+    username = data.get("username") or data.get("usernamedast")
+    tarikh_shamsi = data.get("tarikh")
+    vorood_str = data.get("vorood")
+    khorooj_str = data.get("khorooj")
+
+    if not username or not tarikh_shamsi or not vorood_str or not khorooj_str:
+        return JSONResponse(content={"success": False, "message": "لطفاً تمام فیلدها را پر کنید"})
+
+    try:
+        # تبدیل تاریخ شمسی به تاریخ میلادی پایتونی
+        y, m, d = map(int, tarikh_shamsi.split("/"))
+        tarikh_miladi = JalaliDate(y, m, d).to_gregorian()
+        tarikh_obj = date(tarikh_miladi.year, tarikh_miladi.month, tarikh_miladi.day)
+
+        # تبدیل ساعت‌ها به time object
+        vorood_obj = datetime.strptime(vorood_str, "%H:%M").time()
+        khorooj_obj = datetime.strptime(khorooj_str, "%H:%M").time()
+
+        # حالا اجرای درج با مقادیر datetime
+        cursor.execute("""
+            INSERT INTO hozoor (username, [date], vrood, khoroj)
+            VALUES (?, ?, ?, ?)
+        """, (username, tarikh_obj, vorood_obj, khorooj_obj))
+
+        conn.commit()
+        return JSONResponse(content={"success": True, "message": "اطلاعات با موفقیت ثبت شد"})
+
+    except Exception as e:
+        conn.rollback()
+        return JSONResponse(content={"success": False, "message": f"خطا در ثبت اطلاعات: {str(e)}"})
+
 @app.get("/final_report_page", response_class=HTMLResponse)
 async def final_report(request: Request):
     MONTH_NAMES = [
@@ -2036,7 +2075,6 @@ async def logout(request: Request, response: Response):
 
 
 
-
 @app.get("/get_user_info_final_report_page/{username}")
 def get_user_info_final_report_page(username: str):
     try:
@@ -2059,3 +2097,46 @@ def get_user_info_final_report_page(username: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"خطای سرور: {str(e)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

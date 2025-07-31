@@ -2215,3 +2215,106 @@ document.addEventListener("DOMContentLoaded", function () {
         observer: true
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("sabt-btn").addEventListener("click", function () {
+        const form = document.getElementById("sabtdastHozoor");
+        const formData = new FormData(form);
+
+        const data = {
+            username: formData.get("usernamedast"),
+            tarikh: formData.get("tarikh"),
+            vorood: formData.get("vorood"),
+            khorooj: formData.get("khorooj")
+        };
+
+        fetch("/sabt_hozoor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("خطا در ارسال اطلاعات");
+            }
+            return response.json();
+        })
+        .then(result => {
+            alert("اطلاعات با موفقیت ثبت شد");
+            form.reset();
+        })
+        .catch(error => {
+            alert("خطا در ثبت اطلاعات: " + error.message);
+        });
+    });
+});

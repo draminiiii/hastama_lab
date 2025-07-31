@@ -729,9 +729,9 @@
     <div id="sabtdst" class="management-box" style="display: none;">
         <h2>ثبت دستی ورود و خروج</h2>
         <div class="vorodiha">
-            <form id="gozareshHozoor">
-                <label for="username">: انتخاب کاربر</label>
-                <select id="usernameHozoor" name="username" required>
+            <form id="sabtdastHozoor">
+                <label for="usernamedast">: انتخاب کاربر</label>
+                <select id="usernamedast" name="usernamedast" required>
                 <option value="" disabled selected>انتخاب کنید</option>
                 <option value="all_users">همه کاربران</option>
                 {% for user in users %}
@@ -749,38 +749,14 @@
 
                 <!-- ساعت‌ها دستی (بدون اسکریپت)، با الگوی HH:MM -->
                 <label for="vorood">: ساعت ورود</label>
-                <input
-                type="text"
-                id="vorood"
-                name="vorood"
-                inputmode="numeric"
-                dir="ltr"
-                placeholder="HH:MM"
-                pattern="^([01]\d|2[0-3]):([0-5]\d)$"
-                required
-                title="فرمت صحیح: 00:00 تا 23:59"
-                >
-
+                <input type="text" id="vorood" name="vorood" inputmode="numeric" dir="ltr" placeholder="HH:MM" pattern="^([01]\d|2[0-3]):([0-5]\d)$" required title="فرمت صحیح: 00:00 تا 23:59">
                 <br><br>
-
                 <label for="khorooj">: ساعت خروج</label>
-                <input
-                type="text"
-                id="khorooj"
-                name="khorooj"
-                inputmode="numeric"
-                dir="ltr"
-                placeholder="HH:MM"
-                pattern="^([01]\d|2[0-3]):([0-5]\d)$"
-                required
-                title="فرمت صحیح: 00:00 تا 23:59"
-                >
-
+                <input type="text" id="khorooj" name="khorooj" inputmode="numeric" dir="ltr" placeholder="HH:MM" pattern="^([01]\d|2[0-3]):([0-5]\d)$" required title="فرمت صحیح: 00:00 تا 23:59">
                 <br><br>
-
                 <button type="button" id="sabt-btn" style="font-family: 'Yekan', sans-serif;">ثبت اطلاعات</button>
             </form>
-            </div>
+        </div>
     </div>
 
 
