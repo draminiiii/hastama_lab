@@ -243,7 +243,8 @@ async def user_panel(request: Request):
     "message_records": message_records,
     "unread_count": convert_to_persian_numbers(unread_count),
     "total_overtime": formatted_time_farsi,
-    "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration)
+    "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration),
+    "username": username
 })
 
 # تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری

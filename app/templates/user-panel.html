@@ -76,12 +76,6 @@
                 <img src="/static/images/chat.png" alt="منو" class="ticket-icon" onclick="openTicketModal()">
                 <span class="tooltipIconHeader ticket-tooltip">ثبت تیکت</span>
             </div>
-        
-            <!-- دکمه خروج -->
-            <button class="logout-btn" onclick="logout()">
-                <img src="/static/images/exit.png" alt="خروج">
-                <span class="tooltipIconHeader exit-tooltip">خروج</span>
-            </button>
         </div>
 
         <!-- نوار سمت چپ -->
@@ -97,6 +91,11 @@
             <div class="icon-container-leftSidebar">
                 <img src="/static/images/clock.png" alt="منو" class="hourlyPass-icon" id="showMorepopuphourbox">
                 <span class="tooltipIconHeader-leftSidebar hourlyPass-tooltip-leftSidebar">مدیریت پاس ها</span>
+            </div>
+            <!-- دکمه خروج -->
+            <div class="icon-container-leftSidebar" onclick="logout()">
+                <img src="/static/images/exit.png" alt="خروج">
+                <span class="tooltipIconHeader-leftSidebar exit-tooltip-leftSidebar">خروج</span>
             </div>
         </div>
 
@@ -253,6 +252,19 @@
                         <div class="calendar-grid">
                             <!-- روز های هفته به همراه اعداد ماه -->
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profileHa">
+                <div class="profileLogo">
+                    <img src="/static/images/user.png" alt="پروفایل کاربر">
+                </div>
+                <div class="profileActions">
+                    <div class="hazfeProfile">
+                        <p>حذف</p>
+                    </div>
+                    <div class="virayeshProfile">
+                        <p>ویرایش پروفایل</p>
                     </div>
                 </div>
             </div>
@@ -532,6 +544,7 @@
         <!-- پاپ اپ گزارش ساعت زن -->
         <div id="popupHozoor" class="popupHozoor-overlay">
             <div class="popupHozoor-content">
+                <a id="close-popupHozoor">بستن</a>
                 <h2>جدول ساعت زن</h2>
                 <table id="HozoorTableReport">
                     <thead>
@@ -546,8 +559,7 @@
                     <tbody>
                         <!-- داده‌ها در اینجا پر می‌شوند -->
                     </tbody>                
-                </table>            
-                <a id="close-popupHozoor">بستن</a>
+                </table>
             </div>
         </div>
 

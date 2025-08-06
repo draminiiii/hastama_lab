@@ -118,16 +118,15 @@ body {
 .header-right {
     width: 5%;
     float: right;
-    height: 90vh;
+    height: 86%;
     background-color: #92c168;
-    top: 3rem;
+    top: 5.7rem;
     right: 1rem;
     border-radius: 25px 25px 25px 25px;
     position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 1rem;
     position: fixed;
 }
 
@@ -665,6 +664,58 @@ body {
 }
 
 .Information-box a:hover {text-decoration: underline;}
+
+/* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر */
+/* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر */
+/* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر */
+
+.profileHa {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-left: 35rem;
+    margin-top: 3.6rem;
+    background-color: #fff;
+    text-align: center;
+}
+
+.profileLogo {
+    border: 1px solid #838383;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileLogo img {
+    width: 104px;
+    height: 104px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profileActions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.virayeshProfile p,
+.hazfeProfile p {
+    font-size: 14px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.hazfeProfile p {
+    color: red;
+}
+
 
 /* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ */
 /* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ *//* جدول اضافه کاری های کاربر در پاپ اپ */
@@ -1544,13 +1595,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5rem;
     position: fixed;
 }
 
 .icon-container-leftSidebar {
     position: relative;
-    margin-top: 8rem;
+    margin-top: 13vh;
     text-align: center;
 }
 
@@ -1603,6 +1653,10 @@ body {
     top: 1.3rem;
 }
 .hourlyPass-tooltip-leftSidebar {
+    left: 3rem;
+    top: 1.3rem;
+}
+.exit-tooltip-leftSidebar {
     left: 3rem;
     top: 1.3rem;
 }
@@ -1771,7 +1825,7 @@ body {
 .popupHozoor-content {
     background-color: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 25px;
     text-align: center;
     width: 45vw;
     height: 500px;
@@ -1785,7 +1839,6 @@ body {
     background-color: #d9534f;
     text-decoration: none;
     left: 30rem;
-    top: 14.5rem;
     display: inline-block;
     cursor: pointer;
     color: white;
@@ -2066,11 +2119,7 @@ body {
     }
 
     .icon-container {
-        margin-top: 102%;
-    }
-
-    .header-right {
-        padding-top: 1rem;
+        margin-top: 13vh;
     }
 
     .leftSidebar {
