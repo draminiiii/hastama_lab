@@ -1,55 +1,151 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let tableData = JSON.parse(localStorage.getItem("hozoorReportData"));
-
-    if (tableData && tableData.length > 0) {
-        let tableBody = document.querySelector("#hozoorUsersReportTable tbody");
-        tableBody.innerHTML = "";
-
-        tableData.forEach(item => {
-            let row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${convertToPersianNumbers(item.calculatedTime)}</td>
-                <td>${convertToPersianNumbers(item.overtime)}</td>
-                <td>${convertToPersianNumbers(item.earlyExit)}</td>
-                <td>${convertToPersianNumbers(item.earlyStart)}</td>
-                <td>${convertToPersianNumbers(item.delay)}</td>
-                <td>${convertToPersianNumbers(item.exitTime)}</td>
-                <td>${convertToPersianNumbers(item.entryTime)}</td>
-                <td>${convertToPersianNumbers(item.date)}</td>
-                <td>${convertToPersianNumbers(String(item.rowNumber))}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-
-        document.querySelector("#hozoornumBoxID span").textContent = ` ${convertToPersianNumbers(tableData.length.toString())} `;
+    // تبدیل اعداد انگلیسی به فارسی
+    function convertToPersianNumbers(input) {
+        const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        return input.toString().replace(/\d/g, d => persianDigits[d]);
     }
 
-    // بازیابی و نمایش زمان‌ها در باکس‌های نهایی
-    document.querySelector(".samanehTime").textContent = localStorage.getItem("totalOvertime") || "00:00";
-    document.querySelector(".numBox:nth-child(2) .attendanceSamanehValue").innerText = localStorage.getItem("totalPresenceTime") || "00:00";
-    document.querySelector(".numBox:nth-child(4) .value").innerText = localStorage.getItem("totalDelayTime") || "00:00";
-    document.querySelector(".numBox:nth-child(6) .value").innerText = localStorage.getItem("totalEarlyStart") || "00:00";
-    document.querySelector(".numBox:nth-child(7) .value").innerText = localStorage.getItem("totalEarlyExit") || "00:00";
+    // تبدیل اعداد فارسی به انگلیسی
+    function persianToEnglishNumbers(str) {
+        const persianNums = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        for(let i=0; i<persianNums.length; i++) {
+            let regex = new RegExp(persianNums[i], 'g');
+            str = str.replace(regex, i.toString());
+        }
+        return str;
+    }
 
+    let tableDataRaw = localStorage.getItem("hozoorReportData");
+
+    if (!tableDataRaw) {
+        console.warn("⚠️ داده hozoorReportData در localStorage موجود نیست یا خالی است!");
+        let titleBox = document.querySelector(".titleBox");
+        if (titleBox) titleBox.textContent = "گزارش حضور و غیاب";
+        return;
+    }
+
+    let tableData;
+    try {
+        tableData = JSON.parse(tableDataRaw);
+    } catch(e) {
+        console.error("⚠️ خطا در تبدیل JSON داده hozoorReportData:", e);
+        return;
+    }
+
+    if (!Array.isArray(tableData) || tableData.length === 0) {
+        console.warn("⚠️ داده hozoorReportData خالی است یا فرمت درست نیست.");
+        let titleBox = document.querySelector(".titleBox");
+        if (titleBox) titleBox.textContent = "گزارش حضور و غیاب";
+        return;
+    }
+
+    let firstDate = tableData[0].date;
+    if (!firstDate) {
+        console.warn("⚠️ فیلد 'date' در اولین رکورد موجود نیست.");
+        let titleBox = document.querySelector(".titleBox");
+        if (titleBox) titleBox.textContent = "گزارش حضور و غیاب";
+        return;
+    }
+
+    // تفکیک تاریخ فرض بر YYYY/MM/DD یا YYYY-MM-DD
+    let parts = firstDate.split(/[\/\-]/);
+    if (parts.length < 3) {
+        console.warn("⚠️ فرمت تاریخ نادرست است:", firstDate);
+        return;
+    }
+
+    let yearStr = parts[0];
+    let monthStr = parts[1];
+
+    yearStr = persianToEnglishNumbers(yearStr);
+    monthStr = persianToEnglishNumbers(monthStr);
+
+    let year = parseInt(yearStr, 10);
+    let monthNum = parseInt(monthStr, 10);
+
+    if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
+        console.warn("⚠️ عدد ماه نادرست است:", parts[1]);
+        return;
+    }
+
+    if (isNaN(year)) {
+        console.warn("⚠️ عدد سال نادرست است:", parts[0]);
+        return;
+    }
+
+    const MONTH_NAMES = [
+        "", "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور",
+        "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"
+    ];
+    let monthName = MONTH_NAMES[monthNum];
+
+    // به‌روزرسانی عنوان گزارش
+    let titleBox = document.querySelector(".titleBox");
+    if (titleBox) {
+        titleBox.textContent = `گزارش ${monthName} ماه ${convertToPersianNumbers(year)} حضور و غیاب`;
+    }
+
+    // ساخت جدول
+    let tableBody = document.querySelector("#hozoorUsersReportTable tbody");
+    if (!tableBody) {
+        console.error("⚠️ جدول #hozoorUsersReportTable tbody پیدا نشد.");
+        return;
+    }
+    tableBody.innerHTML = "";
+
+    tableData.forEach((item, index) => {
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${convertToPersianNumbers(item.calculatedTime || "")}</td>
+            <td>${convertToPersianNumbers(item.overtime || "")}</td>
+            <td>${convertToPersianNumbers(item.earlyExit || "")}</td>
+            <td>${convertToPersianNumbers(item.earlyStart || "")}</td>
+            <td>${convertToPersianNumbers(item.delay || "")}</td>
+            <td>${convertToPersianNumbers(item.exitTime || "")}</td>
+            <td>${convertToPersianNumbers(item.entryTime || "")}</td>
+            <td>${convertToPersianNumbers(item.date || "")}</td>
+            <td>${convertToPersianNumbers(String(index + 1))}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    // تعداد رکوردها
+    let countSpan = document.querySelector("#hozoornumBoxID span");
+    if (countSpan) {
+        countSpan.textContent = ` ${convertToPersianNumbers(tableData.length.toString())} `;
+    }
+
+    // نمایش زمان‌ها در باکس‌ها با چک وجود المنت‌ها
+    let samanehTime = document.querySelector(".samanehTime");
+    if (samanehTime) samanehTime.textContent = localStorage.getItem("totalOvertime") || "00:00";
+
+    let elemPresence = document.querySelector(".numBox:nth-child(2) .attendanceSamanehValue");
+    if (elemPresence) elemPresence.innerText = localStorage.getItem("totalPresenceTime") || "00:00";
+
+    let elemDelay = document.querySelector(".numBox:nth-child(4) .value");
+    if (elemDelay) elemDelay.innerText = localStorage.getItem("totalDelayTime") || "00:00";
+
+    let elemEarlyStart = document.querySelector(".numBox:nth-child(6) .value");
+    if (elemEarlyStart) elemEarlyStart.innerText = localStorage.getItem("totalEarlyStart") || "00:00";
+
+    let elemEarlyExit = document.querySelector(".numBox:nth-child(7) .value");
+    if (elemEarlyExit) elemEarlyExit.innerText = localStorage.getItem("totalEarlyExit") || "00:00";
+
+    // اطلاعات کاربر
     let selectedUsername = localStorage.getItem("selectedUsername");
-
     if (selectedUsername) {
         console.log("گزارش مربوط به کاربر:", selectedUsername);
-    } else {
-        console.warn("هیچ کاربری انتخاب نشده است!");
-    }
 
-    if (selectedUsername) {
         fetch(`/get_user_info_final_report_page/${selectedUsername}`)
             .then(res => {
-                if (!res.ok) {
-                    throw new Error("در دریافت اطلاعات کاربر خطایی رخ داد");
-                }
+                if (!res.ok) throw new Error("در دریافت اطلاعات کاربر خطایی رخ داد");
                 return res.json();
             })
             .then(data => {
-                document.getElementById("userNameID").textContent = `${data.name} ${data.last_name}`;
-                document.getElementById("userIdID").textContent = data.department;
+                let userNameElem = document.getElementById("userNameID");
+                if(userNameElem) userNameElem.textContent = `${data.name} ${data.last_name}`;
+                let userIdElem = document.getElementById("userIdID");
+                if(userIdElem) userIdElem.textContent = data.department;
             })
             .catch(err => {
                 console.error("خطا:", err);
@@ -57,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.warn("هیچ نام کاربری انتخاب نشده است.");
     }
-
 });
+
 
 
 // تابع تبدیل اعداد انگلیسی به فارسی

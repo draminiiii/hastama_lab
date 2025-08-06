@@ -570,14 +570,14 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    position: absolute;
+    position: relative;
     width: 36rem;
     background-color: #fbfff9;
     padding: 16px;
     padding-right: 26px;
     justify-content: center;
-    bottom: 2.5rem;
-    right: 12rem;
+    top: 35.5rem;
+    left: 58rem;
     border-radius: 20px;
 }
 
@@ -612,16 +612,16 @@ body {
 
 .numberReport {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* چهار ستون در هر ردیف */
+    grid-template-columns: repeat(4, 1fr);
     gap: 17px;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    width: 48rem; /* عرض بیشتر برای جای‌گیری ۴ ستون */
+    width: 48rem;
     max-width: 64rem;
-    position: absolute;
-    bottom: 9.2rem;
-    right: 5rem;
+    position: relative;
+    top: 553px;
+    left: 52rem;
     background-color: #fbfff9;
     border-radius: 20px;
 }
@@ -900,9 +900,9 @@ body {
         left: -17.7rem;
         position: absolute;
         height: auto;
-        max-height: 80rem;
+        max-height: 90rem;
         padding: 10px;
-        margin-top: 1rem;
+        margin-top: 0rem;
         width: 68rem;
     }
 
@@ -983,7 +983,7 @@ body {
     /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
 
     .numberReport {
-        top: 89rem;
+        top: 89.7rem;
         left: 11rem;
         height: 13rem;
         width: 51rem;

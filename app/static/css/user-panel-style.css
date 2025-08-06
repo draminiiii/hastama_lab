@@ -2066,7 +2066,7 @@ body {
     }
 
     .icon-container {
-        margin-top: 6rem;
+        margin-top: 102%;
     }
 
     .header-right {
@@ -2074,7 +2074,7 @@ body {
     }
 
     .leftSidebar {
-        height: 47rem;
+        height: 86%;
     }
     
 }

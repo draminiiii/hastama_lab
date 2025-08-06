@@ -1834,6 +1834,8 @@ def convert_farsi_to_english(text: str) -> str:
         text = text.replace(farsi, english)
     return text
 
+from datetime import time
+
 @app.get("/get_hozoor/{username}")
 def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Query(...)):
     start_date = convert_farsi_to_english(start_date)
@@ -1856,14 +1858,14 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
         return JSONResponse(content={"error": "کاربر پیدا نشد."}, status_code=404)
 
     hozoor_num, default_work_hours, shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh = user
+    weekday_map = {0: shanbeh, 1: yekshanbeh, 2: doshanbeh, 3: seshanbeh, 4: chrshanbeh, 5: panjshanbeh}
 
-    # اتصال به دیتابیس Access
+    # اتصال به Access
     mdb_path = r"E:\\Hastama\\database\\Arazdb.mdb"
     password = "meyer#perko"
     conn_str = (r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
                 rf"DBQ={mdb_path};"
                 rf"PWD={password};")
-    
     conn_access = pyodbc.connect(conn_str)
     cursor_access = conn_access.cursor()
 
@@ -1872,31 +1874,48 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
     FROM TPrsInOut
     WHERE CardNo = ? AND Date BETWEEN ? AND ?
     """
-    
     cursor_access.execute(query, (hozoor_num, start_date, end_date))
     rows = cursor_access.fetchall()
     conn_access.close()
 
+    # تبدیل داده‌های access به ساختار attendance
     attendance = {}
     for row in rows:
-        card_no, date, time, in_out_type = row
+        card_no, date, time_val, in_out_type = row
         date_str = str(date).replace("/", "-")
-
         if date_str not in attendance:
-            attendance[date_str] = {"CardNo": card_no, "Date": date_str, "EntryTime": time, "ExitTime": time}
+            attendance[date_str] = {"CardNo": card_no, "Date": date_str, "EntryTime": time_val, "ExitTime": time_val}
         else:
-            attendance[date_str]["EntryTime"] = min(attendance[date_str]["EntryTime"], time)
-            attendance[date_str]["ExitTime"] = max(attendance[date_str]["ExitTime"], time)
+            attendance[date_str]["EntryTime"] = min(attendance[date_str]["EntryTime"], time_val)
+            attendance[date_str]["ExitTime"] = max(attendance[date_str]["ExitTime"], time_val)
 
-    weekday_map = {0: shanbeh, 1: yekshanbeh, 2: doshanbeh, 3: seshanbeh, 4: chrshanbeh, 5: panjshanbeh}
+    # گرفتن تاریخ‌هایی که در اکسس پیدا نشدند
+    from_g = JalaliDate.strptime(start_date, '%Y/%m/%d').to_gregorian()
+    to_g = JalaliDate.strptime(end_date, '%Y/%m/%d').to_gregorian()
 
+    cursor.execute("""
+        SELECT [date], vrood, khoroj FROM hozoor
+        WHERE username = ? AND [date] BETWEEN ? AND ?
+        ORDER BY [date]
+    """, (username, from_g, to_g))
+    rows_sql = cursor.fetchall()
+
+    for row in rows_sql:
+        g_date, vrood, khoroj = row
+        shamsi = JalaliDate(g_date).strftime('%Y-%m-%d')
+        if shamsi not in attendance:
+            entry = vrood.strftime('%H%M') if isinstance(vrood, time) else vrood.replace(":", "").zfill(4)
+            exit_ = khoroj.strftime('%H%M') if isinstance(khoroj, time) else khoroj.replace(":", "").zfill(4)
+            attendance[shamsi] = {"CardNo": "DB", "Date": shamsi, "EntryTime": entry, "ExitTime": exit_}
+
+    # تحلیل و پردازش نهایی داده‌ها
     for date_str, data in attendance.items():
         entry_time = str(data["EntryTime"]).zfill(4)
         exit_time = str(data["ExitTime"]).zfill(4)
 
         sh_year, sh_month, sh_day = map(int, date_str.split('-'))
         weekday = jdatetime.date(sh_year, sh_month, sh_day).weekday()
-        
+
         work_hours = weekday_map.get(weekday, default_work_hours).replace(" ", "")
         work_start, work_end = sorted(work_hours.split("-"), key=lambda x: int(x.replace(":", "")))
 
@@ -1951,7 +1970,7 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
             if overtime > 10 and not overtime_added:
                 status.append("اضافه کاری")
                 calculated_time.append(f"مدت زمان اضافه کاری: {overtime//60:02}:{overtime%60:02}")
-        
+
         data["Status"] = ", ".join(status)
         data["CalculatedTime"] = "<br>".join(calculated_time)
         data["WorkedHours"] = worked_hours_str
@@ -2140,3 +2159,43 @@ def get_user_info_final_report_page(username: str):
 
 
 
+@app.post("/get_hozoor_filtered")
+async def get_hozoor_filtered(data: dict = Body(...)):
+    try:
+        username = data.get("username")
+        from_date = data.get("from_date")
+        to_date = data.get("to_date")
+
+        if not username or not from_date or not to_date:
+            return JSONResponse(status_code=400, content={"error": "اطلاعات ناقص است."})
+
+        from_g = JalaliDate.strptime(from_date, '%Y/%m/%d').to_gregorian()
+        to_g = JalaliDate.strptime(to_date, '%Y/%m/%d').to_gregorian()
+
+        # فرض بر اینکه نام ستون تاریخ 'date' است
+        cursor.execute("""
+            SELECT [date], vrood, khoroj FROM hozoor
+            WHERE username = ? AND [date] BETWEEN ? AND ?
+            ORDER BY [date]
+        """, (username, from_g, to_g))
+
+        rows = cursor.fetchall()
+
+        results = []
+        for row in rows:
+            shamsi = JalaliDate(row[0]).strftime('%Y/%m/%d')
+            vrood_str = row[1].strftime('%H:%M') if isinstance(row[1], time) else str(row[1])
+            khorooj_str = row[2].strftime('%H:%M') if isinstance(row[2], time) else str(row[2])
+
+            results.append({
+                "tarikh": shamsi,
+                "vorood": vrood_str,
+                "khorooj": khorooj_str
+            })
+
+        return JSONResponse(content=results)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JSONResponse(status_code=500, content={"error": str(e)})

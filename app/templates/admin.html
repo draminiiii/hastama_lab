@@ -3,15 +3,12 @@
 <html lang="fa">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>پنل مدیریت</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}">
-    <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+
+    <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}" />
 </head>
 
 <body>
@@ -162,6 +159,7 @@
                         <option value="20:00 - 13:00">20:00 - 13:00</option>
                         <option value="14:30 - 07:30">14:30 - 07:30</option>
                         <option value="20:30 - 13:30">20:30 - 13:30</option>
+                        <option value="00:00 - 00:00">"00:00 - 00:00</option>
                     </select>
                 </div>
 
@@ -177,10 +175,17 @@
                         <option value="عالیه سقایی">عالیه سقایی</option>
                         <option value="فرشته ایزدی">فرشته ایزدی</option>
                         <option value="مرتضی کمالی">مرتضی کمالی</option>
-                        <option value="فاطمه پاک نفس">فاطمه پاک نفس</option>
                         <option value="سید مرتصی موسوی پور">سیدمرتضی موسوی پور</option>
                         <option value="محمدمهدی صمدیان">محمدمهدی صمدیان</option>
                         <option value="صبا حلاجی">صبا حلاجی</option>
+                        <option value="سیاوش آراسته">سیاوش آراسته</option>
+                        <option value="حسین عرفانیان">حسین عرفانیان</option>
+                        <option value="علی شاکری">علی شاکری</option>
+                        <option value="کیمیا حبیبی">کیمیا حبیبی</option>
+                        <option value="حوریه تاجیک">حوریه تاجیک</option>
+                        <option value="فرشته جعفری">فرشته جعفری</option>
+                        <option value="رضا یوسفیان">رضا یوسفیان</option>
+                        <option value="عبدالله بهمدی">عبدالله بهمدی</option>
                     </select>
                 </div>
 
@@ -282,7 +287,7 @@
                 <form id="editUserForm" method="POST" action="{{ url_for('update_user') }}" class="form-vira">
                     <div class="form-row">
                         <label for="editUsername">نام کاربر:</label>
-                        <input type="text" id="editUsername" name="username" value="" class="inputKarbr" placeholder="نام کاربر را وارد کنید">
+                        <input type="text" id="editUsername" name="editUsername" value="" class="inputKarbr" placeholder="نام کاربر را وارد کنید">
                     </div>
                     <div class="form-row">
                         <label for="editDepartment">بخش فعالیت:</label>
@@ -299,6 +304,7 @@
                             <option value="ایمونولوژی">ایمونولوژی</option>
                             <option value="خدمات">خدمات</option>
                             <option value="فناوری">فناوری</option>
+                            <option value="هماتولوژی">هماتولوژی</option>
                         </select>
                     </div>
                     <div class="form-row">
@@ -308,6 +314,13 @@
                             <option value="16:00 - 09:00">16:00 - 09:00</option>
                             <option value="14:00 - 07:00">14:00 - 07:00</option>
                             <option value="15:00 - 08:00">15:00 - 08:00</option>
+                            <option value="20:00 - 14:00">20:00 - 14:00</option>
+                            <option value="18:00 - 13:00">18:00 - 13:00</option>
+                            <option value="13:30 - 06:30">13:30 - 06:30</option>
+                            <option value="20:00 - 13:00">20:00 - 13:00</option>
+                            <option value="14:30 - 07:30">14:30 - 07:30</option>
+                            <option value="20:30 - 13:30">20:30 - 13:30</option>
+                            <option value="00:00 - 00:00">"00:00 - 00:00</option>
                         </select>
                     </div>
                     <!-- فیلد جانشین -->
@@ -322,10 +335,17 @@
                             <option value="عالیه سقایی">عالیه سقایی</option>
                             <option value="فرشته ایزدی">فرشته ایزدی</option>
                             <option value="مرتضی کمالی">مرتضی کمالی</option>
-                            <option value="فاطمه پاک نفس">فاطمه پاک نفس</option>
                             <option value="سید مرتصی موسوی پور">سیدمرتضی موسوی پور</option>
                             <option value="محمدمهدی صمدیان">محمدمهدی صمدیان</option>
                             <option value="صبا حلاجی">صبا حلاجی</option>
+                            <option value="سیاوش آراسته">سیاوش آراسته</option>
+                            <option value="حسین عرفانیان">حسین عرفانیان</option>
+                            <option value="علی شاکری">علی شاکری</option>
+                            <option value="کیمیا حبیبی">کیمیا حبیبی</option>
+                            <option value="حوریه تاجیک">حوریه تاجیک</option>
+                            <option value="فرشته جعفری">فرشته جعفری</option>
+                            <option value="رضا یوسفیان">رضا یوسفیان</option>
+                            <option value="عبدالله بهمدی">عبدالله بهمدی</option>
                         </select>
                     </div>
                 </form>
@@ -490,8 +510,8 @@
     <div id="OverTimeIndivisualReportBox" class="management-box" style="display:none;">
         <h2>گزارش انفرادی اضافه کاری های کاربران</h2>
         <form id="individualOvertimeReportForm">
-            <label for="username">: انتخاب کاربر</label>
-            <select id="username" name="username" required>
+            <label for="usernameEzafeReport">: انتخاب کاربر</label>
+            <select id="usernameEzafeReport" name="usernameEzafeReport" required>
                 <option value="" disabled selected>انتخاب کنید</option>
                 <option value="all_users">همه کاربران</option> <!-- گزینه جدید -->
                 {% for user in users %}
@@ -576,8 +596,8 @@
     <div id="hourlyPassIndivisualuser" class="management-box" style="display:none;">
         <h2>مدیریت پاس‌های ساعتی</h2>
         <form id="individualHourlyPassReportForm">
-            <label for="username">: انتخاب کاربر</label>
-            <select id="usernameHourlypass" name="username" required>
+            <label for="usernameHourlypass">: انتخاب کاربر</label>
+            <select id="usernameHourlypass" name="usernameHourlypass" required>
                 <option value="" disabled selected>انتخاب کنید</option>
                 <option value="all_users">همه کاربران</option>
                 {% for user in users %}
@@ -665,8 +685,8 @@
         <h2>مدیریت ورود و خروج همکاران</h2>
         <div class="vorodi">
             <form id="gozareshHozoor">
-                <label for="username">: انتخاب کاربر</label>
-                <select id="usernameHozoor" name="username" required>
+                <label for="usernameGozareshHozoor">: انتخاب کاربر</label>
+                <select id="usernameGozareshHozoor" name="usernameGozareshHozoor" required>
                     <option value="" disabled selected>انتخاب کنید</option>
                     <option value="all_users">همه کاربران</option>
                     {% for user in users %}
@@ -702,7 +722,7 @@
         </table>
     </div>
 
-        <!-- باکس نمایش زمان های کاربر -->
+    <!-- باکس نمایش زمان های کاربر -->
     <div id="natigehHozoor" class="management-box" style="display: none;">
         <h2>مجموع ساعت کاری</h2>
         <div class="boxha">
@@ -726,40 +746,83 @@
         <button class="gozareshNahaei" onclick="goToFinalReport()">گزارش نهایی</button>
     </div>
 
+    <!-- باکس ثبت دستی حضور و غیاب -->
     <div id="sabtdst" class="management-box" style="display: none;">
         <h2>ثبت دستی ورود و خروج</h2>
         <div class="vorodiha">
             <form id="sabtdastHozoor">
                 <label for="usernamedast">: انتخاب کاربر</label>
                 <select id="usernamedast" name="usernamedast" required>
-                <option value="" disabled selected>انتخاب کنید</option>
-                <option value="all_users">همه کاربران</option>
-                {% for user in users %}
-                <option value="{{ user.username }}">{{ user.username }}</option>
-                {% endfor %}
+                    <option value="" disabled selected>انتخاب کنید</option>
+                    <option value="all_users">همه کاربران</option>
+                    {% for user in users %}
+                    <option value="{{ user.username }}">{{ user.username }}</option>
+                    {% endfor %}
                 </select>
 
                 <br><br>
 
                 <!-- تاریخ شمسی -->
                 <label for="tarikh">: تاریخ</label>
-                <input type="text" id="tarikh" name="tarikh" required>
+                <input type="text" id="tarikh" name="tarikh" readonly autocomplete="off" />
+
+                <div id="calendar-box" aria-hidden="true" role="dialog" aria-modal="true">
+                <div id="calendar-header">
+                    <select id="calendar-month"></select>
+                    <select id="calendar-year"></select>
+                </div>
+                <div id="calendar-days">
+                    <div>ش</div><div>ی</div><div>د</div><div>س</div><div>چ</div><div>پ</div><div>ج</div>
+                </div>
+                <div id="calendar-dates"></div>
+                </div>
 
                 <br><br>
 
-                <!-- ساعت‌ها دستی (بدون اسکریپت)، با الگوی HH:MM -->
+                <!-- ساعت ورود -->
                 <label for="vorood">: ساعت ورود</label>
-                <input type="text" id="vorood" name="vorood" inputmode="numeric" dir="ltr" placeholder="HH:MM" pattern="^([01]\d|2[0-3]):([0-5]\d)$" required title="فرمت صحیح: 00:00 تا 23:59">
+                <input type="text" id="vorood" name="vorood" placeholder="--:--" onclick="toggleTimePicker('vorood')">
+
+                <div class="time-picker" id="timepicker-vorood">
+                <div class="time-section">
+                    <button type="button" onclick="changeTime('vorood', 'hour', 1)">▲</button>
+                    <span id="hour-vorood">00</span>
+                    <button type="button" onclick="changeTime('vorood', 'hour', -1)">▼</button>
+                </div>
+                <span>:</span>
+                <div class="time-section">
+                    <button type="button" onclick="changeTime('vorood', 'minute', 1)">▲</button>
+                    <span id="minute-vorood">00</span>
+                    <button type="button" onclick="changeTime('vorood', 'minute', -1)">▼</button>
+                </div>
+                </div>
+
                 <br><br>
+
+                <!-- ساعت خروج -->
                 <label for="khorooj">: ساعت خروج</label>
-                <input type="text" id="khorooj" name="khorooj" inputmode="numeric" dir="ltr" placeholder="HH:MM" pattern="^([01]\d|2[0-3]):([0-5]\d)$" required title="فرمت صحیح: 00:00 تا 23:59">
+                <input type="text" id="khorooj" name="khorooj" placeholder="--:--" onclick="toggleTimePicker('khorooj')">
+
+                <div class="time-picker" id="timepicker-khorooj">
+                <div class="time-section">
+                    <button type="button" onclick="changeTime('khorooj', 'hour', 1)">▲</button>
+                    <span id="hour-khorooj">00</span>
+                    <button type="button" onclick="changeTime('khorooj', 'hour', -1)">▼</button>
+                </div>
+                <span>:</span>
+                <div class="time-section">
+                    <button type="button" onclick="changeTime('khorooj', 'minute', 1)">▲</button>
+                    <span id="minute-khorooj">00</span>
+                    <button type="button" onclick="changeTime('khorooj', 'minute', -1)">▼</button>
+                </div>
+                </div>
+
                 <br><br>
+
                 <button type="button" id="sabt-btn" style="font-family: 'Yekan', sans-serif;">ثبت اطلاعات</button>
             </form>
         </div>
     </div>
-
-
 
     <!-- پاپ‌آپ ثبت تیکت -->
     <div id="ticketModal" class="morakhaci-sabt" style="display: none;">
@@ -791,6 +854,7 @@
     </div>
 
     <script src="{{ url_for('static', path='js/admin.js') }}"></script>
+    
 </body>
 
 </html>

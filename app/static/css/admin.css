@@ -62,9 +62,7 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
-.icon-container img:hover {
-    transform: scale(1.1);
-}
+.icon-container img:hover {transform: scale(1.1);}
 
 /* استایل کلی برای متن */
 .tooltipIconHeader {
@@ -144,9 +142,7 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
-.icon-container-leftSidebar img:hover {
-    transform: scale(1.1);
-}
+.icon-container-leftSidebar img:hover {transform: scale(1.1);}
 
 /* استایل کلی برای متن */
 .tooltipIconHeader-leftSidebar {
@@ -227,9 +223,7 @@ body {
     cursor: pointer;
 }
 
-.success-message .close-btn:hover {
-    color: #f44336;
-}
+.success-message .close-btn:hover {color: #f44336;}
 
 /* حذف مارکر (نقطه) از لیست */
 .success-message ul {
@@ -258,9 +252,7 @@ body {
     font-family: 'Yekan', sans-serif; /* انتخاب فونت برای دکمه */
 }
 
-.close-btn-peygham:hover {
-    background-color: #4e7252;
-}
+.close-btn-peygham:hover {background-color: #4e7252;}
 
 /* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران */
 /* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران */
@@ -339,13 +331,9 @@ body {
 }
 
 /* حذف حاشیه سمت چپ و راست برای اولین و آخرین ستون */
-#userTable td:first-child {
-    border-left: none; /* حذف حاشیه سمت چپ برای اولین ستون */
-}
+#userTable td:first-child {border-left: none; /* حذف حاشیه سمت چپ برای اولین ستون */}
 
-#userTable td:last-child {
-    border-right: none; /* حذف حاشیه سمت راست برای آخرین ستون */
-}
+#userTable td:last-child {border-right: none; /* حذف حاشیه سمت راست برای آخرین ستون */}
 
 /* عرض ستون‌ها */
 #userTable th:nth-child(1),
@@ -419,21 +407,13 @@ body {
     color: #fff;
 }
 
-.edit-btn {
-    background-color: #4caf50; /* سبز برای ویرایش */
-}
+.edit-btn {background-color: #4caf50; /* سبز برای ویرایش */}
 
-.delete-btn {
-    background-color: #f44336; /* قرمز برای حذف */
-}
+.delete-btn {background-color: #f44336; /* قرمز برای حذف */}
 
-.edit-btn:hover {
-    background-color: #45a049;
-}
+.edit-btn:hover {background-color: #45a049;}
 
-.delete-btn:hover {
-    background-color: #e53935;
-}
+.delete-btn:hover {background-color: #e53935;}
 
 /* استایل کلی برای ابزارک متن */
 .tooltip-container {
@@ -558,9 +538,7 @@ body {
     font-weight: bold;
 }
 
-.request-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
+.request-table tbody tr:hover {background-color: #f9f9f9;}
 
 /* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران */
 /* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران */
@@ -579,9 +557,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#vacationBox h2 {
-    margin-top: 0;
-}
+#vacationBox h2 {margin-top: 0;}
 
 /* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران */
 /* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران */
@@ -1060,9 +1036,7 @@ form button:hover {background-color: #4e7a9e;}
     margin: 15px;
 }
 
-.save-btn:hover {
-    background-color: #45a049;
-}
+.save-btn:hover {background-color: #45a049;}
 
 .border-vir {
     border: 1px solid #ccc;
@@ -1465,7 +1439,7 @@ form button:hover {background-color: #4e7a9e;}
     font-family: 'Yekan';
 }
 
-#username {
+#usernameGozareshHozoor {
     padding: 8px;
     font-size: 14px;
     border-radius: 10px;
@@ -1764,6 +1738,25 @@ form button:hover {background-color: #4e7a9e;}
     background-color: #f9f9f9;
 }
 
+#downloadHourlyPassReport {
+    display: none;
+    font-family: 'Yekan', sans-serif;
+    padding: 10px 20px;
+    background-color: #6c9ec7;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+#downloadHourlyPassReport:hover {
+    background-color: #4e7a9e;
+}
 
 /* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران */
 /* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران */
@@ -1842,47 +1835,6 @@ form button:hover {background-color: #4e7a9e;}
 .ticketUsersReport-table tbody tr:hover {
     background-color: #f9f9f9;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت */
 /* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت */
@@ -2365,90 +2317,281 @@ margin-left: 15%;
     margin-left: 1rem;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب */
+/* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب */
+/* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب */
+
+#sabtdst {
+    margin-left: 15%;
+    margin-right: auto;
+    margin-bottom: 3rem;
+    width: 70%;
+    padding: 20px;
+    background-color: #fbfff9;
+    margin-top: 6rem;
+    display: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.vorodiha {
+    background-color: #bbdba1;
+    border-radius: 13px;
+    padding: 9px;
+    font-weight: 700;
+}
+
+#sabtdastHozoor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+}
+
+#usernamedast {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #919191;
+    font-family: 'Yekan';
+}
+
+#tarikh {
+    width: 150px;
+    padding: 6px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#calendar-box {
+    position: absolute;
+    background: white;
+    border: 1px solid #aaa;
+    width: 280px;
+    direction: rtl;
+    padding: 10px;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    user-select: none;
+}
+
+#calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+#calendar-header select {
+    font-size: 15px;
+    padding: 2px 6px;
+}
+
+#calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+#calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    gap: 5px;
+}
+
+#calendar-dates button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    border-radius: 4px;
+    color: #418259;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#calendar-dates button:hover {background-color: #eee;}
+
+#calendar-dates button.selected {
+    background-color: #4285F4;
+    color: white;
+    font-weight: bold;
+}
+
+.time-picker {
+  display: none;
+  background: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 140px;
+  position: fixed;
+  z-index: 999;
+  font-family: 'Yekan', sans-serif;
+}
+
+.time-section {
+  display: inline-block;
+  text-align: center;
+  margin: 0 5px;
+}
+
+.time-section button {
+  display: block;
+  width: 30px;
+}
+
+.time-section span {
+  display: block;
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+#sabt-btn {
+    padding: 10px 20px;
+    background-color: #6c9ec7;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 20%;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
+/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
+/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
+
+.morakhaci-sabt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modaleSabteTicket {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+}
+
+.modal-content-sabtTicket {
+    text-align: right;
+}
+
+.modal-content-sabtTicket h2 {
+    text-align: center;
+}
+
+.modal-content-sabtTicket label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal-content-sabtTicket input,
+.modal-content-sabtTicket textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Yekan';
+}
+
+.tikcet-popup-Req select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Yekan';
+    width: 100%;
+    direction: rtl;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-confirm {
+    font-family: 'Yekan', sans-serif;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-left: 3rem;
+}
+
+.btn-confirm:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    font-family: 'Yekan', sans-serif;
+    padding: 10px 20px;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+
+.closeSabtTicket {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    color: #000;
+    cursor: pointer;
+    width: 20px;
+}
+
+/* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه */
+/* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه */
+/* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه */
 
 /* استایل برای باکس‌های مدیریت */
 .management-box {
@@ -2852,216 +2995,6 @@ margin-left: 15%;
 .cancel-btn-ticket-karbar:hover {
     background-color: #d9534f;
 }
-
-#downloadHourlyPassReport {
-    display: none;
-    font-family: 'Yekan', sans-serif;
-    padding: 10px 20px;
-    background-color: #6c9ec7;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-    margin-top: 2%;
-    margin-left: 3%;
-}
-
-#downloadHourlyPassReport:hover {
-    background-color: #4e7a9e;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
-/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
-/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
-
-.morakhaci-sabt {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.modaleSabteTicket {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 400px;
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1001;
-}
-
-.modal-content-sabtTicket {
-    text-align: right;
-}
-
-.modal-content-sabtTicket h2 {
-    text-align: center;
-}
-
-.modal-content-sabtTicket label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.modal-content-sabtTicket input,
-.modal-content-sabtTicket textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    font-family: 'Yekan';
-}
-
-.tikcet-popup-Req select {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: 'Yekan';
-    width: 100%;
-    direction: rtl;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-.btn-confirm {
-    font-family: 'Yekan', sans-serif;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-    margin-top: 2%;
-    margin-left: 3rem;
-}
-
-.btn-confirm:hover {
-    background-color: #218838;
-}
-
-.btn-cancel {
-    background-color: #dc3545;
-    font-family: 'Yekan', sans-serif;
-    padding: 10px 20px;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-    margin-top: 2%;
-    margin-left: 3%;
-}
-
-.btn-cancel:hover {
-    background-color: #c82333;
-}
-
-.closeSabtTicket {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    font-size: 24px;
-    color: #000;
-    cursor: pointer;
-    width: 20px;
-}
-
-
-
-#sabt-btn {
-    padding: 10px 20px;
-    background-color: #6c9ec7;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 20%;
-    font-weight: bold;
-    margin: 0;
-}
-
-#sabtdst {
-    margin-left: 15%;
-    margin-right: auto;
-    margin-bottom: 3rem;
-    width: 70%;
-    padding: 20px;
-    background-color: #fbfff9;
-    margin-top: 6rem;
-    display: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-
-#usernamedast {
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: 1px solid #919191;
-    font-family: 'Yekan';
-}
-
-#sabtdastHozoor {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    justify-content: flex-start;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-}
-
-
-.vorodiha {
-    background-color: #bbdba1;
-    border-radius: 13px;
-    padding: 9px;
-    font-weight: 700;
-}
-
-
 
 /* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت *//* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت */
 /* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت *//* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت */

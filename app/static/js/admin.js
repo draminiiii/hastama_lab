@@ -839,7 +839,7 @@ function applyStatusChangeForApproval(requestId) {
 let filteredData = []; // متغیر برای ذخیره داده‌های فیلتر شده
 
 document.getElementById("submitReport").addEventListener("click", function() {
-    const username = document.getElementById("username").value;
+    const username = document.getElementById("usernameEzafeReport").value;
     const startDate = document.getElementById("start_date").value;
     const endDate = document.getElementById("end_date").value;
 
@@ -1931,7 +1931,7 @@ function convertTimeToMinutes(timeValue) {
 }
 
 document.getElementById("extractButton").addEventListener("click", function() {
-    let selectedUsername = document.getElementById("usernameHozoor").value;
+    let selectedUsername = document.getElementById("usernameGozareshHozoor").value;
     let startDate = document.getElementById("start_date_hozoor").value;
     let endDate = document.getElementById("end_date_hozoor").value;
     
@@ -2113,7 +2113,7 @@ function goToFinalReport() {
     localStorage.setItem("totalEarlyExit", document.querySelector(".box5-hozoor span").innerText.split(": ")[1]);
 
     // دریافت مقادیر فیلتر تاریخ و کاربر
-    let username = document.getElementById("usernameHozoor").value;
+    let username = document.getElementById("usernameGozareshHozoor").value;
     let start_date = document.getElementById("start_date_hozoor").value;
     let end_date = document.getElementById("end_date_hozoor").value;
 
@@ -2165,124 +2165,9 @@ function formatTimeFromMinutes(minutes) {
     return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ
-// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ
-// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ// کد فعال سازی انتخاب تاریخ
-
-document.addEventListener("DOMContentLoaded", function () {
-    $("#tarikh").persianDatepicker({
-        format: 'YYYY/MM/DD',
-        initialValue: false,
-        autoClose: true,
-        observer: true
-    });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// تنظیمات دکمه ثبت حضور و غیاب دستی// تنظیمات دکمه ثبت حضور و غیاب دستی// تنظیمات دکمه ثبت حضور و غیاب دستی
+// تنظیمات دکمه ثبت حضور و غیاب دستی// تنظیمات دکمه ثبت حضور و غیاب دستی// تنظیمات دکمه ثبت حضور و غیاب دستی
+// تنظیمات دکمه ثبت حضور و غیاب دستی// تنظیمات دکمه ثبت حضور و غیاب دستی// تنظیمات دکمه ثبت حضور و غیاب دستی
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("sabt-btn").addEventListener("click", function () {
@@ -2317,4 +2202,388 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("خطا در ثبت اطلاعات: " + error.message);
         });
     });
+});
+
+// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده
+// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده
+// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده
+
+const persianMonths = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+
+function toJalaali(gy, gm, gd) {
+  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  let jy, jm, jd;
+  let gy2 = (gm > 2) ? (gy + 1) : gy;
+  let days = 355666 + (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) + gd + g_d_m[gm - 1];
+  jy = -1595 + (33 * Math.floor(days / 12053));
+  days %= 12053;
+  jy += 4 * Math.floor(days / 1461);
+  days %= 1461;
+  if (days > 365) {
+    jy += Math.floor((days - 1) / 365);
+    days = (days - 1) % 365;
+  }
+  if (days < 186) {
+    jm = 1 + Math.floor(days / 31);
+    jd = 1 + (days % 31);
+  } else {
+    jm = 7 + Math.floor((days - 186) / 30);
+    jd = 1 + ((days - 186) % 30);
+  }
+  return { jy, jm, jd };
+}
+
+function toGregorian(jy, jm, jd) {
+  jy = parseInt(jy);
+  jm = parseInt(jm);
+  jd = parseInt(jd);
+  let gy, gd;
+  let jy2 = jy - 979;
+  let days = 365 * jy2 + Math.floor(jy2 / 33) * 8 + Math.floor(((jy2 % 33) + 3) / 4);
+  for (let i = 1; i < jm; ++i) days += daysInJMonth(jy, i);
+  days += jd - 1;
+  gy = 1600 + 400 * Math.floor(days / 146097);
+  days %= 146097;
+  let leap = true;
+  if (days >= 36525) {
+    days--;
+    gy += 100 * Math.floor(days / 36524);
+    days %= 36524;
+    if (days >= 365) days++;
+    else leap = false;
+  }
+  gy += 4 * Math.floor(days / 1461);
+  days %= 1461;
+  if (days >= 366) {
+    leap = false;
+    days--;
+    gy += Math.floor(days / 365);
+    days = days % 365;
+  }
+  gd = days + 1;
+  let sal_a = [0,31, (leap ? 29 : 28),31,30,31,30,31,31,30,31,30,31];
+  let gm = 0;
+  while (gm < 13 && gd > sal_a[gm]) {
+    gd -= sal_a[gm];
+    gm++;
+  }
+  return { gy, gm, gd };
+}
+
+function isJLeap(jy) {
+  let mod = ((jy - ((jy > 0) ? 474 : 473)) % 2820) + 474 + 38;
+  return ((mod * 682) % 2816) < 682;
+}
+
+function daysInJMonth(jy, jm) {
+  if (jm <= 6) return 31;
+  if (jm <= 11) return 30;
+  if (isJLeap(jy)) return 30;
+  return 29;
+}
+
+function getWeekDay(jy, jm, jd) {
+  const g = toGregorian(jy, jm, jd);
+  const d = new Date(g.gy, g.gm - 1, g.gd);
+  const jsDay = d.getDay();
+  return (jsDay + 3) % 7;
+}
+
+const inputTarikh = document.getElementById("tarikh");
+const calendarBox = document.getElementById("calendar-box");
+const calendarMonth = document.getElementById("calendar-month");
+const calendarYear = document.getElementById("calendar-year");
+const calendarDates = document.getElementById("calendar-dates");
+
+let selectedDate = null;
+
+function renderMonthYearSelectors(currentYear, currentMonth) {
+  calendarMonth.innerHTML = persianMonths.map((m, i) => `<option value="${i + 1}" ${i + 1 === currentMonth ? 'selected' : ''}>${m}</option>`).join("");
+  const thisYear = toJalaali(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()).jy;
+  let yearOptions = "";
+  for (let y = 1390; y <= thisYear; y++) {
+    yearOptions += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}</option>`;
+  }
+  calendarYear.innerHTML = yearOptions;
+}
+
+function renderCalendar(year, month, selectedDay) {
+  renderMonthYearSelectors(year, month);
+  calendarDates.innerHTML = "";
+  let firstDayOfMonth = getWeekDay(year, month, 1);
+  for (let i = 0; i < firstDayOfMonth; i++) {
+    calendarDates.appendChild(document.createElement("div"));
+  }
+  const daysCount = daysInJMonth(year, month);
+  for (let day = 1; day <= daysCount; day++) {
+    const btn = document.createElement("button");
+    btn.type = "button";  // جلوگیری از سابمیت فرم
+    btn.textContent = day;
+    if (selectedDay === day) btn.classList.add("selected");
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();  // جلوگیری از تغییر آدرس
+      selectedDate = { year, month, day };
+      updateInputDate();
+      hideCalendar();
+    });
+    calendarDates.appendChild(btn);
+  }
+}
+
+function updateInputDate() {
+  if (!selectedDate) return;
+  const { year, month, day } = selectedDate;
+  inputTarikh.value = `${year}/${String(month).padStart(2, "0")}/${String(day).padStart(2, "0")}`;
+}
+
+function showCalendar() {
+  calendarBox.style.top = "87%";
+  calendarBox.style.left = "61%";
+  calendarBox.style.display = "block";
+  calendarBox.setAttribute("aria-hidden", "false");
+}
+
+function hideCalendar() {
+  calendarBox.style.display = "none";
+  calendarBox.setAttribute("aria-hidden", "true");
+}
+
+inputTarikh.addEventListener("click", () => {
+  const today = new Date();
+  const jToday = toJalaali(today.getFullYear(), today.getMonth() + 1, today.getDate());
+  selectedDate = { year: jToday.jy, month: jToday.jm, day: jToday.jd };
+  renderCalendar(selectedDate.year, selectedDate.month, selectedDate.day);
+  showCalendar();
+});
+
+calendarMonth.addEventListener("change", () => {
+  selectedDate.month = parseInt(calendarMonth.value);
+  renderCalendar(selectedDate.year, selectedDate.month, selectedDate.day);
+});
+
+calendarYear.addEventListener("change", () => {
+  selectedDate.year = parseInt(calendarYear.value);
+  renderCalendar(selectedDate.year, selectedDate.month, selectedDate.day);
+});
+
+document.addEventListener("click", (e) => {
+  if (!calendarBox.contains(e.target) && e.target !== inputTarikh) hideCalendar();
+});
+
+window.addEventListener("load", () => {
+  const now = new Date();
+  const jNow = toJalaali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  selectedDate = { year: jNow.jy, month: jNow.jm, day: jNow.jd };
+  updateInputDate();
+});
+
+
+// تنظیمات انتخاب ساعت و دقیقه از باکس ثبت حضور و غیاب دستی // تنظیمات انتخاب ساعت و دقیقه از باکس ثبت حضور و غیاب دستی
+// تنظیمات انتخاب ساعت و دقیقه از باکس ثبت حضور و غیاب دستی // تنظیمات انتخاب ساعت و دقیقه از باکس ثبت حضور و غیاب دستی
+// تنظیمات انتخاب ساعت و دقیقه از باکس ثبت حضور و غیاب دستی // تنظیمات انتخاب ساعت و دقیقه از باکس ثبت حضور و غیاب دستی
+
+function toggleTimePicker(inputId) {
+  // همگام‌سازی ساعت و دقیقه تایم‌پیکر با مقدار داخل input
+  const input = document.getElementById(inputId);
+  const [hour, minute] = input.value.split(":");
+
+  if (/^\d{2}$/.test(hour) && /^\d{2}$/.test(minute)) {
+    document.getElementById(`hour-${inputId}`).innerText = hour;
+    document.getElementById(`minute-${inputId}`).innerText = minute;
+
+    // وضعیت انتخاب رو هم فعال کن، که اگه کاربر فقط دقیقه یا فقط ساعت رو تغییر داد، مقدار جدید ثبت بشه
+    selectedFields[inputId].hourSelected = true;
+    selectedFields[inputId].minuteSelected = true;
+  }
+
+  // بقیه کد اصلی
+  document.querySelectorAll(".time-picker").forEach(el => el.style.display = "none");
+  const picker = document.getElementById(`timepicker-${inputId}`);
+  picker.style.display = picker.style.display === "block" ? "none" : "block";
+  positionTimePicker(inputId);
+}
+
+
+function positionTimePicker(inputId) {
+  const input = document.getElementById(inputId);
+  const picker = document.getElementById(`timepicker-${inputId}`);
+  const rect = input.getBoundingClientRect();
+  picker.style.top = rect.bottom + window.scrollY + "px";
+  picker.style.left = rect.left + window.scrollX + "px";
+}
+
+const selectedFields = {
+  vorood: { hourSelected: false, minuteSelected: false, timer: null },
+  khorooj: { hourSelected: false, minuteSelected: false, timer: null }
+};
+
+function changeTime(inputId, type, delta) {
+  const hourEl = document.getElementById(`hour-${inputId}`);
+  const minuteEl = document.getElementById(`minute-${inputId}`);
+  const input = document.getElementById(inputId);
+
+  let hour = parseInt(hourEl.innerText);
+  let minute = parseInt(minuteEl.innerText);
+
+  if (type === "hour") {
+    hour = (hour + delta + 24) % 24;
+    selectedFields[inputId].hourSelected = true;
+  } else if (type === "minute") {
+    minute = (minute + delta + 60) % 60;
+    selectedFields[inputId].minuteSelected = true;
+  }
+
+  const newHour = hour.toString().padStart(2, '0');
+  const newMinute = minute.toString().padStart(2, '0');
+
+  hourEl.innerText = newHour;
+  minuteEl.innerText = newMinute;
+
+  // فقط اگر هر دو انتخاب شدن، مقدار توی input نوشته بشه
+  if (selectedFields[inputId].hourSelected && selectedFields[inputId].minuteSelected) {
+    input.value = `${newHour}:${newMinute}`;
+
+    // اگر فیلد vorood بود، منتظر 1.5 ثانیه بمون و بعد برو به khorooj
+    if (inputId === "vorood") {
+      if (selectedFields[inputId].timer) {
+        clearTimeout(selectedFields[inputId].timer);
+      }
+
+      selectedFields[inputId].timer = setTimeout(() => {
+        const targetInput = document.getElementById("khorooj");
+        targetInput.focus();
+        toggleTimePicker("khorooj");
+      }, 1500);
+    }
+  }
+}
+
+// تابعی برای اصلاح فرمت ورودی تایم بدون نمایش خطا یا پاک کردن مقدار
+function fixTimeFormat(inputId) {
+  const input = document.getElementById(inputId);
+  let val = input.value.trim();
+
+  // اگر فرمت درست بود، دست نزن
+  if (/^\d{2}:\d{2}$/.test(val)) return;
+
+  // حذف کاراکترهای غیرعددی
+  val = val.replace(/\D/g, '');
+
+  let hour = "--", minute = "--";
+
+  if (val.length === 3) {
+    hour = '0' + val.charAt(0);
+    minute = val.slice(1);
+  } else if (val.length === 4) {
+    hour = val.slice(0, 2);
+    minute = val.slice(2);
+  } else if (val.length <= 2) {
+    hour = val.padStart(2, '-');
+  }
+
+  // فقط مقدار رو تنظیم کن، نه alert بده، نه پاکش کن
+  input.value = `${hour.padEnd(2, "-")}:${minute.padEnd(2, "-")}`;
+}
+
+// وقتی کلیک خارج از تایم‌پیکر شد، باکس رو ببند و تایمر رو لغو کن
+document.addEventListener("click", function(event) {
+  const timePickers = document.querySelectorAll(".time-picker");
+
+  timePickers.forEach(picker => {
+    const inputId = picker.id.replace("timepicker-", "");
+    const input = document.getElementById(inputId);
+
+    if (
+      !picker.contains(event.target) &&
+      event.target !== input
+    ) {
+      picker.style.display = "none";
+
+      if (selectedFields[inputId] && selectedFields[inputId].timer) {
+        clearTimeout(selectedFields[inputId].timer);
+        selectedFields[inputId].timer = null;
+      }
+    }
+  });
+});
+
+function setupTimeInput(id) {
+    const input = document.getElementById(id);
+    input.value = "--:--";
+
+    input.addEventListener("input", function (e) {
+        let val = input.value.replace(/\D/g, ''); // فقط عددها
+        if (val.length > 4) val = val.slice(0, 4);
+
+        let hour = "--";
+        let minute = "--";
+
+        if (val.length >= 1) hour = val[0] + "-";
+        if (val.length >= 2) hour = val.slice(0, 2);
+        if (val.length >= 3) minute = val[2] + "-";
+        if (val.length >= 4) minute = val.slice(2, 4);
+
+        input.value = `${hour}:${minute}`;
+
+        if (val.length === 4) {
+            // اگر فیلد "vorood" بود و کامل شد، برو روی "khorooj"
+            if (id === "vorood") {
+                document.getElementById("khorooj").focus();
+            }
+        }
+    });
+
+    // اجازه بده روی بخش خاصی کلیک کنه (ساعت یا دقیقه) و فقط همونو تغییر بده
+    input.addEventListener("click", function (e) {
+        const pos = input.selectionStart;
+        if (pos <= 2) {
+            input.setSelectionRange(0, 2); // ساعت
+        } else {
+            input.setSelectionRange(3, 5); // دقیقه
+        }
+    });
+
+    // روی blur، اگر فرمت مشکل داشت، پاکش کن
+    input.addEventListener("blur", function () {
+        const parts = input.value.split(":");
+        if (parts.length !== 2 || parts[0].includes("-") || parts[1].includes("-")) {
+            input.value = "--:--";
+        } else {
+            const h = parseInt(parts[0], 10);
+            const m = parseInt(parts[1], 10);
+            if (isNaN(h) || isNaN(m) || h > 23 || m > 59) {
+                input.value = "--:--";
+                alert("فرمت ساعت نامعتبر است. لطفاً مثلاً 09:16 وارد کنید.");
+            }
+        }
+    });
+
+    // کنترل کلیدها
+    input.addEventListener("keydown", function (e) {
+        const allowed = ['ArrowLeft', 'ArrowRight', 'Backspace', 'Delete', 'Tab'];
+        if (allowed.includes(e.key)) return;
+
+        if (!/^\d$/.test(e.key)) {
+            e.preventDefault();
+            return;
+        }
+
+        const val = input.value.replace(/\D/g, '');
+        if (val.length >= 4 && input.selectionStart === input.selectionEnd) {
+            e.preventDefault();
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setupTimeInput("vorood");
+    setupTimeInput("khorooj");
+});
+
+// هنگام بارگذاری صفحه، به input ها رویدادهای لازم اضافه کن
+document.addEventListener("DOMContentLoaded", function () {
+  ["vorood", "khorooj"].forEach(id => {
+    const input = document.getElementById(id);
+    input.addEventListener("blur", () => fixTimeFormat(id));
+  });
 });
