@@ -12,6 +12,18 @@
 </head>
 
 <body>
+
+    <!-- باکس لوگو -->
+    <div class="logo-top">
+        <div class="left-text">
+            <span>هستما سامانه جامع حضور و غیاب <span class="small-text">(نسخه آزمایشی)</span></span>
+            <span>آزمــایــشـــگاه دکــتـــر امـــیـنــی</span>
+        </div>
+    
+        <div class="right-logo">
+            <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="Logo">
+        </div>
+    </div>
     
     <!-- نوار سمت چپ -->
     <div class="leftSidebar">
@@ -26,6 +38,16 @@
         <div class="icon-container-leftSidebar">
             <img src="/static/images/chat.png" alt="ثبت تیکت" class="hourlyPass-icon" onclick="openTicketModal()">
             <span class="tooltipIconHeader-leftSidebar hourlyPass-tooltip-leftSidebar">ثبت تیکت</span>
+        </div>
+
+        <div class="icon-container">
+            <img src="/static/images/chat.png" alt="منو" class="ticket-icon" onclick="toggleBox('hozoorbox')">
+            <span class="tooltipIconHeader ticket-tooltip">مدیریت ساعت زن </span>
+        </div>
+
+        <div class="icon-container">
+            <img src="/static/images/exit.png" alt="منو" class="ticket-icon" onclick="logout()">
+            <span class="tooltipIconHeader ticket-tooltip">خروج</span>
         </div>
     </div>
 
@@ -51,15 +73,6 @@
             <span class="tooltipIconHeader ticket-tooltip">مدیریت تیکت ها</span>
         </div>
 
-        <div class="icon-container">
-            <img src="/static/images/chat.png" alt="منو" class="ticket-icon" onclick="toggleBox('hozoorbox')">
-            <span class="tooltipIconHeader ticket-tooltip">مدیریت ساعت زن </span>
-        </div>
-
-        <div class="icon-container">
-            <img src="/static/images/exit.png" alt="منو" class="ticket-icon" onclick="logout()">
-            <span class="tooltipIconHeader ticket-tooltip">خروج</span>
-        </div>
     </div>
 
     <!-- باکس اطلاعات کاربران -->
