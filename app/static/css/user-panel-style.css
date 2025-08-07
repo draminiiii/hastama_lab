@@ -54,13 +54,15 @@ body {
     height: 35px;
     background-color: white;
     border-radius: 5px;
-    padding: 5px;
+    padding: 4px;
     cursor: pointer; /* تغییر نشانگر موس به حالت لینک */
 }
 
 .icon img {
     width: 100%;
     height: 100%;
+    position: relative;
+    right: 1px;
 }
 
 /* مخفی کردن متن به‌طور پیش‌فرض */
@@ -406,7 +408,7 @@ body {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 359px;
+    width: 359px;
     border: 1px solid #ddd;
     z-index: 1;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -672,7 +674,7 @@ body {
 .profileHa {
     position: absolute;
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 36px;
     padding: 1rem;
     margin-left: 35rem;
     margin-top: 3.6rem;
@@ -693,8 +695,8 @@ body {
 }
 
 .profileLogo img {
-    width: 104px;
-    height: 104px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 50%;
 }
@@ -2240,6 +2242,7 @@ body {
         width: 1rem;
         height: 100%;
         margin-bottom: 6px;
+        right: 0;
     }
 
     .small-text {
@@ -2256,9 +2259,9 @@ body {
 
     .header-right {
         width: 9%;
-        height: 31rem;
-        right: 0.6rem;
-        top: 11.68rem;
+        height: 24rem;
+        right: 0.9rem;
+        top: 13.5rem;
         position: absolute;
     }
 
@@ -2282,14 +2285,14 @@ body {
 
     .leftSidebar {
         width: 9%;
-        height: 23rem;
-        top: 16.7rem;
-        left: 0.6rem;
+        height: 24rem;
+        top: 13.5rem;
+        left: 0.9rem;
         padding-top: 0.3rem;
         position: absolute;
     }
 
-    .icon-container-leftSidebar {margin-top: 4rem;}
+    .icon-container-leftSidebar {margin-top: 3rem;}
 
     .icon-container-leftSidebar img {
         width: 27px;
@@ -2301,7 +2304,7 @@ body {
     /* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی *//* باکس اطلاعات فردی */
 
     .Information-box {
-        max-height: 247px;
+        max-height: 31rem;
         position: absolute;
         top: 10rem;
         margin: 0;
@@ -2313,11 +2316,20 @@ body {
         height: 212px;
         padding-top: 3px;
         padding-right: 25px;
+        margin-top: 15.4rem;
     }
 
     #userInfoBox p {
         font-size: 16px;
         margin: 8px 0;
+    }
+
+    .profileHa {
+        margin-left: 2%;
+        margin-top: 0.2rem;
+        width: 14.4rem;
+        border-radius: 36px;
+        background-color: #fbfff9;
     }
 
     /* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم *//* تنظیمات تقویم */
@@ -2336,7 +2348,7 @@ body {
 
     #calender {
         margin-left: -1rem;
-        margin-top: 4.1rem;
+        margin-top: 2.5rem;
         height: 17.3rem;
         width: 17rem;
     }
@@ -2348,11 +2360,16 @@ body {
         height: 25px;
     }
 
-    .calendar-header{padding: 4px;}
+    .calendar-header{
+        padding: 4px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+    }
 
     .calendar-container {
         height: 15.2rem;
         width: 101%;
+        border-radius: 30px;
     }
 
     .calendar-grid {height: calc(100% - 39px);}
@@ -2362,7 +2379,7 @@ body {
     /* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها *//* تنظیمات باکس تیکت ها */
 
     .ticket-status-box {
-        margin-top: 47rem;
+        margin-top: 60.45rem;
         margin-bottom: 2rem;
         width: 91.8%;
         padding: 14px;
@@ -2486,6 +2503,7 @@ body {
 
     #OverTimeTable th {
         font-size: 8px;
+        padding: 7px;
     }
 
     #OverTimeTable td {
@@ -2502,6 +2520,7 @@ body {
 
     .passsaatiReport-table th {
         font-size: 10px;
+        padding: 7px;
     }
 
     .passsaatiReport-table td {
@@ -2538,6 +2557,28 @@ body {
         left: 2.5rem;
         top: 4cm;
         font-size: 11px;
+    }
+
+    .ezafemodat-ezafetime {
+        width: 25%;
+    }
+
+    .radif-ezafetime {
+        width: 11%;
+    }
+
+    .darkhst-ezafetime {
+        width: 21%;
+    }
+
+    .tozihat-ezafetime {
+        width: 17%;
+    }
+
+    .dropdown-content {
+        max-width: 301px;
+        right: 1.29rem;
+        top: 12.9rem;
     }
 
 }

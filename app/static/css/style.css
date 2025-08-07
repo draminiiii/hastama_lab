@@ -659,6 +659,8 @@ header h1 {
     .samaneh img {
         width: 7rem;
         height: 7rem;
+        position: relative;
+        margin-left: 9rem;
     }
 
     .samaneh p {

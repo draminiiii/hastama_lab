@@ -4,6 +4,7 @@ import pyodbc
 import jdatetime
 import random
 import pdfkit
+import shutil
 from datetime import datetime, date, time, timedelta
 from persiantools.jdatetime import JalaliDate
 from typing import List
@@ -17,7 +18,7 @@ from app.api.routes.auth import router as auth_router
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
 from core.events import create_start_app_handler
 
-from fastapi import FastAPI, HTTPException, Request, Form, Query, Response, Path, Body
+from fastapi import FastAPI, HTTPException, Request, Form, Query, Response, Path, Body, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, StreamingResponse
 from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
@@ -231,6 +232,11 @@ async def user_panel(request: Request):
 
     total_pass_duration = str(timedelta(seconds=total_seconds))
 
+    cursor.execute("SELECT profile_image FROM user_table WHERE username = ?", (username,))
+    profile_image_row = cursor.fetchone()
+    user_image_url = f"/static/uploads/{profile_image_row[0]}" if profile_image_row and profile_image_row[0] else None
+
+
     return templates.TemplateResponse("user-panel.html", {
     "request": request,
     "approved_count": approved_count_farsi,
@@ -244,6 +250,7 @@ async def user_panel(request: Request):
     "unread_count": convert_to_persian_numbers(unread_count),
     "total_overtime": formatted_time_farsi,
     "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration),
+    "user_image_url": user_image_url,
     "username": username
 })
 
@@ -695,6 +702,131 @@ async def submit_ticket(request: Request):
     except Exception as e:
         conn.rollback()
         return JSONResponse(content={"success": False, "message": str(e)})
+
+# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع
+# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع
+# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع
+
+@app.get("/get_user_info_final_report_page/{username}")
+def get_user_info_final_report_page(username: str):
+    try:
+        username = username.strip()
+        cursor.execute("""
+            SELECT name, last_name, department
+            FROM user_table
+            WHERE RTRIM(username) = ?
+        """, username)
+        row = cursor.fetchone()
+
+        if row:
+            return {
+                "name": row.name,
+                "last_name": row.last_name,
+                "department": row.department
+            }
+        else:
+            raise HTTPException(status_code=404, detail="کاربر یافت نشد")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"خطای سرور: {str(e)}")
+
+# تابع ثبت دستی حضور و غیاب کاربران# تابع ثبت دستی حضور و غیاب کاربران# تابع ثبت دستی حضور و غیاب کاربران
+# تابع ثبت دستی حضور و غیاب کاربران# تابع ثبت دستی حضور و غیاب کاربران# تابع ثبت دستی حضور و غیاب کاربران
+# تابع ثبت دستی حضور و غیاب کاربران# تابع ثبت دستی حضور و غیاب کاربران# تابع ثبت دستی حضور و غیاب کاربران
+
+@app.post("/get_hozoor_filtered")
+async def get_hozoor_filtered(data: dict = Body(...)):
+    try:
+        username = data.get("username")
+        from_date = data.get("from_date")
+        to_date = data.get("to_date")
+
+        if not username or not from_date or not to_date:
+            return JSONResponse(status_code=400, content={"error": "اطلاعات ناقص است."})
+
+        from_g = JalaliDate.strptime(from_date, '%Y/%m/%d').to_gregorian()
+        to_g = JalaliDate.strptime(to_date, '%Y/%m/%d').to_gregorian()
+
+        # فرض بر اینکه نام ستون تاریخ 'date' است
+        cursor.execute("""
+            SELECT [date], vrood, khoroj FROM hozoor
+            WHERE username = ? AND [date] BETWEEN ? AND ?
+            ORDER BY [date]
+        """, (username, from_g, to_g))
+
+        rows = cursor.fetchall()
+
+        results = []
+        for row in rows:
+            shamsi = JalaliDate(row[0]).strftime('%Y/%m/%d')
+            vrood_str = row[1].strftime('%H:%M') if isinstance(row[1], time) else str(row[1])
+            khorooj_str = row[2].strftime('%H:%M') if isinstance(row[2], time) else str(row[2])
+
+            results.append({
+                "tarikh": shamsi,
+                "vorood": vrood_str,
+                "khorooj": khorooj_str
+            })
+
+        return JSONResponse(content=results)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+# تابع بارگزاری عکس پروفایل کاربران# تابع بارگزاری عکس پروفایل کاربران# تابع بارگزاری عکس پروفایل کاربران
+# تابع بارگزاری عکس پروفایل کاربران# تابع بارگزاری عکس پروفایل کاربران# تابع بارگزاری عکس پروفایل کاربران
+# تابع بارگزاری عکس پروفایل کاربران# تابع بارگزاری عکس پروفایل کاربران# تابع بارگزاری عکس پروفایل کاربران
+
+@app.post("/upload-profile-image")
+async def upload_profile_image(request: Request, file: UploadFile = File(...)):
+    username = request.session.get('username')
+    if not username:
+        return RedirectResponse(url="/login", status_code=303)
+
+    upload_folder = "app/static/uploads"
+    os.makedirs(upload_folder, exist_ok=True)
+
+    file_ext = os.path.splitext(file.filename)[1]
+    filename = f"{username}{file_ext}"
+    file_path = os.path.join(upload_folder, filename)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # ذخیره مسیر فایل در دیتابیس (اختیاری ولی توصیه شده)
+    cursor.execute("""
+        UPDATE user_table SET profile_image = ? WHERE username = ?
+    """, (filename, username))
+    conn.commit()
+
+    return RedirectResponse(url="/user_panel", status_code=303)
+
+# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران
+# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران
+# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران# تابع حذف عکس پروفایل کاربران
+
+@app.post("/delete-profile-image")
+async def delete_profile_image(request: Request):
+    username = request.session.get('username')
+    if not username:
+        return RedirectResponse(url="/login", status_code=303)
+
+    # دریافت مسیر فعلی عکس
+    cursor.execute("SELECT profile_image FROM user_table WHERE username = ?", (username,))
+    row = cursor.fetchone()
+
+    if row and row[0]:
+        file_path = os.path.join("app/static/uploads", row[0])
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+    # حذف از دیتابیس
+    cursor.execute("UPDATE user_table SET profile_image = NULL WHERE username = ?", (username,))
+    conn.commit()
+
+    return RedirectResponse(url="/user_panel", status_code=303)
 
 # تابع مربوط به صفحه مدیریت# تابع مربوط به صفحه مدیریت# تابع مربوط به صفحه مدیریت# تابع مربوط به صفحه مدیریت
 # تابع مربوط به صفحه مدیریت# تابع مربوط به صفحه مدیریت# تابع مربوط به صفحه مدیریت# تابع مربوط به صفحه مدیریت
@@ -2070,133 +2202,3 @@ async def logout(request: Request, response: Response):
     return RedirectResponse(url="/login")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.get("/get_user_info_final_report_page/{username}")
-def get_user_info_final_report_page(username: str):
-    try:
-        username = username.strip()
-        cursor.execute("""
-            SELECT name, last_name, department
-            FROM user_table
-            WHERE RTRIM(username) = ?
-        """, username)
-        row = cursor.fetchone()
-
-        if row:
-            return {
-                "name": row.name,
-                "last_name": row.last_name,
-                "department": row.department
-            }
-        else:
-            raise HTTPException(status_code=404, detail="کاربر یافت نشد")
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"خطای سرور: {str(e)}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.post("/get_hozoor_filtered")
-async def get_hozoor_filtered(data: dict = Body(...)):
-    try:
-        username = data.get("username")
-        from_date = data.get("from_date")
-        to_date = data.get("to_date")
-
-        if not username or not from_date or not to_date:
-            return JSONResponse(status_code=400, content={"error": "اطلاعات ناقص است."})
-
-        from_g = JalaliDate.strptime(from_date, '%Y/%m/%d').to_gregorian()
-        to_g = JalaliDate.strptime(to_date, '%Y/%m/%d').to_gregorian()
-
-        # فرض بر اینکه نام ستون تاریخ 'date' است
-        cursor.execute("""
-            SELECT [date], vrood, khoroj FROM hozoor
-            WHERE username = ? AND [date] BETWEEN ? AND ?
-            ORDER BY [date]
-        """, (username, from_g, to_g))
-
-        rows = cursor.fetchall()
-
-        results = []
-        for row in rows:
-            shamsi = JalaliDate(row[0]).strftime('%Y/%m/%d')
-            vrood_str = row[1].strftime('%H:%M') if isinstance(row[1], time) else str(row[1])
-            khorooj_str = row[2].strftime('%H:%M') if isinstance(row[2], time) else str(row[2])
-
-            results.append({
-                "tarikh": shamsi,
-                "vorood": vrood_str,
-                "khorooj": khorooj_str
-            })
-
-        return JSONResponse(content=results)
-
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return JSONResponse(status_code=500, content={"error": str(e)})

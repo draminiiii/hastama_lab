@@ -30,7 +30,7 @@
                 <span class="NumberNotif">{{ unread_count }}</span>
             </div>
             <div class="icon" id="hozoorReport">
-                <img src="{{ url_for('static', path='images/coworker-icon.png') }}" alt="ساعت زن">
+                <img src="{{ url_for('static', path='images/attendance.png') }}" alt="ساعت زن">
                 <span class="icon-text">ساعت زن</span>
             </div>
             <p class="welcome-text">{{ username }}، خوش آمدید</p>
@@ -257,13 +257,27 @@
             </div>
             <div class="profileHa">
                 <div class="profileLogo">
-                    <img src="/static/images/user.png" alt="پروفایل کاربر">
+                    <img src="{{ user_image_url or '/static/images/user.png' }}" alt="پروفایل کاربر" width="100">
                 </div>
+
+                <!-- فرم آپلود (input مخفی) -->
+                <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload-profile-image">
+                    <input type="file" id="fileInput" name="file" accept="image/*" style="display: none;" onchange="document.getElementById('uploadForm').submit()">
+                </form>
+
+                <!-- فرم حذف -->
+                <form id="deleteForm" method="post" action="/delete-profile-image">
+                    <!-- فرم بدون محتوای ظاهری. کلیک روی div باعث ارسال این فرم میشه -->
+                </form>
+
                 <div class="profileActions">
-                    <div class="hazfeProfile">
+                    <!-- حذف به صورت متن کلیک‌پذیر -->
+                    <div class="hazfeProfile" onclick="confirmDelete()">
                         <p>حذف</p>
                     </div>
-                    <div class="virayeshProfile">
+
+                    <!-- ویرایش به صورت متن کلیک‌پذیر -->
+                    <div class="virayeshProfile" onclick="document.getElementById('fileInput').click()">
                         <p>ویرایش پروفایل</p>
                     </div>
                 </div>
