@@ -40,14 +40,14 @@
             <span class="tooltipIconHeader-leftSidebar hourlyPass-tooltip-leftSidebar">ثبت تیکت</span>
         </div>
 
-        <div class="icon-container">
+        <div class="icon-container-leftSidebar">
             <img src="/static/images/chat.png" alt="منو" class="ticket-icon" onclick="toggleBox('hozoorbox')">
-            <span class="tooltipIconHeader ticket-tooltip">مدیریت ساعت زن </span>
+            <span class="tooltipIconHeader-leftSidebar saatzan-tooltip-leftSidebar">مدیریت ساعت زن </span>
         </div>
 
-        <div class="icon-container">
+        <div class="icon-container-leftSidebar">
             <img src="/static/images/exit.png" alt="منو" class="ticket-icon" onclick="logout()">
-            <span class="tooltipIconHeader ticket-tooltip">خروج</span>
+            <span class="tooltipIconHeader-leftSidebar khorooj-tooltip-leftSidebar">خروج</span>
         </div>
     </div>
 
@@ -390,17 +390,25 @@
         <table class="request-table" id="leaveRequestsTable">
             <thead>
                 <tr>
-                    <th>ثبت تغییرات</th>
-                    <th>وضعیت درخواست</th>
-                    <th>جانشین</th>
-                    <th>تعداد روزها</th>
-                    <th>تا تاریخ</th>
-                    <th>از تاریخ</th>
-                    <th>نام کاربر</th>
+                    <th class="krbr-morkhc-drkhst">ثبت تغییرات</th>
+                    <th class="aztrkh-morkhc-drkhst">وضعیت درخواست</th>
+                    <th class="tatrkh-morkhc-drkhst">جانشین</th>
+                    <th class="rooz-morkhc-drkhst">تعداد روزها</th>
+                    <th class="jnshn-morkhc-drkhst">تا تاریخ</th>
+                    <th class="vaziat-morkhc-drkhst">از تاریخ</th>
+                    <th class="sabt-morkhc-drkhst">نام کاربر</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- ردیف‌ها در اینجا اضافه می‌شوند -->
+                <tr>
+                    <td class="krbr-morkhc-drkhst"></td>
+                    <td class="aztrkh-morkhc-drkhst"></td>
+                    <td class="tatrkh-morkhc-drkhst"></td>
+                    <td class="rooz-morkhc-drkhst"></td>
+                    <td class="jnshn-morkhc-drkhst"></td>
+                    <td class="vaziat-morkhc-drkhst"></td>
+                    <td class="sabt-morkhc-drkhst"></td>
+                </tr>
             </tbody>
         </table>
     </div>

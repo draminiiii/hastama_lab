@@ -48,7 +48,7 @@ body {
 
 .icon-container {
     position: relative;
-    margin-top: 4.5rem;
+    margin-top: 6rem;
     text-align: center;
 }
 
@@ -113,9 +113,9 @@ body {
 
 .leftSidebar {
     width: 5%;
-    height: 33rem;
+    height: 87vh;
     background-color: #92c168;
-    top: 10.7rem;
+    top: 4rem;
     left: 1rem;
     border-radius: 25px 25px 25px 25px;
     display: flex;
@@ -128,7 +128,7 @@ body {
 
 .icon-container-leftSidebar {
     position: relative;
-    margin-top: 6rem;
+    margin-top: 4.5rem;
     text-align: center;
 }
 
@@ -181,6 +181,16 @@ body {
 .hourlyPass-tooltip-leftSidebar {
     left: 3rem;
     top: 1.3rem;
+}
+
+.saatzan-tooltip-leftSidebar {
+    left: 3rem;
+    top: 1.3;
+}
+
+.khorooj-tooltip-leftSidebar {
+    left: 3rem;
+    top: 1.3;
 }
 
 /* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام */
@@ -3041,15 +3051,19 @@ margin-left: 15%;
 
     .leftSidebar {
         width: 8%;
-        height: 23rem;
+        height: 76vh;
         top: 8rem;
         left: 0.6rem;
         padding-top: 0.3rem;
         position: absolute;
     }
 
+    .icon-container {
+        margin-top: 6.2rem;
+    }
+
     .icon-container-leftSidebar {
-        margin-top: 4rem;
+        margin-top: 4.7rem;
     }
 
     .icon-container-leftSidebar img {
@@ -3061,7 +3075,7 @@ margin-left: 15%;
         position: absolute;
         width: 8%;
         top: 8rem;
-        height: 71vh;
+        height: 76vh;
         right: 0.65rem;
     }
 
@@ -3072,28 +3086,6 @@ margin-left: 15%;
 
     .icon-container:hover .tooltipIconHeader {
         visibility: hidden;
-    }
-
-    /* باکس های مرخصی *//* باکس های مرخصی *//* باکس های مرخصی *//* باکس های مرخصی *//* باکس های مرخصی */
-    #vacationRequestBox {
-        margin-top: 20rem;
-        position: absolute;
-    }
-
-    #vacationRequestBox h2,
-    #vacationBox h2,
-    #individualReportBox h2 {
-        font-size: 16px;
-    }
-
-    #vacationBox {
-        position: absolute;
-        margin-top: 63rem;
-    }
-
-    #individualReportBox {
-        position: absolute;
-        margin-top: 120rem;
     }
 
     /* باکس های اضافه کاری *//* باکس های اضافه کاری *//* باکس های اضافه کاری *//* باکس های اضافه کاری */
@@ -3261,6 +3253,75 @@ margin-left: 15%;
         margin-left: 0.25rem;
     }
 
+    /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
+    /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
+    /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
+
+    #vacationRequestBox {
+        top: 2rem;
+        position: absolute;
+        padding: 6px;
+        width: 74%;
+    }
+
+    #vacationRequestBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    /* تنظیمات جدول درخواست های مرخصی های کاربران *//* تنظیمات جدول درخواست های مرخصی های کاربران *//* تنظیمات جدول درخواست های مرخصی های کاربران */
+
+    .request-table {
+        table-layout: fixed;
+    }
+
+    .request-table th {
+        padding: 5px;
+        font-size: 7px;
+    }
+
+    .sabt-morkhc-drkhst {width: 4.216%;}
+    .vaziat-morkhc-drkhst {width: 3.765%;}
+    .jnshn-morkhc-drkhst {width: 3.675%;}
+    .rooz-morkhc-drkhst {width: 5.07%;}
+    .tatrkh-morkhc-drkhst {width: 3.5%;}
+    .aztrkh-morkhc-drkhst {width: 6%;}
+    .krbr-morkhc-drkhst {width: 5%;}
+
+    /* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران */
+    /* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران */
+    /* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران */
+
+    #vacationBox {
+        position: absolute;
+        top: 14rem;
+        padding: 4px 10px 16px 10px;
+    }
+
+    #vacationBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    /* تنظیمات جدول گزارش کلی مرخصی های کاربران */
+
+    .vacation-table th {
+        font-size: 7px;
+    }
+
+    /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
+    /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
+    /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
+
+    #individualReportBox h2 {
+        font-size: 16px;
+    }
+
+    #individualReportBox {
+        position: absolute;
+        top: 40rem;
+    }
+    
     body {
         display: flex;
         justify-content: center; /* قرارگیری وسط از چپ و راست */
