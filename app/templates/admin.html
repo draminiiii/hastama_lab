@@ -419,17 +419,17 @@
         <table class="vacation-table">
             <thead>
                 <tr>
-                    <th>کل مرخصی‌های باقی‌مانده</th>
-                    <th>کل مرخصی‌های استفاده شده</th>
-                    <th>نام کاربر</th>
+                    <th class="bghmnd-morkhc-gzrsh">کل مرخصی‌های باقی‌مانده</th>
+                    <th class="stfdeh-morkhc-gzrsh">کل مرخصی‌های استفاده شده</th>
+                    <th class="krbr-morkhc-gzrsh">نام کاربر</th>
                 </tr>
             </thead>
             <tbody>
                 {% for report in reports %}
                 <tr>
-                    <td>{{ report.total_remaining }}</td>
-                    <td>{{ report.total_used }}</td>
-                    <td>{{ report.username }}</td>
+                    <td class="bghmnd-morkhc-gzrsh">{{ report.total_remaining }}</td>
+                    <td class="stfdeh-morkhc-gzrsh">{{ report.total_used }}</td>
+                    <td class="krbr-morkhc-gzrsh">{{ report.username }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -441,7 +441,7 @@
         <h2>تهیه گزارش انفرادی</h2>
         <form class="entekhab-form" onsubmit="return false;">
             <label for="userSelect">: انتخاب کاربر</label>
-            <select id="userSelect" style="font-family: 'Yekan', sans-serif;">
+            <select id="userSelect" style="font-family: 'Yekan', sans-serif; margin-right: -3px;">
                 <option value="" disabled selected>انتخاب کنید</option>
                 <option value="all">همه کاربران</option>
                 {% for user in users %}
@@ -451,11 +451,11 @@
 
             <label for="fromDate">: از تاریخ</label>
             <input type="text" id="fromDate" name="fromDate" placeholder="1403/01/01"
-                style="font-family: 'Yekan', sans-serif;" autocomplete="off">
+                style="font-family: 'Yekan', sans-serif; margin-right: 2%;" autocomplete="off">
 
             <label for="toDate">: تا تاریخ</label>
             <input type="text" id="toDate" name="toDate" placeholder="1403/01/01"
-                style="font-family: 'Yekan', sans-serif;" autocomplete="off">
+                style="font-family: 'Yekan', sans-serif; margin-right: 2%;" autocomplete="off">
 
             <button type="submit" id="generategozareshmrkReportBtn" style="font-family: 'Yekan', sans-serif;">تهیه گزارش</button>
         </form>
@@ -463,19 +463,27 @@
         <table class="individual-report-table">
             <thead>
                 <tr>
-                    <th>ثبت تغییرات</th>
-                    <th>وضعیت درخواست</th>
-                    <th>جانشین</th>
-                    <th>تعداد روز</th>
-                    <th>تا تاریخ</th>
-                    <th>از تاریخ</th>
-                    <th>نام کاربر</th>
-                    <th>ردیف</th>
+                    <th class="sbt-morkhc-nfrdi">ثبت تغییرات</th>
+                    <th class="drkhst-morkhc-nfrdi">وضعیت درخواست</th>
+                    <th class="jnshn-morkhc-nfrdi">جانشین</th>
+                    <th class="rooz-morkhc-nfrdi">تعداد روز</th>
+                    <th class="tatrkh-morkhc-nfrdi">تا تاریخ</th>
+                    <th class="aztarkh-morkhc-nfrdi">از تاریخ</th>
+                    <th class="krbr-morkhc-nfrdi">نام کاربر</th>
+                    <th class="rdf-morkhc-nfrdi">ردیف</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- ردیف‌ها در اینجا اضافه می‌شوند -->
-                <!-- این بخش به طور داینامیک پر می‌شود -->
+                <tr>
+                    <td class="sbt-morkhc-nfrdi"></td>
+                    <td class="drkhst-morkhc-nfrdi"></td>
+                    <td class="jnshn-morkhc-nfrdi"></td>
+                    <td class="rooz-morkhc-nfrdi"></td>
+                    <td class="tatrkh-morkhc-nfrdi"></td>
+                    <td class="aztarkh-morkhc-nfrdi"></td>
+                    <td class="krbr-morkhc-nfrdi"></td>
+                    <td class="rdf-morkhc-nfrdi"></td>
+                </tr>
             </tbody>
         </table>
 
