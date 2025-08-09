@@ -907,6 +907,18 @@ document.getElementById("submitReport").addEventListener("click", function() {
 
 // تابع دکمه دریافت گزارش برای صفحه جدید
 document.getElementById("downloadOvertimeReport").addEventListener("click", function () {
+    // پاک کردن داده‌های قبلی localStorage
+    localStorage.removeItem("overtimeReports");
+    localStorage.removeItem("username");
+
+    const username = document.getElementById("usernameEzafeReport").value;
+
+    // جلوگیری از ذخیره "همه کاربران" یا مقدار خالی
+    if (!username || username === "all_users") {
+        alert("لطفاً یک کاربر خاص انتخاب کنید.");
+        return;
+    }
+
     const reports = [];
 
     // فقط موارد تایید شده رو اضافه کن
@@ -921,19 +933,16 @@ document.getElementById("downloadOvertimeReport").addEventListener("click", func
         }
     });
 
-    // نام کاربر از input گرفته می‌شود
-    const username = document.getElementById("username").value;
-    
-    // چاپ نام کاربری در کنسول
-    console.log("کاربر انتخاب‌شده:", username);
-
-    // ذخیره‌سازی داده‌ها در localStorage
+    // ذخیره داده‌ها در localStorage
     localStorage.setItem("overtimeReports", JSON.stringify(reports));
     localStorage.setItem("username", username);
 
-    // باز کردن صفحه گزارش در تب جدید
+    console.log("کاربر انتخاب‌شده:", username);
+
+    // باز کردن صفحه گزارش
     window.open('/overtime_report_page', '_blank');
 });
+
 
 
 // تابع تایید تغییرات که وضعیت را در دیتابیس تغییر می‌دهد

@@ -33,17 +33,17 @@ document.addEventListener('click', function (event) {
 // دریافت اطلاعات کاربر از سشن و نمایش در صفحه// دریافت اطلاعات کاربر از سشن و نمایش در صفحه// دریافت اطلاعات کاربر از سشن و نمایش در صفحه
 // دریافت اطلاعات کاربر از سشن و نمایش در صفحه// دریافت اطلاعات کاربر از سشن و نمایش در صفحه// دریافت اطلاعات کاربر از سشن و نمایش در صفحه
 
-window.onload = function() {
-    // خواندن نام کاربری از localStorage
+window.onload = function () {
     const username = localStorage.getItem("username");
 
-    // بررسی وجود username
     if (!username) {
         alert('نام کاربری انتخاب نشده است.');
         return;
     }
 
-    // دریافت اطلاعات کاربر از سرور با ارسال username
+    console.log("کاربر دریافت‌شده از صفحه مدیریت:", username);
+
+    // گرفتن اطلاعات کاربر از سرور
     fetch(`/get_user_info_report?username=${encodeURIComponent(username)}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -63,36 +63,32 @@ window.onload = function() {
         alert('خطا در دریافت اطلاعات کاربر');
     });
 
-    // چاپ نام کاربری در کنسول
-    console.log("کاربر دریافت‌شده از صفحه مدیریت:", username);
+    // نمایش نام کاربر
+    const usernameElem = document.getElementById('usernameDisplay');
+    if (usernameElem) {
+        usernameElem.textContent = username;
+    }
 
-    // خواندن داده‌های اضافه‌کاری از localStorage
+    // گرفتن داده اضافه‌کاری
     const overtimeData = JSON.parse(localStorage.getItem("overtimeReports") || '[]');
 
-    // نمایش نام کاربر
-    if (username) {
-        const usernameElem = document.getElementById('usernameDisplay');
-        if (usernameElem) {
-            usernameElem.textContent = username;
-        }
+    const tbody = document.getElementById("overTimeReportTable")?.getElementsByTagName('tbody')[0];
+    if (tbody) {
+        tbody.innerHTML = '';
+        overtimeData.forEach((row, index) => {
+            const newRow = tbody.insertRow();
+            newRow.innerHTML = `
+                <td>${convertToPersianNumbers(row.description)}</td>
+                <td>${convertToPersianNumbers(row.daily_overtime)}</td>
+                <td>${convertToPersianNumbers(row.overtime_date)}</td>
+                <td>${convertToPersianNumbers(index + 1)}</td>
+            `;
+        });
     }
 
-    // پر کردن جدول اضافه‌کاری
-    if (overtimeData && Array.isArray(overtimeData)) {
-        const tbody = document.getElementById("overTimeReportTable")?.getElementsByTagName('tbody')[0];
-        if (tbody) {
-            tbody.innerHTML = '';
-            overtimeData.forEach((row, index) => {
-                const newRow = tbody.insertRow();
-                newRow.innerHTML = `
-                    <td>${convertToPersianNumbers(row.description)}</td>
-                    <td>${convertToPersianNumbers(row.daily_overtime)}</td>
-                    <td>${convertToPersianNumbers(row.overtime_date)}</td>
-                    <td>${convertToPersianNumbers(index + 1)}</td>
-                `;
-            });
-        }
-    }
+    // پاک کردن داده‌ها بعد از لود
+    localStorage.removeItem("overtimeReports");
+    localStorage.removeItem("username");
 };
 
 function convertToPersianNumbers(input) {
