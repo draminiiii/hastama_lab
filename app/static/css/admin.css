@@ -3049,6 +3049,59 @@ margin-left: 15%;
 
 @media (max-width: 768px) {
 
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        height: 100vh;
+    }
+
+    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
+    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
+    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
+
+    .logo-top {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: absolute;
+        right: auto;
+        top: 1.5rem;
+        background-color: #fbfff9;
+        border-radius: 20px;
+        box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
+        padding: 5px 11px 0px 10px;
+    }
+
+    .left-text {
+        display: flex;
+        flex-direction: column; /* متن‌ها زیر هم قرار بگیرند */
+        text-align: right;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-top: -8px;
+    }
+
+    .small-text {
+        font-size: 0.6rem;
+    }
+
+    .right-logo {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .right-logo img {
+        width: 4.5rem;
+        height: 4.5rem;
+        margin-left: 10px;
+    }
+
+    /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
+    /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
+    /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
+
     .leftSidebar {
         width: 8%;
         height: 76vh;
@@ -3091,6 +3144,10 @@ margin-left: 15%;
         top: 0.9rem;
     }
 
+    /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
+    /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
+    /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
+
     .rightSidebar {
         position: absolute;
         width: 8%;
@@ -3106,68 +3163,6 @@ margin-left: 15%;
 
     .icon-container:hover .tooltipIconHeader {
         visibility: hidden;
-    }
-
-    /* باکس های اضافه کاری *//* باکس های اضافه کاری *//* باکس های اضافه کاری *//* باکس های اضافه کاری */
-    
-    #overtimeBox {
-        margin-top: 20rem;
-        position: absolute;
-    }
-
-    #overtimeBox h2 {
-        font-size: 16px;
-    }
-
-    #OverTimeReportBox {
-        position: absolute;
-        margin-top: 63rem;
-    }
-
-    #OverTimeIndivisualReportBox {
-        position: absolute;
-        margin-top: 120rem;
-    }
-
-    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
-    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
-    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
-
-    .logo-top {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        position: absolute;
-        right: auto;
-        top: 1.5rem;
-        background-color: #fbfff9;
-        border-radius: 20px;
-        box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
-        padding: 5px 11px 0px 10px;
-    }
-
-    .left-text {
-        display: flex;
-        flex-direction: column; /* متن‌ها زیر هم قرار بگیرند */
-        text-align: right;
-        font-weight: bold;
-        font-size: 1rem;
-        margin-top: -8px;
-    }
-
-    .small-text {
-        font-size: 0.6rem;
-    }
-
-    .right-logo {
-        width: 5rem;
-        height: 5rem;
-    }
-
-    .right-logo img {
-        width: 4.5rem;
-        height: 4.5rem;
-        margin-left: 10px;
     }
 
     /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
@@ -3384,7 +3379,7 @@ margin-left: 15%;
     form button {
         margin-right: 71%;
         font-size: 11px;
-        padding: 4px 12px;
+        padding: 4px 11px;
     }
 
     /* تنظیمات جدول گزارش انفرادی مرخصی کاربران *//* تنظیمات جدول گزارش انفرادی مرخصی کاربران *//* تنظیمات جدول گزارش انفرادی مرخصی کاربران */
@@ -3396,6 +3391,10 @@ margin-left: 15%;
 
     .individual-report-table th, .individual-report-table td {
         font-size: 6px;
+    }
+
+    .overTimeindivisualReport-table {
+        table-layout: fixed;
     }
 
     .sbt-morkhc-nfrdi {width: 4%;}
@@ -3427,11 +3426,125 @@ margin-left: 15%;
         padding: 4px 10px;
     }
 
-    body {
-        display: flex;
-        justify-content: center; /* قرارگیری وسط از چپ و راست */
-        align-items: center;
-        margin: 0;
-        height: 100vh;
+    /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
+    /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
+    /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
+    
+    #overtimeBox {
+        top: 2rem;
+        position: absolute;
+        padding: 6px;
+        width: 74%;
     }
+
+    #overtimeBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    /* تنظیمات جدول درخواست های اضافه کاری کاربران *//* تنظیمات جدول درخواست های اضافه کاری کاربران *//* تنظیمات جدول درخواست های اضافه کاری کاربران */
+
+    .overTime-table {
+        table-layout: fixed;
+    }
+
+    .overTime-table th {
+        font-size: 7px;
+        padding: 2px;
+    }
+
+    .sbt-ezafe-drkhst {width: 2.7%;}
+    .vaziat-ezafe-drkhst {width: 3%;}
+    .tzht-ezafe-drkhst {width: 3%;}
+    .mdt-ezafe-drkhst {width: 4%;}
+    .trkh-ezafe-drkhst {width: 3.44%;}
+    .krbr-ezafe-drkhst {width: 2.299%;}
+
+    /* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران */
+    /* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران */
+    /* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران */
+
+    #OverTimeReportBox {
+        position: absolute;
+        top: 13rem;
+    }
+
+    #OverTimeReportBox h2 {
+        font-size: 16px;
+    }
+
+    /* تنظیمات جدول گزارش کلی کاربران *//* تنظیمات جدول گزارش کلی کاربران *//* تنظیمات جدول گزارش کلی کاربران *//* تنظیمات جدول گزارش کلی کاربران */
+
+    .overTime-allreport-table th {
+        font-size: 7px;
+    }
+
+    .overTime-allreport-table td {
+        font-size: 12px;
+    }
+
+    .overtimeRadif {
+        width: 2%;
+    }
+
+    .overtimekarbar {
+        width: 4%;
+    }
+
+    .overtimeezafetime {
+        width: 10%;
+    }
+
+    /* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران *//* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران */
+    /* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران *//* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران */
+    /* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران *//* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران */
+
+    #OverTimeIndivisualReportBox {
+        position: absolute;
+        top: 24rem;
+        padding: 4px 10px 10px 10px;
+    }
+
+    #OverTimeIndivisualReportBox h2 {
+        font-size: 15px;
+    }
+
+    #individualOvertimeReportForm {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 11px;
+        column-gap: 34px;
+    }
+
+    .enferadiEzafeUsers label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+
+    #usernameEzafeReport {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+    }
+
+    .overTimeindivisualReport-table th {
+        font-size: 6px;
+        padding: 5px;
+    }
+
+    .sbt-ezafe-gzrsh {width: 2%;}
+    .vaziat-ezafe-gzrsh {width: 2%;}
+    .tzht-ezafe-gzrsh {width: 2%;}
+    .mdt-ezafe-gzrsh {width: 2%;}
+    .trkh-ezafe-gzrsh {width: 2%;}
+    .krbr-ezafe-gzrsh {width: 2%;}
+    .rdf-ezafe-gzrsh {width: 1.3%;}
 }

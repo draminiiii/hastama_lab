@@ -497,16 +497,23 @@
         <table class="overTime-table" id="overTimeRequestTable">
             <thead>
                 <tr>
-                    <th>ثبت تغییرات</th>
-                    <th>وضعیت درخواست</th>
-                    <th>توضیحات</th>
-                    <th>مدت زمان اضافه کاری</th>
-                    <th>تاریخ درخواست</th>
-                    <th>نام کاربر</th>
+                    <th class="sbt-ezafe-drkhst">ثبت تغییرات</th>
+                    <th class="vaziat-ezafe-drkhst">وضعیت درخواست</th>
+                    <th class="tzht-ezafe-drkhst">توضیحات</th>
+                    <th class="mdt-ezafe-drkhst">مدت زمان اضافه کاری</th>
+                    <th class="trkh-ezafe-drkhst">تاریخ درخواست</th>
+                    <th class="krbr-ezafe-drkhst">نام کاربر</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- ردیف‌ها در اینجا اضافه می‌شوند -->
+                <tr>
+                    <td class="sbt-ezafe-drkhst"></td>
+                    <td class="vaziat-ezafe-drkhst"></td>
+                    <td class="tzht-ezafe-drkhst"></td>
+                    <td class="mdt-ezafe-drkhst"></td>
+                    <td class="trkh-ezafe-drkhst"></td>
+                    <td class="krbr-ezafe-drkhst"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -538,9 +545,9 @@
     <!-- باکس گزارش انفرادی اضافه کاری های کاربران -->
     <div id="OverTimeIndivisualReportBox" class="management-box" style="display:none;">
         <h2>گزارش انفرادی اضافه کاری های کاربران</h2>
-        <form id="individualOvertimeReportForm">
+        <form id="individualOvertimeReportForm" class="enferadiEzafeUsers">
             <label for="usernameEzafeReport">: انتخاب کاربر</label>
-            <select id="usernameEzafeReport" name="usernameEzafeReport" required>
+            <select id="usernameEzafeReport" name="usernameEzafeReport" required style="font-family: 'Yekan', sans-serif; margin-right: 4px;">
                 <option value="" disabled selected>انتخاب کنید</option>
                 <option value="all_users">همه کاربران</option> <!-- گزینه جدید -->
                 {% for user in users %}
@@ -548,10 +555,10 @@
                 {% endfor %}
             </select>
             <label for="start_date">: از تاریخ</label>
-            <input type="text" id="start_date" name="start_date" placeholder="1403/01/01" required>
+            <input type="text" id="start_date" name="start_date" placeholder="1403/01/01" required style="margin-right: 2%;">
 
             <label for="end_date">: تا تاریخ</label>
-            <input type="text" id="end_date" name="end_date" placeholder="1403/01/01" required>
+            <input type="text" id="end_date" name="end_date" placeholder="1403/01/01" required style="margin-right: 2.4%;">
 
             <button type="button" id="submitReport" style="font-family: 'Yekan', sans-serif;">تهیه گزارش</button>
         </form>
@@ -559,17 +566,25 @@
         <table class="overTimeindivisualReport-table" id="overTimeIndivisualReportTable">
             <thead>
                 <tr>
-                    <th>ثبت تغییرات</th>
-                    <th>وضعیت درخواست</th>
-                    <th>توضیحات</th>
-                    <th>مدت زمان اضافه کاری</th>
-                    <th>تاریخ درخواست</th>
-                    <th>نام کاربر</th>
-                    <th>ردیف</th>
+                    <th class="sbt-ezafe-gzrsh">ثبت تغییرات</th>
+                    <th class="vaziat-ezafe-gzrsh">وضعیت درخواست</th>
+                    <th class="tzht-ezafe-gzrsh">توضیحات</th>
+                    <th class="mdt-ezafe-gzrsh">مدت زمان اضافه کاری</th>
+                    <th class="trkh-ezafe-gzrsh">تاریخ درخواست</th>
+                    <th class="krbr-ezafe-gzrsh">نام کاربر</th>
+                    <th class="rdf-ezafe-gzrsh">ردیف</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- ردیف‌ها در اینجا اضافه می‌شوند -->
+                <tr>
+                    <td class="sbt-ezafe-gzrsh"></td>
+                    <td class="vaziat-ezafe-gzrsh"></td>
+                    <td class="tzht-ezafe-gzrsh"></td>
+                    <td class="mdt-ezafe-gzrsh"></td>
+                    <td class="trkh-ezafe-gzrsh"></td>
+                    <td class="krbr-ezafe-gzrsh"></td>
+                    <td class="rdf-ezafe-gzrsh"></td>
+                </tr>
             </tbody>
         </table>
 
