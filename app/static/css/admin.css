@@ -3418,11 +3418,13 @@ margin-left: 15%;
 
     .update-button {
         padding: 2px 11px;
-        font-size: 7px;
+        font-size: 5px;
     }
 
     #downloadReportBtn{
         font-size: 11px;
+        width: 89px;
+        padding: 4px 10px;
     }
 
     body {
