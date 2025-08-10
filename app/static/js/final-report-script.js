@@ -95,6 +95,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     tableData.forEach((item, index) => {
         let row = document.createElement("tr");
+
+        // اگر این ردیف مربوط به جمعه یا تعطیلی بود، کلاس CSS اضافه کن
+        if (item.isHoliday) {
+            row.classList.add("holiday-row");
+        }
+
         row.innerHTML = `
             <td>${convertToPersianNumbers(item.calculatedTime || "")}</td>
             <td>${convertToPersianNumbers(item.overtime || "")}</td>
@@ -103,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <td>${convertToPersianNumbers(item.delay || "")}</td>
             <td>${convertToPersianNumbers(item.exitTime || "")}</td>
             <td>${convertToPersianNumbers(item.entryTime || "")}</td>
+            <td>${item.weekday || ""}</td>
             <td>${convertToPersianNumbers(item.date || "")}</td>
             <td>${convertToPersianNumbers(String(index + 1))}</td>
         `;
@@ -154,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.warn("هیچ نام کاربری انتخاب نشده است.");
     }
 });
+
 
 
 

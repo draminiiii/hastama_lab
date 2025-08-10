@@ -1939,174 +1939,200 @@ function convertTimeToMinutes(timeValue) {
     return hours * 60 + minutes;  // تبدیل به دقیقه
 }
 
-document.getElementById("extractButton").addEventListener("click", function() {
+document.getElementById("extractButton").addEventListener("click", function () {
     let selectedUsername = document.getElementById("usernameGozareshHozoor").value;
     let startDate = document.getElementById("start_date_hozoor").value;
     let endDate = document.getElementById("end_date_hozoor").value;
-    
+
     if (!selectedUsername || !startDate || !endDate) {
         alert("لطفاً تمام فیلدها را پر کنید.");
         return;
     }
 
+    // تعریف آرایه تعطیلات رسمی (شمسی به فرمت YYYY-MM-DD)
+    const OFFICIAL_HOLIDAYS = [
+        "1404-01-01", "1404-01-02", "1404-01-03", "1404-01-04",
+        "1404-01-12", "1404-01-13", "1404-02-04", "1404-03-14",
+        "1404-03-15", "1404-03-24", "1404-04-14", "1404-04-15",
+        "1404-05-23", "1404-06-02", "1404-06-10", "1404-06-19",
+        "1404-09-03", "1404-10-13", "1404-10-27", "1404-11-15",
+        "1404-11-22", "1404-12-20"
+    ];
+
     fetch(`/get_hozoor/${selectedUsername}?start_date=${startDate}&end_date=${endDate}`)
-    .then(response => response.json())
-    .then(data => {
-        if (Array.isArray(data)) {
-            let tableBody = document.querySelector("#hozoorUsersReportTable tbody");
-            tableBody.innerHTML = "";  
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                let tableBody = document.querySelector("#hozoorUsersReportTable tbody");
+                tableBody.innerHTML = "";
 
-            let totalPresenceDuration = 0;
-            let totalOvertime = 0;
-            let totalDelay = 0;
-            let totalEarlyStart = 0;
-            let totalEarlyExit = 0;
+                let totalPresenceDuration = 0;
+                let totalOvertime = 0;
+                let totalDelay = 0;
+                let totalEarlyStart = 0;
+                let totalEarlyExit = 0;
 
-            data.forEach(day => {
-                let entryTime = formatTime(day.EntryTime);
-                let exitTime = formatTime(day.ExitTime);
-                let workStart = day.WorkStart;
-                let workEnd = day.WorkEnd;
+                data.forEach(day => {
+                    let entryTime = formatTime(day.EntryTime);
+                    let exitTime = formatTime(day.ExitTime);
+                    let workStart = day.WorkStart;
+                    let workEnd = day.WorkEnd;
 
-                let entryMinutes = convertTimeToMinutes(entryTime);
-                let exitMinutes = convertTimeToMinutes(exitTime);
-                let workStartMinutes = convertTimeToMinutes(workStart);
-                let workEndMinutes = convertTimeToMinutes(workEnd);
+                    let entryMinutes = convertTimeToMinutes(entryTime);
+                    let exitMinutes = convertTimeToMinutes(exitTime);
+                    let workStartMinutes = convertTimeToMinutes(workStart);
+                    let workEndMinutes = convertTimeToMinutes(workEnd);
 
-                let presenceDuration = exitMinutes - entryMinutes;
-                let overtime = 0, delay = 0, earlyStart = 0, earlyExit = 0;
-                let status = "";
+                    let presenceDuration = exitMinutes - entryMinutes;
+                    let overtime = 0, delay = 0, earlyStart = 0, earlyExit = 0;
+                    let status = "";
 
-                // محاسبه وضعیت و اضافه کاری و تاخیر و غیره
-                if (entryMinutes < workStartMinutes) {
-                    earlyStart = workStartMinutes - entryMinutes; // ثبت شروع زودهنگام
-                    if (exitMinutes < workEndMinutes) {
-                        earlyExit = workEndMinutes - exitMinutes;
-                        presenceDuration = exitMinutes - workStartMinutes;
-                        status = "خروج زودهنگام";
-                    } else if (exitMinutes === workEndMinutes) {
-                        presenceDuration = workEndMinutes - workStartMinutes;
-                        status = "شروع زودهنگام و تایید سامانه در خروج";
+                    // محاسبه وضعیت
+                    if (entryMinutes < workStartMinutes) {
+                        earlyStart = workStartMinutes - entryMinutes;
+                        if (exitMinutes < workEndMinutes) {
+                            earlyExit = workEndMinutes - exitMinutes;
+                            presenceDuration = exitMinutes - workStartMinutes;
+                            status = "خروج زودهنگام";
+                        } else if (exitMinutes === workEndMinutes) {
+                            presenceDuration = workEndMinutes - workStartMinutes;
+                            status = "شروع زودهنگام و تایید سامانه در خروج";
+                        } else {
+                            overtime = exitMinutes - workEndMinutes;
+                            if (overtime < 10) overtime = 0;
+                            presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
+                            status = "شروع زودهنگام و اضافه کاری";
+                        }
+                    } else if (entryMinutes === workStartMinutes) {
+                        if (exitMinutes < workEndMinutes) {
+                            presenceDuration = exitMinutes - workStartMinutes;
+                            status = "تایید سامانه در ورود و خروج زود هنگام";
+                        } else if (exitMinutes === workEndMinutes) {
+                            presenceDuration = workEndMinutes - workStartMinutes;
+                            status = "تایید سامانه در ورود و خروج";
+                        } else {
+                            overtime = exitMinutes - workEndMinutes;
+                            if (overtime < 10) overtime = 0;
+                            presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
+                            status = "تایید سامانه در ورود و اضافه کاری";
+                        }
                     } else {
-                        overtime = exitMinutes - workEndMinutes;
-                        if (overtime < 10) overtime = 0;
-                        presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
-                        status = "شروع زودهنگام و اضافه کاری";
+                        if (exitMinutes < workEndMinutes) {
+                            delay = entryMinutes - workStartMinutes;
+                            presenceDuration = exitMinutes - entryMinutes;
+                            status = "تاخیر در ورود و خروج زود هنگام";
+                        } else if (exitMinutes === workEndMinutes) {
+                            delay = entryMinutes - workStartMinutes;
+                            presenceDuration = workEndMinutes - entryMinutes;
+                            status = "تاخیر در ورود و تایید سامانه در خروج";
+                        } else {
+                            overtime = exitMinutes - workEndMinutes;
+                            if (overtime < 10) overtime = 0;
+                            presenceDuration = overtime > 0 ? exitMinutes - entryMinutes : workEndMinutes - entryMinutes;
+                            status = "تاخیر در ورود و اضافه کاری";
+                        }
                     }
-                } else if (entryMinutes === workStartMinutes) {
-                    if (exitMinutes < workEndMinutes) {
-                        presenceDuration = exitMinutes - workStartMinutes;
-                        status = "تایید سامانه در ورود و خروج زود هنگام";
-                    } else if (exitMinutes === workEndMinutes) {
-                        presenceDuration = workEndMinutes - workStartMinutes;
-                        status = "تایید سامانه در ورود و خروج";
-                    } else {
-                        overtime = exitMinutes - workEndMinutes;
-                        if (overtime < 10) overtime = 0;
-                        presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
-                        status = "تایید سامانه در ورود و اضافه کاری";
+
+                    totalPresenceDuration += presenceDuration;
+                    totalOvertime += overtime;
+                    totalDelay += delay;
+                    totalEarlyStart += earlyStart;
+                    totalEarlyExit += earlyExit;
+
+                    // محاسبه روز هفته بر اساس تاریخ شمسی
+                    let weekdayName = new persianDate(day.Date.split('-').map(Number)).format('dddd');
+
+                    // ایجاد ردیف جدول
+                    let row = document.createElement("tr");
+
+                    // اگر جمعه یا تعطیل رسمی بود، ردیف را قرمز کن
+                    if (weekdayName === "جمعه" || OFFICIAL_HOLIDAYS.includes(day.Date)) {
+                        row.classList.add("holiday-row");
                     }
-                } else {
-                    if (exitMinutes < workEndMinutes) {
-                        delay = entryMinutes - workStartMinutes;
-                        presenceDuration = exitMinutes - entryMinutes;
-                        status = "تاخیر در ورود و خروج زود هنگام";
-                    } else if (exitMinutes === workEndMinutes) {
-                        delay = entryMinutes - workStartMinutes;
-                        presenceDuration = workEndMinutes - entryMinutes;
-                        status = "تاخیر در ورود و تایید سامانه در خروج";
-                    } else {
-                        overtime = exitMinutes - workEndMinutes;
-                        if (overtime < 10) overtime = 0;
-                        presenceDuration = overtime > 0 ? exitMinutes - entryMinutes : workEndMinutes - entryMinutes;
-                        status = "تاخیر در ورود و اضافه کاری";
-                    }
-                }
 
-                totalPresenceDuration += presenceDuration;
-                totalOvertime += overtime;
-                totalDelay += delay;
-                totalEarlyStart += earlyStart;
-                totalEarlyExit += earlyExit;
+                    row.innerHTML = `
+                        <td>${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>
+                        <td>${convertNumbersToPersianNumber(overtime > 0 ? formatTimeFromMinutes(overtime) : "00:00")}</td>
+                        <td>${convertNumbersToPersianNumber(earlyExit > 0 ? formatTimeFromMinutes(earlyExit) : "00:00")}</td>
+                        <td>${convertNumbersToPersianNumber(earlyStart > 0 ? formatTimeFromMinutes(earlyStart) : "00:00")}</td>
+                        <td>${convertNumbersToPersianNumber(delay > 0 ? formatTimeFromMinutes(delay) : "00:00")}</td>
+                        <td>${convertNumbersToPersianNumber(exitTime)}</td>
+                        <td>${convertNumbersToPersianNumber(entryTime)}</td>
+                        <td>${weekdayName}</td>
+                        <td>${convertNumbersToPersianNumber(day.Date.replace(/-/g, "/"))}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
 
-                // چاپ اطلاعات برای هر رکورد
-                console.log(`تاریخ: ${day.Date}`);
-                console.log(`ساعت کاری: ${workStart} تا ${workEnd}`);
-                console.log(`ساعت ورود: ${entryTime}`);
-                console.log(`ساعت خروج: ${exitTime}`);
-                console.log(`مدت زمان حضور: ${formatTimeFromMinutes(presenceDuration)}`);
-                console.log(`تاخیر: ${formatTimeFromMinutes(delay)}`);
-                console.log(`اضافه کاری: ${formatTimeFromMinutes(overtime)}`);
-                console.log(`شروع زودهنگام: ${formatTimeFromMinutes(earlyStart)}`);
-                console.log(`خروج زودهنگام: ${formatTimeFromMinutes(earlyExit)}`);
-                console.log(`وضعیت: ${status}`);
-                console.log("---------------------------------------------------");
+                document.getElementById("sabtdst").style.marginTop = "2rem";
 
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>
-                    <td>${convertNumbersToPersianNumber(overtime > 0 ? formatTimeFromMinutes(overtime) : "00:00")}</td>
-                    <td>${convertNumbersToPersianNumber(earlyExit > 0 ? formatTimeFromMinutes(earlyExit) : "00:00")}</td>
-                    <td>${convertNumbersToPersianNumber(earlyStart > 0 ? formatTimeFromMinutes(earlyStart) : "00:00")}</td>
-                    <td>${convertNumbersToPersianNumber(delay > 0 ? formatTimeFromMinutes(delay) : "00:00")}</td>
-                    <td>${convertNumbersToPersianNumber(exitTime)}</td>
-                    <td>${convertNumbersToPersianNumber(entryTime)}</td>
-                    <td>${convertNumbersToPersianNumber(day.Date.replace(/-/g, "/"))}</td>
-                `;
-                tableBody.appendChild(row);
-            });
+                document.querySelector(".box1-hozoor span").innerText =
+                    `مجموع مدت زمان حضور : ${convertNumbersToPersianNumber(formatTimeFromMinutes(totalPresenceDuration))}`;
 
-            // نمایش مجموع‌ها در کنسول
-            console.log("جمع مقادیر:");
-            console.log(`مجموع مدت زمان حضور: ${formatTimeFromMinutes(totalPresenceDuration)}`);
-            console.log(`مجموع ساعات اضافه کاری: ${formatTimeFromMinutes(totalOvertime)}`);
-            console.log(`مجموع مدت زمان تاخیر: ${formatTimeFromMinutes(totalDelay)}`);
-            console.log(`مجموع مدت زمان شروع زود هنگام: ${formatTimeFromMinutes(totalEarlyStart)}`);
-            console.log(`مجموع مدت زمان خروج زود هنگام: ${formatTimeFromMinutes(totalEarlyExit)}`);
-            console.log("---------------------------------------------------");
+                document.querySelector(".box2-hozoor span").innerText =
+                    `مجموع ساعات اضافه کاری : ${convertNumbersToPersianNumber(totalOvertime > 0 ? formatTimeFromMinutes(totalOvertime) : "00:00")}`;
 
-            document.getElementById("sabtdst").style.marginTop = "2rem";
+                document.querySelector(".box3-hozoor span").innerText =
+                    `مجموع مدت زمان تاخیر : ${convertNumbersToPersianNumber(totalDelay > 0 ? formatTimeFromMinutes(totalDelay) : "00:00")}`;
 
-            // نمایش مقدارهای مجموع در HTML
-            document.querySelector(".box1-hozoor span").innerText = 
-            `مجموع مدت زمان حضور : ${convertNumbersToPersianNumber(formatTimeFromMinutes(totalPresenceDuration))}`;
+                document.querySelector(".box4-hozoor span").innerText =
+                    `مجموع مدت زمان شروع زود هنگام : ${convertNumbersToPersianNumber(totalEarlyStart > 0 ? formatTimeFromMinutes(totalEarlyStart) : "00:00")}`;
 
-            document.querySelector(".box2-hozoor span").innerText = 
-            `مجموع ساعات اضافه کاری : ${convertNumbersToPersianNumber(totalOvertime > 0 ? formatTimeFromMinutes(totalOvertime) : "00:00")}`;
+                document.querySelector(".box5-hozoor span").innerText =
+                    `مجموع مدت زمان خروج زود هنگام : ${convertNumbersToPersianNumber(totalEarlyExit > 0 ? formatTimeFromMinutes(totalEarlyExit) : "00:00")}`;
 
-            document.querySelector(".box3-hozoor span").innerText = 
-            `مجموع مدت زمان تاخیر : ${convertNumbersToPersianNumber(totalDelay > 0 ? formatTimeFromMinutes(totalDelay) : "00:00")}`;
-
-            document.querySelector(".box4-hozoor span").innerText = 
-            `مجموع مدت زمان شروع زود هنگام : ${convertNumbersToPersianNumber(totalEarlyStart > 0 ? formatTimeFromMinutes(totalEarlyStart) : "00:00")}`;
-
-            document.querySelector(".box5-hozoor span").innerText = 
-            `مجموع مدت زمان خروج زود هنگام : ${convertNumbersToPersianNumber(totalEarlyExit > 0 ? formatTimeFromMinutes(totalEarlyExit) : "00:00")}`;
-
-            document.getElementById("natigehHozoor").style.display = "block";
-        } else {
-            console.error("داده‌ها به فرمت صحیح نیستند:", data);
-        }
-    })
-    .catch(error => console.error("خطا در دریافت داده‌ها:", error));
+                document.getElementById("natigehHozoor").style.display = "block";
+            } else {
+                console.error("داده‌ها به فرمت صحیح نیستند:", data);
+            }
+        })
+        .catch(error => console.error("خطا در دریافت داده‌ها:", error));
 });
+
+
 
 function goToFinalReport() {
     let tableRows = document.querySelectorAll("#hozoorUsersReportTable tbody tr");
     let tableData = [];
 
+    // لیست تعطیلات رسمی (شمسی با فرمت yyyy/mm/dd)
+    const OFFICIAL_HOLIDAYS = [
+        "1404/01/01", "1404/01/02", "1404/01/03", "1404/01/04",
+        "1404/01/12", "1404/01/13", "1404/02/04", "1404/03/14",
+        "1404/03/15", "1404/03/24", "1404/04/14", "1404/04/15",
+        "1404/05/23", "1404/06/02", "1404/06/10", "1404/06/19",
+        "1404/09/03", "1404/10/13", "1404/10/27", "1404/11/15",
+        "1404/11/22", "1404/12/20"
+    ];
+
     tableRows.forEach((row, index) => {
         let cells = row.getElementsByTagName("td");
+        let date = cells[8].innerText;  // تاریخ ثبت (مثلا "۱۴۰۴/۰۴/۰۱")
+
+        // تبدیل تاریخ به فرمت yyyy/mm/dd انگلیسی برای تطبیق با تعطیلات
+        let dateEnglish = persianToEnglishNumbers(date).replace(/-/g, "/").replace(/٫/g, "/");
+
+        // بررسی اینکه آیا تعطیل رسمی است یا نه
+        let isHoliday = OFFICIAL_HOLIDAYS.includes(dateEnglish);
+
+        // روز هفته (مثلا "جمعه")
+        let weekday = cells[7].innerText;
+
+        // روز جمعه هم تعطیل محسوب می‌شود
+        if (weekday === "جمعه") isHoliday = true;
+
         tableData.push({
             rowNumber: index + 1,
             calculatedTime: cells[0].innerText,  // مدت زمان حضور
             overtime: cells[1].innerText,        // اضافه کاری
-            earlyExit: cells[2].innerText,      // تعجیل
-            earlyStart: cells[3].innerText,      // تعجیل
+            earlyExit: cells[2].innerText,       // خروج زودهنگام
+            earlyStart: cells[3].innerText,      // شروع زودهنگام
             delay: cells[4].innerText,           // تاخیر
             exitTime: cells[5].innerText,        // زمان خروج
             entryTime: cells[6].innerText,       // زمان ورود
-            date: cells[7].innerText             // تاریخ ثبت
+            weekday: weekday,                    // روز هفته
+            date: date,                         // تاریخ ثبت
+            isHoliday: isHoliday                // آیا تعطیل است؟
         });
     });
 
@@ -2157,14 +2183,27 @@ function goToFinalReport() {
     .then(response => response.json())
     .then(data => {
         localStorage.setItem("hourlyPassReportData", JSON.stringify(data));
-        // ذخیره نام کاربر در localStorage
-    localStorage.setItem("selectedUsername", username);
 
-        // باز کردن صفحه گزارش نهایی پس از دریافت همه داده‌ها
+        // ذخیره نام کاربر
+        localStorage.setItem("selectedUsername", username);
+
+        // باز کردن صفحه گزارش نهایی
         window.open("/final_report_page", "_blank");
     })
     .catch(error => console.error("❌ خطا در دریافت گزارش:", error));
+
+    // تابع تبدیل اعداد فارسی به انگلیسی
+    function persianToEnglishNumbers(str) {
+        const persianNums = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        for(let i=0; i<persianNums.length; i++) {
+            let regex = new RegExp(persianNums[i], 'g');
+            str = str.replace(regex, i.toString());
+        }
+        return str;
+    }
 }
+
+
 
 
 // تابع برای فرمت کردن زمان به دقیقه (از فرمت HH:MM)

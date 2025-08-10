@@ -1971,9 +1971,11 @@ from datetime import time
 
 @app.get("/get_hozoor/{username}")
 def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Query(...)):
+    # تبدیل اعداد فارسی به انگلیسی (تابع شما)
     start_date = convert_farsi_to_english(start_date)
     end_date = convert_farsi_to_english(end_date)
 
+    # اتصال به SQL Server و گرفتن اطلاعات کاربر (مثل قبل)
     conn = pyodbc.connect(r'DRIVER={ODBC Driver 17 for SQL Server};'
                           r'SERVER=localhost\SQLEXPRESS;'
                           r'DATABASE=userDB;'
@@ -1992,8 +1994,9 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
 
     hozoor_num, default_work_hours, shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh = user
     weekday_map = {0: shanbeh, 1: yekshanbeh, 2: doshanbeh, 3: seshanbeh, 4: chrshanbeh, 5: panjshanbeh}
+    # اگر لازم باشه میتونی برای جمعه هم map بذاری یا از default_work_hours استفاده کنی
 
-    # اتصال به Access
+    # اتصال به Access و خواندن رکوردها (مثل قبل)
     mdb_path = r"E:\\Hastama\\database\\Arazdb.mdb"
     password = "meyer#perko"
     conn_str = (r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
@@ -2007,25 +2010,29 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
     FROM TPrsInOut
     WHERE CardNo = ? AND Date BETWEEN ? AND ?
     """
-    cursor_access.execute(query, (hozoor_num, start_date, end_date))
-    rows = cursor_access.fetchall()
-    conn_access.close()
 
-    # تبدیل داده‌های access به ساختار attendance
-    attendance = {}
-    for row in rows:
-        card_no, date, time_val, in_out_type = row
-        date_str = str(date).replace("/", "-")
-        if date_str not in attendance:
-            attendance[date_str] = {"CardNo": card_no, "Date": date_str, "EntryTime": time_val, "ExitTime": time_val}
-        else:
-            attendance[date_str]["EntryTime"] = min(attendance[date_str]["EntryTime"], time_val)
-            attendance[date_str]["ExitTime"] = max(attendance[date_str]["ExitTime"], time_val)
-
-    # گرفتن تاریخ‌هایی که در اکسس پیدا نشدند
+    # تبدیل بازه شمسی به میلادی برای کوئری اکسس/هوذور
     from_g = JalaliDate.strptime(start_date, '%Y/%m/%d').to_gregorian()
     to_g = JalaliDate.strptime(end_date, '%Y/%m/%d').to_gregorian()
 
+    cursor_access.execute(query, (hozoor_num, from_g, to_g))
+    rows = cursor_access.fetchall()
+    conn_access.close()
+
+    # ساخت دیکشنری attendance از داده‌های اکسس (کمترین entry، بیشترین exit)
+    attendance = {}
+    for row in rows:
+        card_no, date_val, time_val, in_out_type = row
+        # date_val ممکنه به شکل yyyy/mm/dd باشه — فرمت دلخواه شما
+        date_str = str(date_val).replace("/", "-")
+        if date_str not in attendance:
+            attendance[date_str] = {"CardNo": card_no, "Date": date_str, "EntryTime": time_val, "ExitTime": time_val}
+        else:
+            # min/max برای entry/exit
+            attendance[date_str]["EntryTime"] = min(attendance[date_str]["EntryTime"], time_val)
+            attendance[date_str]["ExitTime"] = max(attendance[date_str]["ExitTime"], time_val)
+
+    # حالا از جدول hozoor در SQL Server تاریخ‌های ثبت‌شده رو هم اضافه کن
     cursor.execute("""
         SELECT [date], vrood, khoroj FROM hozoor
         WHERE username = ? AND [date] BETWEEN ? AND ?
@@ -2037,38 +2044,64 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
         g_date, vrood, khoroj = row
         shamsi = JalaliDate(g_date).strftime('%Y-%m-%d')
         if shamsi not in attendance:
-            entry = vrood.strftime('%H%M') if isinstance(vrood, time) else vrood.replace(":", "").zfill(4)
-            exit_ = khoroj.strftime('%H%M') if isinstance(khoroj, time) else khoroj.replace(":", "").zfill(4)
+            entry = vrood.strftime('%H%M') if isinstance(vrood, time) else str(vrood).replace(":", "").zfill(4)
+            exit_ = khoroj.strftime('%H%M') if isinstance(khoroj, time) else str(khoroj).replace(":", "").zfill(4)
             attendance[shamsi] = {"CardNo": "DB", "Date": shamsi, "EntryTime": entry, "ExitTime": exit_}
 
-    # تحلیل و پردازش نهایی داده‌ها
-    for date_str, data in attendance.items():
-        entry_time = str(data["EntryTime"]).zfill(4)
-        exit_time = str(data["ExitTime"]).zfill(4)
+    # **اضافه کردن تمام تاریخ‌های بین from_g و to_g که رکورد ندارند**
+    total_days = (to_g - from_g).days
+    for i in range(total_days + 1):
+        g = from_g + timedelta(days=i)
+        shamsi = JalaliDate(g).strftime('%Y-%m-%d')
+        if shamsi not in attendance:
+            # Entry/Exit پیش‌فرض برای روزهای بدون رکورد
+            attendance[shamsi] = {"CardNo": "", "Date": shamsi, "EntryTime": "0000", "ExitTime": "0000"}
+
+    # حالا پردازش نهایی و تعیین وضعیت — خروجی را به صورت مرتب (بر اساس تاریخ) می‌دهیم
+    result = []
+    for date_str in sorted(attendance.keys()):
+        data = attendance[date_str]
+        entry_time = str(data.get("EntryTime") or "").zfill(4)
+        exit_time = str(data.get("ExitTime") or "").zfill(4)
 
         sh_year, sh_month, sh_day = map(int, date_str.split('-'))
-        weekday = jdatetime.date(sh_year, sh_month, sh_day).weekday()
-
+        weekday = jdatetime.date(sh_year, sh_month, sh_day).weekday()  # مطابق کد قبلی شما
         work_hours = weekday_map.get(weekday, default_work_hours).replace(" ", "")
-        work_start, work_end = sorted(work_hours.split("-"), key=lambda x: int(x.replace(":", "")))
+        try:
+            work_start, work_end = sorted(work_hours.split("-"), key=lambda x: int(x.replace(":", "")))
+        except:
+            work_start, work_end = "00:00", "00:00"
 
         data["WorkStart"] = work_start
         data["WorkEnd"] = work_end
 
+        # اگر هیچ رکوردی وجود نداشته باشه (مثلاً جمعه یا روز غیبت)، به صورت مشخص علامت می‌زنیم
+        if entry_time == "0000" and exit_time == "0000":
+            if weekday == 6:  # جمعه
+                data["Status"] = "تعطیل"
+            else:
+                data["Status"] = "غیبت"
+            data["CalculatedTime"] = ""
+            data["WorkedHours"] = "00:00"
+            result.append(data)
+            continue
+
+        # در غیر اینصورت، محاسبات قبلی شما (تاخیر/اضافه کاری/خروج زودهنگام و ...) را انجام بده
         entry_hour, entry_minute = int(entry_time[:2]), int(entry_time[2:])
         exit_hour, exit_minute = int(exit_time[:2]), int(exit_time[2:])
         work_start_hour, work_start_minute = int(work_start[:2]), int(work_start[3:])
         work_end_hour, work_end_minute = int(work_end[:2]), int(work_end[3:])
 
-        status, calculated_time = [], []
-        worked_hours = 0
+        status_parts = []
+        calculated_time = []
+        worked_minutes = 0
         overtime_added = delay_added = early_exit_added = False
 
         if (entry_hour, entry_minute) == (work_start_hour, work_start_minute):
-            status.append("تایید سامانه در ورود")
-            worked_hours = (work_end_hour - work_start_hour) * 60 + (work_end_minute - work_start_minute)
+            status_parts.append("تایید سامانه در ورود")
+            worked_minutes = (work_end_hour - work_start_hour) * 60 + (work_end_minute - work_start_minute)
         elif (entry_hour > work_start_hour) or (entry_hour == work_start_hour and entry_minute > work_start_minute):
-            status.append("ورود با تاخیر")
+            status_parts.append("ورود با تاخیر")
             if not delay_added:
                 delay = (entry_hour - work_start_hour) * 60 + (entry_minute - work_start_minute)
                 calculated_time.append(f"مدت زمان تاخیر: {delay//60:02}:{delay%60:02}")
@@ -2076,39 +2109,40 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
             if (exit_hour > work_end_hour) or (exit_hour == work_end_hour and exit_minute > work_end_minute):
                 overtime = (exit_hour - work_end_hour) * 60 + (exit_minute - work_end_minute)
                 if overtime > 10 and not overtime_added:
-                    status.append("اضافه کاری")
+                    status_parts.append("اضافه کاری")
                     calculated_time.append(f"مدت زمان اضافه کاری: {overtime//60:02}:{overtime%60:02}")
-                    worked_hours += overtime
+                    worked_minutes += overtime
                     overtime_added = True
                 else:
-                    worked_hours += (work_end_hour - entry_hour) * 60 + (work_end_minute - entry_minute)
-        elif (entry_hour < work_start_hour) or (entry_hour == work_start_hour and entry_minute < work_start_minute):
-            status.append("شروع زودهنگام")
+                    worked_minutes += (work_end_hour - entry_hour) * 60 + (work_end_minute - entry_minute)
+        else:
+            status_parts.append("شروع زودهنگام")
             early = (work_start_hour - entry_hour) * 60 + (work_start_minute - entry_minute)
             calculated_time.append(f"مدت زمان شروع زودهنگام: {early//60:02}:{early%60:02}")
-            worked_hours = (work_end_hour - work_start_hour) * 60 + (work_end_minute - work_start_minute)
-
-        worked_hours_str = f"{worked_hours // 60:02}:{worked_hours % 60:02}"
+            worked_minutes = (work_end_hour - work_start_hour) * 60 + (work_end_minute - work_start_minute)
 
         if (exit_hour, exit_minute) == (work_end_hour, work_end_minute):
-            status.append("تایید سامانه در خروج")
+            status_parts.append("تایید سامانه در خروج")
         elif (exit_hour < work_end_hour) or (exit_hour == work_end_hour and exit_minute < work_end_minute):
             if not early_exit_added:
-                status.append("خروج زودهنگام")
+                status_parts.append("خروج زودهنگام")
                 early_exit = (work_end_hour - exit_hour) * 60 + (work_end_minute - exit_minute)
                 calculated_time.append(f"مدت زمان خروج زودهنگام: {early_exit//60:02}:{early_exit%60:02}")
                 early_exit_added = True
         elif (exit_hour > work_end_hour) or (exit_hour == work_end_hour and exit_minute > work_end_minute):
             overtime = (exit_hour - work_end_hour) * 60 + (exit_minute - work_end_minute)
             if overtime > 10 and not overtime_added:
-                status.append("اضافه کاری")
+                status_parts.append("اضافه کاری")
                 calculated_time.append(f"مدت زمان اضافه کاری: {overtime//60:02}:{overtime%60:02}")
 
-        data["Status"] = ", ".join(status)
+        data["Status"] = ", ".join(status_parts)
         data["CalculatedTime"] = "<br>".join(calculated_time)
-        data["WorkedHours"] = worked_hours_str
+        data["WorkedHours"] = f"{worked_minutes // 60:02}:{worked_minutes % 60:02}"
 
-    return list(attendance.values())
+        result.append(data)
+
+    # نتیجه مرتب‌شده برگردون
+    return result
 
 # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن
 # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن # ثبت دستی ساعت زن

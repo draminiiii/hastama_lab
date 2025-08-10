@@ -226,31 +226,41 @@ body {
 }
 
 .stn1 { width: 1.1%; }
-.hozoorUsersReport-table td:nth-child(9) { width: 1.1%; }
+.hozoorUsersReport-table td:nth-child(10) { width: 1.1%; }
 
 .stn2 { width: 2%; }
-.hozoorUsersReport-table td:nth-child(8) { width: 2%; }
+.hozoorUsersReport-table td:nth-child(9) { width: 2%; }
 
 .stn3 { width: 2%; }
-.hozoorUsersReport-table td:nth-child(7) { width: 2%; }
+.hozoorUsersReport-table td:nth-child(8) { width: 2%; }
 
 .stn4 { width: 2%; }
-.hozoorUsersReport-table td:nth-child(6) { width: 2%; }
+.hozoorUsersReport-table td:nth-child(7) { width: 2%; }
 
 .stn5 { width: 2%; }
-.hozoorUsersReport-table td:nth-child(5) { width: 2%; }
+.hozoorUsersReport-table td:nth-child(6) { width: 2%; }
 
-.stn6 { width: 3%; }
-.hozoorUsersReport-table td:nth-child(4) { width: 3%; }
+.stn6 { width: 1.6%; }
+.hozoorUsersReport-table td:nth-child(5) { width: 1.6%; }
 
-.stn7 { width: 3%; }
-.hozoorUsersReport-table td:nth-child(3) { width: 3%; }
+.stn7 { width: 2%; }
+.hozoorUsersReport-table td:nth-child(4) { width: 2%; }
 
 .stn8 { width: 2.1%; }
+.hozoorUsersReport-table td:nth-child(3) { width: 2.1%; }
+
+.stn9 { width: 2.1%; }
 .hozoorUsersReport-table td:nth-child(2) { width: 2.1%; }
 
-.stn9 { width: 3.1%; }
-.hozoorUsersReport-table td:nth-child(1) { width: 3.1%; }
+.stn10 { width: 3%; }
+.hozoorUsersReport-table td:nth-child(1) { width: 3%; }
+
+.holiday-row {
+    background-color: #ffeaea !important;
+    color: red;
+    font-weight: bold;
+}
+
 
 /* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
 /* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
@@ -631,7 +641,7 @@ body {
     padding: 9px;
     border-radius: 8px;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -897,12 +907,12 @@ body {
     /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
 
     .hozoorBox {
-        left: -17.7rem;
+        left: -17.9rem;
         position: absolute;
         height: auto;
-        max-height: 90rem;
+        max-height: 100rem;
         padding: 10px;
-        margin-top: 0rem;
+        margin-top: 0.8rem;
         width: 68rem;
     }
 
@@ -911,7 +921,10 @@ body {
         display: none;
     }
 
-    .hozoorUsersReport-table {margin-top: 5px;}
+    .hozoorUsersReport-table {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 
     #hozoorUsersReportTable {
         height: auto;
@@ -923,30 +936,33 @@ body {
     .hozoorUsersReport-table th {font-size: 15px;}
 
     .stn1 {width: 0.5%;}
-    .hozoorUsersReport-table td:nth-child(9) { width: 0.5%; }
+    .hozoorUsersReport-table td:nth-child(10) { width: 0.5%; }
 
     .stn2 { width: 0.8%; }
-    .hozoorUsersReport-table td:nth-child(8) { width: 0.8%; }
+    .hozoorUsersReport-table td:nth-child(9) { width: 0.8%; }
 
     .stn3 {width: 1%;}
-    .hozoorUsersReport-table td:nth-child(7) { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(8) { width: 1%; }
 
     .stn4 {width: 1%;}
-    .hozoorUsersReport-table td:nth-child(6) { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(7) { width: 1%; }
 
     .stn5 {width: 1%;}
-    .hozoorUsersReport-table td:nth-child(5) { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(6) { width: 1%; }
 
-    .stn6 { width: 1%; }
-    .hozoorUsersReport-table td:nth-child(4) { width: 1%; }
+    .stn6 { width: 0.6%; }
+    .hozoorUsersReport-table td:nth-child(5) { width: 0.6%; }
 
     .stn7 { width: 1%; }
-    .hozoorUsersReport-table td:nth-child(3) { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(4) { width: 1%; }
 
     .stn8 { width: 1%; }
-    .hozoorUsersReport-table td:nth-child(2) { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(3) { width: 1%; }
 
     .stn9 { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(2) { width: 1%; }
+
+    .stn10 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(1) { width: 1%; }
 
     /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
@@ -954,7 +970,7 @@ body {
     /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
 
     .left-section {
-        margin-top: 102rem;
+        margin-top: 118rem;
         margin-left: -14rem;
     }
 
@@ -983,7 +999,7 @@ body {
     /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
 
     .numberReport {
-        top: 89.7rem;
+        top: 109.7rem;
         left: 11rem;
         height: 13rem;
         width: 51rem;
