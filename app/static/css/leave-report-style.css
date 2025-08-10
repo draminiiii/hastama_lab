@@ -322,6 +322,7 @@ body {
 }
 
 @media (max-width: 768px) {
+    
     .report-container {
         width: 100%;
         padding: 0;

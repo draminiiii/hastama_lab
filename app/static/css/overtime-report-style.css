@@ -324,3 +324,94 @@ body {
         display: none;
     }
 }
+
+@media (max-width: 768px) {
+    .report-container {
+        width: 100%;
+        padding: 0;
+        margin-top: 22%;
+        height: 76vh;
+    }
+
+    .report-box {
+        padding: 0;
+        width: 90%;
+        margin-left: 3%;
+        margin-top: 106px;
+    }
+
+    .report-box h2 {
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .personal-info {
+        margin-top: 7px;
+    }
+
+    .info-item {
+        align-items: center;
+        width: auto;
+        font-size: 10px;
+    }
+
+    .info-item strong {
+        font-size: 10px;
+        margin-left: 4px;
+    }
+
+    .info-item-month {
+        font-size: 10px;
+        align-items: unset;
+    }
+
+    .custom-dropdown {
+        font-size: 8px;
+        padding: 0 5px 0 7px;
+        margin-right: 0;
+    }
+
+    .individual-report-table th, .individual-report-table td {
+        font-size: 11px;
+    }
+
+    .signature-container {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .signature-box {
+        width: 31%;
+        height: 64px;
+    }
+
+    .signature-box strong {
+        font-size: 11px;
+    }
+
+    .signature-box-hamkar {
+        width: 31%;
+        height: 64px;
+    }
+
+    .signature-box-hamkar strong {
+        font-size: 11px;
+        margin-top: 1px;
+        margin-bottom: 0;
+    }
+
+    .signature-space span {
+        font-size: 11px;
+    }
+
+    .signature-space {
+        margin: 0;
+    }
+
+    #printReportBtn {
+        font-size: 11px;
+        padding: 5px 15px;
+        margin-left: 10%;
+        margin-top: 44px;
+    }
+}
