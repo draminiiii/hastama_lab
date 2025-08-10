@@ -618,9 +618,9 @@
         <table class="hourlyPassTotaluserReport-table" id="hourlyPassTotaluserReportTable">
             <thead>
                 <tr>
-                    <th>کل مدت زمان پاس</th>
-                    <th>نام کاربر</th>
-                    <th>ردیف</th>
+                    <th class="hourlyPassezafetime">کل مدت زمان پاس</th>
+                    <th class="hourlyPasskarbar">نام کاربر</th>
+                    <th class="hourlyPassRadif">ردیف</th>
                 </tr>
             </thead>
             <tbody>
@@ -639,9 +639,9 @@
     <!-- باکس گزارش انفرادی پاس های ساعتی کاربران -->
     <div id="hourlyPassIndivisualuser" class="management-box" style="display:none;">
         <h2>مدیریت پاس‌های ساعتی</h2>
-        <form id="individualHourlyPassReportForm">
+        <form id="individualHourlyPassReportForm" class="hourlypassform">
             <label for="usernameHourlypass">: انتخاب کاربر</label>
-            <select id="usernameHourlypass" name="usernameHourlypass" required>
+            <select id="usernameHourlypass" name="usernameHourlypass" required style="margin-right: 4px;">
                 <option value="" disabled selected>انتخاب کنید</option>
                 <option value="all_users">همه کاربران</option>
                 {% for user in users %}
@@ -650,10 +650,10 @@
             </select>
 
             <label for="start_date">: از تاریخ</label>
-            <input type="text" id="start_date_hourlypass" name="start_date" required>
+            <input type="text" id="start_date_hourlypass" style="margin-right: 2%;" name="start_date" required>
 
             <label for="end_date">: تا تاریخ</label>
-            <input type="text" id="end_date_hourlypass" name="end_date" required>
+            <input type="text" id="end_date_hourlypass" style="margin-right: 2.5%;" name="end_date" required>
 
             <button type="button" id="submitHourlyPassReport" style="font-family: 'Yekan', sans-serif;">تهیه گزارش</button>
 

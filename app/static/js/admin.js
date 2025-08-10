@@ -1250,44 +1250,40 @@ document.getElementById("submitHourlyPassReport").addEventListener("click", func
     })
     .then(response => response.json())
     .then(data => {
-        const tbody = document.getElementById("hourlyPassIndivisualuserReportTable").getElementsByTagName('tbody')[0];
-        tbody.innerHTML = ''; // خالی کردن جدول قبل از پر کردن
+    const tbody = document.getElementById("hourlyPassIndivisualuserReportTable").getElementsByTagName('tbody')[0];
+    tbody.innerHTML = ''; // خالی کردن جدول قبل از پر کردن
 
-        if (data.length > 0) {
-            // اگر داده‌ای وجود داشت، نمایش دکمه "دریافت گزارش"
-            document.getElementById("downloadHourlyPassReport").style.display = "block";
-        } else {
-            // اگر داده‌ای وجود نداشت، پنهان کردن دکمه "دریافت گزارش"
-            document.getElementById("downloadHourlyPassReport").style.display = "none";
-        }
+    // همیشه دکمه نمایش داده شود
+    document.getElementById("downloadHourlyPassReport").style.display = "block";
 
-        data.forEach((row) => {
-            const statusClass = getHourlyPassIndivisualStatusClass(row.status); // دریافت کلاس وضعیت
-            const newRow = tbody.insertRow();
-            newRow.innerHTML = `
-                <td style="display:none;">${row.id}</td>
-                <td>
-                    <button class="update-button" data-id="${row.id}" onclick="confirmChangesPass(${row.id})">تأیید تغییرات</button>
-                </td>
-                <td>
-                    <div class="status-container">
-                        <div class="status-navbar ${statusClass}" id="statusHourlyPassNavbar_${row.id}" onclick="toggleRequestHourlypassDropdownReport(${row.id})">
-                            ${convertToPersianNumbers(row.status)}
-                        </div>
-                        <div class="status-dropdown" id="requestHourlyPassIndiStatusDropdown_${row.id}" style="display: none;">
-                            <div class="status-option approved" onclick="changeStatuHourlyPassIndiForApproval(${row.id}, 'تایید شده')">تایید شده</div>
-                            <div class="status-option rejected" onclick="changeStatuHourlyPassIndiForApproval(${row.id}, 'رد شده')">رد شده</div>
-                            <div class="status-option cancelled" onclick="changeStatuHourlyPassIndiForApproval(${row.id}, 'انصراف')">انصراف</div>
-                        </div>
+    data.forEach((row) => {
+        const statusClass = getHourlyPassIndivisualStatusClass(row.status); // دریافت کلاس وضعیت
+        const newRow = tbody.insertRow();
+        newRow.innerHTML = `
+            <td style="display:none;">${row.id}</td>
+            <td>
+                <button class="update-button" data-id="${row.id}" onclick="confirmChangesPass(${row.id})">تأیید تغییرات</button>
+            </td>
+            <td>
+                <div class="status-container">
+                    <div class="status-navbar ${statusClass}" id="statusHourlyPassNavbar_${row.id}" onclick="toggleRequestHourlypassDropdownReport(${row.id})">
+                        ${convertToPersianNumbers(row.status)}
                     </div>
-                </td>
-                <td>${convertToPersianNumbers(row.pass_duration)}</td>
-                <td>${convertToPersianNumbers(row.pass_title)}</td>
-                <td>${convertToPersianNumbers(row.request_date)}</td>
-                <td>${convertToPersianNumbers(row.username)}</td>
-            `;
-        });
-    })
+                    <div class="status-dropdown" id="requestHourlyPassIndiStatusDropdown_${row.id}" style="display: none;">
+                        <div class="status-option approved" onclick="changeStatuHourlyPassIndiForApproval(${row.id}, 'تایید شده')">تایید شده</div>
+                        <div class="status-option rejected" onclick="changeStatuHourlyPassIndiForApproval(${row.id}, 'رد شده')">رد شده</div>
+                        <div class="status-option cancelled" onclick="changeStatuHourlyPassIndiForApproval(${row.id}, 'انصراف')">انصراف</div>
+                    </div>
+                </div>
+            </td>
+            <td>${convertToPersianNumbers(row.pass_duration)}</td>
+            <td>${convertToPersianNumbers(row.pass_title)}</td>
+            <td>${convertToPersianNumbers(row.request_date)}</td>
+            <td>${convertToPersianNumbers(row.username)}</td>
+        `;
+    });
+})
+
     .catch(error => {
         console.error('Error:', error);
         alert("خطا در دریافت داده‌ها.");
