@@ -3096,9 +3096,7 @@ margin-left: 15%;
         margin-top: -8px;
     }
 
-    .small-text {
-        font-size: 0.6rem;
-    }
+    .small-text {font-size: 0.6rem;}
 
     .right-logo {
         width: 5rem;
@@ -3124,13 +3122,9 @@ margin-left: 15%;
         position: absolute;
     }
 
-    .icon-container {
-        margin-top: 6.2rem;
-    }
+    .icon-container {margin-top: 6.2rem;}
 
-    .icon-container-leftSidebar {
-        margin-top: 4.7rem;
-    }
+    .icon-container-leftSidebar {margin-top: 4.7rem;}
 
     .icon-container-leftSidebar img {
         width: 27px;
@@ -3174,10 +3168,9 @@ margin-left: 15%;
         height: 27px;
     }
 
-    .icon-container:hover .tooltipIconHeader {
-        visibility: hidden;
-    }
+    .icon-container:hover .tooltipIconHeader {visibility: hidden;}
 
+    .icon-container-leftSidebar:hover .tooltipIconHeader-leftSidebar {visibility: hidden;}
     /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
     /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
     /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
@@ -3196,17 +3189,40 @@ margin-left: 15%;
         margin-bottom: 8px;
     }
 
-    #userTable th {
-        font-size: 7px;
+    #userTable th, #userTable td{font-size: 7px;}
+
+    /* عرض ستون‌ها */
+    #userTable th:nth-child(1),
+    #userTable td:nth-child(1) {
+        width: 5%; /* تغییرات */
     }
 
-    #userTable td {
-        font-size: 7px;
+    #userTable th:nth-child(2),
+    #userTable td:nth-child(2) {
+        width: 4%; /* جانشین */
     }
 
-    .edit-btn, .trash-icon {
-        margin: -3px;
+    #userTable th:nth-child(3),
+    #userTable td:nth-child(3) {
+        width: 6%; /* ساعت‌های کاری */
     }
+
+    #userTable th:nth-child(4),
+    #userTable td:nth-child(4) {
+        width: 5%; /* بخش فعالیت */
+    }
+
+    #userTable th:nth-child(5),
+    #userTable td:nth-child(5) {
+        width: 4%; /* نام کاربر */
+    }
+
+    #userTable th:nth-child(6),
+    #userTable td:nth-child(6) {
+        width: 4%; /* ردیف */
+    }
+
+    .edit-btn, .trash-icon {margin: -3px;}
 
     .edit-btn img, .trash-icon img {
         width: 12px;
@@ -3269,17 +3285,11 @@ margin-left: 15%;
         width: 100%;
     }
 
-    .form-container {
-        right: 4px;
-    }
+    .form-container {right: 4px;}
 
-    .popupSaatHaftehgi {
-        width: 22rem;
-    }
+    .popupSaatHaftehgi {width: 22rem;}
 
-    #zakhireHaftegiKarbar {
-        margin-left: 0.25rem;
-    }
+    #zakhireHaftegiKarbar {margin-left: 0.25rem;}
 
     /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
     /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
@@ -3299,9 +3309,7 @@ margin-left: 15%;
 
     /* تنظیمات جدول درخواست های مرخصی های کاربران *//* تنظیمات جدول درخواست های مرخصی های کاربران *//* تنظیمات جدول درخواست های مرخصی های کاربران */
 
-    .request-table {
-        table-layout: fixed;
-    }
+    .request-table {table-layout: fixed;}
 
     .request-table th {
         padding: 5px;
@@ -3344,7 +3352,7 @@ margin-left: 15%;
     }
 
     .vacation-table td {
-        font-size: 7px;
+        font-size: 11px;
     }
 
     .bghmnd-morkhc-gzrsh {width: 5%;}
@@ -3389,16 +3397,16 @@ margin-left: 15%;
         font-size: 10px;
     }
 
-    form button {
-        margin-right: 71%;
-        font-size: 11px;
-        padding: 4px 11px;
+    #generategozareshmrkReportBtn {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
     }
 
     /* تنظیمات جدول گزارش انفرادی مرخصی کاربران *//* تنظیمات جدول گزارش انفرادی مرخصی کاربران *//* تنظیمات جدول گزارش انفرادی مرخصی کاربران */
 
     .individual-report-table {
-        margin-top: 12px;
+        margin-top: 11px;
         table-layout: fixed;
     }
 
@@ -3408,6 +3416,7 @@ margin-left: 15%;
 
     .overTimeindivisualReport-table {
         table-layout: fixed;
+        margin-top: 11px;
     }
 
     .sbt-morkhc-nfrdi {width: 4%;}
@@ -3542,6 +3551,12 @@ margin-left: 15%;
         margin-right: 10px;
     }
 
+    #submitReport {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
     #usernameEzafeReport {
         width: 47%;
         font-size: 10px;
@@ -3585,6 +3600,8 @@ margin-left: 15%;
         margin: 0px 0px 4px 0px;
     }
 
+    /* تنظیمات جدول مدیریت درخواست های پاس ساعتی کاربران *//* تنظیمات جدول مدیریت درخواست های پاس ساعتی کاربران *//* تنظیمات جدول مدیریت درخواست های پاس ساعتی کاربران */
+
     .hourlyPassReport-table {
         table-layout: fixed;
     }
@@ -3594,6 +3611,8 @@ margin-left: 15%;
         padding: 2px;
     }
 
+    /* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران */
+    /* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران */
     /* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران */
 
     #hourlyPassTotaluser {
@@ -3606,6 +3625,8 @@ margin-left: 15%;
         font-size: 16px;
         margin: 0px 0px 4px 0px;
     }
+
+    /* تنظیمات جدول گزارش کلی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش کلی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش کلی پاس های ساعتی کاربران */
 
     .hourlyPassTotaluserReport-table th {
         font-size: 10px;
@@ -3628,6 +3649,8 @@ margin-left: 15%;
     }
 
     /* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران */
+    /* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران */
+    /* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران */
 
     #hourlyPassIndivisualuser {
         position: absolute;
@@ -3638,6 +3661,8 @@ margin-left: 15%;
     #hourlyPassIndivisualuser h2 {
         font-size: 15px;
     }
+
+    /* تنظیمات جدول گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش انفرادی پاس های ساعتی کاربران */
 
     #individualHourlyPassReportForm {
         display: flex;
@@ -3665,8 +3690,15 @@ margin-left: 15%;
         border: 1px solid #919191;
     }
 
+    #submitHourlyPassReport {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
     .hourlyPassIndivisualuserReport-table {
         table-layout: fixed;
+        margin-top: 11px;
     }
 
     .hourlyPassIndivisualuserReport-table th {
@@ -3679,4 +3711,201 @@ margin-left: 15%;
         width: 89px;
         padding: 4px 10px;
     }
+
+    /* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران */
+    /* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران */
+    /* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران */
+
+    #ticketBox {
+        top: 2rem;
+        position: absolute;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+    }
+
+    #ticketBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .ticketUsersReport-table {
+        table-layout: fixed;
+    }
+
+    .ticketUsersReport-table th {
+        padding: 5px;
+        font-size: 7px;
+    }
+
+    .karbr-ticketboxtable {width: 1.9%;}
+    .tarikhsbt-ticketboxtable {width: 2.03%;}
+    .onvan-ticketboxtable {width: 3%;}
+    .tozihat-ticketboxtable {width: 2%;}
+    .vazeiyat-ticketboxtable {width: 2.5%;}
+    .taghir-ticketboxtable {width: 3%;}
+
+    /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
+    /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
+    /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
+
+    #hozoorbox {
+        top: 2rem;
+        position: absolute;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+    }
+
+    #hozoorbox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    #gozareshHozoor {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 11px;
+        column-gap: 45px;
+    }
+
+    .formgozareshhozoor label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+
+    #usernameGozareshHozoor {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+        margin-right: 4px;
+    }
+
+    #hozoorUsersReportTable {
+        margin-top: 9px;
+    }
+
+    .hozoorUsersReport-table th{
+        padding: 5px;
+        font-size: 7px;
+    }
+
+    .hozoorUsersReport-table td {
+        font-size: 6px;
+    }
+
+    .mjmoo-hozoor-gzrsh {width: 2%;}
+    .ezafe-hozoor-gzrsh {width: 2%;}
+    .khorojzd-hozoor-gzrsh {width: 2%;}
+    .shorozd-hozoor-gzrsh {width: 2%;}
+    .takhir-hozoor-gzrsh {width: 2%;}
+    .zmnkhrj-hozoor-gzrsh {width: 2%;}
+    .zmnvrd-hozoor-gzrsh {width: 2%;}
+    .hfte-hozoor-gzrsh {width: 2.46%;}
+    .sbt-hozoor-gzrsh {width: 2.62%;}
+
+    #extractButton {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
+    #natigehHozoor {
+        margin-top: 55rem;
+        position: absolute;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+        margin-left: auto;
+        height: 22rem;
+    }
+
+    #natigehHozoor h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    #natigehHozoor .boxha {
+        gap: 15px;
+    }
+
+    #natigehHozoor .boxha div {
+        width: 78%;
+        font-size: 13px;
+        height: 39px;
+    }
+
+    .gozareshNahaei {
+        left: auto;
+        right: 17px;
+        font-size: 11px;
+        padding: 4px 11px;
+        bottom: auto;
+        margin-top: 13px;
+    }
+
+    /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
+    /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
+    /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
+
+    #sabtdst {
+        position: absolute;
+        top: 22rem;
+        padding: 4px 10px 10px 10px;
+        margin-left: 0;
+        width: 74%;
+    }
+
+    #sabtdst h2{
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    #sabtdastHozoor {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 0;
+        column-gap: 0px;
+    }
+
+    .formsabtdast label{
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    #usernamedast {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+        margin-right: 18%;
+    }
+
+    #tarikh {
+        width: 100px;
+        padding: 5px;
+        font-size: 10px;
+        margin-right: 41%;
+    }
+
+    #sabt-btn {
+        margin-right: 0;
+        margin-top: 3%;
+        font-size: 11px;
+        padding: 4px 11px;
+    }
+
+    
 }

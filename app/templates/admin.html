@@ -728,7 +728,7 @@
     <div id="hozoorbox" class="management-box" style="display: none;">
         <h2>مدیریت ورود و خروج همکاران</h2>
         <div class="vorodi">
-            <form id="gozareshHozoor">
+            <form id="gozareshHozoor" class="formgozareshhozoor">
                 <label for="usernameGozareshHozoor">: انتخاب کاربر</label>
                 <select id="usernameGozareshHozoor" name="usernameGozareshHozoor" required>
                     <option value="" disabled selected>انتخاب کنید</option>
@@ -739,10 +739,10 @@
                 </select>
     
                 <label for="start_date">: از تاریخ</label>
-                <input type="text" id="start_date_hozoor" name="start_date" required>
+                <input type="text" id="start_date_hozoor" name="start_date" required style="margin-right: 3.9%;">
     
                 <label for="end_date">: تا تاریخ</label>
-                <input type="text" id="end_date_hozoor" name="end_date" required>
+                <input type="text" id="end_date_hozoor" name="end_date" required style="margin-right: 3.9%;">
     
                 <button type="button" id="extractButton" style="font-family: 'Yekan', sans-serif;">تهیه گزارش</button>
             </form>
@@ -750,19 +750,29 @@
         <table class="hozoorUsersReport-table" id="hozoorUsersReportTable">
             <thead>
                 <tr>
-                    <th>مجموع زمان حضور</th>
-                    <th>اضافه کاری</th>
-                    <th>خروج زود هنگام</th>
-                    <th>شروع زود هنگام</th>
-                    <th>تاخیر</th>
-                    <th>زمان خروج</th>
-                    <th>زمان ورود</th>
-                    <th>روز هفته</th>
-                    <th>تاریخ ثبت</th>
+                    <th class="mjmoo-hozoor-gzrsh">مجموع زمان حضور</th>
+                    <th class="ezafe-hozoor-gzrsh">اضافه کاری</th>
+                    <th class="khorojzd-hozoor-gzrsh">خروج زود هنگام</th>
+                    <th class="shorozd-hozoor-gzrsh">شروع زود هنگام</th>
+                    <th class="takhir-hozoor-gzrsh">تاخیر</th>
+                    <th class="zmnkhrj-hozoor-gzrsh">زمان خروج</th>
+                    <th class="zmnvrd-hozoor-gzrsh">زمان ورود</th>
+                    <th class="hfte-hozoor-gzrsh">روز هفته</th>
+                    <th class="sbt-hozoor-gzrsh">تاریخ ثبت</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- داده‌ها اینجا اضافه می‌شوند -->
+                <tr>
+                    <td class="mjmoo-hozoor-gzrsh"></td>
+                    <td class="ezafe-hozoor-gzrsh"></td>
+                    <td class="khorojzd-hozoor-gzrsh"></td>
+                    <td class="shorozd-hozoor-gzrsh"></td>
+                    <td class="takhir-hozoor-gzrsh"></td>
+                    <td class="zmnkhrj-hozoor-gzrsh"></td>
+                    <td class="zmnvrd-hozoor-gzrsh"></td>
+                    <td class="hfte-hozoor-gzrsh"></td>
+                    <td class="sbt-hozoor-gzrsh"></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -795,7 +805,7 @@
     <div id="sabtdst" class="management-box" style="display: none;">
         <h2>ثبت دستی ورود و خروج</h2>
         <div class="vorodiha">
-            <form id="sabtdastHozoor">
+            <form id="sabtdastHozoor" class="formsabtdast">
                 <label for="usernamedast">: انتخاب کاربر</label>
                 <select id="usernamedast" name="usernamedast" required>
                     <option value="" disabled selected>انتخاب کنید</option>
@@ -826,7 +836,7 @@
 
                 <!-- ساعت ورود -->
                 <label for="vorood">: ساعت ورود</label>
-                <input type="text" id="vorood" name="vorood" placeholder="--:--" onclick="toggleTimePicker('vorood')">
+                <input type="text" id="vorood" name="vorood" placeholder="--:--" onclick="toggleTimePicker('vorood')" style="width: 95px; margin-right: 26.4%;">
 
                 <div class="time-picker" id="timepicker-vorood">
                 <div class="time-section">
@@ -846,7 +856,7 @@
 
                 <!-- ساعت خروج -->
                 <label for="khorooj">: ساعت خروج</label>
-                <input type="text" id="khorooj" name="khorooj" placeholder="--:--" onclick="toggleTimePicker('khorooj')">
+                <input type="text" id="khorooj" name="khorooj" placeholder="--:--" onclick="toggleTimePicker('khorooj')" style="width: 95px; margin-right: 25%;">
 
                 <div class="time-picker" id="timepicker-khorooj">
                 <div class="time-section">

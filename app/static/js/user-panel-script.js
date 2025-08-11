@@ -1292,7 +1292,7 @@ function convertToPersianNumbers(str) {
 // باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن
 // باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن
 
-document.getElementById('hozoorReport').addEventListener('click', function() {
+document.getElementById('hozoorReport').addEventListener('click', function () {
     // نمایش پاپ آپ
     document.getElementById('popupHozoor').style.display = 'flex';
 
@@ -1319,31 +1319,38 @@ document.getElementById('hozoorReport').addEventListener('click', function() {
                     data.forEach((entry, index) => {
                         var row = document.createElement('tr');
 
+                        // ستون وضعیت
                         var statusCell = document.createElement('td');
                         statusCell.classList.add('vazeiyat-hozoorTime');
                         statusCell.textContent = entry.Status;
                         row.appendChild(statusCell);
 
+                        // ستون زمان خروج
                         var exitTimeCell = document.createElement('td');
                         exitTimeCell.classList.add('zmnkhrj-hozoorTime');
                         exitTimeCell.textContent = convertToPersianNumbers(entry.ExitTime);
                         row.appendChild(exitTimeCell);
 
+                        // ستون زمان ورود
                         var entryTimeCell = document.createElement('td');
                         entryTimeCell.classList.add('zmnvrd-hozoorTime');
                         entryTimeCell.textContent = convertToPersianNumbers(entry.EntryTime);
                         row.appendChild(entryTimeCell);
 
+                        // ستون تاریخ ثبت (تغییر به yyyy/mm/dd و تبدیل اعداد به فارسی)
                         var dateCell = document.createElement('td');
                         dateCell.classList.add('trkhsbt-hozoorTime');
-                        dateCell.textContent = convertToPersianNumbers(entry.Date);
+                        var formattedDate = entry.Date.replace(/-/g, '/');
+                        dateCell.textContent = convertToPersianNumbers(formattedDate);
                         row.appendChild(dateCell);
 
+                        // ستون ردیف
                         var rowNumberCell = document.createElement('td');
                         rowNumberCell.classList.add('radif-hozoorTime');
                         rowNumberCell.textContent = convertToPersianNumbers((index + 1).toString());
                         row.appendChild(rowNumberCell);
 
+                        // افزودن ردیف به جدول
                         tableBody.appendChild(row);
                     });
                 })

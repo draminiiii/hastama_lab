@@ -2047,20 +2047,24 @@ document.getElementById("extractButton").addEventListener("click", function () {
                     }
 
                     row.innerHTML = `
-                        <td>${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>
-                        <td>${convertNumbersToPersianNumber(overtime > 0 ? formatTimeFromMinutes(overtime) : "00:00")}</td>
-                        <td>${convertNumbersToPersianNumber(earlyExit > 0 ? formatTimeFromMinutes(earlyExit) : "00:00")}</td>
-                        <td>${convertNumbersToPersianNumber(earlyStart > 0 ? formatTimeFromMinutes(earlyStart) : "00:00")}</td>
-                        <td>${convertNumbersToPersianNumber(delay > 0 ? formatTimeFromMinutes(delay) : "00:00")}</td>
-                        <td>${convertNumbersToPersianNumber(exitTime)}</td>
-                        <td>${convertNumbersToPersianNumber(entryTime)}</td>
-                        <td>${weekdayName}</td>
-                        <td>${convertNumbersToPersianNumber(day.Date.replace(/-/g, "/"))}</td>
+                        <td class="mjmoo-hozoor-gzrsh">${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>
+                        <td class="ezafe-hozoor-gzrsh">${convertNumbersToPersianNumber(overtime > 0 ? formatTimeFromMinutes(overtime) : "00:00")}</td>
+                        <td class="khorojzd-hozoor-gzrsh">${convertNumbersToPersianNumber(earlyExit > 0 ? formatTimeFromMinutes(earlyExit) : "00:00")}</td>
+                        <td class="shorozd-hozoor-gzrsh">${convertNumbersToPersianNumber(earlyStart > 0 ? formatTimeFromMinutes(earlyStart) : "00:00")}</td>
+                        <td class="takhir-hozoor-gzrsh">${convertNumbersToPersianNumber(delay > 0 ? formatTimeFromMinutes(delay) : "00:00")}</td>
+                        <td class="zmnkhrj-hozoor-gzrsh">${convertNumbersToPersianNumber(exitTime)}</td>
+                        <td class="zmnvrd-hozoor-gzrsh">${convertNumbersToPersianNumber(entryTime)}</td>
+                        <td class="hfte-hozoor-gzrsh">${weekdayName}</td>
+                        <td class="sbt-hozoor-gzrsh">${convertNumbersToPersianNumber(day.Date.replace(/-/g, "/"))}</td>
                     `;
                     tableBody.appendChild(row);
                 });
 
-                document.getElementById("sabtdst").style.marginTop = "2rem";
+                if (window.matchMedia("(max-width: 768px)").matches) {
+                    document.getElementById("sabtdst").style.marginTop = "44rem";
+                } else {
+                    document.getElementById("sabtdst").style.marginTop = "2rem";
+                }
 
                 document.querySelector(".box1-hozoor span").innerText =
                     `مجموع مدت زمان حضور : ${convertNumbersToPersianNumber(formatTimeFromMinutes(totalPresenceDuration))}`;
@@ -2381,11 +2385,17 @@ function updateInputDate() {
 }
 
 function showCalendar() {
-  calendarBox.style.top = "87%";
-  calendarBox.style.left = "61%";
+  if (window.innerWidth <= 768) {
+    calendarBox.style.top = "46%";
+    calendarBox.style.left = "4%";
+  } else {
+    calendarBox.style.top = "87%";
+    calendarBox.style.left = "61%";
+  }
   calendarBox.style.display = "block";
   calendarBox.setAttribute("aria-hidden", "false");
 }
+
 
 function hideCalendar() {
   calendarBox.style.display = "none";

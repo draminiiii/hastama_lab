@@ -1860,28 +1860,51 @@ body {
 /* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن */
 /* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن *//* تنظیمات جدول پاپ اپ ساعت زن */
 
-#HozoorTableReport {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
+.table-container {
+    max-height: 400px; /* ارتفاع حدودی برای ۱۰ ردیف */
+    overflow-y: auto;
     border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#HozoorTableReport thead tr {
+/* جدول اصلی */
+#HozoorTableReport {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+}
+
+/* هدر جدول */
+#HozoorTableReport thead {
+    position: sticky;
+    top: 0;
     background-color: #bbdba1;
-    color: black;
+    z-index: 2;
 }
 
 #HozoorTableReport th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
+    border-top-left-radius: 20px;
 }
 
 #HozoorTableReport th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
+    border-top-right-radius: 20px;
+}
+
+#HozoorTableReport th {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffffff;
+    font-size: 15px;
+}
+
+/* داده‌های جدول */
+#HozoorTableReport td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 #HozoorTableReport tbody tr:last-child td:first-child {
@@ -1892,35 +1915,17 @@ body {
     border-bottom-right-radius: 20px;
 }
 
-#HozoorTableReport th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
+#HozoorTableReport tbody tr:hover {
+    background-color: #f9f9f9;
 }
 
-#HozoorTableReport td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #f1f1f1;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#HozoorTableReport tbody tr:hover {background-color: #f9f9f9;}
-
+/* اندازه ستون‌ها */
 .radif-hozoorTime {width: 0.3%;}
-
 .trkhsbt-hozoorTime {width: 0.6%;}
-
 .zmnvrd-hozoorTime {width: 0.5%;}
-
 .zmnkhrj-hozoorTime {width: 0.5%;}
-
 .vazeiyat-hozoorTime {width: 1%;}
+
 
 
 
@@ -2483,12 +2488,16 @@ body {
     }
 
     #leaveTable th {
-        font-size: 10px;
+        font-size: 8px;
     }
 
     #leaveTable td {
         font-size: 11px;
     }
+
+    .radif-morkhc {width: 0%;}
+    .azTarikh-morkhc {width: 0.5%;}
+    .taTarikh-morkhc {width: 0.5%;}
 
     #closePopupMorakhciPopuppbox {
         font-size: 11px;
@@ -2531,11 +2540,16 @@ body {
     .popupHozoor-content{
         width: 85vw;
         padding: 11px;
+        height: 477px;
     }
 
     #HozoorTableReport th {
-        font-size: 12px;
+        font-size: 9px;
         padding: 5px;
+    }
+
+    #HozoorTableReport td {
+        font-size: 11px;
     }
 
     .trkhsbt-hozoorTime{
@@ -2556,7 +2570,6 @@ body {
 
     #close-popupHozoor {
         left: 2.5rem;
-        top: 4cm;
         font-size: 11px;
     }
 
