@@ -2161,27 +2161,45 @@ async def sabt_hozoor(request: Request):
         return JSONResponse(content={"success": False, "message": "لطفاً تمام فیلدها را پر کنید"})
 
     try:
-        # تبدیل تاریخ شمسی به تاریخ میلادی پایتونی
+        # تبدیل تاریخ شمسی به میلادی
         y, m, d = map(int, tarikh_shamsi.split("/"))
         tarikh_miladi = JalaliDate(y, m, d).to_gregorian()
         tarikh_obj = date(tarikh_miladi.year, tarikh_miladi.month, tarikh_miladi.day)
 
-        # تبدیل ساعت‌ها به time object
+        # تبدیل ساعت‌ها
         vorood_obj = datetime.strptime(vorood_str, "%H:%M").time()
         khorooj_obj = datetime.strptime(khorooj_str, "%H:%M").time()
 
-        # حالا اجرای درج با مقادیر datetime
+        # بررسی وجود رکورد قبلی
         cursor.execute("""
-            INSERT INTO hozoor (username, [date], vrood, khoroj)
-            VALUES (?, ?, ?, ?)
-        """, (username, tarikh_obj, vorood_obj, khorooj_obj))
+            SELECT COUNT(*) FROM hozoor
+            WHERE username = ? AND [date] = ?
+        """, (username, tarikh_obj))
+        record_exists = cursor.fetchone()[0] > 0
+
+        if record_exists:
+            # اگر وجود داشت → UPDATE
+            cursor.execute("""
+                UPDATE hozoor
+                SET vrood = ?, khoroj = ?
+                WHERE username = ? AND [date] = ?
+            """, (vorood_obj, khorooj_obj, username, tarikh_obj))
+            message = "اطلاعات قبلی با موفقیت به‌روزرسانی شد"
+        else:
+            # اگر نبود → INSERT
+            cursor.execute("""
+                INSERT INTO hozoor (username, [date], vrood, khoroj)
+                VALUES (?, ?, ?, ?)
+            """, (username, tarikh_obj, vorood_obj, khorooj_obj))
+            message = "اطلاعات با موفقیت ثبت شد"
 
         conn.commit()
-        return JSONResponse(content={"success": True, "message": "اطلاعات با موفقیت ثبت شد"})
+        return JSONResponse(content={"success": True, "message": message})
 
     except Exception as e:
         conn.rollback()
         return JSONResponse(content={"success": False, "message": f"خطا در ثبت اطلاعات: {str(e)}"})
+
 
 @app.get("/final_report_page", response_class=HTMLResponse)
 async def final_report(request: Request):

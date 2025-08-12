@@ -2061,7 +2061,7 @@ document.getElementById("extractButton").addEventListener("click", function () {
                 });
 
                 if (window.matchMedia("(max-width: 768px)").matches) {
-                    document.getElementById("sabtdst").style.marginTop = "44rem";
+                    document.getElementById("sabtdst").style.marginTop = "44.5rem";
                 } else {
                     document.getElementById("sabtdst").style.marginTop = "2rem";
                 }
@@ -2202,9 +2202,6 @@ function goToFinalReport() {
         return str;
     }
 }
-
-
-
 
 // تابع برای فرمت کردن زمان به دقیقه (از فرمت HH:MM)
 function formatTimeFromMinutes(minutes) {
@@ -2453,18 +2450,21 @@ function toggleTimePicker(inputId) {
   // بقیه کد اصلی
   document.querySelectorAll(".time-picker").forEach(el => el.style.display = "none");
   const picker = document.getElementById(`timepicker-${inputId}`);
-  picker.style.display = picker.style.display === "block" ? "none" : "block";
+  picker.style.display = picker.style.display === "block" ? "none" : "flex";
   positionTimePicker(inputId);
 }
 
 
 function positionTimePicker(inputId) {
-  const input = document.getElementById(inputId);
   const picker = document.getElementById(`timepicker-${inputId}`);
-  const rect = input.getBoundingClientRect();
-  picker.style.top = rect.bottom + window.scrollY + "px";
-  picker.style.left = rect.left + window.scrollX + "px";
+
+  const vh = window.innerHeight;
+  const vw = window.innerWidth;
+
+  picker.style.top = (0.275 * vh) + "px";   // ۲۰٪ از ارتفاع صفحه
+  picker.style.left = (0.05 * vw) + "px";  // ۲۰٪ از عرض صفحه
 }
+
 
 const selectedFields = {
   vorood: { hourSelected: false, minuteSelected: false, timer: null },

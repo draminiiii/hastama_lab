@@ -1,0 +1,237 @@
+CREATE TRIGGER trg_AvalPssToTotalPass
+ON avalpss_table
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    -- وارد کردن رکوردهای جدید و همچنین رکوردهای قبلی که در جدول avalpss_table وجود دارند
+    INSERT INTO totalpass_table (username, request_date, pass_title, pass_duration, status)
+    SELECT username, date, 'avalpss', total_time_aval, 'انتظار تایید'
+    FROM inserted
+    WHERE total_time_aval IS NOT NULL;
+END;
+
+
+CREATE TRIGGER trg_BeynPssToTotalPass
+ON beynpss_table
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    INSERT INTO totalpass_table (username, request_date, pass_title, pass_duration, status)
+    SELECT username, date, 'beyn', total_time_beyn, 'انتظار تایید'
+    FROM inserted
+    WHERE total_time_beyn IS NOT NULL;
+END;
+
+CREATE TRIGGER trg_AkhrPssToTotalPass
+ON akhrpss_table
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    INSERT INTO totalpass_table (username, request_date, pass_title, pass_duration, status)
+    SELECT username, date, 'akhr', total_time_akhr, 'انتظار تایید'
+    FROM inserted
+    WHERE total_time_akhr IS NOT NULL;
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TRIGGER trg_CalculateTotalTimeBeynpss
+ON beynpss_table
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    UPDATE beynpss_table
+    SET total_time_aval = 
+        CAST(DATEADD(SECOND, ABS(DATEDIFF(SECOND, inserted.entrytime, inserted.officialtime)), '00:00:00') AS TIME)
+    FROM beynpss_table
+    INNER JOIN inserted ON beynpss_table.id = inserted.id
+END
+
+
+CREATE TRIGGER trg_CalculateTotalTimeBeynpss
+ON beynpss_table
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    UPDATE beynpss_table
+    SET total_time_beyn = 
+        CAST(DATEADD(SECOND, ABS(DATEDIFF(SECOND, inserted.exitTime, inserted.entryTime)), '00:00:00') AS TIME)
+    FROM beynpss_table
+    INNER JOIN inserted ON beynpss_table.id = inserted.id
+END
+
+CREATE TRIGGER trg_CalculateTotalTimeAkhrpss
+ON akhrpss_table
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    UPDATE akhrpss_table
+    SET total_time_akhr = 
+        CAST(DATEADD(SECOND, ABS(DATEDIFF(SECOND, inserted.officialTime, inserted.exitTime)), '00:00:00') AS TIME)
+    FROM akhrpss_table
+    INNER JOIN inserted ON akhrpss_table.id = inserted.id
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+کد مربوط به محاسبه اضافه کاری ها در جدول ezafe_total_table
+CREATE OR ALTER TRIGGER trg_UpdateTotalOvertime
+ON ezafe_table
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- به‌روزرسانی یا درج مقدار کل اضافه‌کاری برای هر کاربر فقط برای رکوردهای تایید شده
+    MERGE INTO ezafe_total_table AS target
+    USING (
+        SELECT 
+            username, 
+            SUM(DATEDIFF(SECOND, '00:00:00', daily_overtime)) AS total_seconds
+        FROM ezafe_table 
+        WHERE status = N'تایید شده'
+        GROUP BY username
+    ) AS source
+    ON target.username = source.username
+    WHEN MATCHED THEN 
+        UPDATE SET target.total_ezafe_time = DATEADD(SECOND, source.total_seconds, '00:00:00')
+    WHEN NOT MATCHED THEN
+        INSERT (username, total_ezafe_time) 
+        VALUES (source.username, DATEADD(SECOND, source.total_seconds, '00:00:00'));
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+تنظیمات جدول leave_table 
+
+CREATE TRIGGER trg_UpdateLeaveReport  
+ON dbo.mrkhc_table  
+AFTER INSERT, UPDATE, DELETE  
+AS  
+BEGIN  
+    SET NOCOUNT ON;
+
+    -- حذف کاربران از leave_report که دیگر در mrkhc_table وجود ندارند
+    DELETE FROM leave_report 
+    WHERE username NOT IN (SELECT DISTINCT username FROM mrkhc_table);
+
+    -- به‌روزرسانی یا درج اطلاعات کاربران در leave_report
+    MERGE leave_report AS target  
+    USING (  
+        -- محاسبه مجموع روزهای مرخصی تایید شده برای هر کاربر
+        SELECT   
+            username,    
+            SUM(CAST(days AS INT)) AS total_days  
+        FROM   
+            mrkhc_table  
+        WHERE   
+            LTRIM(RTRIM(status)) = N'تایید شده'  
+        GROUP BY   
+            username  
+    ) AS source  
+    ON target.username = source.username  
+    WHEN MATCHED THEN   
+        UPDATE SET   
+            total_days = source.total_days,  
+            remaining_days = 30 - source.total_days  
+    WHEN NOT MATCHED THEN  
+        INSERT (username, total_days, remaining_days)  
+        VALUES (source.username, source.total_days, 30 - source.total_days);
+
+END;
+
+
+
+برای مرتب سازی جدول حضور و غیاب
+
+CREATE CLUSTERED INDEX IX_hozoor_username_date
+ON hozoor (username ASC, date ASC);

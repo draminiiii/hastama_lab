@@ -31,24 +31,25 @@ body {
 
 .rightSidebar {
     width: 5%;
-    float: right;
     height: 87vh;
     background-color: #92c168;
-    top: 4rem;
+    position: fixed;
+    top: 50%;
     right: 1rem;
-    border-radius: 25px 25px 25px 25px;
-    position: absolute;
+    transform: translateY(-50%);
+    border-radius: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 0rem;
-    position: fixed;
+    justify-content: center;
+    gap: 14%;
     z-index: 50;
+    /* حذف float چون position fixed هست */
 }
+
 
 .icon-container {
     position: relative;
-    margin-top: 6rem;
     text-align: center;
 }
 
@@ -115,20 +116,22 @@ body {
     width: 5%;
     height: 87vh;
     background-color: #92c168;
-    top: 4rem;
+    position: fixed;
+    top: 50%;
     left: 1rem;
-    border-radius: 25px 25px 25px 25px;
+    transform: translateY(-50%);
+    border-radius: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 0rem;
-    position: fixed;
+    justify-content: center;
+    gap: 12%;
     z-index: 50;
 }
 
+
 .icon-container-leftSidebar {
     position: relative;
-    margin-top: 4.5rem;
     text-align: center;
 }
 
@@ -481,7 +484,7 @@ body {
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 6rem;
+    margin-top: 3.7rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1177,7 +1180,7 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 6rem;
+    margin-top: 3.7rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1529,7 +1532,7 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 6rem;
+    margin-top: 3.7rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -2451,6 +2454,7 @@ margin-left: 15%;
   background: #f0f0f0;
   padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 10px;
   width: 140px;
   position: fixed;
   z-index: 999;
@@ -3062,12 +3066,36 @@ margin-left: 15%;
 
 @media (max-width: 768px) {
 
-    body {
+    .koleObject {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+        #khorooj {
+        margin-right: 25% !important;
+        width: 95px;
+    }
+
+            #vorood {
+        margin-right: 26.4% !important;
+        width: 95px;
+    }
+
+    #start_date_hozoor {
+        margin-right: 3.9%;
+    }
+
+    #end_date_hozoor {
+        margin-right: 3.9%;
+    }
+
+    html, body {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0;
-        height: 100vh;
+        height: max-content;
+        width: 100%;
     }
 
     /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
@@ -3078,9 +3106,10 @@ margin-left: 15%;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        position: absolute;
-        right: auto;
-        top: 1.5rem;
+        position: relative;
+        width: fit-content;
+        top: 20px;
+        margin: 0 auto;
         background-color: #fbfff9;
         border-radius: 20px;
         box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
@@ -3109,6 +3138,17 @@ margin-left: 15%;
         margin-left: 10px;
     }
 
+    .navarha {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        gap: 82%;
+        justify-content: center;
+        align-items: center;
+        padding: 0 3px 0 3px;
+    }
+
     /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
     /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
     /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
@@ -3116,15 +3156,12 @@ margin-left: 15%;
     .leftSidebar {
         width: 8%;
         height: 76vh;
-        top: 8rem;
-        left: 0.6rem;
+        left: 0;
+        top: 0;
+        transform: translateY(7%);
         padding-top: 0.3rem;
-        position: absolute;
+        position: relative;
     }
-
-    .icon-container {margin-top: 6.2rem;}
-
-    .icon-container-leftSidebar {margin-top: 4.7rem;}
 
     .icon-container-leftSidebar img {
         width: 27px;
@@ -3156,11 +3193,15 @@ margin-left: 15%;
     /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
 
     .rightSidebar {
-        position: absolute;
         width: 8%;
-        top: 8rem;
         height: 76vh;
-        right: 0.65rem;
+        left: 0;
+        right: 0;
+        float: right;
+        top: 0;
+        transform: translateY(7%);
+        padding-top: 0.3rem;
+        position: relative;
     }
 
     .icon-container img {
@@ -3177,8 +3218,7 @@ margin-left: 15%;
 
     #userInfoBox {
         margin-top: 0;
-        margin-left: 18.1rem;
-        width: 18.2rem;
+        width: 76%;
         padding: 3px 14px 14px 14px;
         position: absolute;
         top: 16.8rem;
@@ -3233,8 +3273,6 @@ margin-left: 15%;
 
     #newUserBox {
         width: 18.2rem;
-        margin-left: 18.1rem;
-        left: auto;
         margin-top: 2.8rem;
         height: 21.5rem;
     }
@@ -3296,10 +3334,12 @@ margin-left: 15%;
     /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
 
     #vacationRequestBox {
-        top: 2rem;
         position: absolute;
+        top: 4.3rem;
         padding: 6px;
         width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #vacationRequestBox h2 {
@@ -3330,9 +3370,11 @@ margin-left: 15%;
 
     #vacationBox {
         position: absolute;
-        top: 13rem;
+        top: 14rem;
         padding: 4px 10px 16px 10px;
         width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #vacationBox h2 {
@@ -3366,11 +3408,14 @@ margin-left: 15%;
     /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
 
     #individualReportBox {
-        position: absolute;
-        top: 24rem;
-        padding: 4px 10px 10px 10px;
-        width: 74%;
-    }
+    position: absolute;
+    top: 28rem;
+    padding: 4px 10px 10px 10px;
+    width: 74%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
     #individualReportBox h2 {
         font-size: 16px;
@@ -3453,10 +3498,12 @@ margin-left: 15%;
     /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
     
     #overtimeBox {
-        top: 2rem;
         position: absolute;
-        padding: 4px 10px 16px 10px;
+        top: 4.3rem;
+        padding: 6px;
         width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #overtimeBox h2 {
@@ -3488,8 +3535,11 @@ margin-left: 15%;
 
     #OverTimeReportBox {
         position: absolute;
-        top: 13rem;
+        top: 14rem;
         padding: 4px 10px 16px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #OverTimeReportBox h2 {
@@ -3525,8 +3575,11 @@ margin-left: 15%;
 
     #OverTimeIndivisualReportBox {
         position: absolute;
-        top: 24rem;
+        top: 28rem;
         padding: 4px 10px 10px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #OverTimeIndivisualReportBox h2 {
@@ -3589,10 +3642,12 @@ margin-left: 15%;
     /* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران */
 
     #hourlyPassBox {
-        top: 2rem;
         position: absolute;
-        padding: 4px 10px 16px 10px;
+        top: 4.3rem;
+        padding: 6px;
         width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #hourlyPassBox h2 {
@@ -3617,8 +3672,11 @@ margin-left: 15%;
 
     #hourlyPassTotaluser {
         position: absolute;
-        top: 13rem;
+        top: 14rem;
         padding: 4px 10px 16px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #hourlyPassTotaluser h2 {
@@ -3654,8 +3712,11 @@ margin-left: 15%;
 
     #hourlyPassIndivisualuser {
         position: absolute;
-        top: 24rem;
+        top: 28rem;
         padding: 4px 10px 10px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #hourlyPassIndivisualuser h2 {
@@ -3749,10 +3810,12 @@ margin-left: 15%;
     /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
 
     #hozoorbox {
-        top: 2rem;
         position: absolute;
-        padding: 4px 10px 16px 10px;
+        top: 4.3rem;
+        padding: 6px;
         width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #hozoorbox h2 {
@@ -3817,13 +3880,16 @@ margin-left: 15%;
     }
 
     #natigehHozoor {
-        margin-top: 55rem;
-        position: absolute;
-        padding: 4px 10px 16px 10px;
-        width: 74%;
-        margin-left: auto;
-        height: 22rem;
-    }
+    position: absolute;
+    top: 43rem;
+    padding: 4px 10px 16px 10px;
+    width: 74%;
+    height: 22rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-left: auto; /* این خط رو می‌تونی حذف کنی چون تاثیر نداره */
+}
+
 
     #natigehHozoor h2 {
         font-size: 16px;
@@ -3854,12 +3920,15 @@ margin-left: 15%;
     /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
 
     #sabtdst {
-        position: absolute;
-        top: 22rem;
-        padding: 4px 10px 10px 10px;
-        margin-left: 0;
-        width: 74%;
-    }
+    position: absolute;
+    top: 23rem;
+    padding: 4px 10px 10px 10px;
+    width: 74%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-left: 0; /* این خط رو هم اگر لازم نیست می‌تونی حذف کنی */
+}
+
 
     #sabtdst h2{
         font-size: 16px;
