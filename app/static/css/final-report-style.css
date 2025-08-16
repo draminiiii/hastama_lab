@@ -65,6 +65,11 @@ body {
     width: -webkit-fill-available;
 }
 
+.onvanha {
+    top: 0rem;
+    position: absolute;
+}
+
 /* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر */
 /* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر */
 /* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر *//* تنظیمات باکس های جداول گزارش کاربر */
@@ -74,12 +79,10 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 2rem;
-    margin: 0 auto;
-    width: 106%;
-    position: absolute;
-    top: 7rem;
-    left: 60.6rem;
-    transform: translateX(-50%);
+    margin: 105px auto 0 auto;
+    width: fit-content;
+    position: relative;
+    flex-direction: row-reverse;
 }
 
 .hozoorBox {
@@ -586,7 +589,7 @@ body {
     padding: 16px;
     padding-right: 26px;
     justify-content: center;
-    top: 35.5rem;
+    top: 3rem;
     left: 58rem;
     border-radius: 20px;
 }
@@ -628,9 +631,8 @@ body {
     align-items: center;
     padding: 20px;
     width: 48rem;
-    max-width: 64rem;
     position: relative;
-    top: 553px;
+    top: 28px;
     left: 52rem;
     background-color: #fbfff9;
     border-radius: 20px;
@@ -878,42 +880,247 @@ body {
 }
 
 
+
+
+@media (max-width: 768px) {
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: auto; /* یا min-height: 100vh; */
+        width: 100%;
+        display: block; /* یا فقط برای موبایل flex کن */
+    }
+
+    .koleobject {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ */
+    /* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ */
+    /* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ *//* باکس های اطلاعات کاربر و تاریخ */
+
+    .onvanha {
+        margin: 0;
+        padding: 0;
+        top: unset;
+        position: relative;
+    }
+
+    .userInfoBox {
+        display: flex;
+        gap: 25%;
+        margin: 0 auto;
+        padding: 0;
+        white-space: nowrap;
+        font-size: 13px;
+        width: 93%;
+        height: 2.3rem;
+        position: relative;
+    }
+
+    .titleBox{
+        position: relative;
+        margin: 13px auto;
+        font-size: 13px;
+        width: fit-content;
+        padding: 0px 10px 0px 10px;
+        height: 2.3rem;
+    }
+
+    .userInfoSection, .userInfoName {white-space: nowrap;}
+
+    /* ب/* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول
+    /* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها */
+    /* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها *//* باکس های جدول ها */
+
+    .boxha {
+        position: relative;
+        left: 0;
+        display: grid;
+        margin-top: 4%;
+        top: 0rem;
+        width: 100%;
+        transform: unset;
+        gap: 1%;
+    }
+
+    .right-section {width: 100%;}
+
+    .hozoorBox {
+        width: 93%;
+        position: relative;
+        margin: 0 auto;
+        padding: 9px;
+    }
+
+    .hozoorBox h2 {font-size: 10px;}
+
+    .hozoorUsersReport-table {margin-top: 5px;}
+    .hozoorUsersReport-table th, .hozoorUsersReport-table td{font-size: 8px;}
+
+    .stn1 {width: 1.8%;}
+    .hozoorUsersReport-table td:nth-child(10) {width: 1.8%;}
+
+    .stn2 {width: 2.8%;}
+    .hozoorUsersReport-table td:nth-child(9) {width: 2.8%;}
+
+    .stn3 {width: 2.8%;}
+    .hozoorUsersReport-table td:nth-child(8) {width: 2.8%;}
+
+
+    .ezafeBox, .passBox, .hourlyPassBox {
+        width: 93%;
+        position: relative;
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    .ezafeBox h2, .passBox h2, .hourlyPassBox h2 {font-size: 10px;}
+
+    .ezafeKarUsersReport-table {margin-top: 1px;}
+
+    .ezafeKarUsersReport-table th {font-size: 9px;}
+
+    .morkhcUsersReport-table th {font-size: 9px;}
+
+    .morkhcUsersReport-table {margin-top: 1px;}
+
+    .hourlyPassUsersReport-table th {font-size: 9px;}
+
+    .hourlyPassUsersReport-table {margin-top: 1px;}
+
+    .numberReport{
+        top: 0;
+        left: 0;
+        grid-template-columns: repeat(2, 1fr);
+        width: 93%;
+        margin: 4% auto;
+        padding: 22px 13px 7px 13px;
+    }
+
+    .numBox .title, .numBoxInput .title, .numBoxEzafeh .title {
+        font-size: 10px;
+    }
+
+    .attendanceSamanehValueInput {
+        font-size: 10px;
+        height: 16px;
+    }
+
+    .attendanceSystemTitle, .attendanceSamanehTitle {
+        width: 10px;
+        font-size: 10px;
+        margin-right: 17px;
+    }
+
+    .attendanceSamanehTitlemovazafi {
+        font-size: 10px;
+    }
+
+    .numBox .value, .numBoxInput .value, .numBoxEzafeh .value {
+        font-size: 10px;
+    }
+
+    .numBox .jscode {
+        font-size: 10px;
+    }
+
+    .attendanceSystemValue {
+        font-size: 10px;
+    }
+
+    .numBox, .numBoxInput, .numBoxEzafeh {
+        font-size: 10px;
+        width: 132px;
+        height: 43px;
+        padding: 0;
+        margin: 0 auto;
+    }
+
+    .overtimeSamanehValue {
+        font-size: 10px;
+    }
+
+    .overtimeSystemValue {
+        font-size: 10px;
+    }
+
+    .overtimeSamanehTitle {
+        font-size: 10px;
+    }
+
+    .overtimeSystemTitle {
+        font-size: 10px;
+    }
+
+    /* تنظیمات باکس دکمه گزارشات *//* تنظیمات باکس دکمه گزارشات *//* تنظیمات باکس دکمه گزارشات *//* تنظیمات باکس دکمه گزارشات */
+
+    .exportButtons{
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 63%;
+        margin: 0 auto 12px auto;
+        padding: 7px 7px;
+        gap: 42px;
+    }
+
+    .btn {
+        padding: 6px 11px;
+        width: fit-content;
+        font-size: 11px;
+        margin: 0;
+    }
+}
+
 @media print {
 
+    .koleobject {
+        margin: 0 auto;
+        width: 100%;
+    }
+
     /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
     /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
     /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
 
+
     .titleBox {
-        margin-left: 39.5rem;
-        margin-top: 2rem;
+        position: relative;
+        margin: 0 auto;
         font-size: 19px;
         padding: 0;
-        height: 4rem;
-        width: 25rem;
+        height: 3rem;
+        width: auto;
     }
 
     .userInfoBox{
-        margin-left: 10.5rem;
-        margin-top: 2rem;
-        font-size: 19px;
+        position: relative;
+        margin: 0 auto;
+        font-size: 5px;
         padding: 0;
         height: 4rem;
-        width: 25rem;
     }
 
     /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
     /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
     /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
 
+    .boxha {
+        position: relative;
+        margin: 0 auto;
+        width: 100%;
+    }
+
     .hozoorBox {
-        left: -17.9rem;
-        position: absolute;
+        position: relative;
+        margin: 2% auto;
         height: auto;
         max-height: 100rem;
         padding: 10px;
-        margin-top: 0.8rem;
-        width: 68rem;
+        width: 90%;
     }
 
     .hozoorBox h2 {
@@ -970,12 +1177,13 @@ body {
     /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
 
     .left-section {
-        margin-top: 118rem;
-        margin-left: -14rem;
+        position: relative;
+        width: 50%;
+        margin: 0 auto;
     }
 
     .ezafeBox, .passBox, .hourlyPassBox {
-        width: 60rem;
+        width: 10rem;
     }
 
     .ezafeBox h2, .passBox h2, .hourlyPassBox h2 {
@@ -999,11 +1207,17 @@ body {
     /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
 
     .numberReport {
-        top: 109.7rem;
-        left: 11rem;
-        height: 13rem;
-        width: 51rem;
-        gap: 22px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 17px;
+        justify-content: center;
+        align-items: center;
+        width: 20%;
+        position: relative;
+        top: 28px;
+        left: 5rem;
+        background-color: #fbfff9;
+        border-radius: 20px;
     }
 
     .numBox {
@@ -1025,7 +1239,7 @@ body {
     /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
 
     .signature-box {
-        width: 18rem;
+        width: 10%;
         border: 2px solid #ddd;
         padding: 10px;
         border-radius: 8px;
@@ -1036,13 +1250,13 @@ body {
         align-items: center;
         height: 8rem;
         background-color: white;
-        position: absolute;
+        position: relative;
         left: 7rem;
-        top: 170rem;
+        top: 5rem;
     }
 
     .signature-box-hamkar {
-        width: 18rem;
+        width: 10%;
         border: 2px solid #ddd;
         padding: 10px;
         border-radius: 8px;
@@ -1053,9 +1267,9 @@ body {
         align-items: center;
         height: 8rem;
         background-color: white;
-        position: absolute;
+        position: relative;
         right: 7rem;
-        top: 170rem;
+        top: 5rem;
     }
 
     .exportButtons {
@@ -1063,6 +1277,10 @@ body {
     }
 
     @page {
-        margin: 0; /* حذف حاشیه‌های پیش‌فرض */
+        size: A4 portrait;
+        margin: 0 auto; /* حذف حاشیه‌های پیش‌فرض */
+        padding: 0;
+        height: auto;
+        width: 100%;
     }
 }

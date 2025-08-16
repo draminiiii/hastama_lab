@@ -2366,7 +2366,7 @@ margin-left: 15%;
 #sabtdastHozoor {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 14px;
     justify-content: flex-start;
     flex-direction: row-reverse;
     flex-wrap: wrap;
@@ -2407,7 +2407,7 @@ margin-left: 15%;
     align-items: center;
     font-weight: bold;
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 1px;
 }
 #calendar-header select {
     font-size: 15px;
@@ -2434,7 +2434,8 @@ margin-left: 15%;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px 0;
+    padding: 0;
+    font-family: 'Yekan';
     border-radius: 4px;
     color: #418259;
     font-size: 15px;
@@ -2449,33 +2450,78 @@ margin-left: 15%;
     font-weight: bold;
 }
 
-.time-picker {
-  display: none;
-  background: #f0f0f0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  width: 140px;
-  position: fixed;
-  z-index: 999;
-  font-family: 'Yekan', sans-serif;
+/* تنظیمات باکس انتخاب ساعت *//* تنظیمات باکس انتخاب ساعت *//* تنظیمات باکس انتخاب ساعت *//* تنظیمات باکس انتخاب ساعت *//* تنظیمات باکس انتخاب ساعت */
+
+.time-container {
+    position: relative; 
+    display: inline-block; 
 }
+
+.time-container label {
+    display: inline-block;
+    margin-right: 5px; /* فاصله بین input و متن */
+    vertical-align: middle;
+}
+
+.time-picker {
+    display: none;
+    background: #f0f0f0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    width: 150px;
+    border-radius: 10px;
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    z-index: 999;
+    font-family: 'Yekan', sans-serif;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px; 
+}
+
 
 .time-section {
-  display: inline-block;
-  text-align: center;
-  margin: 0 5px;
+    display: inline-block;
+    text-align: center;
+    margin: 0 5px;
 }
 
-.time-section button {
-  display: block;
-  width: 30px;
+.time-btn {
+    width: 30px;
+    height: 25px;
+    background: #ddd;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.time-btn:hover {
+    background: #ccc;
 }
 
 .time-section span {
-  display: block;
-  margin: 5px 0;
-  font-size: 18px;
+    display: block;
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.colon {
+    font-size: 20px;
+    margin: 0 5px;
+    line-height: 1;
+}
+
+#vorood {
+    text-align: center;
+    margin-right: 12px;
+}
+
+#khorooj {
+    text-align: center;
+    margin-right: 12px;
 }
 
 #sabt-btn {
@@ -3073,13 +3119,13 @@ margin-left: 15%;
 }
 
         #khorooj {
-        margin-right: 25% !important;
         width: 95px;
+        margin-right: 3.7rem;
     }
 
             #vorood {
-        margin-right: 26.4% !important;
         width: 95px;
+        margin-right: 4rem;
     }
 
     #start_date_hozoor {
@@ -3811,7 +3857,7 @@ margin-left: 15%;
 
     #hozoorbox {
         position: absolute;
-        top: 4.3rem;
+        top: 2rem;
         padding: 6px;
         width: 74%;
         left: 50%;
@@ -3847,7 +3893,7 @@ margin-left: 15%;
         padding: 5px;
         border-radius: 10px;
         border: 1px solid #919191;
-        margin-right: 4px;
+        margin-right: 0;
     }
 
     #hozoorUsersReportTable {
@@ -3880,15 +3926,15 @@ margin-left: 15%;
     }
 
     #natigehHozoor {
-    position: absolute;
-    top: 43rem;
-    padding: 4px 10px 16px 10px;
-    width: 74%;
-    height: 22rem;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-left: auto; /* این خط رو می‌تونی حذف کنی چون تاثیر نداره */
-}
+        position: absolute;
+        top: 41rem;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+        height: 22rem;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: auto; /* این خط رو می‌تونی حذف کنی چون تاثیر نداره */
+    }
 
 
     #natigehHozoor h2 {
@@ -3921,7 +3967,7 @@ margin-left: 15%;
 
     #sabtdst {
     position: absolute;
-    top: 23rem;
+    top: 21rem;
     padding: 4px 10px 10px 10px;
     width: 74%;
     left: 50%;

@@ -2,22 +2,22 @@
 // تنظیم پلیس هولدر برای فیلدهای تاریخ// تنظیم پلیس هولدر برای فیلدهای تاریخ// تنظیم پلیس هولدر برای فیلدهای تاریخ
 // تنظیم پلیس هولدر برای فیلدهای تاریخ// تنظیم پلیس هولدر برای فیلدهای تاریخ// تنظیم پلیس هولدر برای فیلدهای تاریخ
 
-document.getElementById('fromDate').placeholder = convertToPersianNumbers('1403/01/01');
-document.getElementById('toDate').placeholder = convertToPersianNumbers('1403/01/01');
-document.getElementById('start_date').placeholder = convertToPersianNumbers('1403/01/01');
-document.getElementById('end_date').placeholder = convertToPersianNumbers('1403/01/01');
+document.getElementById('fromDate').placeholder = convertToPersianNumbers('1404/01/01');
+document.getElementById('toDate').placeholder = convertToPersianNumbers('1404/01/01');
+document.getElementById('start_date').placeholder = convertToPersianNumbers('1404/01/01');
+document.getElementById('end_date').placeholder = convertToPersianNumbers('1404/01/01');
 document.getElementById("start_date").addEventListener("input", convertInputToPersian);
 document.getElementById("end_date").addEventListener("input", convertInputToPersian);
-document.getElementById('start_date_hourlypass').placeholder = convertToPersianNumbers('1403/01/01');
-document.getElementById('end_date_hourlypass').placeholder = convertToPersianNumbers('1403/01/01');
+document.getElementById('start_date_hourlypass').placeholder = convertToPersianNumbers('1404/01/01');
+document.getElementById('end_date_hourlypass').placeholder = convertToPersianNumbers('1404/01/01');
 document.getElementById('shanbeh').placeholder = convertToPersianNumbers('12:00 - 24:00');
 document.getElementById('yekshanbeh').placeholder = convertToPersianNumbers('12:00 - 24:00');
 document.getElementById('doshanbeh').placeholder = convertToPersianNumbers('12:00 - 24:00');
 document.getElementById('seshanbeh').placeholder = convertToPersianNumbers('12:00 - 24:00');
 document.getElementById('chrshanbeh').placeholder = convertToPersianNumbers('12:00 - 24:00');
 document.getElementById('panjshanbeh').placeholder = convertToPersianNumbers('12:00 - 24:00');
-document.getElementById('start_date_hozoor').placeholder = convertToPersianNumbers('1403/01/01');
-document.getElementById('end_date_hozoor').placeholder = convertToPersianNumbers('1403/01/01');
+document.getElementById('start_date_hozoor').placeholder = convertToPersianNumbers('1404/01/01');
+document.getElementById('end_date_hozoor').placeholder = convertToPersianNumbers('1404/01/01');
 document.getElementById('newhozoorNum').placeholder = convertToPersianNumbers('باید 8 رقمی وارد کنید');
 document.getElementById("start_date_hozoor").addEventListener("input", convertInputToPersian);
 document.getElementById("end_date_hozoor").addEventListener("input", convertInputToPersian);
@@ -2352,33 +2352,35 @@ function renderMonthYearSelectors(currentYear, currentMonth) {
   calendarYear.innerHTML = yearOptions;
 }
 
+// تغییر اعداد تقویم
 function renderCalendar(year, month, selectedDay) {
-  renderMonthYearSelectors(year, month);
-  calendarDates.innerHTML = "";
-  let firstDayOfMonth = getWeekDay(year, month, 1);
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    calendarDates.appendChild(document.createElement("div"));
-  }
-  const daysCount = daysInJMonth(year, month);
-  for (let day = 1; day <= daysCount; day++) {
-    const btn = document.createElement("button");
-    btn.type = "button";  // جلوگیری از سابمیت فرم
-    btn.textContent = day;
-    if (selectedDay === day) btn.classList.add("selected");
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();  // جلوگیری از تغییر آدرس
-      selectedDate = { year, month, day };
-      updateInputDate();
-      hideCalendar();
-    });
-    calendarDates.appendChild(btn);
-  }
+    renderMonthYearSelectors(year, month);
+    calendarDates.innerHTML = "";
+    let firstDayOfMonth = getWeekDay(year, month, 1);
+    for (let i = 0; i < firstDayOfMonth; i++) {
+        calendarDates.appendChild(document.createElement("div"));
+    }
+    const daysCount = daysInJMonth(year, month);
+    for (let day = 1; day <= daysCount; day++) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = convertToPersianNumbers(day); // <-- تبدیل به فارسی
+        if (selectedDay === day) btn.classList.add("selected");
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            selectedDate = { year, month, day };
+            updateInputDate();
+            hideCalendar();
+        });
+        calendarDates.appendChild(btn);
+    }
 }
 
+// نمایش تاریخ انتخاب شده با اعداد فارسی
 function updateInputDate() {
-  if (!selectedDate) return;
-  const { year, month, day } = selectedDate;
-  inputTarikh.value = `${year}/${String(month).padStart(2, "0")}/${String(day).padStart(2, "0")}`;
+    if (!selectedDate) return;
+    const { year, month, day } = selectedDate;
+    inputTarikh.value = convertToPersianNumbers(`${year}/${String(month).padStart(2, "0")}/${String(day).padStart(2, "0")}`);
 }
 
 function showCalendar() {
@@ -2450,19 +2452,17 @@ function toggleTimePicker(inputId) {
   // بقیه کد اصلی
   document.querySelectorAll(".time-picker").forEach(el => el.style.display = "none");
   const picker = document.getElementById(`timepicker-${inputId}`);
-  picker.style.display = picker.style.display === "block" ? "none" : "flex";
-  positionTimePicker(inputId);
+  picker.style.display = picker.style.display === "flex" ? "none" : "flex";
+
 }
 
 
 function positionTimePicker(inputId) {
+  const input = document.getElementById(inputId);
   const picker = document.getElementById(`timepicker-${inputId}`);
-
-  const vh = window.innerHeight;
-  const vw = window.innerWidth;
-
-  picker.style.top = (0.275 * vh) + "px";   // ۲۰٪ از ارتفاع صفحه
-  picker.style.left = (0.05 * vw) + "px";  // ۲۰٪ از عرض صفحه
+  const rect = input.getBoundingClientRect();
+  picker.style.top = rect.bottom + window.scrollY + "px";
+  picker.style.left = rect.left + window.scrollX + "px";
 }
 
 
