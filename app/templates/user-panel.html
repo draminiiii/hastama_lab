@@ -36,25 +36,6 @@
             <p class="welcome-text">{{ username }}، خوش آمدید</p>
         </div>
 
-        <!-- باکس صندوق پیام پاپ آپ -->
-        <div class="popup-box-massageBox" id="massageBoxPopup">
-            <h2>پیام‌ها</h2>
-                {% if message_records %}
-                {% for message in message_records %}
-                    <div class="userMassage" id="userMassageBox" onclick="openViewMassageBoxDialog(this)" data-id="{{ message.id }}">
-                        <div class="right">
-                            <div class="onvanMassage">{{ message.ticket_title }}</div>
-                            <div class="daryafkonandeMassage">{{ message.target_username }}</div>
-                        </div>
-                        <div class="tozihatMassage">{{ message.ticket_description }}</div>
-                    </div>
-                {% endfor %}
-                {% else %}
-                    <p>هیچ پیام جدیدی یافت نشد.</p>
-                {% endif %}
-            <button class="close-massage-box-btn" id="closeMassageBoxPopup">بستن</button>
-        </div>
-
         <!-- نوار سمت راست -->
         <div class="header-right">
             <div class="icon-container">
@@ -97,6 +78,62 @@
                 <img src="/static/images/exit.png" alt="خروج">
                 <span class="tooltipIconHeader-leftSidebar exit-tooltip-leftSidebar">خروج</span>
             </div>
+        </div>
+
+        <!-- باکس اطلاعات فردی کاربر -->
+        <div class="Information-box">
+            <div class="info-calendar-container">
+                <div id="userInfoBox">
+                    <div class="matnha">
+                    <p>نام : <span id="userName"></span></p>
+                    <p>نام خانوادگی : <span id="userLastName"></span></p>
+                    <p>بخش فعالیت : <span id="userDepartment"></span></p>
+                    <p>ساعت‌های کاری : <span id="userWorkHours"></span></p>
+                    <p>جانشین : <span id="userSubstitute"></span></p>
+                    </div>
+
+                    <div class="profileHa">
+                    <div class="profileLogo">
+                        <img src="{{ user_image_url or '/static/images/user.png' }}" alt="پروفایل کاربر" width="100">
+                    </div>
+                    <!-- فرم آپلود (input مخفی) -->
+                    <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload-profile-image">
+                        <input type="file" id="fileInput" name="file" accept="image/*" style="display: none;" onchange="document.getElementById('uploadForm').submit()">
+                    </form>
+                    <!-- فرم حذف -->
+                    <form id="deleteForm" method="post" action="/delete-profile-image">
+                        <!-- فرم بدون محتوای ظاهری. کلیک روی div باعث ارسال این فرم میشه -->
+                    </form>
+                    <div class="profileActions">
+                        <!-- حذف به صورت متن کلیک‌پذیر -->
+                        <div class="hazfeProfile" onclick="confirmDelete()">
+                            <p>حذف</p>
+                        </div>
+
+                        <!-- ویرایش به صورت متن کلیک‌پذیر -->
+                        <div class="virayeshProfile" onclick="document.getElementById('fileInput').click()">
+                            <p>ویرایش پروفایل</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+            </div>
+
+            <!-- تقویم کاربری -->
+            <div id="calender">
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <span class="prev-month">&#10094;</span>
+                            <span class="month-year"></span>
+                            <span class="next-month">&#10095;</span>
+                        </div>
+                        <div class="calendar-grid">
+                            <!-- روز های هفته به همراه اعداد ماه -->
+                        </div>
+                    </div>
+                </div>
+            
         </div>
 
         <!-- پاپ‌آپ ثبت مرخصی -->
@@ -228,58 +265,6 @@
                             <button type="button" class="btn-cancel" onclick="closeTicketModal()">انصراف</button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- باکس اطلاعات فردی کاربر -->
-        <div class="Information-box">
-            <div class="info-calendar-container">
-                <div id="userInfoBox">
-                    <p>نام : <span id="userName"></span></p>
-                    <p>نام خانوادگی : <span id="userLastName"></span></p>
-                    <p>بخش فعالیت : <span id="userDepartment"></span></p>
-                    <p>ساعت‌های کاری : <span id="userWorkHours"></span></p>
-                    <p>جانشین : <span id="userSubstitute"></span></p>
-                </div>
-                <div id="calender">
-                    <div class="calendar-container">
-                        <div class="calendar-header">
-                            <span class="prev-month">&#10094;</span>
-                            <span class="month-year"></span>
-                            <span class="next-month">&#10095;</span>
-                        </div>
-                        <div class="calendar-grid">
-                            <!-- روز های هفته به همراه اعداد ماه -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="profileHa">
-                <div class="profileLogo">
-                    <img src="{{ user_image_url or '/static/images/user.png' }}" alt="پروفایل کاربر" width="100">
-                </div>
-
-                <!-- فرم آپلود (input مخفی) -->
-                <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload-profile-image">
-                    <input type="file" id="fileInput" name="file" accept="image/*" style="display: none;" onchange="document.getElementById('uploadForm').submit()">
-                </form>
-
-                <!-- فرم حذف -->
-                <form id="deleteForm" method="post" action="/delete-profile-image">
-                    <!-- فرم بدون محتوای ظاهری. کلیک روی div باعث ارسال این فرم میشه -->
-                </form>
-
-                <div class="profileActions">
-                    <!-- حذف به صورت متن کلیک‌پذیر -->
-                    <div class="hazfeProfile" onclick="confirmDelete()">
-                        <p>حذف</p>
-                    </div>
-
-                    <!-- ویرایش به صورت متن کلیک‌پذیر -->
-                    <div class="virayeshProfile" onclick="document.getElementById('fileInput').click()">
-                        <p>ویرایش پروفایل</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -577,6 +562,25 @@
                     </table>
                 </div>
             </div>
+        </div>
+
+        <!-- باکس صندوق پیام پاپ آپ -->
+        <div class="popup-box-massageBox" id="massageBoxPopup">
+            <h2>پیام‌ها</h2>
+                {% if message_records %}
+                {% for message in message_records %}
+                    <div class="userMassage" id="userMassageBox" onclick="openViewMassageBoxDialog(this)" data-id="{{ message.id }}">
+                        <div class="right">
+                            <div class="onvanMassage">{{ message.ticket_title }}</div>
+                            <div class="daryafkonandeMassage">{{ message.target_username }}</div>
+                        </div>
+                        <div class="tozihatMassage">{{ message.ticket_description }}</div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>هیچ پیام جدیدی یافت نشد.</p>
+                {% endif %}
+            <button class="close-massage-box-btn" id="closeMassageBoxPopup">بستن</button>
         </div>
 
         <script src="{{ url_for('static', path='js/user-panel-script.js') }}"></script>

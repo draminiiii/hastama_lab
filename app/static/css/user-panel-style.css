@@ -120,7 +120,9 @@ body {
 .header-right {
     width: 5%;
     float: right;
-    height: 86%;
+    height: 87%;
+    gap: 128px;
+    justify-content: center;
     background-color: #92c168;
     top: 5.7rem;
     right: 1rem;
@@ -134,7 +136,6 @@ body {
 
 .icon-container {
     position: relative;
-    margin-top: 8rem;
     text-align: center;
 }
 
@@ -432,16 +433,17 @@ body {
 }
 
 #userInfoBox {
-    text-align: right; /* راست‌چین کردن متن */
-    direction: rtl; /* تعیین جهت نوشتار به صورت راست به چپ */
-    padding: 15px; /* کمی فضا برای ظاهر بهتر */
-    border: 1px solid #ccc; /* اضافه کردن حاشیه برای مشخص کردن باکس */
-    border-radius: 36px; /* گوشه‌های باکس گرد */
-    background-color: #fbfff9; /* رنگ پس‌زمینه */
-    width: 36vw;
+    text-align: right;
+    direction: rtl;
+    display: flex;
+    padding: 15px;
+    gap: 8%;
+    border: 1px solid #ccc;
+    border-radius: 36px;
+    background-color: #fbfff9;
+    width: 94%;
     height: 347px;
-    float: right;
-    margin-right: 2%;
+    position: relative;
 }
 
 #userInfoBox p {
@@ -449,6 +451,7 @@ body {
     font-size: 20px;
     line-height: 1.9;
     color: black;
+    white-space: nowrap;
 }
 
 /*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
@@ -492,9 +495,8 @@ body {
     border: 1px solid #ccc; /* اضافه کردن حاشیه برای مشخص کردن باکس */
     border-radius: 30px; /* گوشه‌های باکس گرد */
     background-color: #fbfff9; /* رنگ پس‌زمینه */
-    width: 28rem;
+    width: 60%;
     float: left;
-    margin-left: 2%;
     height: 22rem; /* تنظیم ارتفاع ثابت برای تقویم */
     overflow: hidden; /* جلوگیری از نمایش محتوای خارج از باکس */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -630,13 +632,14 @@ body {
     border: 1px solid #ddd;
     background-color: #ffffff;
     transition: max-height 1s ease-out, padding 0.5s ease-out, width 0.25s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
-    width: 73.3rem;
+    width: 69.8%;
+    display: flex;
+    flex-direction: row-reverse;
     max-height: 383px;
-    z-index: 1;
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin: 13rem auto 0;
+    margin: 12% auto 0 auto;
     height: 700px;
 }
 
@@ -667,17 +670,24 @@ body {
 
 .Information-box a:hover {text-decoration: underline;}
 
+.info-calendar-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
 /* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر */
 /* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر */
 /* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر *//* تنظیمات باکس پروفایل کاربر */
 
 .profileHa {
-    position: absolute;
+    position: relative;
     border: 1px solid #ddd;
     border-radius: 36px;
     padding: 1rem;
-    margin-left: 35rem;
-    margin-top: 3.6rem;
+    margin: auto 21% auto auto;
     background-color: #fff;
     text-align: center;
 }
@@ -1589,7 +1599,7 @@ body {
 
 .leftSidebar {
     width: 5%;
-    height: 52rem;
+    height: 86%;
     background-color: #92c168;
     top: 5.7rem;
     left: 1rem;
@@ -2117,22 +2127,6 @@ body {
     .header-center h1 {
         font-size: 18px; /* تغییر اندازه فونت برای موبایل */
     }
-}
-
-@media (min-height: 700px) and (max-height: 1000px)  {
-    
-    .logout-btn {
-        margin-top: 6rem;
-    }
-
-    .icon-container {
-        margin-top: 13vh;
-    }
-
-    .leftSidebar {
-        height: 86%;
-    }
-    
 }
 
 @media (min-height: 500px) and (max-height: 700px)  {

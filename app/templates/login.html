@@ -12,22 +12,12 @@
 <body>
 
     <!-- کل اجزاء -->
-    <div class="koleObject">
+
 
         <!-- پنل لوگو -->
         <div class="samaneh">
             <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="Logo">
             <p>ســامـانـه هســتما</p>
-        </div>
-
-        <!-- متن بزرگ وسط صفحه -->
-        <div class="center-text">
-            آزمایشگاه دکتر امینی
-        </div>
-
-        <!-- متن کوچک زیر آن -->
-        <div class="small-text">
-            همگام با تکنولوژی روز، به پشتوانه تجربه دیروز
         </div>
 
         <!-- اسلایدر  -->
@@ -60,8 +50,23 @@
             </div>
         </div>
 
+        <!-- متن بزرگ وسط صفحه -->
+        <div class="center-text">
+            آزمایشگاه دکتر امینی
+        </div>
+
+        <!-- متن کوچک زیر آن -->
+        <div class="small-text">
+            همگام با تکنولوژی روز، به پشتوانه تجربه دیروز
+        </div>
+
         <!-- خط وسط -->
         <div class="khatvasat"></div>
+
+        <!-- متن بزرگ وسط صفحه -->
+        <div class="down-text">
+            <span>نسخه آزمایشی</span>
+        </div>
 
         <!-- پاپ‌آپ پنل کاربری -->
         <div class="popup-content">
@@ -75,17 +80,14 @@
             <button onclick="login()">ورود</button>
         </div>
 
-        <!-- متن بزرگ وسط صفحه -->
-        <div class="down-text">
-            <span>نسخه آزمایشی</span>
-        </div>
+        
 
         <!-- فوتر با جمله حق نشر -->
         <div class="footertxt">
            © کلیه حقوق این سامانه متعلق به شرکت هنرافزار ایرانیان می‌باشد 
         </div>
 
-    </div>
+
     
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
 

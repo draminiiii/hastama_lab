@@ -764,7 +764,7 @@ body {
     margin-right: 7px;
 }
 
-.attendanceSystemTitle, .attendanceSamanehTitle {
+.attendanceSystemTitlegozaresh, .attendanceSystemTitlemajmoo, .attendanceSamanehTitle {
     font-size: 14px;
     font-weight: normal;
     color: #333;
@@ -1009,10 +1009,14 @@ body {
         height: 16px;
     }
 
-    .attendanceSystemTitle, .attendanceSamanehTitle {
+    .attendanceSamanehTitle {
         width: 10px;
         font-size: 10px;
         margin-right: 17px;
+    }
+
+    .attendanceSystemTitlemajmoo, .attendanceSystemTitlegozaresh {
+        font-size: 10px;
     }
 
     .attendanceSamanehTitlemovazafi {
@@ -1078,8 +1082,8 @@ body {
 @media print {
 
     .koleobject {
+        max-width: 190mm; /* داخل حاشیه جا بشه */
         margin: 0 auto;
-        width: 100%;
     }
 
     /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
@@ -1089,19 +1093,21 @@ body {
 
     .titleBox {
         position: relative;
-        margin: 0 auto;
-        font-size: 19px;
-        padding: 0;
-        height: 3rem;
-        width: auto;
+        margin: 10px auto;
+        font-size: 15px;
+        padding: 0 20px;
+        height: 2rem;
+        width: fit-content;
     }
 
     .userInfoBox{
         position: relative;
         margin: 0 auto;
-        font-size: 5px;
-        padding: 0;
-        height: 4rem;
+        font-size: 15px;
+        padding: 0 20px;
+        height: 2rem;
+        width: 70%;
+        gap: 200px;
     }
 
     /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
@@ -1116,11 +1122,11 @@ body {
 
     .hozoorBox {
         position: relative;
-        margin: 2% auto;
-        height: auto;
-        max-height: 100rem;
+        margin: 1.5% auto;
+        height: 265mm;
+        max-height: unset;
         padding: 10px;
-        width: 90%;
+        width: 100%;
     }
 
     .hozoorBox h2 {
@@ -1134,19 +1140,22 @@ body {
     }
 
     #hozoorUsersReportTable {
-        height: auto;
-        max-height: 79rem;
+        height: 270mm;
+        max-height: 270mm;
     }
 
-    .hozoorUsersReport-table td {font-size: 17px;}
+    .hozoorUsersReport-table td {
+        font-size: 12px;
+        padding: 2px;
+    }
 
-    .hozoorUsersReport-table th {font-size: 15px;}
+    .hozoorUsersReport-table th {font-size: 9px;}
 
     .stn1 {width: 0.5%;}
     .hozoorUsersReport-table td:nth-child(10) { width: 0.5%; }
 
-    .stn2 { width: 0.8%; }
-    .hozoorUsersReport-table td:nth-child(9) { width: 0.8%; }
+    .stn2 { width: 1%; }
+    .hozoorUsersReport-table td:nth-child(9) { width: 1%; }
 
     .stn3 {width: 1%;}
     .hozoorUsersReport-table td:nth-child(8) { width: 1%; }
@@ -1166,8 +1175,8 @@ body {
     .stn8 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(3) { width: 1%; }
 
-    .stn9 { width: 1%; }
-    .hozoorUsersReport-table td:nth-child(2) { width: 1%; }
+    .stn9 { width: 0.9%; }
+    .hozoorUsersReport-table td:nth-child(2) { width: 0.9%; }
 
     .stn10 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(1) { width: 1%; }
@@ -1178,28 +1187,28 @@ body {
 
     .left-section {
         position: relative;
-        width: 50%;
-        margin: 0 auto;
+        width: 90%;
+        margin: 4% auto;
     }
 
     .ezafeBox, .passBox, .hourlyPassBox {
-        width: 10rem;
+        width: 100%;
     }
 
     .ezafeBox h2, .passBox h2, .hourlyPassBox h2 {
-        font-size: 25px;
+        font-size: 15px;
     }
 
     .ezafeKarUsersReport-table th {
-        font-size: 18px;
+        font-size: 10px;
     }
 
     .morkhcUsersReport-table th {
-        font-size: 18px;
+        font-size: 10px;
     }
 
     .hourlyPassUsersReport-table th {
-        font-size: 18px;
+        font-size: 10px;
     }
 
     /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
@@ -1212,34 +1221,113 @@ body {
         gap: 17px;
         justify-content: center;
         align-items: center;
-        width: 20%;
+        width: 95%;
         position: relative;
-        top: 28px;
-        left: 5rem;
+        margin: 0 auto;
         background-color: #fbfff9;
         border-radius: 20px;
     }
 
     .numBox {
         padding: 7px;
-        font-size: 20px;
-        width: 11rem;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .numBox, .numBoxInput, .numBoxEzafeh {
+        height: 80px;
+        font-size: 18px;
+    }
+
+    .numBoxEzafeh {
+        width: 100%;
     }
 
     .attendanceSamanehTitlemovazafi {
         margin-top: 7px;
+        font-size: 15px;
     }
 
     .attendanceSamanehValueInput {
-        margin-top: 4px;
+        font-size: 20px;
+        margin-top: 9px;
+        height: 26px;
+    }
+
+    .attendanceSamanehTitle {
+        margin-top: 7px;
+        font-size: 15px;
+    }
+
+    .attendanceSystemTitlemajmoo {
+        margin-left: -10;
+        margin-top: 7px;
+        font-size: 15px;
+    }
+
+    .attendanceSystemTitlegozaresh {
+        margin-left: -3px;
+        margin-top: 7px;
+        font-size: 15px;
+    }
+
+    .attendanceSystemValue {
+        font-size: 15px;
+        margin-top: 5px;
+    }
+
+    .overtimeSamanehValue {
+        font-size: 20px;
+    }
+
+    .overtimeSystemValue {
+        font-size: 20px;
+    }
+
+    .overtimeSamanehTitle {
+        margin-top: 15px;
+        font-size: 15px;
+    }
+
+    .overtimeSystemTitle {
+        margin-top: 15px;
+        font-size: 15px;
+    }
+
+    .numBox .value, .numBoxInput .value, .numBoxEzafeh .value {
+        font-size: 20px;
+        margin-top: 0;
+    }
+
+    .numBox .title, .numBoxInput .title, .numBoxEzafeh .title {
+        font-size: 11px;
+    }
+
+    #takhiretitle {
+        margin-top: 15px;
+    }
+
+    .numBox .jscode {
+        font-size: 20px;
+        margin-top: 15px;
     }
 
     /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
     /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
     /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
 
+    .emzaha {
+        position: relative;
+        margin: 7% auto;
+        width: 90%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        gap: 15%;
+    }
+
     .signature-box {
-        width: 10%;
+        width: 30%;
         border: 2px solid #ddd;
         padding: 10px;
         border-radius: 8px;
@@ -1251,12 +1339,11 @@ body {
         height: 8rem;
         background-color: white;
         position: relative;
-        left: 7rem;
-        top: 5rem;
+        margin: 0;
     }
 
     .signature-box-hamkar {
-        width: 10%;
+        width: 30%;
         border: 2px solid #ddd;
         padding: 10px;
         border-radius: 8px;
@@ -1268,8 +1355,7 @@ body {
         height: 8rem;
         background-color: white;
         position: relative;
-        right: 7rem;
-        top: 5rem;
+        margin: 0;
     }
 
     .exportButtons {
