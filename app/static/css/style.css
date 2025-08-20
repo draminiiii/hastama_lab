@@ -283,7 +283,8 @@ header h1 {
     position: absolute;
     top: 39.4%;
     left: 69.7vw;
-    width: 11rem;
+    text-align: center;
+    width: 6vw;
     font-size: clamp(14px, 1vw, 29px);
 }
 
@@ -324,7 +325,7 @@ header h1 {
 .samaneh {
     position: absolute;
     display: grid;
-    width: fit-content;
+    width: 14vw;
     height: fit-content;
     top: 24%;
     right: 20.6vw;
@@ -467,62 +468,6 @@ header h1 {
 }
 
 @media (min-width: 1400px) and (max-width: 1680px) {
-    
-}
-
-@media (min-width: 1300px) and (max-width: 1620px) {
-
-    .samaneh {
-        margin-left: 57rem;
-        margin-top: 9rem;
-    }
-
-    .samaneh p{
-        font-size: 1.5rem;
-    }
-
-    .samaneh img {
-        width: 5rem;
-        height: 5rem;
-    }
-
-    .popup-content {
-        padding: 11px 17px 12px 15px;
-        max-width: 22vw;
-        margin: 44.45vh auto auto 62.1vw;
-    }
-
-    .popup-content h2 {
-        font-size: 1.2rem;
-    }
-
-    .popup-content input {
-        width: 90%;
-        font-size: 0.86rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-        padding: 7px;
-    }
-
-    .slider {
-        height: 59vh;
-        width: 40.5rem;
-        margin: 10% auto 0 10%;
-    }
-
-    .khatvasat {
-        margin-top: 6rem;
-    }
-
-    .small-text {
-        margin-top: 51vh;
-    }
-    
-    .down-text {
-        margin-top: 15.4rem;
-        margin-left: 59.7rem;
-        font-size: 0.8rem;
-    }
     
 }
 
