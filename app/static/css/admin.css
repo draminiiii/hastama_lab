@@ -17,12 +17,22 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
     font-family: 'Yekan', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    overflow-x: hidden;
+    height: 100%;
+}
+
+.koleObject {
+    position: relative;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    height: 100%;
 }
 
 /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
@@ -276,9 +286,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 14rem;
-    margin-left: 50%;
-    transform: translate(-50%, -50%);
     width: 63rem; /* عرض باکس */
     padding: 20px; /* فاصله داخلی */
     background-color: #fbfff9; /* رنگ پس‌زمینه */
@@ -287,6 +294,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* سایه */
     font-family: 'Yekan', sans-serif;
     text-align: center;
+    position: relative;
 }
 
 /* تنظیم استایل عنوان */
@@ -484,7 +492,6 @@ body {
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 3.7rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -563,8 +570,6 @@ body {
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 50px;
-    margin-bottom: 50px;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -626,7 +631,6 @@ body {
 
 #individualReportBox{
     margin-bottom: 50px;
-    margin-top: 50px;
     background-color: #fbfff9;
 }
 
@@ -1064,19 +1068,16 @@ form button:hover {background-color: #4e7a9e;}
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 63rem; /* عرض باکس */
-    background-color: #fbfff9; /* رنگ پس‌زمینه */
-    border: 1px solid #ccc; /* حاشیه */
-    border-radius: 25px; /* گوشه‌های گرد */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* سایه */
+    position: relative;
+    width: 63rem;
+    background-color: #fbfff9;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-family: 'Yekan', sans-serif;
     text-align: center;
-    top: 34.5rem;
     height: 438px;
-    overflow-y: auto;
+    overflow-y: hidden;
     padding: 0 20px;
 }
 
@@ -1180,7 +1181,6 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 3.7rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1257,7 +1257,6 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 50px;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1348,8 +1347,6 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 50px;
-    margin-bottom: 50px;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1532,7 +1529,6 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 3.7rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1610,7 +1606,8 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1626,7 +1623,7 @@ form button:hover {background-color: #4e7a9e;}
 /* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی */
 
 .hourlyPassTotaluserReport-table {
-    width: 100%;
+    width: 87%;
     border-collapse: separate; /* برای اعمال border-radius لازم است */
     border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
     border-radius: 20px;
@@ -1689,8 +1686,6 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 50px;
-    margin-bottom: 50px;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1789,7 +1784,7 @@ form button:hover {background-color: #4e7a9e;}
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 6rem;
+    margin-top: 2rem;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -2067,12 +2062,10 @@ form button:hover {background-color: #4e7a9e;}
 /* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران */
 
 #hozoorbox {
-    margin-left: auto;
-    margin-right: auto;
     width: 70%;
     padding: 20px;
     background-color: #fbfff9;
-    margin-top: 6rem;
+    margin-top: 3.7rem;
     display: none;
     position: relative;
     border-radius: 8px;
@@ -2668,7 +2661,6 @@ margin-left: 15%;
     width: 70%;
     padding: 20px;
     background-color: white;
-    margin-top: 100px;
     display: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -117,7 +117,7 @@ function toggleBox(boxId) {
 
         const hourlyPassTotaluser = document.getElementById('hourlyPassTotaluser');
         if (hourlyPassTotaluser) {
-            hourlyPassTotaluser.style.display = 'block';
+            hourlyPassTotaluser.style.display = 'flex';
         }
 
         const hourlyPassIndivisualuser = document.getElementById('hourlyPassIndivisualuser');
