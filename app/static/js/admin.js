@@ -670,9 +670,41 @@ function closeEditPopup() {
     document.getElementById('editPopup').style.display = 'none';
 }
 
-document.getElementById('saveButton').addEventListener('click', function() {
-    document.getElementById('editUserForm').submit(); // فرم را هنگام کلیک روی دکمه ارسال می‌کند
-});
+function updateUser() {
+
+    const username = document.getElementById("editUsername").value;
+    const substitute = document.getElementById("editSubstitute").value;
+    const work_hours = document.getElementById("editWorkHours").value;
+    const department = document.getElementById("editDepartment").value;
+
+    if (!username) {
+        alert("نام کاربر مشخص نیست.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("substitute", substitute);
+    formData.append("work_hours", work_hours);
+    formData.append("department", department);
+
+    fetch("/update_user", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("خطا در ثبت اطلاعات");
+        }
+
+        // بعد از ثبت، صفحه رفرش شود
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error(error);
+        alert("خطا در ثبت اطلاعات");
+    });
+}
 
 function submitForm() {
     // ارسال فرم
