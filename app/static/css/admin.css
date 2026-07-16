@@ -2062,7 +2062,7 @@ form button:hover {background-color: #4e7a9e;}
 /* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران */
 
 #hozoorbox {
-    width: 70%;
+    width: 80%;
     padding: 20px;
     background-color: #fbfff9;
     margin-top: 3.7rem;
@@ -2177,6 +2177,20 @@ form button:hover {background-color: #4e7a9e;}
     width: 100%;
     table-layout: fixed;
 }
+
+.mjmoo-hozoor-gzrsh {width: 3%;}
+.ezafe-hozoor-gzrsh {width: 2%;}
+.khorojzd-hozoor-gzrsh {width: 2%;}
+.shorozd-hozoor-gzrsh {width: 2%;}
+.takhir-hozoor-gzrsh {width: 2%;}
+.zmnkhrj-hozoor-gzrsh {width: 2%;}
+.zmnvrd-hozoor-gzrsh {width: 2%;}
+.zmnvrd2-hozoor-gzrsh {width: 2%;}
+.zmnkhrj2-hozoor-gzrsh {width: 2%;}
+.hfte-hozoor-gzrsh {width: 1.7%;}
+.sbt-hozoor-gzrsh {width: 1.5%;}
+.zmnkhrj2-hozoor-gzrsh {width: 2%;}
+.zmnvrd2-hozoor-gzrsh {width: 2%;}
 
 /* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران */
 /* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران */
@@ -3908,6 +3922,8 @@ margin-left: 15%;
     .takhir-hozoor-gzrsh {width: 2%;}
     .zmnkhrj-hozoor-gzrsh {width: 2%;}
     .zmnvrd-hozoor-gzrsh {width: 2%;}
+    .zmnvrd2-hozoor-gzrsh {width: 2%;}
+    .zmnkhrj2-hozoor-gzrsh {width: 2%;}
     .hfte-hozoor-gzrsh {width: 2.46%;}
     .sbt-hozoor-gzrsh {width: 2.62%;}
 

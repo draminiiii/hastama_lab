@@ -1026,39 +1026,43 @@ async def add_user(
 # تابع بروزرسانی اطلاعات کاربر# تابع بروزرسانی اطلاعات کاربر# تابع بروزرسانی اطلاعات کاربر# تابع بروزرسانی اطلاعات کاربر
 
 @app.post("/update_user")
-async def update_user(
-    request: Request,
-    username: str = Form(...),
-    substitute: str = Form(...),
-    work_hours: str = Form(...),
-    department: str = Form(...),
-):
+async def update_user(request: Request):
     try:
-        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                              r'SERVER=localhost\\SQLEXPRESS;'
-                              'DATABASE=userDB;'
-                              'Trusted_Connection=yes;')
+        data = await request.json()
+
+        username = data.get("username")
+        substitute = data.get("substitute")
+        work_hours = data.get("work_hours")
+        department = data.get("department")
+
+        conn = pyodbc.connect(
+            'DRIVER={ODBC Driver 17 for SQL Server};'
+            r'SERVER=localhost\SQLEXPRESS;'
+            'DATABASE=userDB;'
+            'Trusted_Connection=yes;'
+        )
+
         cursor = conn.cursor()
 
-        query = '''
-        UPDATE user_table
-        SET substitute = ?, work_hours = ?, department = ?
-        WHERE username = ?
-        '''
-        cursor.execute(query, (substitute, work_hours, department, username))
+        cursor.execute("""
+            UPDATE user_table
+            SET substitute = ?, work_hours = ?, department = ?
+            WHERE username = ?
+        """, (substitute, work_hours, department, username))
+
         conn.commit()
 
-        cursor.close()
-        conn.close()
-
-        request.session["message"] = "تغییرات با موفقیت ثبت شد."
-        return RedirectResponse(url="/admin", status_code=303)
+        return {"success": True}
 
     except Exception as e:
-        return templates.TemplateResponse("admin.html", {
-            "request": request,
-            "error": f"Error: {str(e)}"
-        })
+        return {"success": False, "error": str(e)}
+
+    finally:
+        try:
+            cursor.close()
+            conn.close()
+        except:
+            pass
 
 # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران
 # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران
