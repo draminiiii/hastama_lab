@@ -1945,6 +1945,8 @@ document.getElementById("extractButton").addEventListener("click", function () {
         return;
     }
 
+    document.getElementById("hozoorbox").style.marginTop = "20rem";
+
     // تعریف آرایه تعطیلات رسمی (شمسی به فرمت YYYY-MM-DD)
     const OFFICIAL_HOLIDAYS = [
         "1404-01-01", "1404-01-02", "1404-01-03", "1404-01-04",
@@ -2082,6 +2084,8 @@ document.getElementById("extractButton").addEventListener("click", function () {
                     `مجموع مدت زمان خروج زود هنگام : ${convertNumbersToPersianNumber(totalEarlyExit > 0 ? formatTimeFromMinutes(totalEarlyExit) : "00:00")}`;
 
                 document.getElementById("natigehHozoor").style.display = "block";
+
+                
             } else {
                 console.error("داده‌ها به فرمت صحیح نیستند:", data);
             }

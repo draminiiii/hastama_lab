@@ -2011,11 +2011,16 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
     WHERE CardNo = ? AND Date BETWEEN ? AND ?
     """
 
-    # تبدیل بازه شمسی به میلادی برای کوئری اکسس/هوذور
-    from_g = JalaliDate.strptime(start_date, '%Y/%m/%d').to_gregorian()
-    to_g = JalaliDate.strptime(end_date, '%Y/%m/%d').to_gregorian()
+    # تاریخ شمسی برای Access (چون فیلد Date از نوع Short Text است)
+    from_j = start_date
+    to_j = end_date
 
-    cursor_access.execute(query, (hozoor_num, from_g, to_g))
+    # تاریخ میلادی برای SQL Server
+    from_g = JalaliDate.strptime(start_date, "%Y/%m/%d").to_gregorian()
+    to_g = JalaliDate.strptime(end_date, "%Y/%m/%d").to_gregorian()
+
+    # خواندن اطلاعات از Access
+    cursor_access.execute(query, (hozoor_num, from_j, to_j))
     rows = cursor_access.fetchall()
     conn_access.close()
 
