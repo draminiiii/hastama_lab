@@ -10,7 +10,6 @@
     </head>
 
     <body>
-        <div class="koleobject">
 
             <div class="onvanha">
                 <div class="titleBox">
@@ -29,40 +28,38 @@
                 </div>
             </div>
 
-            <div class="boxha">
-                
-            
-                <!-- بخش راست (حضور و غیاب) -->
-                <div class="right-section">
-                    <div class="hozoorBox">
-                        <h2>جدول حضور و غیاب</h2>
-                        <table class="hozoorUsersReport-table" id="hozoorUsersReportTable">
-                            <thead>
-                                <tr>
-                                    <th class="stn12">مجموع زمان حضور</th>
-                                    <th class="stn11">اضافه کاری</th>
-                                    <th class="stn10">خروج زود هنگام</th>
-                                    <th class="stn9">شروع زود هنگام</th>
-                                    <th class="stn8">تاخیر</th>
+            <!-- جدول حضور و غیاب نهایی -->
+            <div class="bala">
+                <div class="hozoorBox">
+                    <h2>جدول حضور و غیاب</h2>
+                    <table class="hozoorUsersReport-table" id="hozoorUsersReportTable">
+                        <thead>
+                            <tr>
+                                <th class="stn12">مجموع زمان حضور</th>
+                                <th class="stn11">اضافه کاری</th>
+                                <th class="stn10">خروج زود هنگام</th>
+                                <th class="stn9">شروع زود هنگام</th>
+                                <th class="stn8">تاخیر</th>
 
-                                    <th class="stn7">خروج دوم</th>
-                                    <th class="stn6">ورود دوم</th>
+                                <th class="stn7">خروج دوم</th>
+                                <th class="stn6">ورود دوم</th>
 
-                                    <th class="stn5">زمان خروج</th>
-                                    <th class="stn4">زمان ورود</th>
+                                <th class="stn5">زمان خروج</th>
+                                <th class="stn4">زمان ورود</th>
 
-                                    <th class="stn3">روز هفته</th>
-                                    <th class="stn2">تاریخ ثبت</th>
-                                    <th class="stn1">ردیف</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                                <th class="stn3">روز هفته</th>
+                                <th class="stn2">تاریخ ثبت</th>
+                                <th class="stn1">ردیف</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- بخش چپ (اضافه‌کار و مرخصی) -->
+            <!-- باکس های آمار و اعداد و جداول مرخصی، پاس ساعتی و اضافه کاری -->
+            <div class="paein">
                 <div class="left-section">
                     <div class="ezafeBox">
                         <h2>جدول اضافه‌کار</h2>
@@ -119,87 +116,89 @@
                     </div>
                 </div>
 
-            </div>
+                <div class="paeinrast">
+                    <div class="numberReport">
+                        <!-- ردیف اول -->
+                        <div class="numBoxEzafeh">
+                            <span class="title">مجموع اضافه کاری</span>
+                            <div class="overtimeContainer">
+                                <div class="overtimeSystem">
+                                    <p class="overtimeSystemTitle">سیستم</p>
+                                    <span class="overtimeSystemValue" id="ezafeNumBoxID">00:00</span>
+                                </div>
+                                <div class="overtimeSamaneh">
+                                    <p class="overtimeSamanehTitle">سامانه</p>
+                                    <span class="overtimeSamanehValue samanehTime">00:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="numBox">
+                            <span class="title">مجموع زمان حضور</span>
+                            <div class="attendanceContainer">
+                                <div class="attendanceSystem">
+                                    <p class="attendanceSystemTitlemajmoo">سیستم</p>
+                                    <span class="attendanceSystemValue" id="attendanceNumBoxID">00:00</span>
+                                </div>
+                                <div class="attendanceSamaneh">
+                                    <p class="attendanceSamanehTitle">سامانه</p>
+                                    <span class="attendanceSamanehValue samanehTime">00:00</span>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="numberReport">
-                <!-- ردیف اول -->
-                <div class="numBoxEzafeh">
-                    <span class="title">مجموع اضافه کاری</span>
-                    <div class="overtimeContainer">
-                        <div class="overtimeSystem">
-                            <p class="overtimeSystemTitle">سیستم</p>
-                            <span class="overtimeSystemValue" id="ezafeNumBoxID">00:00</span>
+                        <div class="numBox" id="hozoornumBoxID">
+                            <div class="title">گزارش حضور روزانه</div>
+                            <div class="attendanceContainer">
+                                <div class="attendanceSystem">
+                                    <p class="attendanceSystemTitlegozaresh">سیستم</p>
+                                    <span class="attendanceSystemValue" id="attendanceNumBoxID">25 روز</span>
+                                </div>
+                                <div class="attendanceSamaneh">
+                                    <p class="attendanceSamanehTitlemovazafi">موظفی</p>
+                                    <input type="text" id="holidayDays" class="attendanceSamanehValueInput" placeholder=" " />
+                                </div>
+                            </div>
                         </div>
-                        <div class="overtimeSamaneh">
-                            <p class="overtimeSamanehTitle">سامانه</p>
-                            <span class="overtimeSamanehValue samanehTime">00:00</span>
+                        
+                        <!-- ردیف دوم -->
+                        <div class="numBox">
+                            <span class="title">مجموع زمان تاخیر</span>
+                            <span class="value" id="takhiretitle">00:00</span>
+                        </div>
+                        <div class="numBox">
+                            <span class="title">مجموع پاس های ساعتی</span>
+                            <span class="value" id="takhiretitle">00:00</span>
+                        </div>
+                        <div class="numBox">
+                            <span class="title">مجموع شروع زودهنگام</span>
+                            <span class="value" id="takhiretitle">00:00</span>
+                        </div>
+                        <div class="numBox">
+                            <span class="title">مجموع خروج زودهنگام</span>
+                            <span class="value" id="takhiretitle">00:00</span>
+                        </div>
+                        <div class="numBox">
+                            <span class="title">مجموع مرخصی</span>
+                            <div class="jscode">
+                                <span> روز</span>
+                                <span id="roozeMorkhc"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="numBox">
-                    <span class="title">مجموع زمان حضور</span>
-                    <div class="attendanceContainer">
-                        <div class="attendanceSystem">
-                            <p class="attendanceSystemTitlemajmoo">سیستم</p>
-                            <span class="attendanceSystemValue" id="attendanceNumBoxID">00:00</span>
-                        </div>
-                        <div class="attendanceSamaneh">
-                            <p class="attendanceSamanehTitle">سامانه</p>
-                            <span class="attendanceSamanehValue samanehTime">00:00</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="numBox" id="hozoornumBoxID">
-                    <div class="title">گزارش حضور روزانه</div>
-                    <div class="attendanceContainer">
-                        <div class="attendanceSystem">
-                            <p class="attendanceSystemTitlegozaresh">سیستم</p>
-                            <span class="attendanceSystemValue" id="attendanceNumBoxID">25 روز</span>
-                        </div>
-                        <div class="attendanceSamaneh">
-                            <p class="attendanceSamanehTitlemovazafi">موظفی</p>
-                            <input type="text" id="holidayDays" class="attendanceSamanehValueInput" placeholder=" " />
+                    <div class="dokmeha">
+                        <div class="exportButtons">
+                            <a href="/download_pdf">
+                                <button class="btn">دریافت فایل گزارش</button>
+                            </a>
+                            <button class="btn" onclick="window.print()">چاپ گزارش</button>
                         </div>
                     </div>
-                </div>
-                
-                <!-- ردیف دوم -->
-                <div class="numBox">
-                    <span class="title">مجموع زمان تاخیر</span>
-                    <span class="value" id="takhiretitle">00:00</span>
-                </div>
-                <div class="numBox">
-                    <span class="title">مجموع پاس های ساعتی</span>
-                    <span class="value" id="takhiretitle">00:00</span>
-                </div>
-                <div class="numBox">
-                    <span class="title">مجموع شروع زودهنگام</span>
-                    <span class="value" id="takhiretitle">00:00</span>
-                </div>
-                <div class="numBox">
-                    <span class="title">مجموع خروج زودهنگام</span>
-                    <span class="value" id="takhiretitle">00:00</span>
-                </div>
-                <div class="numBox">
-                    <span class="title">مجموع مرخصی</span>
-                    <div class="jscode">
-                        <span> روز</span>
-                        <span id="roozeMorkhc"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dokmeha">
-                <div class="exportButtons">
-                    <a href="/download_pdf">
-                        <button class="btn">دریافت فایل گزارش</button>
-                    </a>
-                    <button class="btn" onclick="window.print()">چاپ گزارش</button>
                 </div>
             </div>
             
+   
             <div class="emzaha">
                 <div class="signature-box">
                     <strong>امضای مدیر آزمایشگاه</strong>
@@ -210,9 +209,9 @@
                 </div>
             </div>
 
-        </div>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment-jalaali@0.9.2/build/moment-jalaali.js"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment-jalaali@0.9.2/build/moment-jalaali.js"></script>
 
         <script src="{{ url_for('static', path='js/final-report-script.js') }}"></script>
         

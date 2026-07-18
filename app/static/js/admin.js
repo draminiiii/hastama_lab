@@ -2006,11 +2006,19 @@ document.getElementById("extractButton").addEventListener("click", function () {
                 data.forEach(day => {
                     let entryTime = formatTime(day.EntryTime);
                     let exitTime = formatTime(day.ExitTime);
+
+                    let entryTime2 = formatTime(day.EntryTime2);
+                    let exitTime2 = formatTime(day.ExitTime2);
+
                     let workStart = day.WorkStart;
                     let workEnd = day.WorkEnd;
 
                     let entryMinutes = convertTimeToMinutes(entryTime);
                     let exitMinutes = convertTimeToMinutes(exitTime);
+
+                    let entryMinutes2 = convertTimeToMinutes(entryTime2);
+                    let exitMinutes2 = convertTimeToMinutes(exitTime2);
+
                     let workStartMinutes = convertTimeToMinutes(workStart);
                     let workEndMinutes = convertTimeToMinutes(workEnd);
 
@@ -2064,6 +2072,13 @@ document.getElementById("extractButton").addEventListener("click", function () {
                         }
                     }
 
+                    if (
+    day.EntryTime2 !== "0000" &&
+    day.ExitTime2 !== "0000" &&
+    exitMinutes2 > entryMinutes2
+) {
+    presenceDuration += (exitMinutes2 - entryMinutes2);
+}
                     totalPresenceDuration += presenceDuration;
                     totalOvertime += overtime;
                     totalDelay += delay;
@@ -2081,8 +2096,7 @@ document.getElementById("extractButton").addEventListener("click", function () {
                         row.classList.add("holiday-row");
                     }
 
-                    let entryTime2 = formatTime(day.EntryTime2);
-                    let exitTime2 = formatTime(day.ExitTime2);
+                    
 
                     row.innerHTML = `
                         <td class="mjmoo-hozoor-gzrsh">${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>

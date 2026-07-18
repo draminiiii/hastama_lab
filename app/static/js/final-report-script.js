@@ -167,9 +167,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-
-
-
 // تابع تبدیل اعداد انگلیسی به فارسی
 function convertToPersianNumbers(num) {
     return num.toString().replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]);
