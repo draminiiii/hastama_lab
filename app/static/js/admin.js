@@ -1983,7 +1983,7 @@ document.getElementById("extractButton").addEventListener("click", function () {
     // تعریف آرایه تعطیلات رسمی (شمسی به فرمت YYYY-MM-DD)
     const OFFICIAL_HOLIDAYS = [
         "1404-01-01", "1404-01-02", "1404-01-03", "1404-01-04",
-        "1404-01-12", "1404-01-13", "1404-02-04", "1404-03-14",
+        "1404-01-12", "1404-01-13", "1404-01-25", "1404-03-14",
         "1404-03-15", "1404-03-24", "1404-04-14", "1404-04-15",
         "1404-05-23", "1404-06-02", "1404-06-10", "1404-06-19",
         "1404-09-03", "1404-10-13", "1404-10-27", "1404-11-15",
@@ -2022,63 +2022,84 @@ document.getElementById("extractButton").addEventListener("click", function () {
                     let workStartMinutes = convertTimeToMinutes(workStart);
                     let workEndMinutes = convertTimeToMinutes(workEnd);
 
-                    let presenceDuration = exitMinutes - entryMinutes;
+                    // آیا خروج دوم معتبره؟ (ورود دوم و خروج دوم هر دو مقدار دارن و خروج دوم بعد از ورود دومه)
+                    let hasValidExit2 =
+                        day.EntryTime2 !== "0000" &&
+                        day.ExitTime2 !== "0000" &&
+                        exitMinutes2 > entryMinutes2;
+
+                    // اگه خروج دوم معتبر بود، ملاک تشخیص وضعیت (زودهنگام/اضافه‌کاری) خروج دوم میشه
+                    let finalExitForStatus = hasValidExit2 ? exitMinutes2 : exitMinutes;
+
+                    let presenceDuration = 0;
                     let overtime = 0, delay = 0, earlyStart = 0, earlyExit = 0;
                     let status = "";
 
-                    // محاسبه وضعیت
-                    if (entryMinutes < workStartMinutes) {
-                        earlyStart = workStartMinutes - entryMinutes;
-                        if (exitMinutes < workEndMinutes) {
-                            earlyExit = workEndMinutes - exitMinutes;
-                            presenceDuration = exitMinutes - workStartMinutes;
-                            status = "خروج زودهنگام";
-                        } else if (exitMinutes === workEndMinutes) {
-                            presenceDuration = workEndMinutes - workStartMinutes;
-                            status = "شروع زودهنگام و تایید سامانه در خروج";
+                    // آیا اصلاً برای این روز ورود/خروجی ثبت شده؟ اگر نه (هر دو صفر)، هیچ محاسبه‌ای انجام نشه
+                    let hasNoRecord = day.EntryTime === "0000" && day.ExitTime === "0000";
+
+                    if (!hasNoRecord) {
+                        presenceDuration = exitMinutes - entryMinutes;
+
+                        // محاسبه وضعیت
+                        if (entryMinutes < workStartMinutes) {
+                            earlyStart = workStartMinutes - entryMinutes;
+                            if (finalExitForStatus < workEndMinutes) {
+                                earlyExit = workEndMinutes - finalExitForStatus;
+                                presenceDuration = exitMinutes - workStartMinutes;
+                                status = "خروج زودهنگام";
+                            } else if (finalExitForStatus === workEndMinutes) {
+                                presenceDuration = workEndMinutes - workStartMinutes;
+                                status = "شروع زودهنگام و تایید سامانه در خروج";
+                            } else {
+                                overtime = finalExitForStatus - workEndMinutes;
+                                if (overtime < 10) overtime = 0;
+                                presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
+                                status = "شروع زودهنگام و اضافه کاری";
+                            }
+                        } else if (entryMinutes === workStartMinutes) {
+                            if (finalExitForStatus < workEndMinutes) {
+                                earlyExit = workEndMinutes - finalExitForStatus;
+                                presenceDuration = exitMinutes - workStartMinutes;
+                                status = "تایید سامانه در ورود و خروج زود هنگام";
+                            } else if (finalExitForStatus === workEndMinutes) {
+                                presenceDuration = workEndMinutes - workStartMinutes;
+                                status = "تایید سامانه در ورود و خروج";
+                            } else {
+                                overtime = finalExitForStatus - workEndMinutes;
+                                if (overtime < 10) overtime = 0;
+                                presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
+                                status = "تایید سامانه در ورود و اضافه کاری";
+                            }
                         } else {
-                            overtime = exitMinutes - workEndMinutes;
-                            if (overtime < 10) overtime = 0;
-                            presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
-                            status = "شروع زودهنگام و اضافه کاری";
-                        }
-                    } else if (entryMinutes === workStartMinutes) {
-                        if (exitMinutes < workEndMinutes) {
-                            presenceDuration = exitMinutes - workStartMinutes;
-                            status = "تایید سامانه در ورود و خروج زود هنگام";
-                        } else if (exitMinutes === workEndMinutes) {
-                            presenceDuration = workEndMinutes - workStartMinutes;
-                            status = "تایید سامانه در ورود و خروج";
-                        } else {
-                            overtime = exitMinutes - workEndMinutes;
-                            if (overtime < 10) overtime = 0;
-                            presenceDuration = overtime > 0 ? exitMinutes - workStartMinutes : workEndMinutes - workStartMinutes;
-                            status = "تایید سامانه در ورود و اضافه کاری";
-                        }
-                    } else {
-                        if (exitMinutes < workEndMinutes) {
                             delay = entryMinutes - workStartMinutes;
-                            presenceDuration = exitMinutes - entryMinutes;
-                            status = "تاخیر در ورود و خروج زود هنگام";
-                        } else if (exitMinutes === workEndMinutes) {
-                            delay = entryMinutes - workStartMinutes;
-                            presenceDuration = workEndMinutes - entryMinutes;
-                            status = "تاخیر در ورود و تایید سامانه در خروج";
-                        } else {
-                            overtime = exitMinutes - workEndMinutes;
-                            if (overtime < 10) overtime = 0;
-                            presenceDuration = overtime > 0 ? exitMinutes - entryMinutes : workEndMinutes - entryMinutes;
-                            status = "تاخیر در ورود و اضافه کاری";
+                            if (finalExitForStatus < workEndMinutes) {
+                                earlyExit = workEndMinutes - finalExitForStatus;
+                                presenceDuration = exitMinutes - entryMinutes;
+                                status = "تاخیر در ورود و خروج زود هنگام";
+                            } else if (finalExitForStatus === workEndMinutes) {
+                                presenceDuration = workEndMinutes - entryMinutes;
+                                status = "تاخیر در ورود و تایید سامانه در خروج";
+                            } else {
+                                overtime = finalExitForStatus - workEndMinutes;
+                                if (overtime < 10) overtime = 0;
+                                presenceDuration = overtime > 0 ? exitMinutes - entryMinutes : workEndMinutes - entryMinutes;
+                                status = "تاخیر در ورود و اضافه کاری";
+                            }
+                        }
+
+                        if (hasValidExit2) {
+                            presenceDuration += (exitMinutes2 - entryMinutes2);
                         }
                     }
 
-                    if (
-    day.EntryTime2 !== "0000" &&
-    day.ExitTime2 !== "0000" &&
-    exitMinutes2 > entryMinutes2
-) {
-    presenceDuration += (exitMinutes2 - entryMinutes2);
-}
+                    // محافظ نهایی: هیچ‌کدام از مقادیر نباید منفی نمایش داده بشن
+                    presenceDuration = Math.max(0, presenceDuration);
+                    overtime = Math.max(0, overtime);
+                    delay = Math.max(0, delay);
+                    earlyStart = Math.max(0, earlyStart);
+                    earlyExit = Math.max(0, earlyExit);
+
                     totalPresenceDuration += presenceDuration;
                     totalOvertime += overtime;
                     totalDelay += delay;
@@ -2095,8 +2116,6 @@ document.getElementById("extractButton").addEventListener("click", function () {
                     if (weekdayName === "جمعه" || OFFICIAL_HOLIDAYS.includes(day.Date)) {
                         row.classList.add("holiday-row");
                     }
-
-                    
 
                     row.innerHTML = `
                         <td class="mjmoo-hozoor-gzrsh">${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>
@@ -2139,13 +2158,13 @@ document.getElementById("extractButton").addEventListener("click", function () {
 
                 document.getElementById("natigehHozoor").style.display = "block";
 
-                
             } else {
                 console.error("داده‌ها به فرمت صحیح نیستند:", data);
             }
         })
         .catch(error => console.error("خطا در دریافت داده‌ها:", error));
 });
+
 
 
 
