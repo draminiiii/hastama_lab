@@ -1982,12 +1982,12 @@ document.getElementById("extractButton").addEventListener("click", function () {
 
     // تعریف آرایه تعطیلات رسمی (شمسی به فرمت YYYY-MM-DD)
     const OFFICIAL_HOLIDAYS = [
-        "1404-01-01", "1404-01-02", "1404-01-03", "1404-01-04",
-        "1404-01-12", "1404-01-13", "1404-01-25", "1404-03-14",
-        "1404-03-15", "1404-03-24", "1404-04-14", "1404-04-15",
-        "1404-05-23", "1404-06-02", "1404-06-10", "1404-06-19",
-        "1404-09-03", "1404-10-13", "1404-10-27", "1404-11-15",
-        "1404-11-22", "1404-12-20"
+        "1405-01-01", "1405-01-02", "1405-01-03", "1405-01-04",
+        "1405-01-12", "1405-01-13", "1405-01-25", "1405-03-06",
+        "1405-03-14", "1405-04-03", "1405-04-04", "1405-04-18",
+        "1405-05-23", "1405-06-02", "1405-06-10", "1405-06-19",
+        "1405-09-03", "1405-10-13", "1405-10-27", "1405-11-15",
+        "1405-11-22", "1405-12-20"
     ];
 
     fetch(`/get_hozoor/${selectedUsername}?start_date=${startDate}&end_date=${endDate}`)
@@ -2727,3 +2727,200 @@ document.addEventListener("DOMContentLoaded", function () {
     input.addEventListener("blur", () => fixTimeFormat(id));
   });
 });
+// ==================== مدیریت شیفت‌های ماهانه پرسنل ==================== //
+// ==================== مدیریت شیفت‌های ماهانه پرسنل ==================== //
+// ==================== مدیریت شیفت‌های ماهانه پرسنل ==================== //
+
+const SHIFT_DAY_FIELDS = ['shanbeh', 'yekshanbeh', 'doshanbeh', 'seshanbeh', 'chaharshanbeh', 'panjshanbeh', 'jomeh'];
+let currentShiftsData = [];
+
+function populateShiftMonthYearSelectors() {
+    const monthSelect = document.getElementById('shiftMonth');
+    const yearSelect = document.getElementById('shiftYear');
+    if (!monthSelect || !yearSelect) return;
+
+    const today = new Date();
+    const jToday = toJalaali(today.getFullYear(), today.getMonth() + 1, today.getDate());
+
+    monthSelect.innerHTML = persianMonths.map((m, i) =>
+        `<option value="${i + 1}" ${i + 1 === jToday.jm ? 'selected' : ''}>${convertToPersianNumbers(m)}</option>`
+    ).join('');
+
+    let yearOptions = '';
+    for (let y = jToday.jy - 2; y <= jToday.jy + 2; y++) {
+        yearOptions += `<option value="${y}" ${y === jToday.jy ? 'selected' : ''}>${convertToPersianNumbers(String(y))}</option>`;
+    }
+    yearSelect.innerHTML = yearOptions;
+}
+
+document.addEventListener('DOMContentLoaded', populateShiftMonthYearSelectors);
+
+function openShiftPopup() {
+    resetShiftForm();
+    document.getElementById('shiftPopupOverlay').style.display = 'flex';
+}
+
+function closeShiftPopup(event) {
+    if (event && event.target !== document.getElementById('shiftPopupOverlay')) return;
+    document.getElementById('shiftPopupOverlay').style.display = 'none';
+    resetShiftForm();
+}
+
+function resetShiftForm() {
+    document.getElementById('shiftId').value = '';
+    document.getElementById('shiftTitle').value = '';
+    document.getElementById('shiftStartDay').value = '';
+    document.getElementById('shiftEndDay').value = '';
+    SHIFT_DAY_FIELDS.forEach(f => { document.getElementById('shift_' + f).value = ''; });
+    document.getElementById('shiftFormTitle').textContent = 'افزودن بازه‌ی شیفت جدید';
+    document.getElementById('cancelShiftEditBtn').style.display = 'none';
+}
+
+function loadShifts() {
+    const username = document.getElementById('shiftUsername').value;
+    const year = document.getElementById('shiftYear').value;
+    const month = document.getElementById('shiftMonth').value;
+
+    if (!username) {
+        alert('لطفاً ابتدا پرسنل مورد نظر را انتخاب کنید');
+        return;
+    }
+
+    resetShiftForm();
+
+    fetch(`/get_shifts/${encodeURIComponent(username)}/${year}/${month}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                alert(data.message || 'خطا در دریافت اطلاعات شیفت‌ها');
+                return;
+            }
+            renderShiftsTable(data.shifts);
+        })
+        .catch(error => {
+            console.error(error);
+            alert('خطا در دریافت اطلاعات شیفت‌ها');
+        });
+}
+
+function renderShiftsTable(shifts) {
+    currentShiftsData = shifts || [];
+    const tbody = document.getElementById('shiftsTableBody');
+    tbody.innerHTML = '';
+
+    if (!shifts || shifts.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="11">هیچ بازه‌ی شیفتی برای این پرسنل/ماه تعریف نشده است</td>`;
+        tbody.appendChild(row);
+        return;
+    }
+
+    shifts.forEach(shift => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <button type="button" class="edit-btn" onclick="editShift(${shift.id})">
+                    <img src="/static/images/writing.png" alt="ویرایش">
+                </button>
+                <button type="button" class="trash-icon" onclick="deleteShift(${shift.id})">
+                    <img src="/static/images/trash.png" alt="حذف">
+                </button>
+            </td>
+            <td>${shift.title ? convertToPersianNumbers(shift.title) : '-'}</td>
+            <td>${shift.jomeh ? convertToPersianNumbers(shift.jomeh) : 'تعطیل/پیش‌فرض'}</td>
+            <td>${shift.panjshanbeh ? convertToPersianNumbers(shift.panjshanbeh) : 'پیش‌فرض'}</td>
+            <td>${shift.chaharshanbeh ? convertToPersianNumbers(shift.chaharshanbeh) : 'پیش‌فرض'}</td>
+            <td>${shift.seshanbeh ? convertToPersianNumbers(shift.seshanbeh) : 'پیش‌فرض'}</td>
+            <td>${shift.doshanbeh ? convertToPersianNumbers(shift.doshanbeh) : 'پیش‌فرض'}</td>
+            <td>${shift.yekshanbeh ? convertToPersianNumbers(shift.yekshanbeh) : 'پیش‌فرض'}</td>
+            <td>${shift.shanbeh ? convertToPersianNumbers(shift.shanbeh) : 'پیش‌فرض'}</td>
+            <td>${convertToPersianNumbers(String(shift.end_day))}</td>
+            <td>${convertToPersianNumbers(String(shift.start_day))}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function editShift(shiftId) {
+    const shift = currentShiftsData.find(s => s.id === shiftId);
+    if (!shift) return;
+
+    document.getElementById('shiftId').value = shift.id;
+    document.getElementById('shiftTitle').value = shift.title || '';
+    document.getElementById('shiftStartDay').value = shift.start_day;
+    document.getElementById('shiftEndDay').value = shift.end_day;
+    SHIFT_DAY_FIELDS.forEach(f => { document.getElementById('shift_' + f).value = shift[f] || ''; });
+    document.getElementById('shiftFormTitle').textContent = 'ویرایش بازه‌ی شیفت';
+    document.getElementById('cancelShiftEditBtn').style.display = 'inline-block';
+    document.getElementById('shiftPopupOverlay').style.display = 'flex';
+}
+
+function saveShift() {
+    const username = document.getElementById('shiftUsername').value;
+    const year = document.getElementById('shiftYear').value;
+    const month = document.getElementById('shiftMonth').value;
+    const shiftId = document.getElementById('shiftId').value;
+    const startDay = document.getElementById('shiftStartDay').value;
+    const endDay = document.getElementById('shiftEndDay').value;
+    const title = document.getElementById('shiftTitle').value;
+
+    if (!username) {
+        alert('لطفاً ابتدا پرسنل مورد نظر را انتخاب کنید');
+        return;
+    }
+    if (!startDay || !endDay) {
+        alert('لطفاً بازه‌ی روز را وارد کنید');
+        return;
+    }
+
+    const payload = {
+        username: username,
+        jalali_year: year,
+        jalali_month: month,
+        start_day: startDay,
+        end_day: endDay,
+        title: title
+    };
+    SHIFT_DAY_FIELDS.forEach(f => { payload[f] = document.getElementById('shift_' + f).value; });
+
+    const isEdit = !!shiftId;
+    if (isEdit) payload.id = shiftId;
+
+    fetch(isEdit ? '/update_shift' : '/add_shift', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                alert(data.message || 'خطا در ذخیره‌ی شیفت');
+                return;
+            }
+            alert(data.message || 'با موفقیت ذخیره شد');
+            closeShiftPopup();
+            loadShifts();
+        })
+        .catch(error => {
+            console.error(error);
+            alert('خطا در ذخیره‌ی شیفت');
+        });
+}
+
+function deleteShift(shiftId) {
+    if (!confirm('آیا از حذف این بازه‌ی شیفت مطمئن هستید؟')) return;
+
+    fetch(`/delete_shift/${shiftId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                alert(data.message || 'خطا در حذف شیفت');
+                return;
+            }
+            loadShifts();
+        })
+        .catch(error => {
+            console.error(error);
+            alert('خطا در حذف شیفت');
+        });
+}

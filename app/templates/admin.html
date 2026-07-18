@@ -46,6 +46,11 @@
                 </div>
 
                 <div class="icon-container-leftSidebar">
+                    <img src="/static/images/clock.png" alt="مدیریت شیفت‌ها" class="shift-icon" onclick="toggleBox('shiftBox')">
+                    <span class="tooltipIconHeader-leftSidebar shift-tooltip-leftSidebar">مدیریت شیفت‌ها</span>
+                </div>
+
+                <div class="icon-container-leftSidebar">
                     <img src="/static/images/exit.png" alt="منو" class="ticket-icon" onclick="logout()">
                     <span class="tooltipIconHeader-leftSidebar khorooj-tooltip-leftSidebar">خروج</span>
                 </div>
@@ -366,6 +371,115 @@
 
                     <!-- دکمه ذخیره خارج از فرم -->
                     <button type="button" class="save-btn" onclick="updateUser()">ذخیره</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- باکس مدیریت شیفت‌های ماهانه پرسنل -->
+        <div id="shiftBox" class="management-box">
+            <h2>مدیریت شیفت‌های ماهانه پرسنل</h2>
+
+            <div class="form-container-shift">
+                <form id="shiftSelectForm" class="form-shift-krbr">
+                    <div class="form-row-krbrjadid">
+                        <label for="shiftUsername">پرسنل</label>
+                        <select id="shiftUsername" name="shiftUsername" required>
+                            <option value="" disabled selected>انتخاب کنید</option>
+                            {% for user in users %}
+                            <option value="{{ user.username }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-row-krbrjadid">
+                        <label for="shiftMonth">ماه شمسی</label>
+                        <select id="shiftMonth" name="shiftMonth" required></select>
+                    </div>
+
+                    <div class="form-row-krbrjadid">
+                        <label for="shiftYear">سال شمسی</label>
+                        <select id="shiftYear" name="shiftYear" required></select>
+                    </div>
+                </form>
+
+                <button type="button" class="show-shift-krbrinmah" id="loadShiftsBtn" onclick="loadShifts()">نمایش شیفت‌های این ماه</button>
+            </div>
+
+            <!-- جدول بازه‌های تعریف‌شده برای پرسنل/ماه انتخابی -->
+            <table class="request-table" id="shiftsTable">
+                <thead>
+                    <tr>
+                        <th>تغییرات</th>
+                        <th>عنوان</th>
+                        <th>جمعه</th>
+                        <th>پنج‌شنبه</th>
+                        <th>چهارشنبه</th>
+                        <th>سه‌شنبه</th>
+                        <th>دوشنبه</th>
+                        <th>یکشنبه</th>
+                        <th>شنبه</th>
+                        <th>تا روز</th>
+                        <th>از روز</th>
+                    </tr>
+                </thead>
+                <tbody id="shiftsTableBody">
+                    <!-- سطرها با جاوااسکریپت پر می‌شوند -->
+                </tbody>
+            </table>
+
+            <button type="button" class="show-shift-krbrinmah" id="openShiftPopupBtn" onclick="openShiftPopup()">افزودن بازه‌ی شیفت جدید</button>
+
+            <!-- فرم افزودن / ویرایش یک بازه‌ی شیفت -->
+            <div id="shiftPopupOverlay" class="shift-popup-overlay" onclick="closeShiftPopup(event)">
+                <div id="shiftPopup" class="shift-popup" role="dialog" aria-modal="true" aria-labelledby="shiftFormTitle" onclick="event.stopPropagation()">
+                    <button type="button" class="close-shift-popup" aria-label="بستن" onclick="closeShiftPopup()">×</button>
+                    <div class="form-container shift-popup-content">
+                <h2 id="shiftFormTitle">افزودن بازه‌ی شیفت جدید</h2>
+                <form id="shiftForm" class="form-krbrjadid shift-details-form">
+                    <input type="hidden" id="shiftId" name="shiftId" value="">
+
+                    <div class="form-row-krbrjadid">
+                        <label for="shiftTitle">عنوان شیفت (اختیاری)</label>
+                        <input type="text" id="shiftTitle" name="shiftTitle" placeholder="مثلا شیفت صبح" autocomplete="off">
+                    </div>
+
+                    <div class="form-row-krbrjadid">
+                        <label for="shiftStartDay">از روز (۱ تا ۳۱ این ماه)</label>
+                        <input type="number" id="shiftStartDay" name="shiftStartDay" min="1" max="31" required>
+                    </div>
+
+                    <div class="form-row-krbrjadid">
+                        <label for="shiftEndDay">تا روز (۱ تا ۳۱ این ماه)</label>
+                        <input type="number" id="shiftEndDay" name="shiftEndDay" min="1" max="31" required>
+                    </div>
+                </form>
+
+                <div class="schedule-container shift-schedule-grid">
+                    <div class="days-column">
+                        <div class="day-label">شنبه</div>
+                        <div class="day-label">یکشنبه</div>
+                        <div class="day-label">دوشنبه</div>
+                        <div class="day-label">سه‌شنبه</div>
+                        <div class="day-label">چهارشنبه</div>
+                        <div class="day-label">پنج‌شنبه</div>
+                        <div class="day-label">جمعه</div>
+                    </div>
+                    <div class="fields-column">
+                        <input type="text" id="shift_shanbeh" placeholder="12:00 - 24:00 (خالی = تعطیل/شیفت پیش‌فرض)">
+                        <input type="text" id="shift_yekshanbeh" placeholder="12:00 - 24:00">
+                        <input type="text" id="shift_doshanbeh" placeholder="12:00 - 24:00">
+                        <input type="text" id="shift_seshanbeh" placeholder="12:00 - 24:00">
+                        <input type="text" id="shift_chaharshanbeh" placeholder="12:00 - 24:00">
+                        <input type="text" id="shift_panjshanbeh" placeholder="12:00 - 24:00">
+                        <input type="text" id="shift_jomeh" placeholder="12:00 - 24:00">
+                    </div>
+                </div>
+
+                <div class="shift-popup-actions">
+                    <button type="button" class="save-btn-krbrjad" id="saveShiftBtn" onclick="saveShift()">ذخیره بازه‌ی شیفت</button>
+                    <button type="button" class="save-btn-krbrjad" id="cancelShiftEditBtn" style="display:none;" onclick="resetShiftForm()">انصراف از ویرایش</button>
+                </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1064,6 +1064,189 @@ async def update_user(request: Request):
         except:
             pass
 
+# تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل
+# تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل
+# تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل
+
+# نگاشت شماره‌ی روز هفته (weekday شمسی: 0=شنبه ... 6=جمعه) به نام ستون جدول shiftha
+SHIFT_DAY_COLUMNS = {
+    0: 'shanbeh', 1: 'yekshanbeh', 2: 'doshanbeh', 3: 'seshanbeh',
+    4: 'chaharshanbeh', 5: 'panjshanbeh', 6: 'jomeh'
+}
+
+
+@app.get("/get_shifts/{username}/{year}/{month}")
+async def get_shifts(username: str, year: int, month: int):
+    try:
+        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                              r'SERVER=localhost\SQLEXPRESS;'
+                              'DATABASE=userDB;'
+                              'Trusted_Connection=yes;')
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT id, start_day, end_day, shanbeh, yekshanbeh, doshanbeh, seshanbeh,
+                   chaharshanbeh, panjshanbeh, jomeh, title
+            FROM shiftha
+            WHERE username = ? AND jalali_year = ? AND jalali_month = ?
+            ORDER BY start_day
+        """, (username, year, month))
+        rows = cursor.fetchall()
+
+        shifts = [{
+            'id': r[0], 'start_day': r[1], 'end_day': r[2],
+            'shanbeh': r[3] or '', 'yekshanbeh': r[4] or '', 'doshanbeh': r[5] or '',
+            'seshanbeh': r[6] or '', 'chaharshanbeh': r[7] or '', 'panjshanbeh': r[8] or '',
+            'jomeh': r[9] or '', 'title': r[10] or ''
+        } for r in rows]
+
+        return JSONResponse(content={'success': True, 'shifts': shifts})
+
+    except Exception as e:
+        return JSONResponse(content={'success': False, 'message': str(e)})
+
+    finally:
+        try:
+            cursor.close()
+            conn.close()
+        except:
+            pass
+
+
+@app.post("/add_shift")
+async def add_shift(request: Request):
+    try:
+        data = await request.json()
+
+        username = data.get("username")
+        year = int(data.get("jalali_year"))
+        month = int(data.get("jalali_month"))
+        start_day = int(data.get("start_day"))
+        end_day = int(data.get("end_day"))
+        title = data.get("title") or None
+
+        if not username or not (1 <= month <= 12) or not (1 <= start_day <= 31) or end_day < start_day:
+            return JSONResponse(content={'success': False, 'message': 'اطلاعات ارسالی نامعتبر است'})
+
+        days = {col: (data.get(col) or None) for col in SHIFT_DAY_COLUMNS.values()}
+
+        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                              r'SERVER=localhost\SQLEXPRESS;'
+                              'DATABASE=userDB;'
+                              'Trusted_Connection=yes;')
+        cursor = conn.cursor()
+
+        # جلوگیری از همپوشانی بازه‌ها برای همین کاربر و همین ماه شمسی
+        cursor.execute("""
+            SELECT COUNT(*) FROM shiftha
+            WHERE username = ? AND jalali_year = ? AND jalali_month = ?
+              AND start_day <= ? AND end_day >= ?
+        """, (username, year, month, end_day, start_day))
+        if cursor.fetchone()[0] > 0:
+            return JSONResponse(content={'success': False, 'message': 'این بازه با یک بازه‌ی تعریف‌شده‌ی دیگر برای همین ماه همپوشانی دارد'})
+
+        cursor.execute("""
+            INSERT INTO shiftha (username, jalali_year, jalali_month, start_day, end_day,
+                                  shanbeh, yekshanbeh, doshanbeh, seshanbeh, chaharshanbeh, panjshanbeh, jomeh, title)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (username, year, month, start_day, end_day,
+              days['shanbeh'], days['yekshanbeh'], days['doshanbeh'], days['seshanbeh'],
+              days['chaharshanbeh'], days['panjshanbeh'], days['jomeh'], title))
+        conn.commit()
+
+        return JSONResponse(content={'success': True, 'message': 'شیفت با موفقیت ثبت شد'})
+
+    except Exception as e:
+        return JSONResponse(content={'success': False, 'message': str(e)})
+
+    finally:
+        try:
+            cursor.close()
+            conn.close()
+        except:
+            pass
+
+
+@app.post("/update_shift")
+async def update_shift(request: Request):
+    try:
+        data = await request.json()
+
+        shift_id = int(data.get("id"))
+        start_day = int(data.get("start_day"))
+        end_day = int(data.get("end_day"))
+        title = data.get("title") or None
+
+        if not (1 <= start_day <= 31) or end_day < start_day:
+            return JSONResponse(content={'success': False, 'message': 'بازه‌ی روز نامعتبر است'})
+
+        days = {col: (data.get(col) or None) for col in SHIFT_DAY_COLUMNS.values()}
+
+        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                              r'SERVER=localhost\SQLEXPRESS;'
+                              'DATABASE=userDB;'
+                              'Trusted_Connection=yes;')
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT username, jalali_year, jalali_month FROM shiftha WHERE id = ?", (shift_id,))
+        row = cursor.fetchone()
+        if not row:
+            return JSONResponse(content={'success': False, 'message': 'شیفت مورد نظر پیدا نشد'})
+        username, year, month = row
+
+        cursor.execute("""
+            SELECT COUNT(*) FROM shiftha
+            WHERE username = ? AND jalali_year = ? AND jalali_month = ?
+              AND id <> ? AND start_day <= ? AND end_day >= ?
+        """, (username, year, month, shift_id, end_day, start_day))
+        if cursor.fetchone()[0] > 0:
+            return JSONResponse(content={'success': False, 'message': 'این بازه با یک بازه‌ی تعریف‌شده‌ی دیگر برای همین ماه همپوشانی دارد'})
+
+        cursor.execute("""
+            UPDATE shiftha
+            SET start_day = ?, end_day = ?, shanbeh = ?, yekshanbeh = ?, doshanbeh = ?,
+                seshanbeh = ?, chaharshanbeh = ?, panjshanbeh = ?, jomeh = ?, title = ?
+            WHERE id = ?
+        """, (start_day, end_day, days['shanbeh'], days['yekshanbeh'], days['doshanbeh'],
+              days['seshanbeh'], days['chaharshanbeh'], days['panjshanbeh'], days['jomeh'], title, shift_id))
+        conn.commit()
+
+        return JSONResponse(content={'success': True, 'message': 'شیفت با موفقیت به‌روزرسانی شد'})
+
+    except Exception as e:
+        return JSONResponse(content={'success': False, 'message': str(e)})
+
+    finally:
+        try:
+            cursor.close()
+            conn.close()
+        except:
+            pass
+
+
+@app.post("/delete_shift/{shift_id}")
+async def delete_shift(shift_id: int):
+    try:
+        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                              r'SERVER=localhost\SQLEXPRESS;'
+                              'DATABASE=userDB;'
+                              'Trusted_Connection=yes;')
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM shiftha WHERE id = ?", (shift_id,))
+        conn.commit()
+        return JSONResponse(content={'success': True, 'message': 'شیفت حذف شد'})
+
+    except Exception as e:
+        return JSONResponse(content={'success': False, 'message': str(e)})
+
+    finally:
+        try:
+            cursor.close()
+            conn.close()
+        except:
+            pass
+
+
 # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران
 # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران
 # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران # تابع دریافت مرخصی های کاربران
@@ -2000,6 +2183,31 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
     weekday_map = {0: shanbeh, 1: yekshanbeh, 2: doshanbeh, 3: seshanbeh, 4: chrshanbeh, 5: panjshanbeh}
     # اگر لازم باشه میتونی برای جمعه هم map بذاری یا از default_work_hours استفاده کنی
 
+    # خواندن شیفت‌های اختصاصی این کاربر از جدول shiftha (مستقل برای هر ماه شمسی و قابل تعریف برای بازه‌های خاص داخل ماه)
+    cursor.execute("""
+        SELECT jalali_year, jalali_month, start_day, end_day,
+               shanbeh, yekshanbeh, doshanbeh, seshanbeh, chaharshanbeh, panjshanbeh, jomeh
+        FROM shiftha
+        WHERE username = ?
+        ORDER BY jalali_year, jalali_month, start_day
+    """, (username,))
+    shift_rows = [{
+        'jalali_year': r[0], 'jalali_month': r[1], 'start_day': r[2], 'end_day': r[3],
+        'shanbeh': r[4], 'yekshanbeh': r[5], 'doshanbeh': r[6], 'seshanbeh': r[7],
+        'chaharshanbeh': r[8], 'panjshanbeh': r[9], 'jomeh': r[10]
+    } for r in cursor.fetchall()]
+
+    def resolve_work_hours(sh_year, sh_month, sh_day, wd):
+        # اول دنبال بازه‌ی تعریف‌شده در shiftha برای همین ماه/روز می‌گردیم
+        for row in shift_rows:
+            if row['jalali_year'] == sh_year and row['jalali_month'] == sh_month and row['start_day'] <= sh_day <= row['end_day']:
+                val = row.get(SHIFT_DAY_COLUMNS[wd])
+                if val:
+                    return val
+                break  # بازه پیدا شد ولی برای این روز هفته مقداری ثبت نشده → می‌رویم سراغ شیفت پیش‌فرض کاربر
+        # در صورت نبود شیفت اختصاصی، همان منطق قبلی (شیفت هفتگی ثابتِ user_table) اجرا می‌شود
+        return weekday_map.get(wd, default_work_hours)
+
     # اتصال به Access و خواندن رکوردها (مثل قبل)
     mdb_path = r"E:\\Hastama\\database\\Arazdb.mdb"
     password = "meyer#perko"
@@ -2107,7 +2315,7 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
 
         sh_year, sh_month, sh_day = map(int, date_str.split('-'))
         weekday = jdatetime.date(sh_year, sh_month, sh_day).weekday()  # مطابق کد قبلی شما
-        work_hours = weekday_map.get(weekday, default_work_hours).replace(" ", "")
+        work_hours = resolve_work_hours(sh_year, sh_month, sh_day, weekday).replace(" ", "")
         try:
             work_start, work_end = sorted(work_hours.split("-"), key=lambda x: int(x.replace(":", "")))
         except:
