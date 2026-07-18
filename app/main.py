@@ -2030,16 +2030,41 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
 
     # ساخت دیکشنری attendance از داده‌های اکسس (کمترین entry، بیشترین exit)
     attendance = {}
+
     for row in rows:
         card_no, date_val, time_val, in_out_type = row
-        # date_val ممکنه به شکل yyyy/mm/dd باشه — فرمت دلخواه شما
+
         date_str = str(date_val).replace("/", "-")
+        time_val = str(time_val).zfill(4)
+
         if date_str not in attendance:
-            attendance[date_str] = {"CardNo": card_no, "Date": date_str, "EntryTime": time_val, "ExitTime": time_val}
-        else:
-            # min/max برای entry/exit
-            attendance[date_str]["EntryTime"] = min(attendance[date_str]["EntryTime"], time_val)
-            attendance[date_str]["ExitTime"] = max(attendance[date_str]["ExitTime"], time_val)
+            attendance[date_str] = {
+                "CardNo": card_no,
+                "Date": date_str,
+                "Times": []
+            }
+
+        attendance[date_str]["Times"].append(time_val)
+
+    for date_str in attendance:
+        times = sorted(attendance[date_str]["Times"])
+
+        attendance[date_str]["EntryTime"] = "0000"
+        attendance[date_str]["ExitTime"] = "0000"
+        attendance[date_str]["EntryTime2"] = "0000"
+        attendance[date_str]["ExitTime2"] = "0000"
+
+        if len(times) >= 1:
+            attendance[date_str]["EntryTime"] = times[0]
+
+        if len(times) >= 2:
+            attendance[date_str]["ExitTime"] = times[1]
+
+        if len(times) >= 3:
+            attendance[date_str]["EntryTime2"] = times[2]
+
+        if len(times) >= 4:
+            attendance[date_str]["ExitTime2"] = times[3]
 
     # حالا از جدول hozoor در SQL Server تاریخ‌های ثبت‌شده رو هم اضافه کن
     cursor.execute("""
@@ -2064,7 +2089,14 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
         shamsi = JalaliDate(g).strftime('%Y-%m-%d')
         if shamsi not in attendance:
             # Entry/Exit پیش‌فرض برای روزهای بدون رکورد
-            attendance[shamsi] = {"CardNo": "", "Date": shamsi, "EntryTime": "0000", "ExitTime": "0000"}
+            attendance[shamsi] = {
+                "CardNo": "",
+                "Date": shamsi,
+                "EntryTime": "0000",
+                "ExitTime": "0000",
+                "EntryTime2": "0000",
+                "ExitTime2": "0000"
+            }
 
     # حالا پردازش نهایی و تعیین وضعیت — خروجی را به صورت مرتب (بر اساس تاریخ) می‌دهیم
     result = []
