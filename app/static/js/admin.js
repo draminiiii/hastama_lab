@@ -2084,13 +2084,6 @@ document.getElementById("extractButton").addEventListener("click", function () {
                     let entryTime2 = formatTime(day.EntryTime2);
                     let exitTime2 = formatTime(day.ExitTime2);
 
-                    console.log({
-    EntryTime: day.EntryTime,
-    ExitTime: day.ExitTime,
-    EntryTime2: day.EntryTime2,
-    ExitTime2: day.ExitTime2
-});
-
                     row.innerHTML = `
                         <td class="mjmoo-hozoor-gzrsh">${convertNumbersToPersianNumber(formatTimeFromMinutes(presenceDuration))}</td>
                         <td class="ezafe-hozoor-gzrsh">${convertNumbersToPersianNumber(overtime > 0 ? formatTimeFromMinutes(overtime) : "00:00")}</td>
@@ -2146,7 +2139,6 @@ function goToFinalReport() {
     let tableRows = document.querySelectorAll("#hozoorUsersReportTable tbody tr");
     let tableData = [];
 
-    // لیست تعطیلات رسمی (شمسی با فرمت yyyy/mm/dd)
     const OFFICIAL_HOLIDAYS = [
         "1404/01/01", "1404/01/02", "1404/01/03", "1404/01/04",
         "1404/01/12", "1404/01/13", "1404/02/04", "1404/03/14",
@@ -2157,53 +2149,57 @@ function goToFinalReport() {
     ];
 
     tableRows.forEach((row, index) => {
+
         let cells = row.getElementsByTagName("td");
-        let date = cells[8].innerText;  // تاریخ ثبت (مثلا "۱۴۰۴/۰۴/۰۱")
 
-        // تبدیل تاریخ به فرمت yyyy/mm/dd انگلیسی برای تطبیق با تعطیلات
-        let dateEnglish = persianToEnglishNumbers(date).replace(/-/g, "/").replace(/٫/g, "/");
+        let date = cells[10].innerText;
 
-        // بررسی اینکه آیا تعطیل رسمی است یا نه
+        let dateEnglish = persianToEnglishNumbers(date)
+            .replace(/-/g, "/")
+            .replace(/٫/g, "/");
+
         let isHoliday = OFFICIAL_HOLIDAYS.includes(dateEnglish);
 
-        // روز هفته (مثلا "جمعه")
-        let weekday = cells[7].innerText;
+        let weekday = cells[9].innerText;
 
-        // روز جمعه هم تعطیل محسوب می‌شود
-        if (weekday === "جمعه") isHoliday = true;
+        if (weekday === "جمعه")
+            isHoliday = true;
 
         tableData.push({
             rowNumber: index + 1,
-            calculatedTime: cells[0].innerText,  // مدت زمان حضور
-            overtime: cells[1].innerText,        // اضافه کاری
-            earlyExit: cells[2].innerText,       // خروج زودهنگام
-            earlyStart: cells[3].innerText,      // شروع زودهنگام
-            delay: cells[4].innerText,           // تاخیر
-            exitTime: cells[5].innerText,        // زمان خروج
-            entryTime: cells[6].innerText,       // زمان ورود
-            weekday: weekday,                    // روز هفته
-            date: date,                         // تاریخ ثبت
-            isHoliday: isHoliday                // آیا تعطیل است؟
+
+            calculatedTime: cells[0].innerText,
+            overtime: cells[1].innerText,
+            earlyExit: cells[2].innerText,
+            earlyStart: cells[3].innerText,
+            delay: cells[4].innerText,
+
+            exitTime2: cells[5].innerText,
+            entryTime2: cells[6].innerText,
+
+            exitTime: cells[7].innerText,
+            entryTime: cells[8].innerText,
+
+            weekday: cells[9].innerText,
+            date: cells[10].innerText,
+
+            isHoliday: isHoliday
         });
     });
 
-    let numRecords = tableData.length;
-    localStorage.setItem("numRecords", numRecords);
+    localStorage.setItem("numRecords", tableData.length);
     localStorage.setItem("hozoorReportData", JSON.stringify(tableData));
 
-    // ذخیره مقادیر از باکس‌های گزارش
     localStorage.setItem("totalPresenceTime", document.querySelector(".box1-hozoor span").innerText.split(": ")[1]);
     localStorage.setItem("totalOvertime", document.querySelector(".box2-hozoor span").innerText.split(": ")[1]);
     localStorage.setItem("totalDelayTime", document.querySelector(".box3-hozoor span").innerText.split(": ")[1]);
     localStorage.setItem("totalEarlyStart", document.querySelector(".box4-hozoor span").innerText.split(": ")[1]);
     localStorage.setItem("totalEarlyExit", document.querySelector(".box5-hozoor span").innerText.split(": ")[1]);
 
-    // دریافت مقادیر فیلتر تاریخ و کاربر
     let username = document.getElementById("usernameGozareshHozoor").value;
     let start_date = document.getElementById("start_date_hozoor").value;
     let end_date = document.getElementById("end_date_hozoor").value;
 
-    // ارسال درخواست برای گزارش اضافه‌کاری
     fetch('/get_overtime_report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2213,43 +2209,49 @@ function goToFinalReport() {
     .then(data => {
         localStorage.setItem("overtimeReportData", JSON.stringify(data));
 
-        // ارسال درخواست برای گزارش مرخصی‌ها
         return fetch('/generate_individual_report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: username, fromDate: start_date, toDate: end_date })
+            body: JSON.stringify({
+                user: username,
+                fromDate: start_date,
+                toDate: end_date
+            })
         });
     })
     .then(response => response.json())
     .then(data => {
         localStorage.setItem("leaveReportData", JSON.stringify(data.reports));
 
-        // ارسال درخواست برای گزارش پاس‌های ساعتی
         return fetch('/get_hourly_pass_report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, start_date, end_date })
+            body: JSON.stringify({
+                username,
+                start_date,
+                end_date
+            })
         });
     })
     .then(response => response.json())
     .then(data => {
+
         localStorage.setItem("hourlyPassReportData", JSON.stringify(data));
 
-        // ذخیره نام کاربر
         localStorage.setItem("selectedUsername", username);
 
-        // باز کردن صفحه گزارش نهایی
         window.open("/final_report_page", "_blank");
+
     })
     .catch(error => console.error("❌ خطا در دریافت گزارش:", error));
 
-    // تابع تبدیل اعداد فارسی به انگلیسی
     function persianToEnglishNumbers(str) {
         const persianNums = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-        for(let i=0; i<persianNums.length; i++) {
-            let regex = new RegExp(persianNums[i], 'g');
-            str = str.replace(regex, i.toString());
+
+        for (let i = 0; i < persianNums.length; i++) {
+            str = str.replace(new RegExp(persianNums[i], 'g'), i);
         }
+
         return str;
     }
 }
