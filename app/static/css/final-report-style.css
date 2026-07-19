@@ -595,6 +595,7 @@ html, body {
     display: flex;
     width: 48rem;
     align-items: center;
+    margin-top: 1rem;
 }
 
 .exportButtons {
@@ -1078,14 +1079,10 @@ html, body {
 
 @media print {
 
-    /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
-    /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
-    /* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه *//* تنظیمات باکس عنوان صفحه */
-
+    /* تنظیمات باکس عنوان صفحه */
 
     .titleBox {
         position: relative;
-        margin: 10px auto;
         font-size: 15px;
         padding: 0 20px;
         height: 2rem;
@@ -1095,24 +1092,30 @@ html, body {
     .userInfoBox{
         position: relative;
         margin: 0 auto;
+        margin-bottom: 0;
         font-size: 15px;
         padding: 0 20px;
         height: 2rem;
-        width: 70%;
-        gap: 200px;
+        width: 50%;
+        gap: 100px;
     }
 
-    /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
-    /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
-    /* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب *//* تنظیمات باکس جدول حضور و غیاب */
+    /* تنظیمات باکس جدول حضور و غیاب */
 
-    .hozoorBox {
+    .bala {
+        margin-top: 0;
+    }
+
+    .hozoorBox{
         position: relative;
-        margin: 1.5% auto;
+        margin: 0.8% auto;
         height: 265mm;
         max-height: unset;
         padding: 10px;
-        width: 100%;
+        width: 97%;
+
+        page-break-after: always;
+        break-after: page;
     }
 
     .hozoorBox h2 {
@@ -1135,21 +1138,23 @@ html, body {
         padding: 2px;
     }
 
-    .hozoorUsersReport-table th {font-size: 9px;}
+    .hozoorUsersReport-table th {
+        font-size: 9px;
+    }
 
-    .stn1 {width: 0.5%;}
+    .stn1 { width: 0.5%; }
     .hozoorUsersReport-table td:nth-child(12) { width: 0.5%; }
 
     .stn2 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(11) { width: 1%; }
 
-    .stn3 {width: 1%;}
+    .stn3 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(10) { width: 1%; }
 
-    .stn4 {width: 1%;}
+    .stn4 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(9) { width: 1%; }
 
-    .stn5 {width: 1%;}
+    .stn5 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(8) { width: 1%; }
 
     .stn6 { width: 0.6%; }
@@ -1173,21 +1178,48 @@ html, body {
     .stn12 { width: 1%; }
     .hozoorUsersReport-table td:nth-child(1) { width: 1%; }
 
-    /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
-    /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
-    /* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ *//* تنظیمات باکس سمت چپ */
 
-    .left-section {
-        position: relative;
-        width: 90%;
-        margin: 4% auto;
+    /***********************************************************/
+    /* فقط این قسمت اصلاح شده است */
+    /***********************************************************/
+
+    .paein{
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:center;
+        width:100%;
+        gap:20px;
+        margin-top:15px;
     }
 
-    .ezafeBox, .passBox, .hourlyPassBox {
+    .left-section{
+        order:1;
+        width:100%;
+
+        break-before: page;
+        page-break-before: always;
+        gap: 10px;
+    }
+
+    .paeinrast{
+        order:2;
+        width:100%;
+    }
+
+    /***********************************************************/
+    /* پایان قسمت اصلاح شده */
+    /***********************************************************/
+
+
+    .ezafeBox,
+    .passBox,
+    .hourlyPassBox {
         width: 100%;
     }
 
-    .ezafeBox h2, .passBox h2, .hourlyPassBox h2 {
+    .ezafeBox h2,
+    .passBox h2,
+    .hourlyPassBox h2 {
         font-size: 15px;
     }
 
@@ -1203,14 +1235,10 @@ html, body {
         font-size: 10px;
     }
 
-    /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
-    /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
-    /* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم *//* تنظیمات باکس اعداد سامانه و سیستم */
-
     .numberReport {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 17px;
+        gap: 10px;                 /* قبلاً 17px */
         justify-content: center;
         align-items: center;
         width: 95%;
@@ -1221,14 +1249,16 @@ html, body {
     }
 
     .numBox {
-        padding: 7px;
-        font-size: 12px;
+        padding: 4px;              /* قبلاً 7px */
+        font-size: 10px;           /* قبلاً 12px */
         width: 100%;
     }
 
-    .numBox, .numBoxInput, .numBoxEzafeh {
-        height: 80px;
-        font-size: 18px;
+    .numBox,
+    .numBoxInput,
+    .numBoxEzafeh {
+        height: 65px;              /* قبلاً 80px */
+        font-size: 14px;           /* قبلاً 18px */
     }
 
     .numBoxEzafeh {
@@ -1236,77 +1266,68 @@ html, body {
     }
 
     .attendanceSamanehTitlemovazafi {
-        margin-top: 7px;
-        font-size: 15px;
+        margin-top: 4px;           /* قبلاً 7px */
+        font-size: 12px;           /* قبلاً 15px */
     }
 
     .attendanceSamanehValueInput {
-        font-size: 20px;
-        margin-top: 9px;
-        height: 26px;
+        font-size: 16px;           /* قبلاً 20px */
+        margin-top: 4px;           /* قبلاً 9px */
+        height: 22px;              /* قبلاً 26px */
     }
 
     .attendanceSamanehTitle {
-        margin-top: 7px;
-        font-size: 15px;
+        margin-top: 4px;
+        font-size: 12px;
     }
 
     .attendanceSystemTitlemajmoo {
-        margin-left: -10;
-        margin-top: 7px;
-        font-size: 15px;
+        margin-top: 4px;
+        font-size: 12px;
     }
 
     .attendanceSystemTitlegozaresh {
-        margin-left: -3px;
-        margin-top: 7px;
-        font-size: 15px;
+        margin-top: 4px;
+        font-size: 12px;
     }
 
     .attendanceSystemValue {
-        font-size: 15px;
-        margin-top: 5px;
+        font-size: 14px;           /* قبلاً 15px */
+        margin-top: 2px;
     }
 
-    .overtimeSamanehValue {
-        font-size: 20px;
-    }
-
+    .overtimeSamanehValue,
     .overtimeSystemValue {
-        font-size: 20px;
+        font-size: 16px;           /* قبلاً 20px */
     }
 
-    .overtimeSamanehTitle {
-        margin-top: 15px;
-        font-size: 15px;
-    }
-
+    .overtimeSamanehTitle,
     .overtimeSystemTitle {
-        margin-top: 15px;
-        font-size: 15px;
+        margin-top: 6px;           /* قبلاً 15px */
+        font-size: 12px;           /* قبلاً 15px */
     }
 
-    .numBox .value, .numBoxInput .value, .numBoxEzafeh .value {
-        font-size: 20px;
+    .numBox .value,
+    .numBoxInput .value,
+    .numBoxEzafeh .value {
+        font-size: 16px;           /* قبلاً 20px */
         margin-top: 0;
     }
 
-    .numBox .title, .numBoxInput .title, .numBoxEzafeh .title {
-        font-size: 11px;
+    .numBox .title,
+    .numBoxInput .title,
+    .numBoxEzafeh .title {
+        font-size: 9px;            /* قبلاً 11px */
     }
 
     #takhiretitle {
-        margin-top: 15px;
+        margin-top: 8px;           /* قبلاً 15px */
     }
 
     .numBox .jscode {
-        font-size: 20px;
-        margin-top: 15px;
+        font-size: 16px;           /* قبلاً 20px */
+        margin-top: 8px;           /* قبلاً 15px */
     }
-
-    /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
-    /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
-    /* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء *//* تنظیمات باکس های امضاء */
 
     .emzaha {
         position: relative;
@@ -1318,22 +1339,7 @@ html, body {
         gap: 15%;
     }
 
-    .signature-box {
-        width: 30%;
-        border: 2px solid #ddd;
-        padding: 10px;
-        border-radius: 8px;
-        font-family: 'Yekan', sans-serif;
-        font-size: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 8rem;
-        background-color: white;
-        position: relative;
-        margin: 0;
-    }
-
+    .signature-box,
     .signature-box-hamkar {
         width: 30%;
         border: 2px solid #ddd;
@@ -1356,9 +1362,7 @@ html, body {
 
     @page {
         size: A4 portrait;
-        margin: 0 auto; /* حذف حاشیه‌های پیش‌فرض */
-        padding: 0;
-        height: auto;
-        width: 100%;
+        margin: 0;
     }
+
 }
