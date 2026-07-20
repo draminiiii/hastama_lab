@@ -5,92 +5,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سامانه هستما</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/login-style.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
 </head>
 
 <body>
-
-    <!-- کل اجزاء -->
-
-
-        <!-- پنل لوگو -->
-        <div class="samaneh">
-            <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="Logo">
-            <p>ســامـانـه هســتما</p>
-        </div>
-
-        <!-- اسلایدر  -->
-        <div class="slider">
-            <div class="slider-container">
-                <div class="slider-item">
-                    <img src="{{ url_for('static', path='images/slider4.jpg') }}" alt="تصویر 4 (کپی)">
-                    <div class="overlay"></div>
-                </div>
-                <div class="slider-item">
-                    <img src="{{ url_for('static', path='images/slider1.jpg') }}" alt="تصویر 1">
-                    <div class="overlay"></div>
-                </div>
-                <div class="slider-item">
-                    <img src="{{ url_for('static', path='images/slider2.jpg') }}" alt="تصویر 2">
-                    <div class="overlay"></div>
-                </div>
-                <div class="slider-item">
-                    <img src="{{ url_for('static', path='images/slider3.jpg') }}" alt="تصویر 3">
-                    <div class="overlay"></div>
-                </div>
-                <div class="slider-item">
-                    <img src="{{ url_for('static', path='images/slider4.jpg') }}" alt="تصویر 4">
-                    <div class="overlay"></div>
-                </div>
-                <div class="slider-item">
-                    <img src="{{ url_for('static', path='images/slider1.jpg') }}" alt="تصویر 1 (کپی)">
-                    <div class="overlay"></div>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="brand">
+                <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="لوگوی هستما">
+                <div>
+                    <h1>سامانه هستما</h1>
+                    <p>ورود به محیط کاربری</p>
                 </div>
             </div>
+
+            <div class="login-header">
+                <h2>خوش آمدید</h2>
+                <p>برای دسترسی به داشبورد اطلاعات خود را وارد کنید.</p>
+            </div>
+
+            <form class="login-form" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                        <label for="username">نام کاربری</label>
+                        <span class="focus-border"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                        <label for="password">رمز عبور</label>
+                        <span class="focus-border"></span>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <label class="remember-wrapper">
+                        <input type="checkbox" id="remember" name="remember">
+                        <span class="checkbox-label">
+                            <span class="checkmark"></span>
+                            مرا به خاطر بسپار
+                        </span>
+                    </label>
+                    <a href="#" class="forgot-password">فراموشی رمز عبور؟</a>
+                </div>
+
+                <button type="submit" class="btn">ورود</button>
+            </form>
+
+            <p class="login-note">برای دریافت اطلاعات ورود با واحد پشتیبانی تماس بگیرید.</p>
         </div>
+    </div>
 
-        <!-- متن بزرگ وسط صفحه -->
-        <div class="center-text">
-            آزمایشگاه دکتر امینی
-        </div>
+    <footer class="login-footer">
+        محصولی از شرکت هنر افزار ایرانیان - نسخه آزمایشی
+    </footer>
 
-        <!-- متن کوچک زیر آن -->
-        <div class="small-text">
-            همگام با تکنولوژی روز، به پشتوانه تجربه دیروز
-        </div>
-
-        <!-- خط وسط -->
-        <div class="khatvasat"></div>
-
-        <!-- متن بزرگ وسط صفحه -->
-        <div class="down-text">
-            <span>نسخه آزمایشی</span>
-        </div>
-
-        <!-- پاپ‌آپ پنل کاربری -->
-        <div class="popup-content">
-            <h2 id="popupTitle">ورود به محیط کاربری</h2>
-
-            <input type="text" id="username" name="username" placeholder="نام کاربری" autocomplete="username" required>
-
-            <input type="password" id="password" name="password" placeholder="رمز عبور" autocomplete="current-password" required>
-
-            <button id="bastn-login-popup">فراموشی رمز عبور</button>
-            <button onclick="login()">ورود</button>
-        </div>
-
-        
-
-        <!-- فوتر با جمله حق نشر -->
-        <div class="footertxt">
-           © کلیه حقوق این سامانه متعلق به شرکت هنرافزار ایرانیان می‌باشد 
-        </div>
-
-
-    
     <script src="{{ url_for('static', path='js/script.js') }}"></script>
-
 </body>
 
 </html>
