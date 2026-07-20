@@ -1040,6 +1040,14 @@ document.addEventListener("DOMContentLoaded", function () {
 let ticketData = null;
 
 function openViewDialog(button) {
+    // اگر موبایل است، صفحه وضعیت تیکت‌ها را ببند
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        const ticketOverlay = document.getElementById('ticketListOverlay');
+        if (ticketOverlay) {
+            ticketOverlay.style.display = 'none';
+        }
+    }
+
     // نمایش پاپ‌آپ
     document.querySelector('#popupMoshahedeoverlay').style.display = 'block';
     document.querySelector('#MoshahedePopupbox').style.display = 'block';
