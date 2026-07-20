@@ -517,8 +517,11 @@ function openTicketModal() {
 // بستن پاپ‌آپ ثبت تیکت
 function closeTicketModal() {document.getElementById("ticketModal").style.display = "none";}
 
-// باز کردن پاپ‌آپ لیست تیکت‌ها
+// باز کردن پاپ‌آپ لیست تیکت‌ها (فقط در موبایل)
 function openTicketListPopup() {
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+        return; // فقط موبایل باید پاپ‌آپ را باز کند
+    }
     document.getElementById("ticketListOverlay").style.display = "flex";
 }
 
