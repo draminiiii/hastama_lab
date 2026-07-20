@@ -33,6 +33,10 @@
                 <img src="{{ url_for('static', path='images/attendance.png') }}" alt="ساعت زن">
                 <span class="icon-text">ساعت زن</span>
             </div>
+            <div class="icon" id="ticketListIcon">
+                <img src="{{ url_for('static', path='images/chat.png') }}" alt="تیکت‌ها" onclick="openTicketListPopup()">
+                <span class="icon-text">تیکت‌ها</span>
+            </div>
             <p class="welcome-text">{{ username }}، خوش آمدید</p>
         </div>
 
@@ -370,64 +374,65 @@
             </div>
         </div>
 
-        <!-- باکس وضعیت تیکت ها -->
-        <div class="ticket-status-box">
-            <h3>وضعیت تیکت‌ها</h3>
-            <div class="ticket-container">
-                {% if ticket_records %}
-                    {% for ticket in ticket_records %}
-                    <div class="mobile-box">
-                        <div class="onvaneticket">
-                            <div class="subjectTicket">عنوان تیکت</div>
-                            <div class="contentTicket">{{ ticket.ticket_title }}</div>
+        <!-- پاپ‌آپ وضعیت تیکت‌ها -->
+        <div id="ticketListOverlay" class="popup-overlay" style="display: none;">
+            <div class="ticket-status-box ticket-popup-box">
+                <h3>وضعیت تیکت‌ها</h3>
+                <div class="ticket-container">
+                    {% if ticket_records %}
+                        {% for ticket in ticket_records %}
+                        <div class="mobile-box">
+                            <div class="onvaneticket">
+                                <div class="subjectTicket">عنوان تیکت</div>
+                                <div class="contentTicket">{{ ticket.ticket_title }}</div>
+                            </div>
+                            <div class="tatikhticket">
+                                <div class="subjectTarikh">تاریخ تیکت</div>
+                                <div class="contentTarikh">{{ ticket.ticket_date }}</div>
+                            </div>
+                            <div class="tatikhticket">
+                                <div class="subjectTarikh">دریافت کننده</div>
+                                <div class="contentTarikh">{{ ticket.target_username }}</div>
+                            </div>
+                            <div class="tatikhticket">
+                                <div class="subjectTarikh">وضعیت</div>
+                                <div class="contentTarikh">{{ ticket.ticket_status }}</div>
+                            </div>
+                            <div class="tatikhticket">
+                                <div class="subjectTarikh">توضیحات</div>
+                                <div class="contentTarikh">{{ ticket.ticket_description }}</div>
+                            </div>
+                            <div class="virayeshVAhazf">
+                                <button class="trash-btn" onclick="showConfirmDialog('{{ ticket.ticket_id }}')">
+                                    <img src="/static/images/trash.png" alt="حذف">
+                                    <span class="tooltip-text-table-del">حذف</span>
+                                </button>
+                                {% if ticket.ticket_status == 'ارسال شده' %}
+                                <button class="edit-btn" 
+                                        onclick="openEditTicketModal(this)" 
+                                        data-id="{{ ticket.ticket_id }}"
+                                        data-receiver="{{ ticket.target_username }}" 
+                                        data-title="{{ ticket.ticket_title }}" 
+                                        data-description="{{ ticket.ticket_description }}">
+                                    <img src="/static/images/writing.png" alt="ویرایش">
+                                    <span class="tooltip-text-table-edit">ویرایش</span>
+                                </button>
+                                {% else %}
+                                <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
+                                    <img src="/static/images/view.png" alt="مشاهده">
+                                    <span class="tooltip-text-table-view">مشاهده</span>
+                                </button>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="tatikhticket">
-                            <div class="subjectTarikh">تاریخ تیکت</div>
-                            <div class="contentTarikh">{{ ticket.ticket_date }}</div>
-                        </div>
-                        <div class="tatikhticket">
-                            <div class="subjectTarikh">دریافت کننده</div>
-                            <div class="contentTarikh">{{ ticket.target_username }}</div>
-                        </div>
-                        <div class="tatikhticket">
-                            <div class="subjectTarikh">وضعیت</div>
-                            <div class="contentTarikh">{{ ticket.ticket_status }}</div>
-                        </div>
-                        <div class="tatikhticket">
-                            <div class="subjectTarikh">توضیحات</div>
-                            <div class="contentTarikh">{{ ticket.ticket_description }}</div>
-                        </div>
-                        <div class="virayeshVAhazf">
-                            <button class="trash-btn" onclick="showConfirmDialog('{{ ticket.ticket_id }}')">
-                                <img src="/static/images/trash.png" alt="حذف">
-                                <span class="tooltip-text-table-del">حذف</span>
-                            </button>
-                            {% if ticket.ticket_status == 'ارسال شده' %}
-                            <button class="edit-btn" 
-                                    onclick="openEditTicketModal(this)" 
-                                    data-id="{{ ticket.ticket_id }}"
-                                    data-receiver="{{ ticket.target_username }}" 
-                                    data-title="{{ ticket.ticket_title }}" 
-                                    data-description="{{ ticket.ticket_description }}">
-                                <img src="/static/images/writing.png" alt="ویرایش">
-                                <span class="tooltip-text-table-edit">ویرایش</span>
-                            </button>
-                            {% else %}
-                            <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
-                                <img src="/static/images/view.png" alt="مشاهده">
-                                <span class="tooltip-text-table-view">مشاهده</span>
-                            </button>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="no-ticket-message">تیکتی موجود نیست</div>
-                {% endif %}
-            </div>
-            
-            <div class="Jadvale-ticket">
-                <table id="ticket-status-table">
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-ticket-message">تیکتی موجود نیست</div>
+                    {% endif %}
+                </div>
+                
+                <div class="Jadvale-ticket">
+                    <table id="ticket-status-table">
                     <thead>
                         <tr>
                             <th class="virayesh-ticket">ویرایش</th>
@@ -486,6 +491,8 @@
                         {% endfor %}
                     </tbody>                
                 </table>
+                </div>
+                <a href="#" id="closeTicketListPopup" class="close-popup" onclick="closeTicketListPopup(event)">بستن</a>
             </div>
         </div>
 

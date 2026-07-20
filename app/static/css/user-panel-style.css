@@ -1690,6 +1690,23 @@ body {
     z-index: 9999;
 }
 
+.ticket-popup-box {
+    width: min(90%, 420px);
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    margin: 0 1rem;
+}
+
+.ticket-popup-box .close-popup {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    background-color: #d9534f;
+    color: #ffffff;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
 .report-hour-box {
     background-color: #fbfff9;
     padding: 20px;

@@ -517,6 +517,17 @@ function openTicketModal() {
 // بستن پاپ‌آپ ثبت تیکت
 function closeTicketModal() {document.getElementById("ticketModal").style.display = "none";}
 
+// باز کردن پاپ‌آپ لیست تیکت‌ها
+function openTicketListPopup() {
+    document.getElementById("ticketListOverlay").style.display = "flex";
+}
+
+// بستن پاپ‌آپ لیست تیکت‌ها
+function closeTicketListPopup(event) {
+    if (event) event.preventDefault();
+    document.getElementById("ticketListOverlay").style.display = "none";
+}
+
 // ارسال فرم ثبت تیکت
 document.getElementById('ticketForm').addEventListener('submit', function(e) {
     e.preventDefault(); // جلوگیری از ارسال فرم به طور پیش‌فرض
