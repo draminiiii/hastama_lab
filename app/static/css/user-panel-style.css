@@ -749,7 +749,7 @@ body {
     display: table;
     width: 100%;
     table-layout: fixed;
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -971,7 +971,7 @@ body {
 }
 
 #ticket-status-table thead tr, #ticket-status-table-popup thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -1057,7 +1057,7 @@ body {
 }
 
 .passsaatiReport-table thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -1762,7 +1762,7 @@ body {
 }
 
 #leaveTable thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -1911,7 +1911,7 @@ body {
 #HozoorTableReport thead {
     position: sticky;
     top: 0;
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     z-index: 2;
 }
 
@@ -2683,3 +2683,17 @@ body {
         padding: 5px 12px;
     }
 }
+
+
+/* ????? ???? ??????? ??? ???? */
+table thead tr {`r`n    color: #ffffff !important;`r`n}`r`ntable thead tr th {`r`n    color: #ffffff !important;`r`n}
+
+
+
+/* ????: ??? ??? ??? ???? */
+table thead tr,
+table thead tr th,
+table thead tr td {
+    color: #ffffff !important;
+}
+

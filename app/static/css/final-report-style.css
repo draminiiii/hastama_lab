@@ -175,7 +175,7 @@ html, body {
 }
 
 .hozoorUsersReport-table thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -292,7 +292,7 @@ html, body {
 }
 
 .ezafeKarUsersReport-table thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -396,7 +396,7 @@ html, body {
 }
 
 .morkhcUsersReport-table thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -499,7 +499,7 @@ html, body {
 }
 
 .hourlyPassUsersReport-table thead tr {
-    background-color: #bbdba1;
+    background-color: #7d91ff;
     color: black;
 }
 
@@ -1366,3 +1366,16 @@ html, body {
     }
 
 }
+
+/* ????? ???? ??????? ??? ???? */
+table thead tr {`r`n    color: #ffffff !important;`r`n}`r`ntable thead tr th {`r`n    color: #ffffff !important;`r`n}
+
+
+
+/* ????: ??? ??? ??? ???? */
+table thead tr,
+table thead tr th,
+table thead tr td {
+    color: #ffffff !important;
+}
+
