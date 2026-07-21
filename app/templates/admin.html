@@ -25,59 +25,71 @@
         </div>
         
         <div class="navarha">
-            <!-- نوار سمت چپ -->
-            <div class="leftSidebar">
-                <div class="icon-container-leftSidebar">
-                    <img src="/static/images/coworker-icon.png" alt="'همکاران'" class="leaveRequest-icon" onclick="toggleBox('coworkerBox')">
-                    <span class="tooltipIconHeader-leftSidebar leave-tooltip-leftSidebar">مدیریت کارکنان</span>
-                </div>
-                <div class="icon-container-leftSidebar">
-                    <img src="/static/images/answer-icon.png" alt="گزارشات" class="overtime-icon">
-                    <span class="tooltipIconHeader-leftSidebar overtime-tooltip-leftSidebar">گزارشات</span>
-                </div>
-                <div class="icon-container-leftSidebar">
-                    <img src="/static/images/chat.png" alt="ثبت تیکت" class="hourlyPass-icon" onclick="openTicketModal()">
-                    <span class="tooltipIconHeader-leftSidebar hourlyPass-tooltip-leftSidebar">ثبت تیکت</span>
-                </div>
-
-                <div class="icon-container-leftSidebar">
-                    <img src="/static/images/user-check.png" alt="منو" class="ticket-icon" onclick="toggleBox('hozoorbox')">
-                    <span class="tooltipIconHeader-leftSidebar saatzan-tooltip-leftSidebar">مدیریت ساعت زن </span>
-                </div>
-
-                <div class="icon-container-leftSidebar">
-                    <img src="/static/images/clock.png" alt="مدیریت شیفت‌ها" class="shift-icon" onclick="toggleBox('shiftBox')">
-                    <span class="tooltipIconHeader-leftSidebar shift-tooltip-leftSidebar">مدیریت شیفت‌ها</span>
-                </div>
-
-                <div class="icon-container-leftSidebar">
-                    <img src="/static/images/exit.png" alt="منو" class="ticket-icon" onclick="logout()">
-                    <span class="tooltipIconHeader-leftSidebar khorooj-tooltip-leftSidebar">خروج</span>
-                </div>
-            </div>
-
-            <!-- تنظیمات ساید بار سمت راست -->
+            <!-- سایدبار یکپارچه سمت راست (آیکون‌ها از هر دو نوار منتقل شدند) -->
             <div class="rightSidebar">
-                <div class="icon-container">
-                    <img src="/static/images/leaveRequest.png" alt="منو" class="leaveRequest-icon" onclick="toggleBox('vacationBox')">
+                <button type="button" class="menu-toggle" id="menu-btn" onclick="toggleSidebar()">
+                    <img src="/static/images/menu.png" alt="منو">
+                </button>
+
+                <div class="icon-container" onclick="toggleBox('coworkerBox')">
+                    <img src="/static/images/coworker-icon.png" alt="همکاران" class="leaveRequest-icon">
+                    <span class="icon-label">مدیریت کارکنان</span>
+                    <span class="tooltipIconHeader leave-tooltip">مدیریت کارکنان</span>
+                </div>
+
+                <div class="icon-container" onclick="toggleBox('vacationBox')">
+                    <img src="/static/images/leaveRequest.png" alt="مرخصی" class="leaveRequest-icon">
+                    <span class="icon-label">مدیریت مرخصی ها</span>
                     <span class="tooltipIconHeader leave-tooltip">مدیریت مرخصی ها</span>
                 </div>
-            
-                <div class="icon-container">
-                    <img src="/static/images/overtime.png" alt="منو" class="overtime-icon" onclick="toggleBox('overtimeBox')">
+
+                <div class="icon-container" onclick="toggleBox('overtimeBox')">
+                    <img src="/static/images/overtime.png" alt="اضافه کاری" class="overtime-icon">
+                    <span class="icon-label">مدیریت اضافه کاری ها</span>
                     <span class="tooltipIconHeader overtime-tooltip">مدیریت اضافه کاری ها</span>
                 </div>
-            
-                <div class="icon-container">
-                    <img src="/static/images/clock.png" alt="منو" class="hourlyPass-icon" onclick="toggleBox('hourlyPassBox')">
+
+                <div class="icon-container" onclick="toggleBox('hourlyPassBox')">
+                    <img src="/static/images/clock.png" alt="پاس ساعتی" class="hourlyPass-icon">
+                    <span class="icon-label">مدیریت پاس های ساعتی</span>
                     <span class="tooltipIconHeader hourlyPass-tooltip">مدیریت پاس های ساعتی</span>
                 </div>
-            
-                <div class="icon-container">
-                    <img src="/static/images/chat.png" alt="منو" class="ticket-icon" onclick="toggleBox('ticketBox')">
+
+                <div class="icon-container" onclick="toggleBox('ticketBox')">
+                    <img src="/static/images/chat.png" alt="تیکت‌ها" class="ticket-icon">
+                    <span class="icon-label">مدیریت تیکت ها</span>
                     <span class="tooltipIconHeader ticket-tooltip">مدیریت تیکت ها</span>
                 </div>
 
+                <div class="icon-container" onclick="toggleBox('shiftBox')">
+                    <img src="/static/images/clock.png" alt="مدیریت شیفت‌ها" class="shift-icon">
+                    <span class="icon-label">مدیریت شیفت‌ها</span>
+                    <span class="tooltipIconHeader shift-tooltip">مدیریت شیفت‌ها</span>
+                </div>
+
+                <div class="icon-container" onclick="toggleBox('hozoorbox')">
+                    <img src="/static/images/user-check.png" alt="مدیریت حضور" class="ticket-icon">
+                    <span class="icon-label">مدیریت ساعت زن</span>
+                    <span class="tooltipIconHeader ticket-tooltip">مدیریت ساعت زن</span>
+                </div>
+
+                <div class="icon-container" onclick="openTicketModal()">
+                    <img src="/static/images/chat.png" alt="ثبت تیکت" class="hourlyPass-icon">
+                    <span class="icon-label">ثبت تیکت</span>
+                    <span class="tooltipIconHeader hourlyPass-tooltip">ثبت تیکت</span>
+                </div>
+
+                <div class="icon-container" onclick="toggleBox('vacationBox')">
+                    <img src="/static/images/answer-icon.png" alt="گزارشات" class="overtime-icon">
+                    <span class="icon-label">گزارشات</span>
+                    <span class="tooltipIconHeader overtime-tooltip">گزارشات</span>
+                </div>
+
+                <div class="icon-container" onclick="logout()">
+                    <img src="/static/images/exit.png" alt="خروج" class="ticket-icon">
+                    <span class="icon-label">خروج</span>
+                    <span class="tooltipIconHeader khorooj-tooltip">خروج</span>
+                </div>
             </div>
         </div>
         <!-- باکس اطلاعات کاربران -->

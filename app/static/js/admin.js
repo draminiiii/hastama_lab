@@ -190,7 +190,8 @@ function toggleMenu() {
 // تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری
 
 function toggleSidebar() {
-    const sidebar = document.querySelector('aside');
+    const sidebar = document.querySelector('.rightSidebar');
+    if (!sidebar) return;
     sidebar.classList.toggle('open'); // اضافه یا حذف کردن کلاس 'open' برای باز و بسته شدن نوار منو
 }
 

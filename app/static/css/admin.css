@@ -40,27 +40,62 @@ html, body {
 /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
 
 .rightSidebar {
-    width: 5%;
-    height: 87vh;
+    width: 70px;
+    min-height: 100vh;
+    height: auto;
     background-color: #92c168;
     position: fixed;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-    border-radius: 25px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 14%;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 12px 8px;
+    overflow-y: auto;
     z-index: 50;
-    /* حذف float چون position fixed هست */
+    transition: width 0.25s ease;
+    overflow: hidden;
+    align-items: stretch;
 }
 
+.rightSidebar.open {
+    width: 250px;
+    max-width: 260px;
+    min-width: 180px;
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-toggle img {
+    width: 32px;
+    height: 32px;
+}
 
 .icon-container {
     position: relative;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 12px;
+    padding: 10px 12px;
+    min-height: 56px;
+    cursor: pointer;
 }
 
 .icon-container img {
@@ -71,26 +106,32 @@ html, body {
     padding: 5px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
+    flex-shrink: 0;
 }
 
 .icon-container img:hover {transform: scale(1.1);}
 
+.icon-label {
+    display: none;
+    color: #000;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: rtl;
+    text-align: right;
+    width: calc(100% - 60px);
+}
+
+.rightSidebar.open .icon-label {
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 0;
+}
+
 /* استایل کلی برای متن */
 .tooltipIconHeader {
-    position: absolute;
-    background-color: rgb(150, 193, 108);
-    color: #000000;
-    padding: 8px 23px;
-    border-radius: 16px 0px 0px 16px;
-    font-size: 14px;
-    white-space: nowrap;
-    right: 50px;
-    top: 50%;
-    transform: translateY(-50%) translateX(10px);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    font-family: 'Yekan';
+    display: none !important;
 }
 
 /* هنگام هاور، متن از راست ظاهر شود */
@@ -118,93 +159,7 @@ html, body {
     top: 1.3rem;
 }
 
-/* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ */
-/* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ */
-/* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ *//* تنظیمات ساید بار سمت چپ */
-
-.leftSidebar {
-    width: 5%;
-    height: 87vh;
-    background-color: #92c168;
-    position: fixed;
-    top: 50%;
-    left: 1rem;
-    transform: translateY(-50%);
-    border-radius: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12%;
-    z-index: 50;
-}
-
-
-.icon-container-leftSidebar {
-    position: relative;
-    text-align: center;
-}
-
-.icon-container-leftSidebar img {
-    width: 40px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    padding: 5px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-
-.icon-container-leftSidebar img:hover {transform: scale(1.1);}
-
-/* استایل کلی برای متن */
-.tooltipIconHeader-leftSidebar {
-    position: absolute;
-    background-color: rgb(150, 193, 108);
-    color: #000000;
-    padding: 8px 23px;
-    border-radius: 0px 16px 16px 0px;
-    font-size: 14px;
-    white-space: nowrap;
-    left: 50px;
-    top: 50%;
-    transform: translateY(-50%) translateX(-10px);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    font-family: 'Yekan';
-}
-
-/* هنگام هاور، متن از چپ ظاهر شود */
-.icon-container-leftSidebar:hover .tooltipIconHeader-leftSidebar {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(-50%) translateX(0px);
-}
-
-.leave-tooltip-leftSidebar {
-    left: 3rem;
-    top: 1.3rem;
-}
-
-.overtime-tooltip-leftSidebar {
-    left: 3rem;
-    top: 1.3rem;
-}
-.hourlyPass-tooltip-leftSidebar {
-    left: 3rem;
-    top: 1.3rem;
-}
-
-.saatzan-tooltip-leftSidebar {
-    left: 3rem;
-    top: 1.3rem;
-}
-
-.khorooj-tooltip-leftSidebar {
-    left: 3rem;
-    top: 1.3rem;
-}
+/* leftSidebar styles removed — using unified rightSidebar */
 
 /* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام */
 /* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام */
