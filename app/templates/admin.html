@@ -28,47 +28,51 @@
             <!-- سایدبار یکپارچه سمت راست (آیکون‌ها از هر دو نوار منتقل شدند) -->
             <div class="rightSidebar">
                 <button type="button" class="menu-toggle" id="menu-btn" onclick="toggleSidebar()">
-                    <img src="/static/images/menu.png" alt="منو">
+                    <img src="/static/images/menu.png" alt="منو" class="menu-icon">
+                    <div class="menu-expanded">
+                        <img src="/static/images/samanehlogo.png" alt="لوگوی هستما" class="menu-logo">
+                        <span class="menu-label">ســامـانه هـوشــمند<br>حــضـور و غــیـاب هــسـتـمـا</span>
+                    </div>
                 </button>
 
-                <div class="icon-container" onclick="toggleBox('coworkerBox')">
-                    <img src="/static/images/coworker-icon.png" alt="همکاران" class="leaveRequest-icon">
+                <div class="icon-container" onclick="toggleBox('coworkerBox', this)">
+                    <img src="/static/images/coworker-icon.png" alt="همکاران" class="sidebar-icon" data-default-src="/static/images/coworker-icon.png" data-active-src="/static/images/coworker-icon-purple.png">
                     <span class="icon-label">مدیریت کارکنان</span>
                     <span class="tooltipIconHeader leave-tooltip">مدیریت کارکنان</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('vacationBox')">
-                    <img src="/static/images/leaveRequest.png" alt="مرخصی" class="leaveRequest-icon">
+                <div class="icon-container" onclick="toggleBox('vacationBox', this)">
+                    <img src="/static/images/leaveRequest.png" alt="مرخصی" class="sidebar-icon" data-default-src="/static/images/leaveRequest.png" data-active-src="/static/images/leaveRequest-purple.png">
                     <span class="icon-label">مدیریت مرخصی ها</span>
                     <span class="tooltipIconHeader leave-tooltip">مدیریت مرخصی ها</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('overtimeBox')">
-                    <img src="/static/images/overtime.png" alt="اضافه کاری" class="overtime-icon">
+                <div class="icon-container" onclick="toggleBox('overtimeBox', this)">
+                    <img src="/static/images/overtime.png" alt="اضافه کاری" class="sidebar-icon" data-default-src="/static/images/overtime.png" data-active-src="/static/images/overtime-purple.png">
                     <span class="icon-label">مدیریت اضافه کاری ها</span>
                     <span class="tooltipIconHeader overtime-tooltip">مدیریت اضافه کاری ها</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('hourlyPassBox')">
-                    <img src="/static/images/clock.png" alt="پاس ساعتی" class="hourlyPass-icon">
+                <div class="icon-container" onclick="toggleBox('hourlyPassBox', this)">
+                    <img src="/static/images/clock.png" alt="پاس ساعتی" class="sidebar-icon" data-default-src="/static/images/clock.png" data-active-src="/static/images/clock-purple.png">
                     <span class="icon-label">مدیریت پاس های ساعتی</span>
                     <span class="tooltipIconHeader hourlyPass-tooltip">مدیریت پاس های ساعتی</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('ticketBox')">
-                    <img src="/static/images/chat.png" alt="تیکت‌ها" class="ticket-icon">
+                <div class="icon-container" onclick="toggleBox('ticketBox', this)">
+                    <img src="/static/images/chat.png" alt="تیکت‌ها" class="sidebar-icon" data-default-src="/static/images/chat.png" data-active-src="/static/images/chat-purple.png">
                     <span class="icon-label">مدیریت تیکت ها</span>
                     <span class="tooltipIconHeader ticket-tooltip">مدیریت تیکت ها</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('shiftBox')">
-                    <img src="/static/images/clock.png" alt="مدیریت شیفت‌ها" class="shift-icon">
+                <div class="icon-container" onclick="toggleBox('shiftBox', this)">
+                    <img src="/static/images/clock.png" alt="مدیریت شیفت‌ها" class="sidebar-icon" data-default-src="/static/images/clock.png" data-active-src="/static/images/clock-purple.png">
                     <span class="icon-label">مدیریت شیفت‌ها</span>
                     <span class="tooltipIconHeader shift-tooltip">مدیریت شیفت‌ها</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('hozoorbox')">
-                    <img src="/static/images/user-check.png" alt="مدیریت حضور" class="ticket-icon">
+                <div class="icon-container" onclick="toggleBox('hozoorbox', this)">
+                    <img src="/static/images/user-check.png" alt="مدیریت حضور" class="sidebar-icon" data-default-src="/static/images/user-check.png" data-active-src="/static/images/user-check-purple.png">
                     <span class="icon-label">مدیریت ساعت زن</span>
                     <span class="tooltipIconHeader ticket-tooltip">مدیریت ساعت زن</span>
                 </div>
@@ -79,8 +83,8 @@
                     <span class="tooltipIconHeader hourlyPass-tooltip">ثبت تیکت</span>
                 </div>
 
-                <div class="icon-container" onclick="toggleBox('vacationBox')">
-                    <img src="/static/images/answer-icon.png" alt="گزارشات" class="overtime-icon">
+                <div class="icon-container" onclick="toggleBox('vacationBox', this)">
+                    <img src="/static/images/answer-icon.png" alt="گزارشات" class="sidebar-icon" data-default-src="/static/images/answer-icon.png" data-active-src="/static/images/answer-icon-purple.png">
                     <span class="icon-label">گزارشات</span>
                     <span class="tooltipIconHeader overtime-tooltip">گزارشات</span>
                 </div>

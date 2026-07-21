@@ -71,7 +71,32 @@ function closeSuccessMessage() {
 // تابع نمایش باکس ها// تابع نمایش باکس ها// تابع نمایش باکس ها// تابع نمایش باکس ها// تابع نمایش باکس ها
 // تابع نمایش باکس ها// تابع نمایش باکس ها// تابع نمایش باکس ها// تابع نمایش باکس ها// تابع نمایش باکس ها
 
-function toggleBox(boxId) {
+function toggleBox(boxId, iconContainer) {
+    // تغییر آیکون‌های فعال به حالت پیش‌فرض
+    const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+    sidebarIcons.forEach(icon => {
+        const defaultSrc = icon.getAttribute('data-default-src');
+        if (defaultSrc) {
+            icon.src = defaultSrc;
+        }
+    });
+
+    // حذف کلاس فعال از تمام آیتم‌های سایدبار
+    const sidebarItems = document.querySelectorAll('.icon-container');
+    sidebarItems.forEach(item => item.classList.remove('active'));
+
+    // فعال کردن آیکون و کلاس انتخاب شده
+    if (iconContainer) {
+        const icon = iconContainer.querySelector('.sidebar-icon');
+        if (icon) {
+            const activeSrc = icon.getAttribute('data-active-src');
+            if (activeSrc) {
+                icon.src = activeSrc;
+            }
+        }
+        iconContainer.classList.add('active');
+    }
+
     // پنهان کردن تمام باکس‌ها
     const boxes = document.querySelectorAll('.management-box');
     boxes.forEach(box => box.style.display = 'none');
