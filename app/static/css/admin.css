@@ -4,6 +4,13 @@
          url('/static/fonts/Yekan.woff') format('woff');
 }
 
+@font-face {
+    font-family: 'Vazir';
+    src: url('/static/fonts/Vazir.woff2') format('woff2'),
+         url('/static/fonts/Vazir.woff') format('woff'),
+         url('/static/fonts/Vazir.ttf') format('truetype');
+}
+
 /* برای حذف اسکرول بار عمودی */
 ::-webkit-scrollbar {
     width: 0px;  /* عرض اسکرول بار را صفر می‌کند */
@@ -21,7 +28,7 @@ html, body {
     font-family: 'Yekan', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f9fafb;
     height: 100%;
 }
 
@@ -35,7 +42,227 @@ html, body {
     height: 100%;
 }
 
-/* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
+.admin-topbar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 60;
+    background-color: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 20px;
+    padding: 10px 16px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+}
+
+.admin-profile-card {
+    position: relative;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid #e4e7ec;
+    border-radius: 16px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.profile-button:hover {
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+}
+
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f1f5f9;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.profile-name {
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.profile-role {
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.78rem;
+    color: #64748b;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 177px;
+    background-color: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    padding: 8px 0;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    flex-direction: column;
+    gap: 4px;
+    transform: translateY(-10px);
+    transition: max-height 0.28s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+    z-index: 100;
+}
+
+.profile-dropdown.open {
+    max-height: 260px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.94rem;
+    color: #0f172a;
+    text-align: right;
+}
+
+.dropdown-item:hover {
+    background-color: #f8fafc;
+}
+
+.dropdown-item img {
+    width: 18px;
+    height: 18px;
+}
+
+.admin-action-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-button {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    border: 1px solid #e4e7ec;
+    background-color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.notifications-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    max-width: 340px;
+    background-color: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    padding: 16px;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: max-height 0.28s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+    z-index: 90;
+}
+
+.notifications-panel.open {
+    max-height: 220px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.notifications-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notifications-title {
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.notifications-panel p {
+    margin: 0;
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.92rem;
+    color: #475569;
+}
+
+.icon-button:hover {
+    transform: translateY(-1px);
+    background-color: #f8fafc;
+}
+
+.icon-button svg {
+    width: 22px;
+    height: 22px;
+}
+
+.dark-theme body {
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+.dark-theme .admin-topbar,
+.dark-theme .profile-button,
+.dark-theme .profile-dropdown,
+.dark-theme .icon-button {
+    background-color: #1f2937;
+    border-color: #374151;
+}
+
+.dark-theme .profile-name,
+.dark-theme .profile-role,
+.dark-theme .dropdown-item {
+    color: #f8fafc;
+}
+
+.dark-theme .dropdown-item:hover {
+    background-color: #111827;
+}
+
+.dark-theme .profile-avatar {
+    background-color: #374151;
+}
 /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
 /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
 
@@ -50,6 +277,7 @@ html, body {
     bottom: 0;
     transform: none;
     border-radius: 0;
+    border: 1px solid #e4e7ec;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -64,8 +292,9 @@ html, body {
 }
 
 .rightSidebar.open {
-    width: 254px;
-    max-width: 254px;
+    border: 1px solid #e4e7ec;
+    width: 257px;
+    max-width: 257px;
     min-width: 180px;
 }
 
@@ -85,6 +314,7 @@ html, body {
 
 .rightSidebar.open .menu-toggle {
     justify-content: center;
+    align-items: flex-start;
 }
 
 .menu-toggle .menu-icon {
@@ -123,7 +353,7 @@ html, body {
 .menu-label {
     display: inline-block;
     color: #000;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     font-size: 0.95rem;
     font-weight: 400;
     margin-top: 6px;
@@ -146,6 +376,12 @@ html, body {
     padding: 10px 12px;
     min-height: 56px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.icon-container.active {
+    background-color: #edf3ff;
+    border-radius: 12px;
 }
 
 .icon-container img {
@@ -164,6 +400,7 @@ html, body {
 .icon-label {
     display: none;
     color: #000;
+    font-family: 'Vazir', sans-serif;
     font-size: 0.95rem;
     white-space: nowrap;
     overflow: hidden;
@@ -293,11 +530,11 @@ html, body {
     justify-content: center;
     width: 63rem; /* عرض باکس */
     padding: 20px; /* فاصله داخلی */
-    background-color: #fbfff9; /* رنگ پس‌زمینه */
+    background-color: #ffffff; /* رنگ پس‌زمینه */
     border: 1px solid #ccc; /* حاشیه */
     border-radius: 20px; /* گوشه‌های گرد */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* سایه */
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     text-align: center;
     position: relative;
 }
@@ -321,7 +558,7 @@ html, body {
     width: 100%; /* جدول تمام عرض باکس را بگیرد */
     border-collapse: separate; /* به هم پیوسته کردن حاشیه‌ها */
     border: 1px solid #ddd; /* حاشیه کلی جدول */
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     text-align: center; /* متن‌ها وسط‌چین شوند */
     table-layout: fixed; /* عرض ستون‌ها ثابت باشد */
     border-radius: 20px; /* گوشه‌های جدول گرد */
@@ -332,14 +569,14 @@ html, body {
 
 /* استایل برای هدر */
 #userTable thead tr {
-    background-color: #bbdba1;
-    color: black;
+    background-color: #7d91ff;
+    color: rgb(255, 255, 255);
     direction: rtl;
 }
 
 /* استایل سلول‌های هدر */
 #userTable th {
-    padding: 3px;
+    padding: 7px;
     text-align: center;
     border: 1px solid #ddd; /* حاشیه برای هدر */
     font-size: 18px;
@@ -1075,11 +1312,11 @@ form button:hover {background-color: #4e7a9e;}
     align-items: center;
     position: relative;
     width: 63rem;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 25px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     text-align: center;
     height: 438px;
     overflow-y: hidden;
@@ -1160,14 +1397,14 @@ form button:hover {background-color: #4e7a9e;}
 }
 
 .save-btn-krbrjad {
-    background-color: #6c9ec7;
+    background-color: #7f92fa;
     color: white;
     border: none;
     padding: 6px 18px;
     cursor: pointer;
     font-size: 16px;
     border-radius: 20px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     position: relative;
     bottom: 70px;
     left: 0;
@@ -1175,7 +1412,7 @@ form button:hover {background-color: #4e7a9e;}
     box-shadow: 0 0px 5px 3px rgba(0, 0, 0, 0.2);
 }
 
-.save-btn-krbrjad:hover {background-color: #4e7a9e;}
+.save-btn-krbrjad:hover {background-color: #506bff;}
 
 /* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها */
 /* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها */
@@ -3332,7 +3569,7 @@ margin-left: 15%;
         width: 76%;
         padding: 3px 14px 14px 14px;
         position: absolute;
-        top: 16.8rem;
+        top: 22rem;
     }
 
     #userInfoBox h2 {

@@ -24,6 +24,51 @@
             </div>
         </div>
         
+        <div class="admin-topbar">
+            <div class="admin-profile-card">
+                <button type="button" class="profile-button" id="profileButton" onclick="toggleProfileDropdown(event)">
+                    <img src="/static/images/user.png" alt="پروفایل" class="profile-avatar">
+                    <div class="profile-info">
+                        <span class="profile-name">مدیر سیستم</span>
+                        <span class="profile-role">ادمین</span>
+                    </div>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button type="button" class="dropdown-item">
+                        <img src="/static/images/writing.png" alt="ویرایش پروفایل">
+                        <span>ویرایش پروفایل</span>
+                    </button>
+                    <button type="button" class="dropdown-item">
+                        <img src="/static/images/check-mark.png" alt="وضعیت اشتراک">
+                        <span>وضعیت اشتراک</span>
+                    </button>
+                    <button type="button" class="dropdown-item">
+                        <img src="/static/images/chat.png" alt="پشتیبانی فنی">
+                        <span>پشتیبانی فنی</span>
+                    </button>
+                </div>
+            </div>
+            <div class="admin-action-icons">
+                <button type="button" class="icon-button" id="notificationsButton" onclick="toggleNotifications(event)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C13.1046 22 14 21.1046 14 20H10C10 21.1046 10.8954 22 12 22Z" fill="#0F172A"/>
+                        <path d="M18 16V11C18 7.68629 16.2091 4.86798 13.25 4.21834V3.5C13.25 3.08579 12.9142 2.75 12.5 2.75C12.0858 2.75 11.75 3.08579 11.75 3.5V4.21834C8.79095 4.86798 7 7.68629 7 11V16L5 18V19H19V18L18 16Z" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button type="button" class="icon-button" id="themeToggleButton" onclick="toggleTheme()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79C20.55 12.93 20.08 13 19.59 13C15.59 13 12.29 9.7 12.29 5.7C12.29 5.21 12.36 4.74 12.5 4.29C9.21 4.84 6.82 7.83 6.82 11.32C6.82 15.14 10.17 18.49 14 18.49C17.49 18.49 20.48 16.1 21.03 12.81C21.02 12.81 21.01 12.79 21 12.79Z" fill="#0F172A"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="notifications-panel" id="notificationsPanel">
+                <div class="notifications-content">
+                    <span class="notifications-title">اعلان‌ها</span>
+                    <p>اعلانی برای نمایش وجود ندارد.</p>
+                </div>
+            </div>
+        </div>
+
         <div class="navarha">
             <!-- سایدبار یکپارچه سمت راست (آیکون‌ها از هر دو نوار منتقل شدند) -->
             <div class="rightSidebar">

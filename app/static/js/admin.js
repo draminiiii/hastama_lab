@@ -214,6 +214,26 @@ function toggleMenu() {
 // تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری
 // تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری
 
+function toggleProfileDropdown(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('open');
+    }
+}
+
+function toggleNotifications(event) {
+    event.stopPropagation();
+    const panel = document.getElementById('notificationsPanel');
+    if (panel) {
+        panel.classList.toggle('open');
+    }
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+}
+
 function toggleSidebar() {
     const sidebar = document.querySelector('.rightSidebar');
     if (!sidebar) return;
