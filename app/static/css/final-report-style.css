@@ -653,7 +653,7 @@ html, body {
 }
 
 .numBox, .numBoxInput, .numBoxEzafeh {
-    background: #badbf5;
+    background: #c2cbff;
     padding: 9px;
     border-radius: 8px;
     text-align: center;
@@ -1368,9 +1368,12 @@ html, body {
 }
 
 /* ????? ???? ??????? ??? ???? */
-table thead tr {`r`n    color: #ffffff !important;`r`n}`r`ntable thead tr th {`r`n    color: #ffffff !important;`r`n}
-
-
+table thead tr {
+    color: #ffffff !important;
+}
+table thead tr th {
+    color: #ffffff !important;
+}
 
 /* ????: ??? ??? ??? ???? */
 table thead tr,

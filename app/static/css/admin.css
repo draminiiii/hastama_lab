@@ -39,7 +39,6 @@ html, body {
     align-items: center;
     flex-direction: column;
     gap: 0px;
-    height: 100%;
     padding-top: 140px;
 }
 
@@ -2422,17 +2421,17 @@ form button:hover {background-color: #506bff;}
     table-layout: fixed;
 }
 
-.mjmoo-hozoor-gzrsh {width: 3%;}
-.ezafe-hozoor-gzrsh {width: 2%;}
-.khorojzd-hozoor-gzrsh {width: 2%;}
-.shorozd-hozoor-gzrsh {width: 2%;}
-.takhir-hozoor-gzrsh {width: 2%;}
+.mjmoo-hozoor-gzrsh {width: 2.4%;}
+.ezafe-hozoor-gzrsh {width: 1.6%;}
+.khorojzd-hozoor-gzrsh {width: 2.2%;}
+.shorozd-hozoor-gzrsh {width: 2.2%;}
+.takhir-hozoor-gzrsh {width: 1.1%;}
 .zmnkhrj-hozoor-gzrsh {width: 2%;}
 .zmnvrd-hozoor-gzrsh {width: 2%;}
 .zmnvrd2-hozoor-gzrsh {width: 2%;}
 .zmnkhrj2-hozoor-gzrsh {width: 2%;}
 .hfte-hozoor-gzrsh {width: 1.7%;}
-.sbt-hozoor-gzrsh {width: 1.5%;}
+.sbt-hozoor-gzrsh {width: 1.7%;}
 .zmnkhrj2-hozoor-gzrsh {width: 2%;}
 .zmnvrd2-hozoor-gzrsh {width: 2%;}
 
@@ -4159,17 +4158,19 @@ margin-left: 15%;
     /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
 
     #hozoorbox {
-        position: absolute;
-        top: 2rem;
-        padding: 6px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
+        width: 80%;
+        padding: 20px;
+        background-color: #fbfff9;
+        margin-top: 3.7rem;
+        display: none;
+        position: relative;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     #hozoorbox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
+        text-align: center;
+        margin-bottom: 15px;
     }
 
     #gozareshHozoor {

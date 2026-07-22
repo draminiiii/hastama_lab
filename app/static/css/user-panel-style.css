@@ -448,7 +448,7 @@ body {
 
 #userInfoBox p {
     margin: 20px 0;
-    font-size: 20px;
+    font-size: 1.2rem;
     line-height: 1.9;
     color: black;
     white-space: nowrap;
@@ -2311,7 +2311,7 @@ body {
         width: 3.4rem;
         min-width: 3.4rem;
         height: 38rem;
-        padding: 0.55rem 0.2rem;
+        padding: 3.55rem 0.2rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -2343,7 +2343,7 @@ body {
         left: 0.6rem;
         width: 3.8rem;
         height: 38rem;
-        padding: 0.65rem 0.2rem;
+        padding: 3.65rem 0.2rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -2686,7 +2686,12 @@ body {
 
 
 /* ????? ???? ??????? ??? ???? */
-table thead tr {`r`n    color: #ffffff !important;`r`n}`r`ntable thead tr th {`r`n    color: #ffffff !important;`r`n}
+table thead tr {
+    color: #ffffff !important;
+}
+table thead tr th {
+    color: #ffffff !important;
+}
 
 
 

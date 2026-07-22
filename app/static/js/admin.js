@@ -234,10 +234,33 @@ function toggleTheme() {
     document.body.classList.toggle('dark-theme');
 }
 
-function toggleSidebar() {
+function toggleSidebar(event) {
     const sidebar = document.querySelector('.rightSidebar');
     if (!sidebar) return;
-    sidebar.classList.toggle('open'); // اضافه یا حذف کردن کلاس 'open' برای باز و بسته شدن نوار منو
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+    const isOpen = sidebar.classList.toggle('open');
+
+    if (isOpen) {
+        document.addEventListener('click', documentClickCloseSidebar);
+    } else {
+        document.removeEventListener('click', documentClickCloseSidebar);
+    }
+}
+
+function documentClickCloseSidebar(event) {
+    const sidebar = document.querySelector('.rightSidebar');
+    const menuBtn = document.getElementById('menu-btn');
+    if (!sidebar || !sidebar.classList.contains('open')) return;
+    const target = event.target;
+    if (sidebar.contains(target) || (menuBtn && menuBtn.contains(target))) {
+        return;
+    }
+    sidebar.classList.remove('open');
+    document.removeEventListener('click', documentClickCloseSidebar);
 }
 
 // تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی
@@ -2023,8 +2046,6 @@ document.getElementById("extractButton").addEventListener("click", function () {
         alert("لطفاً تمام فیلدها را پر کنید.");
         return;
     }
-
-    document.getElementById("hozoorbox").style.marginTop = "20rem";
 
     // تعریف آرایه تعطیلات رسمی (شمسی به فرمت YYYY-MM-DD)
     const OFFICIAL_HOLIDAYS = [
