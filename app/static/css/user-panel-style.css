@@ -550,6 +550,8 @@ body.leave-modal-open .morakhaci-sabt .modal {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+    left: 41.5%;
+    width: 80%;
 }
 
 /* استایل پاپ‌آپ در وسط صفحه */
@@ -3767,6 +3769,10 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         transition: width 0.25s ease;
         display: flex;
         justify-content: flex-start;
+    }
+
+    #overtimeModalContentmobile {
+        top: 52%;
     }
 
     .sidebar-right:hover {

@@ -651,6 +651,16 @@ function toggleSidebarMenu(event) {
     sidebar.classList.toggle('open');
 }
 
+function closeMobileSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    if (!sidebar) return;
+
+    const isMobile = window.innerWidth <= 860;
+    if (!isMobile) return;
+
+    sidebar.classList.remove('open');
+}
+
 function isSidebarExpanded() {
     const sidebar = document.querySelector('.sidebar-right');
     if (!sidebar) return false;
@@ -947,6 +957,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /* باز کردن پاپ‌آپ ثبت مرخصی از سایدبار */
 document.getElementById('showMoreMorakhc').addEventListener('click', function(event) {
     event.preventDefault();
+    closeMobileSidebar();
     if (typeof openLeaveModal === 'function') {
         openLeaveModal();
     }
@@ -1548,6 +1559,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (overtimeBtn) {
         overtimeBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            closeMobileSidebar();
             if (typeof openOvertimeModal === 'function') openOvertimeModal();
         });
     }
@@ -1556,7 +1568,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (passBtn) {
         passBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            closeMobileSidebar();
             if (typeof openHourlyPassModal === 'function') openHourlyPassModal();
+        });
+    }
+
+    var ticketBtn = document.getElementById('ticketListIcon');
+    if (ticketBtn) {
+        ticketBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeMobileSidebar();
+            if (typeof openTicketListPopup === 'function') openTicketListPopup();
         });
     }
     
@@ -1572,6 +1594,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            closeMobileSidebar();
+
             reportsItem.classList.toggle('expanded');
             var expanded = reportsItem.classList.contains('expanded');
             reportsItem.setAttribute('aria-expanded', expanded ? 'true' : 'false');
@@ -1584,6 +1608,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('#reportsSubmenu .sidebar-submenu-item').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                closeMobileSidebar();
                 const reportType = this.getAttribute('data-report');
                 if (reportType === 'attendance') {
                     openAttendanceReportPopup();
