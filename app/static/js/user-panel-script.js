@@ -10,9 +10,14 @@ function formatPersianNumbers(event) {
 }
 
 // تبدیل اعداد به فارسی در فیلدها و placeholder به صورت زنده
-document.getElementById('startDate').addEventListener('input', function() {this.value = convertToPersianNumbers(this.value);});
-document.getElementById('endDate').addEventListener('input', function() {this.value = convertToPersianNumbers(this.value);});
-document.getElementById('substitute').addEventListener('input', function() {this.value = convertToPersianNumbers(this.value);});
+['startDate', 'endDate', 'substitute'].forEach(function(elementId) {
+    var element = document.getElementById(elementId);
+    if (element) {
+        element.addEventListener('input', function() {
+            this.value = convertToPersianNumbers(this.value);
+        });
+    }
+});
 
 // تبدیل placeholder ها به فارسی
 function convertPlaceholdersToPersian() {
@@ -23,6 +28,62 @@ function convertPlaceholdersToPersian() {
 
 // اعمال تبدیل placeholderها زمانی که صفحه بارگذاری می‌شود
 window.addEventListener('load', function() {convertPlaceholdersToPersian();});
+
+// Delegated handlers to replace inline onclick/onchange attributes (CSP-safe)
+window.addEventListener('load', function() {
+    // Click delegation for elements with data-action
+    document.body.addEventListener('click', function(e) {
+        var el = e.target.closest('[data-action]');
+        if (!el) return;
+        var action = el.getAttribute('data-action');
+        switch (action) {
+            case 'toggle-theme':
+                document.body.classList.toggle('dark-mode');
+                break;
+            case 'open-file-input':
+                var fi = document.getElementById('fileInput'); if (fi) fi.click();
+                break;
+            case 'confirm-delete':
+                if (typeof confirmDelete === 'function') confirmDelete();
+                break;
+            case 'open-messages':
+                var msg = document.getElementById('massageBoxIcon'); if (msg) msg.click();
+                break;
+            case 'open-hourly-pass':
+                if (typeof openHourlyPassModal === 'function') openHourlyPassModal();
+                break;
+            case 'open-overtime':
+                if (typeof openOvertimeModal === 'function') openOvertimeModal();
+                break;
+            case 'open-leave':
+                if (typeof openLeaveModal === 'function') openLeaveModal();
+                break;
+            case 'open-ticket':
+                if (typeof openTicketModal === 'function') openTicketModal();
+                break;
+            case 'open-more-morakhc':
+                var target = document.getElementById('showMoreMorakhc'); if (target) target.click();
+                break;
+            case 'open-ticket-list':
+                if (typeof openTicketListPopup === 'function') openTicketListPopup();
+                break;
+            case 'logout':
+                if (typeof logout === 'function') logout();
+                break;
+        }
+    });
+
+    // File input change handler -> submit upload form
+    var fileInputEl = document.getElementById('fileInput');
+    if (fileInputEl) {
+        fileInputEl.addEventListener('change', function() {
+            var uploadForm = document.getElementById('uploadForm');
+            if (uploadForm) uploadForm.submit();
+        });
+    }
+
+    // Mobile menu button is handled inline in the template to avoid double toggling.
+});
 
 // تبدیل اعداد انگلیسی به فارسی
 function convertToPersianNumbers(str) {
@@ -65,6 +126,263 @@ function toPersianDigits(input) {
     return input.replace(/\d/g, (digit) => persianDigits[digit]);
 }
 
+function formatAttendanceTime(value) {
+    if (value === null || value === undefined) return '--:--';
+
+    const normalized = String(value).trim();
+    if (!normalized || normalized === '0000') return '--:--';
+
+    const digits = convertToEnglishNumbers(normalized).replace(/\D/g, '');
+    if (!digits) return '--:--';
+
+    if (digits.length >= 4) {
+        return convertToPersianNumbers(`${digits.slice(0, 2)}:${digits.slice(2, 4)}`);
+    }
+
+    if (digits.length === 3) {
+        return convertToPersianNumbers(`${digits.slice(0, 1)}:${digits.slice(1)}`);
+    }
+
+    if (digits.length === 2) {
+        return convertToPersianNumbers(`${digits}:00`);
+    }
+
+    return convertToPersianNumbers(normalized);
+}
+
+function getCurrentPersianDate() {
+    const formatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    });
+    const parts = formatter.formatToParts(new Date());
+    const values = {};
+    parts.forEach((part) => {
+        if (part.type !== 'literal') {
+            values[part.type] = part.value;
+        }
+    });
+    return {
+        year: Number(convertToEnglishNumbers(values.year || '1404')),
+        month: Number(convertToEnglishNumbers(values.month || '1')),
+        day: Number(convertToEnglishNumbers(values.day || '1'))
+    };
+}
+
+function getPersianMonthLength(year, month) {
+    if (month <= 6) return 31;
+    if (month <= 11) return 30;
+    return isPersianLeapYear(year) ? 30 : 29;
+}
+
+function isPersianLeapYear(year) {
+    return (((year * 8) + 13) % 33) < 8;
+}
+
+function getPersianWeekdayIndex(year, month, day) {
+    const gregorianDate = persianToGregorian(year, month, day);
+    const weekday = gregorianDate.getUTCDay();
+    return (weekday + 1) % 7;
+}
+
+function parsePersianDateValue(value) {
+    if (!value) return null;
+    const normalized = String(value).trim();
+    const match = normalized.match(/([۰-۹0-9]{2,4})[\/-]([۰-۹0-9]{1,2})[\/-]([۰-۹0-9]{1,2})/);
+    if (!match) return null;
+    return {
+        year: Number(convertToEnglishNumbers(match[1])),
+        month: Number(convertToEnglishNumbers(match[2])),
+        day: Number(convertToEnglishNumbers(match[3]))
+    };
+}
+
+function formatPersianDateValue(year, month, day) {
+    return `${convertToPersianNumbers(String(year))}/${convertToPersianNumbers(String(month).padStart(2, '0'))}/${convertToPersianNumbers(String(day).padStart(2, '0'))}`;
+}
+
+function persianToGregorian(year, month, day) {
+    const targetKey = year * 10000 + month * 100 + day;
+    let low = Date.UTC(2000, 0, 1);
+    let high = Date.UTC(2050, 0, 1);
+
+    while (low <= high) {
+        const midTime = Math.floor((low + high) / 2);
+        const midDate = new Date(midTime);
+        const parts = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            timeZone: 'UTC'
+        }).formatToParts(midDate);
+
+        const values = {};
+        parts.forEach((part) => {
+            if (part.type !== 'literal') {
+                values[part.type] = part.value;
+            }
+        });
+
+        const currentKey = Number(convertToEnglishNumbers(values.year || '0')) * 10000 +
+            Number(convertToEnglishNumbers(values.month || '0')) * 100 +
+            Number(convertToEnglishNumbers(values.day || '0'));
+
+        if (currentKey === targetKey) {
+            return midDate;
+        }
+
+        if (currentKey < targetKey) {
+            low = midTime + 86400000;
+        } else {
+            high = midTime - 86400000;
+        }
+    }
+
+    return new Date(Date.UTC(year, month - 1, day));
+}
+
+function renderLeaveDatePicker(picker, state) {
+    const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+    const dayNames = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+    const days = getPersianMonthLength(state.year, state.month);
+    const firstWeekday = getPersianWeekdayIndex(state.year, state.month, 1);
+
+    state.day = Math.min(Math.max(state.day || 1, 1), days);
+
+    const cells = [];
+    for (let i = 0; i < firstWeekday; i += 1) {
+        cells.push('<div class="leave-date-picker-day is-empty"></div>');
+    }
+
+    for (let day = 1; day <= days; day += 1) {
+        const isSelected = state.day === day;
+        cells.push(`<button type="button" class="leave-date-picker-day${isSelected ? ' is-selected' : ''}" data-action="select-day" data-day="${day}">${convertToPersianNumbers(String(day))}</button>`);
+    }
+
+    const totalCells = cells.length;
+    const rows = Math.ceil(totalCells / 7);
+    const remainingCells = rows * 7 - totalCells;
+    for (let i = 0; i < remainingCells; i += 1) {
+        cells.push('<div class="leave-date-picker-day is-empty"></div>');
+    }
+
+    picker.innerHTML = `
+        <div class="leave-date-picker-header">
+            <button type="button" class="leave-date-picker-nav" data-action="prev-month">‹</button>
+            <div class="leave-date-picker-controls">
+                <select class="leave-date-picker-month" data-action="month-change">
+                    ${monthNames.map((name, index) => `<option value="${index + 1}" ${index + 1 === state.month ? 'selected' : ''}>${name}</option>`).join('')}
+                </select>
+                <select class="leave-date-picker-year" data-action="year-change">
+                    ${Array.from({ length: 21 }, (_, i) => state.year - 10 + i).map((year) => `<option value="${year}" ${year === state.year ? 'selected' : ''}>${convertToPersianNumbers(String(year))}</option>`).join('')}
+                </select>
+            </div>
+            <button type="button" class="leave-date-picker-nav" data-action="next-month">›</button>
+        </div>
+        <div class="leave-date-picker-weekdays">
+            ${dayNames.map((name) => `<div class="leave-date-picker-weekday">${name}</div>`).join('')}
+        </div>
+        <div class="leave-date-picker-days">
+            ${cells.join('')}
+        </div>
+    `;
+
+    picker.querySelector('[data-action="prev-month"]').addEventListener('click', () => {
+        state.month -= 1;
+        if (state.month < 1) {
+            state.month = 12;
+            state.year -= 1;
+        }
+        renderLeaveDatePicker(picker, state);
+    });
+
+    picker.querySelector('[data-action="next-month"]').addEventListener('click', () => {
+        state.month += 1;
+        if (state.month > 12) {
+            state.month = 1;
+            state.year += 1;
+        }
+        renderLeaveDatePicker(picker, state);
+    });
+
+    picker.querySelector('.leave-date-picker-month').addEventListener('change', (event) => {
+        state.month = Number(event.target.value);
+        renderLeaveDatePicker(picker, state);
+    });
+
+    picker.querySelector('.leave-date-picker-year').addEventListener('change', (event) => {
+        state.year = Number(event.target.value);
+        renderLeaveDatePicker(picker, state);
+    });
+
+    picker.querySelectorAll('[data-action="select-day"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const selectedDay = Number(btn.dataset.day);
+            state.day = selectedDay;
+            const targetInput = document.getElementById(picker.dataset.inputId);
+            if (targetInput) {
+                targetInput.value = formatPersianDateValue(state.year, state.month, state.day);
+                targetInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            picker.hidden = true;
+        });
+    });
+}
+
+function openLeaveDatePicker(input, picker) {
+    const parsed = parsePersianDateValue(input.value);
+    const today = getCurrentPersianDate();
+    const state = {
+        year: parsed ? parsed.year : today.year,
+        month: parsed ? parsed.month : today.month,
+        day: parsed ? parsed.day : today.day
+    };
+    picker.dataset.inputId = input.id;
+    picker.hidden = false;
+    renderLeaveDatePicker(picker, state);
+}
+
+function initLeaveDatePickers() {
+    ['startDate', 'endDate', 'overtimeDate'].forEach((inputId) => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+
+        const shell = document.createElement('div');
+        shell.className = 'date-input-shell';
+        input.parentNode.insertBefore(shell, input);
+        shell.appendChild(input);
+
+        const picker = document.createElement('div');
+        picker.className = 'leave-date-picker';
+        picker.hidden = true;
+        picker.setAttribute('role', 'dialog');
+        picker.setAttribute('aria-label', 'انتخاب تاریخ');
+        shell.appendChild(picker);
+
+        input.addEventListener('focus', (event) => {
+            event.stopPropagation();
+            openLeaveDatePicker(input, picker);
+        });
+        input.addEventListener('click', (event) => {
+            event.stopPropagation();
+            openLeaveDatePicker(input, picker);
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        document.querySelectorAll('.date-input-shell').forEach((shell) => {
+            const picker = shell.querySelector('.leave-date-picker');
+            if (!picker) return;
+            if (!shell.contains(event.target)) {
+                picker.hidden = true;
+            }
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initLeaveDatePickers);
+
 // تابع برای فرمت کردن زمان
 function formatTime(timeString) {
     // تبدیل رشته زمان به شیء Date بدون افزودن 'Z'
@@ -106,36 +424,396 @@ function logout() {
     });
 }
 
+let ringAnimationToken = 0;
+let ringCurrentGreenLength = 0;
+let ringCurrentBlueLength = 0;
+let ringCurrentBlueOffset = 0;
+
+function normalizeShiftMinutes(currentMinutes, startMinutes, endMinutes) {
+    let effectiveStartMinutes = startMinutes;
+    let effectiveEndMinutes = endMinutes;
+
+    if (effectiveEndMinutes <= effectiveStartMinutes) {
+        effectiveEndMinutes += 24 * 60;
+    }
+
+    let normalizedCurrentMinutes = currentMinutes;
+    if (effectiveEndMinutes > 24 * 60 && normalizedCurrentMinutes < effectiveStartMinutes) {
+        normalizedCurrentMinutes += 24 * 60;
+    }
+
+    return {
+        effectiveStartMinutes,
+        effectiveEndMinutes,
+        normalizedCurrentMinutes
+    };
+}
+
+function getShiftTimelineState(currentMinutes, startMinutes, endMinutes) {
+    const { effectiveStartMinutes, effectiveEndMinutes, normalizedCurrentMinutes } = normalizeShiftMinutes(currentMinutes, startMinutes, endMinutes);
+    const duration = Math.max(1, effectiveEndMinutes - effectiveStartMinutes);
+
+    let progressPercent = 0;
+    let workedMinutes = 0;
+    let overtimeMinutes = 0;
+
+    if (normalizedCurrentMinutes <= effectiveStartMinutes) {
+        progressPercent = 0;
+    } else if (normalizedCurrentMinutes < effectiveEndMinutes) {
+        workedMinutes = normalizedCurrentMinutes - effectiveStartMinutes;
+        progressPercent = Math.min(100, Math.max(0, (workedMinutes / duration) * 100));
+    } else {
+        workedMinutes = duration;
+        progressPercent = 100;
+        overtimeMinutes = Math.max(0, normalizedCurrentMinutes - effectiveEndMinutes);
+    }
+
+    return {
+        progressPercent,
+        workedMinutes,
+        overtimeMinutes,
+        duration,
+        effectiveStartMinutes,
+        effectiveEndMinutes,
+        normalizedCurrentMinutes
+    };
+}
+
+function updatePresenceRing() {
+    const wrap = document.querySelector('.timeline-ring-wrap');
+    if (!wrap) return;
+
+    const entryTime = wrap.getAttribute('data-entry-time');
+    const workStart = wrap.getAttribute('data-work-start');
+    const workEnd = wrap.getAttribute('data-work-end');
+    const serverNow = wrap.getAttribute('data-server-now');
+    const greenCircle = document.getElementById('presenceRingGreen');
+    const blueCircle = document.getElementById('presenceRingBlue');
+    const checkInText = document.getElementById('ringCheckInText');
+    const checkOutText = document.getElementById('ringCheckOutText');
+    const workHoursText = document.getElementById('ringWorkHoursText');
+    const overtimeText = document.getElementById('ringOvertimeText');
+
+    if (!greenCircle || !blueCircle) return;
+
+    const circumference = 327;
+
+    const applyProgress = (circle, length, offset = 0) => {
+        circle.style.strokeDasharray = `${length} ${circumference}`;
+        circle.style.strokeDashoffset = `${offset}`;
+    };
+
+    const resetRing = () => {
+        ringCurrentGreenLength = 0;
+        ringCurrentBlueLength = 0;
+        ringCurrentBlueOffset = 0;
+        applyProgress(greenCircle, 0, 0);
+        applyProgress(blueCircle, 0, 0);
+    };
+
+    const animateTo = (targetGreenPercent, targetBluePercent) => {
+        const duration = 900;
+        const startTime = performance.now();
+        const startGreenLength = ringCurrentGreenLength;
+        const startBlueLength = ringCurrentBlueLength;
+        const startBlueOffset = ringCurrentBlueOffset;
+        const targetGreenLength = (circumference * targetGreenPercent) / 100;
+        const targetBlueLength = (circumference * targetBluePercent) / 100;
+        const targetBlueOffset = -targetGreenLength;
+        const animationId = ++ringAnimationToken;
+
+        const tick = (now) => {
+            if (animationId !== ringAnimationToken) return;
+            const elapsed = now - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const currentGreenLength = startGreenLength + (targetGreenLength - startGreenLength) * eased;
+            const currentBlueLength = startBlueLength + (targetBlueLength - startBlueLength) * eased;
+            const currentBlueOffset = startBlueOffset + (targetBlueOffset - startBlueOffset) * eased;
+
+            ringCurrentGreenLength = currentGreenLength;
+            ringCurrentBlueLength = currentBlueLength;
+            ringCurrentBlueOffset = currentBlueOffset;
+
+            greenCircle.style.transition = 'stroke-dasharray 0.9s ease, stroke-dashoffset 0.9s ease';
+            blueCircle.style.transition = 'stroke-dasharray 0.9s ease, stroke-dashoffset 0.9s ease';
+            applyProgress(greenCircle, currentGreenLength, 0);
+            applyProgress(blueCircle, currentBlueLength, currentBlueOffset);
+
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            }
+        };
+
+        requestAnimationFrame(tick);
+    };
+
+    if (checkOutText) {
+        checkOutText.textContent = '--:--';
+    }
+
+    if (checkInText) {
+        checkInText.textContent = entryTime ? convertToPersianNumbers(String(entryTime).trim()) : '--:--';
+    }
+
+    const parseClock = (value) => {
+        if (!value) return null;
+        const cleaned = convertToEnglishNumbers(String(value).trim());
+        const parts = cleaned.split(':');
+        if (parts.length < 2) return null;
+        const hours = parseInt(parts[0], 10);
+        const minutes = parseInt(parts[1], 10);
+        if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+        return hours * 60 + minutes;
+    };
+
+    const getCurrentMinutes = () => {
+        const serverMinutes = parseClock(serverNow);
+        if (serverMinutes === null) {
+            const now = new Date();
+            return now.getHours() * 60 + now.getMinutes();
+        }
+
+        if (!wrap.dataset.loadedAtMs) {
+            wrap.dataset.loadedAtMs = String(Date.now());
+        }
+
+        const elapsedMinutes = Math.floor((Date.now() - Number(wrap.dataset.loadedAtMs)) / 60000);
+        return serverMinutes + elapsedMinutes;
+    };
+
+    const startMinutes = parseClock(workStart);
+    const endMinutes = parseClock(workEnd);
+    const currentMinutes = getCurrentMinutes();
+
+    if (endMinutes === null || startMinutes === null) {
+        resetRing();
+        return;
+    }
+
+    const shiftState = getShiftTimelineState(currentMinutes, startMinutes, endMinutes);
+    const entryMinutes = parseClock(entryTime);
+    const currentNormalizedMinutes = shiftState.normalizedCurrentMinutes;
+    const greenPercent = shiftState.progressPercent;
+    const bluePercent = Math.min(100, Math.max(0, (shiftState.overtimeMinutes / Math.max(shiftState.duration, 1)) * 100));
+    const greenLength = (circumference * greenPercent) / 100;
+    const blueLength = (circumference * bluePercent) / 100;
+    const blueOffset = -greenLength;
+
+    animateTo(greenPercent, bluePercent);
+
+    const getElapsedSinceEntry = (entryMin, currentMin) => {
+        if (!Number.isInteger(entryMin) || !Number.isInteger(currentMin)) {
+            return 0;
+        }
+        let normalizedCurrent = currentMin;
+        if (normalizedCurrent < entryMin) {
+            normalizedCurrent += 24 * 60;
+        }
+        return Math.max(0, normalizedCurrent - entryMin);
+    };
+
+    const formatMinutes = (totalMinutes) => {
+        const hours = Math.floor(Math.max(0, totalMinutes) / 60);
+        const minutes = Math.max(0, totalMinutes) % 60;
+        return convertToPersianNumbers(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`);
+    };
+
+    let workedMinutes = 0;
+    if (entryMinutes !== null) {
+        workedMinutes = getElapsedSinceEntry(entryMinutes, currentMinutes);
+    } else {
+        workedMinutes = shiftState.workedMinutes;
+    }
+
+    if (workHoursText) {
+        workHoursText.textContent = formatMinutes(workedMinutes);
+    }
+    if (overtimeText) {
+        overtimeText.textContent = `${formatMinutes(shiftState.overtimeMinutes)} ساعت`;
+    }
+}
+
+window.addEventListener('load', function() {
+    updatePresenceRing();
+    setInterval(updatePresenceRing, 1000);
+});
+
+function toggleSidebarMenu(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    const sidebar = document.getElementById('mainSidebar');
+    if (!sidebar) return;
+
+    sidebar.classList.toggle('open');
+}
+
+function isSidebarExpanded() {
+    const sidebar = document.querySelector('.sidebar-right');
+    if (!sidebar) return false;
+    return sidebar.classList.contains('open') || sidebar.matches(':hover');
+}
+
+function collapseReportsSubmenu() {
+    const reportsItem = document.getElementById('showMoreEzafetime');
+    const reportsSubmenu = document.getElementById('reportsSubmenu');
+    if (reportsItem) {
+        reportsItem.classList.remove('expanded');
+        reportsItem.setAttribute('aria-expanded', 'false');
+    }
+    if (reportsSubmenu) {
+        reportsSubmenu.style.display = 'none';
+        reportsSubmenu.setAttribute('aria-hidden', 'true');
+    }
+}
+
+function toggleSidebar(event) {
+    const sidebar = document.querySelector('.sidebar-right');
+    if (!sidebar) return;
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+    const isOpen = sidebar.classList.toggle('open');
+    if (!isOpen) {
+        collapseReportsSubmenu();
+    }
+
+    if (isOpen) {
+        document.addEventListener('click', documentClickCloseSidebar);
+    } else {
+        document.removeEventListener('click', documentClickCloseSidebar);
+    }
+}
+
+function setupSidebarReportsObserver() {
+    const sidebar = document.querySelector('.sidebar-right');
+    if (!sidebar || typeof MutationObserver === 'undefined') return;
+
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === 'class' && !sidebar.classList.contains('open')) {
+                collapseReportsSubmenu();
+            }
+        });
+    });
+
+    observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+}
+
+function documentClickCloseSidebar(event) {
+    const sidebar = document.querySelector('.sidebar-right');
+    const menuBtn = document.getElementById('menu-btn');
+    if (!sidebar || !sidebar.classList.contains('open')) return;
+    const target = event.target;
+    if (sidebar.contains(target) || (menuBtn && menuBtn.contains(target))) {
+        return;
+    }
+    sidebar.classList.remove('open');
+    collapseReportsSubmenu();
+    document.removeEventListener('click', documentClickCloseSidebar);
+}
+
 // تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی
 // تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی
 // تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی
+
+function updateModalOverlayState() {
+    const openStates = [
+        { id: 'leaveModal', display: 'flex' },
+        { id: 'overtimeModal', display: 'flex' },
+        { id: 'hourlyPassModal', display: 'block' },
+        { id: 'popupOverlayMorakhsi', display: 'flex' },
+        { id: 'popupOverlayezafe', display: 'flex' },
+        { id: 'popupOverlay', display: 'flex' },
+        { id: 'popupHozoor', display: 'flex' }
+    ];
+
+    const isAnyOpen = openStates.some(({ id, display }) => {
+        const element = document.getElementById(id);
+        return element && window.getComputedStyle(element).display === display;
+    });
+
+    document.body.classList.toggle('leave-modal-open', isAnyOpen);
+}
 
 // باز کردن پاپ‌آپ ثبت مرخصی// باز کردن پاپ‌آپ ثبت مرخصی// باز کردن پاپ‌آپ ثبت مرخصی// باز کردن پاپ‌آپ ثبت مرخصی// باز کردن پاپ‌آپ ثبت مرخصی
-function openLeaveModal() {document.getElementById("leaveModal").style.display = "block";}
+function openLeaveModal() {
+    const leaveModal = document.getElementById("leaveModal");
+    if (!leaveModal) return;
+    leaveModal.style.display = "flex";
+    updateModalOverlayState();
+}
 
 // بستن پاپ‌آپ مرخصی// بستن پاپ‌آپ مرخصی// بستن پاپ‌آپ مرخصی// بستن پاپ‌آپ مرخصی// بستن پاپ‌آپ مرخصی// بستن پاپ‌آپ مرخصی// بستن پاپ‌آپ مرخصی
-function closeLeaveModal() {document.getElementById("leaveModal").style.display = "none";}
-
-// تغییر مقدار تعداد روزها (افزایش/کاهش) با محدودیت 1 تا 30
-function changeValue(change) {
-    let input = document.getElementById('days');
-    let currentValue = parseInt(convertToEnglishNumbers(input.value)); // تبدیل اعداد فارسی به انگلیسی
-
-    if (isNaN(currentValue)) {
-        currentValue = 1;  // مقدار پیش‌فرض در صورت ورودی نامعتبر
-    }
-
-    let newValue = currentValue + change;
-
-    // محدود کردن مقدار به بازه 1 تا 30
-    if (newValue < 1) {
-        newValue = 1;
-    } else if (newValue > 30) {
-        newValue = 30;
-    }
-
-    input.value = convertToPersianNumbers(newValue.toString()); // تبدیل مقدار جدید به فارسی
+function closeLeaveModal() {
+    const leaveModal = document.getElementById("leaveModal");
+    if (!leaveModal) return;
+    leaveModal.style.display = "none";
+    updateModalOverlayState();
 }
+
+function persianToJulianDayNumber(year, month, day) {
+    const epbase = year - (year >= 0 ? 474 : 473);
+    const epyear = 474 + (epbase % 2820);
+    const monthOffset = month <= 6 ? month - 1 : month + 5;
+
+    return day +
+        Math.floor((epyear * 682 - 110) / 2816) +
+        (epyear - 1) * 365 +
+        Math.floor(epbase / 2820) * 1029983 +
+        monthOffset * 31 +
+        1948320;
+}
+
+function calculateLeaveDays() {
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    const daysInput = document.getElementById('days');
+
+    if (!startInput || !endInput || !daysInput) return;
+
+    const startValue = startInput.value.trim();
+    const endValue = endInput.value.trim();
+
+    const startDate = parsePersianDateValue(startValue);
+    const endDate = parsePersianDateValue(endValue);
+
+    if (!startDate || !endDate) {
+        daysInput.value = '۰';
+        return;
+    }
+
+    const startJdn = persianToJulianDayNumber(startDate.year, startDate.month, startDate.day);
+    const endJdn = persianToJulianDayNumber(endDate.year, endDate.month, endDate.day);
+    const safeDays = Math.max(1, endJdn - startJdn + 1);
+
+    daysInput.value = convertToPersianNumbers(String(safeDays));
+}
+
+function attachLeaveDateCalculation() {
+    ['startDate', 'endDate'].forEach((inputId) => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('change', calculateLeaveDays);
+            input.addEventListener('blur', calculateLeaveDays);
+            input.addEventListener('input', calculateLeaveDays);
+        }
+    });
+
+    const overtimeInput = document.getElementById('overtimeDate');
+    if (overtimeInput) {
+        overtimeInput.addEventListener('change', () => {
+            overtimeInput.value = overtimeInput.value.trim();
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', attachLeaveDateCalculation);
 
 // ارسال فرم ثبت مرخصی// ارسال فرم ثبت مرخصی// ارسال فرم ثبت مرخصی// ارسال فرم ثبت مرخصی// ارسال فرم ثبت مرخصی// ارسال فرم ثبت مرخصی
 document.getElementById('leaveForm').addEventListener('submit', function(e) {
@@ -266,11 +944,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-/* باز کردن پاپ اپ مرخصی کاربر */
+/* باز کردن پاپ‌آپ ثبت مرخصی از سایدبار */
 document.getElementById('showMoreMorakhc').addEventListener('click', function(event) {
-    event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
-    var popupOverlay = document.getElementById('popupOverlayMorakhsi');
-    popupOverlay.style.display = 'flex'; // نمایش پاپ‌آپ
+    event.preventDefault();
+    if (typeof openLeaveModal === 'function') {
+        openLeaveModal();
+    }
 });
 
 /* بستن کردن پاپ اپ مرخصی کاربر */
@@ -278,6 +957,7 @@ document.getElementById('closePopupMorakhciPopuppbox').addEventListener('click',
     event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
     var popupOverlay = document.getElementById('popupOverlayMorakhsi');
     popupOverlay.style.display = 'none'; // بستن پاپ‌آپ
+    updateModalOverlayState();
 });
 
 // تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری
@@ -285,27 +965,27 @@ document.getElementById('closePopupMorakhciPopuppbox').addEventListener('click',
 // تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری// تنظیمات ثبت اضافه کاری
 
 // باز کردن پاپ‌آپ ثبت اضافه‌کار
-function openOvertimeModal() {document.getElementById("overtimeModal").style.display = "block";}
+function openOvertimeModal() {
+    const overtimeModal = document.getElementById("overtimeModal");
+    if (!overtimeModal) return;
+    overtimeModal.style.display = "flex";
+    updateModalOverlayState();
+}
 
 // بستن پاپ‌آپ اضافه‌کار
-function closeOvertimeModal() {document.getElementById("overtimeModal").style.display = "none";}
+function closeOvertimeModal() {
+    const overtimeModal = document.getElementById("overtimeModal");
+    if (!overtimeModal) return;
+    overtimeModal.style.display = "none";
+    updateModalOverlayState();
+}
 
 // ارسال فرم ثبت اضافه کاری
 document.getElementById("overtimeForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    // تبدیل اعداد فارسی به انگلیسی
-    function convertToEnglish(input) {
-        var persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        var englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-        return input.replace(/[۰-۹]/g, function(w) {
-            return englishNumbers[persianNumbers.indexOf(w)];
-        });
-    }
-
     // دریافت مقادیر و تبدیل اعداد فارسی به انگلیسی
-    var overtimeDate = convertToEnglish(document.getElementById("overtimeDate").value);
+    var overtimeDate = convertToEnglishNumbers(document.getElementById("overtimeDate").value);
     var fromTime = convertToEnglish(document.getElementById("fromTime").value);
     var toTime = convertToEnglish(document.getElementById("toTime").value);
     var description = document.getElementById("description").value;
@@ -350,18 +1030,105 @@ document.getElementById("overtimeForm").addEventListener("submit", function(even
 // تنظیمات باکس گزارش اضافه کاری ها //// تنظیمات باکس گزارش اضافه کاری ها //// تنظیمات باکس گزارش اضافه کاری ها //
 // تنظیمات باکس گزارش اضافه کاری ها //// تنظیمات باکس گزارش اضافه کاری ها //// تنظیمات باکس گزارش اضافه کاری ها //
 
-/* باز کردن پاپ اپ اضافه کاری کاربر */
-document.getElementById('showMoreEzafetime').addEventListener('click', function(event) {
-    event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
-    var popupOverlay = document.getElementById('popupOverlayezafe');
-    popupOverlay.style.display = 'flex'; // نمایش پاپ‌آپ
-});
+function hideAllReportPopups() {
+    ['popupOverlayMorakhsi', 'popupOverlayezafe', 'popupOverlay', 'popupHozoor'].forEach((id) => {
+        const popup = document.getElementById(id);
+        if (popup) popup.style.display = 'none';
+    });
+}
+
+function openReportPopup(reportType) {
+    const popupMap = {
+        leave: document.getElementById('popupOverlayMorakhsi'),
+        overtime: document.getElementById('popupOverlayezafe'),
+        pass: document.getElementById('popupOverlay'),
+        attendance: document.getElementById('popupHozoor')
+    };
+
+    const popup = popupMap[reportType];
+    if (popup) {
+        hideAllReportPopups();
+        popup.style.display = 'flex';
+        updateModalOverlayState();
+    }
+
+    const reportsItem = document.getElementById('showMoreEzafetime');
+    const reportsSubmenu = document.getElementById('reportsSubmenu');
+    if (reportsItem && reportsItem.classList.contains('expanded')) {
+        reportsItem.classList.remove('expanded');
+        if (reportsSubmenu) {
+            reportsSubmenu.setAttribute('aria-hidden', 'true');
+        }
+    }
+}
+
+function openAttendanceReportPopup() {
+    const popup = document.getElementById('popupHozoor');
+    if (!popup) return;
+
+    hideAllReportPopups();
+    popup.style.display = 'flex';
+    updateModalOverlayState();
+
+    const welcomeText = document.querySelector('.welcome-text') || { textContent: '' };
+    const username = (welcomeText.textContent || '').split('،')[0].trim();
+
+    fetch('/get_today_date')
+        .then((response) => response.json())
+        .then((today) => {
+            const startDate = `${today.year}/${String(today.month).padStart(2, '0')}/01`;
+            const endDate = `${today.year}/${String(today.month).padStart(2, '0')}/${String(today.day).padStart(2, '0')}`;
+            return fetch(`/get_hozoor/${username}?start_date=${startDate}&end_date=${endDate}`);
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            const tableBody = document.querySelector('#HozoorTableReport tbody');
+            if (!tableBody) return;
+
+            tableBody.innerHTML = '';
+            data.forEach((entry, index) => {
+                const row = document.createElement('tr');
+
+                const statusCell = document.createElement('td');
+                statusCell.classList.add('vazeiyat-hozoorTime');
+                statusCell.textContent = entry.Status || '';
+                row.appendChild(statusCell);
+
+                const exitTimeCell = document.createElement('td');
+                exitTimeCell.classList.add('zmnkhrj-hozoorTime');
+                exitTimeCell.textContent = formatAttendanceTime(entry.ExitTime);
+                row.appendChild(exitTimeCell);
+
+                const entryTimeCell = document.createElement('td');
+                entryTimeCell.classList.add('zmnvrd-hozoorTime');
+                entryTimeCell.textContent = formatAttendanceTime(entry.EntryTime);
+                row.appendChild(entryTimeCell);
+
+                const dateCell = document.createElement('td');
+                dateCell.classList.add('trkhsbt-hozoorTime');
+                const formattedDate = (entry.Date || '').replace(/-/g, '/');
+                dateCell.textContent = convertToPersianNumbers(formattedDate);
+                row.appendChild(dateCell);
+
+                const rowNumberCell = document.createElement('td');
+                rowNumberCell.classList.add('radif-hozoorTime');
+                rowNumberCell.textContent = convertToPersianNumbers((index + 1).toString());
+                row.appendChild(rowNumberCell);
+
+                tableBody.appendChild(row);
+            });
+        })
+        .catch((error) => {
+            console.error('Error fetching date or data:', error);
+        });
+}
 
 /* بستن پاپ اپ اضافه کاری کاربر */
 document.getElementById('closePopupezafekarijadvalbox').addEventListener('click', function(event) {
     event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
     var popupOverlay = document.getElementById('popupOverlayezafe');
     popupOverlay.style.display = 'none'; // بستن پاپ‌آپ
+    updateModalOverlayState();
 });
 
 // تنظمیات ثبت پاس ساعتی کاربر// تنظمیات ثبت پاس ساعتی کاربر// تنظمیات ثبت پاس ساعتی کاربر// تنظمیات ثبت پاس ساعتی کاربر
@@ -483,6 +1250,7 @@ document.getElementById('showMorepopuphourbox').addEventListener('click', functi
     event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
     var popupOverlay = document.getElementById('popupOverlay');
     popupOverlay.style.display = 'flex'; // نمایش پاپ‌آپ
+    updateModalOverlayState();
 });
 
 // بستن پاپ اپ گزارش پاس ساعتی کاربر
@@ -490,6 +1258,7 @@ document.getElementById('closePopup').addEventListener('click', function(event) 
     event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
     var popupOverlay = document.getElementById('popupOverlay');
     popupOverlay.style.display = 'none'; // بستن پاپ‌آپ
+    updateModalOverlayState();
 });
 
 // تنظمیات ثبت تیکت کاربر// تنظمیات ثبت تیکت کاربر// تنظمیات ثبت تیکت کاربر// تنظمیات ثبت تیکت کاربر// تنظمیات ثبت تیکت کاربر// تنظمیات ثبت تیکت کاربر
@@ -770,6 +1539,71 @@ document.getElementById('confirmDeleteBtn').onclick = function() {
 // تنظمیات باکس تقویم و اطلاعات کاربر// تنظمیات باکس تقویم و اطلاعات کاربر// تنظمیات باکس تقویم و اطلاعات کاربر// تنظمیات باکس تقویم و اطلاعات کاربر
 
 // دریافت اطلاعات کاربر و نمایش در باکس اطلاعات کاربر
+
+// اتصال دکمه‌های سایدبار به مودال‌های مربوطه (ثبت اضافه‌کاری و ثبت پاس ساعتی)
+document.addEventListener('DOMContentLoaded', function() {
+    setupSidebarReportsObserver();
+
+    var overtimeBtn = document.getElementById('submitOvertime');
+    if (overtimeBtn) {
+        overtimeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (typeof openOvertimeModal === 'function') openOvertimeModal();
+        });
+    }
+
+    var passBtn = document.getElementById('submitPass');
+    if (passBtn) {
+        passBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (typeof openHourlyPassModal === 'function') openHourlyPassModal();
+        });
+    }
+    
+    // Reports submenu toggle
+    var reportsItem = document.getElementById('showMoreEzafetime');
+    var reportsSubmenu = document.getElementById('reportsSubmenu');
+    if (reportsItem) {
+        reportsItem.addEventListener('click', function(e) {
+            e.stopPropagation();
+
+            if (!isSidebarExpanded()) {
+                collapseReportsSubmenu();
+                return;
+            }
+
+            reportsItem.classList.toggle('expanded');
+            var expanded = reportsItem.classList.contains('expanded');
+            reportsItem.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            if (reportsSubmenu) {
+                reportsSubmenu.style.display = expanded ? 'flex' : 'none';
+                reportsSubmenu.setAttribute('aria-hidden', !expanded);
+            }
+        });
+
+        document.querySelectorAll('#reportsSubmenu .sidebar-submenu-item').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const reportType = this.getAttribute('data-report');
+                if (reportType === 'attendance') {
+                    openAttendanceReportPopup();
+                } else {
+                    openReportPopup(reportType);
+                }
+            });
+        });
+
+        // close submenu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!reportsItem.contains(event.target)) {
+                if (reportsItem.classList.contains('expanded')) {
+                    reportsItem.classList.remove('expanded');
+                    if (reportsSubmenu) reportsSubmenu.setAttribute('aria-hidden', 'true');
+                }
+            }
+        });
+    }
+});
 function loadUserInfo() {
     fetch('/get_user_info', {
         method: 'GET',
@@ -847,62 +1681,66 @@ let currentYear, currentMonth, currentDay, firstDayOfWeek;
 
 // به‌روزرسانی تقویم
 const updateCalendar = () => {
-    const monthYearElement = document.querySelector('.month-year');
-    const calendarGrid = document.querySelector('.calendar-grid');
+    document.querySelectorAll('.calendar-container').forEach((container) => {
+        const monthYearElement = container.querySelector('.month-year');
+        const calendarGrid = container.querySelector('.calendar-grid');
 
-    // به‌روزرسانی نام ماه و سال
-    monthYearElement.innerHTML = `${persianMonths[currentMonth - 1]} ${convertToPersianNumber(currentYear.toString())}`;
+        if (!monthYearElement || !calendarGrid) return;
 
-    // پاک کردن روزهای قبلی
-    calendarGrid.innerHTML = '';
+        // به‌روزرسانی نام ماه و سال
+        monthYearElement.innerHTML = `${persianMonths[currentMonth - 1]} ${convertToPersianNumber(currentYear.toString())}`;
 
-    // افزودن نام روزها
-    const daysOfWeek = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
-    daysOfWeek.forEach(day => {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'day-name';
-        dayElement.textContent = day;
-        calendarGrid.appendChild(dayElement);
+        // پاک کردن روزهای قبلی
+        calendarGrid.innerHTML = '';
+
+        // افزودن نام روزها
+        const daysOfWeek = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
+        daysOfWeek.forEach(day => {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day-name';
+            dayElement.textContent = day;
+            calendarGrid.appendChild(dayElement);
+        });
+
+        // تعداد روزهای ماه جاری
+        const days = daysInMonth[currentMonth - 1];
+
+        // تعداد خالی‌ها برای شروع ماه جدید
+        let emptyDays = firstDayOfWeek;
+
+        // نمایش خالی‌ها در ابتدا
+        for (let i = 0; i < emptyDays; i++) {
+            const emptyElement = document.createElement('div');
+            emptyElement.className = 'day empty';
+            calendarGrid.appendChild(emptyElement);
+        }
+
+        // نمایش روزهای ماه
+        for (let i = 1; i <= days; i++) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.textContent = convertToPersianNumber(i.toString());
+
+            // اگر روز جمعه باشد، رنگ متن آن قرمز شود
+            const dayOfWeek = (firstDayOfWeek + i - 1) % 7;
+            if (dayOfWeek === 6) {  // جمعه
+                dayElement.style.color = 'red';
+            }
+
+            // اگر روز تعطیل باشد، استایل خاصی به آن اعمال شود
+            if (holidays[currentMonth] && holidays[currentMonth].includes(i)) {
+                dayElement.style.color = 'white';
+                dayElement.style.backgroundColor = 'red';
+            }
+
+            // اگر روز جاری باشد، استایل خاصی به آن اعمال شود
+            if (i === currentDay) {
+                dayElement.classList.add('today');
+            }
+
+            calendarGrid.appendChild(dayElement);
+        }
     });
-
-    // تعداد روزهای ماه جاری
-    const days = daysInMonth[currentMonth - 1];
-    
-    // تعداد خالی‌ها برای شروع ماه جدید
-    let emptyDays = firstDayOfWeek;
-
-    // نمایش خالی‌ها در ابتدا
-    for (let i = 0; i < emptyDays; i++) {
-        const emptyElement = document.createElement('div');
-        emptyElement.className = 'day empty';
-        calendarGrid.appendChild(emptyElement);
-    }
-
-    // نمایش روزهای ماه
-    for (let i = 1; i <= days; i++) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'day';
-        dayElement.textContent = convertToPersianNumber(i.toString());
-
-        // اگر روز جمعه باشد، رنگ متن آن قرمز شود
-        const dayOfWeek = (firstDayOfWeek + i - 1) % 7;
-        if (dayOfWeek === 6) {  // جمعه
-            dayElement.style.color = 'red';
-        }
-
-        // اگر روز تعطیل باشد، استایل خاصی به آن اعمال شود
-        if (holidays[currentMonth] && holidays[currentMonth].includes(i)) {
-            dayElement.style.color = 'white';
-            dayElement.style.backgroundColor = 'red';
-        }
-
-        // اگر روز جاری باشد، استایل خاصی به آن اعمال شود
-        if (i === currentDay) {
-            dayElement.classList.add('today');
-        }
-
-        calendarGrid.appendChild(dayElement);
-    }
 };
 
 // ذخیره‌سازی روز اول هفته برای هر ماه
@@ -982,8 +1820,8 @@ const nextMonth = () => {
 };
 
 // اضافه کردن رویداد به دکمه‌ها
-document.querySelector('.prev-month').addEventListener('click', prevMonth);
-document.querySelector('.next-month').addEventListener('click', nextMonth);
+document.querySelectorAll('.prev-month').forEach((btn) => btn.addEventListener('click', prevMonth));
+document.querySelectorAll('.next-month').forEach((btn) => btn.addEventListener('click', nextMonth));
 
 // به‌روزرسانی تقویم هنگام بارگذاری صفحه
 fetchDateFromServer();
@@ -1314,80 +2152,15 @@ function convertToPersianNumbers(str) {
 // باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن
 // باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن// باز کردن پاپ‌آپ ساعت زن
 
-document.getElementById('hozoorReport').addEventListener('click', function () {
-    // نمایش پاپ آپ
-    document.getElementById('popupHozoor').style.display = 'flex';
-
-    // پیدا کردن نام کاربر از صفحه
-    var welcomeText = document.querySelector('.welcome-text');
-    var username = welcomeText.textContent.split('،')[0];
-
-    // دریافت تاریخ از سرور
-    fetch('/get_today_date')
-        .then(response => response.json())
-        .then(today => {
-            var startDate = `${today.year}/${today.month.toString().padStart(2, '0')}/01`;
-            var endDate = `${today.year}/${today.month.toString().padStart(2, '0')}/${today.day.toString().padStart(2, '0')}`;
-
-            // ارسال درخواست برای دریافت داده‌ها
-            fetch(`/get_hozoor/${username}?start_date=${startDate}&end_date=${endDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    // پاک کردن جدول قبلی
-                    var tableBody = document.querySelector('#HozoorTableReport tbody');
-                    tableBody.innerHTML = '';
-
-                    // پر کردن جدول با داده‌های دریافتی
-                    data.forEach((entry, index) => {
-                        var row = document.createElement('tr');
-
-                        // ستون وضعیت
-                        var statusCell = document.createElement('td');
-                        statusCell.classList.add('vazeiyat-hozoorTime');
-                        statusCell.textContent = entry.Status;
-                        row.appendChild(statusCell);
-
-                        // ستون زمان خروج
-                        var exitTimeCell = document.createElement('td');
-                        exitTimeCell.classList.add('zmnkhrj-hozoorTime');
-                        exitTimeCell.textContent = convertToPersianNumbers(entry.ExitTime);
-                        row.appendChild(exitTimeCell);
-
-                        // ستون زمان ورود
-                        var entryTimeCell = document.createElement('td');
-                        entryTimeCell.classList.add('zmnvrd-hozoorTime');
-                        entryTimeCell.textContent = convertToPersianNumbers(entry.EntryTime);
-                        row.appendChild(entryTimeCell);
-
-                        // ستون تاریخ ثبت (تغییر به yyyy/mm/dd و تبدیل اعداد به فارسی)
-                        var dateCell = document.createElement('td');
-                        dateCell.classList.add('trkhsbt-hozoorTime');
-                        var formattedDate = entry.Date.replace(/-/g, '/');
-                        dateCell.textContent = convertToPersianNumbers(formattedDate);
-                        row.appendChild(dateCell);
-
-                        // ستون ردیف
-                        var rowNumberCell = document.createElement('td');
-                        rowNumberCell.classList.add('radif-hozoorTime');
-                        rowNumberCell.textContent = convertToPersianNumbers((index + 1).toString());
-                        row.appendChild(rowNumberCell);
-
-                        // افزودن ردیف به جدول
-                        tableBody.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        })
-        .catch(error => {
-            console.error('Error fetching date from server:', error);
-        });
-});
+var hozoorReportBtn = document.getElementById('hozoorReport');
+if (hozoorReportBtn) {
+    hozoorReportBtn.addEventListener('click', openAttendanceReportPopup);
+}
 
 // بستن پاپ‌آپ ساعت زن
 document.getElementById('close-popupHozoor').addEventListener('click', function() {
     document.getElementById('popupHozoor').style.display = 'none';
+    updateModalOverlayState();
 });
 
 // تنظیمات دراپ باکس در جدول تیکت های کاربر// تنظیمات دراپ باکس در جدول تیکت های کاربر// تنظیمات دراپ باکس در جدول تیکت های کاربر
@@ -1482,3 +2255,75 @@ function confirmDelete() {
     }
 }
 
+
+
+// ================= افزوده‌های داشبورد جدید (v2) =================
+
+// ساعت و تاریخ زنده در نوار بالایی
+function updateTopbarClock() {
+    const dateEl = document.getElementById('topbarDateText');
+    const timeEl = document.getElementById('topbarTimeText');
+    if (!dateEl || !timeEl) return;
+
+    const now = new Date();
+    const persianDate = new Intl.DateTimeFormat('fa-IR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(now);
+    const persianTime = new Intl.DateTimeFormat('fa-IR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).format(now);
+
+    dateEl.textContent = typeof convertToPersianNumbers === 'function'
+        ? convertToPersianNumbers(persianDate)
+        : persianDate;
+    timeEl.textContent = typeof convertToPersianNumbers === 'function'
+        ? convertToPersianNumbers(persianTime)
+        : persianTime;
+}
+setInterval(updateTopbarClock, 1000);
+document.addEventListener('DOMContentLoaded', updateTopbarClock);
+
+// باز و بسته کردن منوی پروفایل کاربر
+document.addEventListener('DOMContentLoaded', function () {
+    const profileCard = document.getElementById('profileCard');
+    const avatarMenu = document.getElementById('avatarMenu');
+    if (profileCard && avatarMenu) {
+        let closeTimer;
+
+        const openMenu = () => {
+            clearTimeout(closeTimer);
+            profileCard.classList.add('menu-open');
+        };
+
+        const closeMenu = () => {
+            clearTimeout(closeTimer);
+            closeTimer = setTimeout(() => {
+                profileCard.classList.remove('menu-open');
+            }, 140);
+        };
+
+        profileCard.addEventListener('mouseenter', openMenu);
+        profileCard.addEventListener('mouseleave', closeMenu);
+        profileCard.addEventListener('click', openMenu);
+        profileCard.addEventListener('focusin', openMenu);
+        profileCard.addEventListener('focusout', (event) => {
+            if (!profileCard.contains(event.relatedTarget)) {
+                closeMenu();
+            }
+        });
+
+        avatarMenu.addEventListener('mouseenter', openMenu);
+        avatarMenu.addEventListener('mouseleave', closeMenu);
+
+        document.addEventListener('click', function (event) {
+            if (!profileCard.contains(event.target)) {
+                profileCard.classList.remove('menu-open');
+            }
+        });
+    }
+});

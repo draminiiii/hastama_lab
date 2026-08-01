@@ -15,6 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app.api.routes.api import router as api_router
 from app.api.routes.auth import router as auth_router
+from app.services.presence_summary import build_presence_summary, time_is_inside_range
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
 from core.events import create_start_app_handler
 
@@ -134,6 +135,43 @@ async def user_panel(request: Request):
         'ticket_date': convert_to_persian_numbers(jdatetime.date.fromgregorian(date=v['ticket_date']).strftime('%Y/%m/%d'))
     } for idx, v in enumerate(oldest_ticket_per_parent.values(), start=1)]
 
+    # اطلاعات مرخصی‌های کاربر
+    cursor.execute("""
+        SELECT start_date, end_date, days, status
+        FROM mrkhc_table
+        WHERE username = ?
+        ORDER BY id DESC
+    """, (username,))
+    all_leave_records = cursor.fetchall()
+
+    leave_details = []
+    for record in all_leave_records:
+        start_date = record[0]
+        end_date = record[1]
+
+        formatted_start = 'نامعتبر'
+        if start_date:
+            try:
+                parsed_start = datetime.strptime(start_date, '%Y-%m-%d') if isinstance(start_date, str) else start_date
+                formatted_start = jdatetime.date.fromgregorian(date=parsed_start).strftime('%Y/%m/%d')
+            except Exception:
+                formatted_start = 'نامعتبر'
+
+        formatted_end = 'نامعتبر'
+        if end_date:
+            try:
+                parsed_end = datetime.strptime(end_date, '%Y-%m-%d') if isinstance(end_date, str) else end_date
+                formatted_end = jdatetime.date.fromgregorian(date=parsed_end).strftime('%Y/%m/%d')
+            except Exception:
+                formatted_end = 'نامعتبر'
+
+        leave_details.append({
+            'start_date': convert_to_persian_numbers(formatted_start),
+            'end_date': convert_to_persian_numbers(formatted_end),
+            'days': record[2],
+            'status': record[3] if record[3] else 'انتظار تایید'
+        })
+
     # اطلاعات پاس‌ها
     cursor.execute("""
         SELECT request_date, pass_title, pass_duration, status FROM totalpass_table WHERE username = ?
@@ -236,6 +274,123 @@ async def user_panel(request: Request):
     profile_image_row = cursor.fetchone()
     user_image_url = f"/static/uploads/{profile_image_row[0]}" if profile_image_row and profile_image_row[0] else None
 
+    # محاسبه وضعیت امروز برای کارت رویداد امروز
+    presence_summary = {
+        "check_in_time": "--:--",
+        "check_out_time": "--:--",
+        "today_work_hours": "۰۰:۰۰",
+        "overtime_hours": "۰۰:۰۰",
+        "ring_green_percent": 0,
+        "ring_blue_percent": 0,
+        "ring_mode": "green",
+        "entry_time": None,
+        "work_start_time": None,
+        "work_end_time": None,
+        "server_now_time": None,
+    }
+
+    try:
+        cursor.execute("""
+            SELECT hozoor_num, work_hours, shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh
+            FROM user_table
+            WHERE username = ?
+        """, (username,))
+        user_row = cursor.fetchone()
+        if user_row:
+            hozoor_num, default_work_hours, shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh = user_row
+            weekday_map = {0: shanbeh, 1: yekshanbeh, 2: doshanbeh, 3: seshanbeh, 4: chrshanbeh, 5: panjshanbeh}
+
+            cursor.execute("""
+                SELECT jalali_year, jalali_month, start_day, end_day,
+                       shanbeh, yekshanbeh, doshanbeh, seshanbeh, chaharshanbeh, panjshanbeh, jomeh
+                FROM shiftha
+                WHERE username = ?
+                ORDER BY jalali_year, jalali_month, start_day
+            """, (username,))
+            shift_rows = [{
+                'jalali_year': r[0], 'jalali_month': r[1], 'start_day': r[2], 'end_day': r[3],
+                'shanbeh': r[4], 'yekshanbeh': r[5], 'doshanbeh': r[6], 'seshanbeh': r[7],
+                'chaharshanbeh': r[8], 'panjshanbeh': r[9], 'jomeh': r[10]
+            } for r in cursor.fetchall()]
+
+            today_jalali = JalaliDate.today()
+            sh_year, sh_month, sh_day = today_jalali.year, today_jalali.month, today_jalali.day
+            weekday = jdatetime.date(sh_year, sh_month, sh_day).weekday()
+
+            def resolve_work_hours(sh_year, sh_month, sh_day, wd):
+                for row in shift_rows:
+                    if row['jalali_year'] == sh_year and row['jalali_month'] == sh_month and row['start_day'] <= sh_day <= row['end_day']:
+                        val = row.get(SHIFT_DAY_COLUMNS[wd])
+                        if val:
+                            return val
+                        break
+                return weekday_map.get(wd, default_work_hours)
+
+            work_hours = resolve_work_hours(sh_year, sh_month, sh_day, weekday).replace(" ", "")
+            work_start, work_end = work_hours.split("-") if "-" in work_hours else ("00:00", "00:00")
+
+            entry_time = None
+            try:
+                mdb_path = r"E:\Hastama\database\Arazdb.mdb"
+                password = "meyer#perko"
+                conn_str = (r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
+                            rf"DBQ={mdb_path};"
+                            rf"PWD={password};")
+                conn_access = pyodbc.connect(conn_str)
+                cursor_access = conn_access.cursor()
+                cursor_access.execute("""
+                    SELECT TOP 1 Time
+                    FROM TPrsInOut
+                    WHERE CardNo = ? AND Date = ?
+                    ORDER BY Time ASC
+                """, (hozoor_num, today_jalali.strftime('%Y/%m/%d')))
+                access_row = cursor_access.fetchone()
+                conn_access.close()
+                if access_row:
+                    entry_time = str(access_row[0]).zfill(4) if access_row[0] is not None else None
+                    if len(entry_time) == 4 and entry_time.isdigit():
+                        entry_time = f"{entry_time[:2]}:{entry_time[2:]}"
+            except Exception:
+                entry_time = None
+
+            if not entry_time:
+                cursor.execute("""
+                    SELECT TOP 1 vrood
+                    FROM hozoor
+                    WHERE username = ? AND [date] = ?
+                    ORDER BY [date]
+                """, (username, today_jalali.to_gregorian()))
+                row_sql = cursor.fetchone()
+                if row_sql and row_sql[0]:
+                    entry_time = row_sql[0].strftime('%H:%M') if isinstance(row_sql[0], time) else str(row_sql[0])
+
+            if entry_time:
+                default_today_work_hours = (weekday_map.get(weekday) or default_work_hours or "").replace(" ", "")
+                if (
+                    default_today_work_hours
+                    and default_today_work_hours != work_hours
+                    and not time_is_inside_range(entry_time, work_hours)
+                    and time_is_inside_range(entry_time, default_today_work_hours)
+                ):
+                    work_hours = default_today_work_hours
+                    work_start, work_end = work_hours.split("-", 1)
+
+                presence_summary = build_presence_summary(
+                    entry_time=entry_time,
+                    work_start=work_start,
+                    work_end=work_end,
+                    now_time=datetime.now().strftime('%H:%M'),
+                )
+                presence_summary['entry_time'] = entry_time
+                presence_summary['work_start_time'] = presence_summary.get('normalized_work_start', work_start)
+                presence_summary['work_end_time'] = presence_summary.get('normalized_work_end', work_end)
+                presence_summary['server_now_time'] = datetime.now().strftime('%H:%M:%S')
+                presence_summary['today_work_hours'] = convert_to_persian_numbers(presence_summary['today_work_hours'])
+                presence_summary['overtime_hours'] = convert_to_persian_numbers(presence_summary['overtime_hours'])
+                presence_summary['check_in_time'] = convert_to_persian_numbers(presence_summary['check_in_time'])
+                presence_summary['check_out_time'] = convert_to_persian_numbers(presence_summary['check_out_time'])
+    except Exception as exc:
+        print("presence summary error:", exc)
 
     return templates.TemplateResponse("user-panel.html", {
     "request": request,
@@ -245,13 +400,25 @@ async def user_panel(request: Request):
     "formatted_overtime": formatted_time_farsi,
     "ticket_records": ticket_records,
     "pass_records": pass_records,
+    "leave_details": leave_details,
     "total_approved_duration": convert_to_persian_numbers(total_approved_duration),
     "message_records": message_records,
     "unread_count": convert_to_persian_numbers(unread_count),
     "total_overtime": formatted_time_farsi,
     "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration),
     "user_image_url": user_image_url,
-    "username": username
+    "username": username,
+    "today_work_hours": presence_summary.get("today_work_hours", "۰۰:۰۰"),
+    "check_in_time": presence_summary.get("check_in_time", "--:--"),
+    "check_out_time": presence_summary.get("check_out_time", "--:--"),
+    "overtime_hours": presence_summary.get("overtime_hours", "۰۰:۰۰"),
+    "ring_green_percent": presence_summary.get("ring_green_percent", 0),
+    "ring_blue_percent": presence_summary.get("ring_blue_percent", 0),
+    "ring_mode": presence_summary.get("ring_mode", "green"),
+    "entry_time": presence_summary.get("entry_time"),
+    "work_start_time": presence_summary.get("work_start_time"),
+    "work_end_time": presence_summary.get("work_end_time"),
+    "server_now_time": presence_summary.get("server_now_time"),
 })
 
 # تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری
@@ -2154,6 +2321,34 @@ def convert_farsi_to_english(text: str) -> str:
         text = text.replace(farsi, english)
     return text
 
+
+def normalize_time_value(value) -> str:
+    if value is None:
+        return "0000"
+
+    if isinstance(value, time):
+        return value.strftime("%H%M")
+
+    if isinstance(value, datetime):
+        return value.strftime("%H%M")
+
+    if isinstance(value, (int, float)):
+        return f"{int(value):04d}"
+
+    text = str(value).strip()
+    if not text:
+        return "0000"
+
+    lowered = text.lower()
+    if lowered in {"none", "null", "na", "n/a", "no", "nok", "unknown", "-"}:
+        return "0000"
+
+    cleaned = ''.join(ch for ch in text if ch.isdigit())
+    if not cleaned:
+        return "0000"
+
+    return cleaned[:4].zfill(4)
+
 from datetime import time
 
 @app.get("/get_hozoor/{username}")
@@ -2243,7 +2438,7 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
         card_no, date_val, time_val, in_out_type = row
 
         date_str = str(date_val).replace("/", "-")
-        time_val = str(time_val).zfill(4)
+        time_val = normalize_time_value(time_val)
 
         if date_str not in attendance:
             attendance[date_str] = {
@@ -2286,8 +2481,8 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
         g_date, vrood, khoroj = row
         shamsi = JalaliDate(g_date).strftime('%Y-%m-%d')
         if shamsi not in attendance:
-            entry = vrood.strftime('%H%M') if isinstance(vrood, time) else str(vrood).replace(":", "").zfill(4)
-            exit_ = khoroj.strftime('%H%M') if isinstance(khoroj, time) else str(khoroj).replace(":", "").zfill(4)
+            entry = normalize_time_value(vrood)
+            exit_ = normalize_time_value(khoroj)
             attendance[shamsi] = {"CardNo": "DB", "Date": shamsi, "EntryTime": entry, "ExitTime": exit_}
 
     # **اضافه کردن تمام تاریخ‌های بین from_g و to_g که رکورد ندارند**
@@ -2310,8 +2505,8 @@ def get_hozoor(username: str, start_date: str = Query(...), end_date: str = Quer
     result = []
     for date_str in sorted(attendance.keys()):
         data = attendance[date_str]
-        entry_time = str(data.get("EntryTime") or "").zfill(4)
-        exit_time = str(data.get("ExitTime") or "").zfill(4)
+        entry_time = normalize_time_value(data.get("EntryTime"))
+        exit_time = normalize_time_value(data.get("ExitTime"))
 
         sh_year, sh_month, sh_day = map(int, date_str.split('-'))
         weekday = jdatetime.date(sh_year, sh_month, sh_day).weekday()  # مطابق کد قبلی شما
