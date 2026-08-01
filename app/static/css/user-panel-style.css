@@ -3726,7 +3726,11 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         padding: 8px 10px;
     }
     .sidebar-top-card {
-        top: 5rem;
+        top: 4.8rem;
+        width: -webkit-fill-available;
+        padding: 18px 15px;
+        margin-right: 4.8rem;
+        margin-left: 6px;
     }
     .menu-toggle {
         display: flex;
@@ -3741,13 +3745,15 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         height: 26px;
     }
     .sidebar-right {
+        --mobile-sidebar-collapsed-width: 73px;
         position: fixed;
         top: 4.5rem;
         right: 0;
         bottom: 10px;
         left: auto;
-        width: 60px;
-        max-width: 60px;
+        width: var(--mobile-sidebar-collapsed-width);
+        max-width: var(--mobile-sidebar-collapsed-width);
+        min-width: var(--mobile-sidebar-collapsed-width);
         height: auto;
         margin: 0;
         padding: 14px 8px;
@@ -3764,7 +3770,7 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     }
 
     .sidebar-right:hover {
-        width: 60px;
+        width: var(--mobile-sidebar-collapsed-width);
         display: flex;
         justify-content: flex-start;
     }
@@ -3772,6 +3778,7 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     .sidebar-right.open {
         width: min(230px, 76vw);
         max-width: min(230px, 76vw);
+        min-width: 0;
         justify-content: flex-start;
     }
     
@@ -3832,7 +3839,8 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         display: none;
     }
     .dashboard-main {
-        padding: 10px 14px 28px;
+        padding: 10px 78px 28px 0px;
+        margin-top: 5.2rem;
     }
     .top-cards-row,
     .timeline-request-row,
