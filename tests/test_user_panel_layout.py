@@ -18,6 +18,14 @@ class UserPanelLayoutTests(unittest.TestCase):
         self.assertIn('رویداد امروز', calendar_section)
         self.assertNotIn('رویداد امروز', stats_section)
 
+    def test_profile_panel_markup_exists(self):
+        template_path = Path(__file__).resolve().parents[1] / "app" / "templates" / "user-panel.html"
+        template = template_path.read_text(encoding="utf-8")
+
+        self.assertIn('id="profilePanel"', template)
+        self.assertIn('data-action="open-profile-panel"', template)
+        self.assertIn('data-action="close-profile-panel"', template)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -76,6 +76,12 @@ window.addEventListener('load', function() {
             case 'close-settings-panel':
                 closeSettingsPanel();
                 break;
+            case 'open-profile-panel':
+                openProfilePanel();
+                break;
+            case 'close-profile-panel':
+                closeProfilePanel();
+                break;
         }
     });
 
@@ -133,9 +139,26 @@ function closeSettingsPanel() {
     panel.setAttribute('aria-hidden', 'true');
 }
 
+function openProfilePanel() {
+    var panel = document.getElementById('profilePanel');
+    if (!panel) return;
+    panel.classList.add('is-open');
+    panel.removeAttribute('inert');
+    document.body.classList.add('profile-panel-open');
+}
+
+function closeProfilePanel() {
+    var panel = document.getElementById('profilePanel');
+    if (!panel) return;
+    panel.classList.remove('is-open');
+    panel.setAttribute('inert', '');
+    document.body.classList.remove('profile-panel-open');
+}
+
 window.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeSettingsPanel();
+        closeProfilePanel();
     }
 });
 
@@ -1197,10 +1220,24 @@ document.getElementById('closePopupezafekarijadvalbox').addEventListener('click'
 // تنظمیات ثبت پاس ساعتی کاربر// تنظمیات ثبت پاس ساعتی کاربر// تنظمیات ثبت پاس ساعتی کاربر// تنظمیات ثبت پاس ساعتی کاربر
 
 // باز کردن پاپ‌آپ پاس ساعتی
-function openHourlyPassModal() {document.getElementById("hourlyPassModal").style.display = "block";}
+function openHourlyPassModal() {
+    const hourlyPassModal = document.getElementById("hourlyPassModal");
+    if (!hourlyPassModal) return;
+
+    closeLeaveModal();
+    closeOvertimeModal();
+    hideAllReportPopups();
+    hourlyPassModal.style.display = "block";
+    updateModalOverlayState();
+}
 
 // بستن پاپ‌آپ پاس ساعتی
-function closeHourlyPassModal() {document.getElementById("hourlyPassModal").style.display = "none";}
+function closeHourlyPassModal() {
+    const hourlyPassModal = document.getElementById("hourlyPassModal");
+    if (!hourlyPassModal) return;
+    hourlyPassModal.style.display = "none";
+    updateModalOverlayState();
+}
 
 // ارسال فرم ثبت پاس ساعتی
 document.getElementById('hourlyPassForm').addEventListener('submit', function(e) {
@@ -1931,7 +1968,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
             // بررسی عرض نمایشگر و تنظیم مقدار top بر اساس آن
             if (window.matchMedia("(max-width: 768px)").matches) {
-                popup.style.top = "10.5rem"; 
+                popup.style.top = "10.99rem"; 
             } else {
                 popup.style.top = "12.5rem"; 
             }

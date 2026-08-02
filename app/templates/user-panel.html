@@ -10,8 +10,6 @@
 </head>
 
     <body>
-        <!-- عنصر مخفی برای سازگاری با اسکریپت اصلی (متن خوش‌آمدگویی) -->
-        <span class="welcome-text" style="display:none">{{ username }}، خوش آمدید</span>
 
         <div class="app-shell">
 
@@ -32,7 +30,7 @@
                     <div class="topbar-user" id="profileCard">
                         <div class="topbar-avatar-wrap">
                             <img class="topbar-avatar" id="topbarAvatar" src="{{ user_image_url or '/static/images/user.png' }}" alt="پروفایل کاربر">
-                            <span class="avatar-edit-btn" data-action="open-file-input" title="ویرایش پروفایل">
+                            <span class="avatar-edit-btn" data-action="open-profile-panel" title="ویرایش پروفایل">
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M12 20h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </span>
                         </div>
@@ -44,7 +42,7 @@
 
                         <!-- منوی کوچک حذف/ویرایش پروفایل -->
                         <div class="avatar-menu" id="avatarMenu">
-                            <div class="virayeshProfile" data-action="open-file-input">
+                            <div class="virayeshProfile" data-action="open-profile-panel">
                                 <span class="avatar-menu-icon">
                                     <svg viewBox="0 0 24 24" fill="none"><path d="M12 20h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </span>
@@ -124,7 +122,7 @@
                             </span>
                         </div>
 
-                        <div class="sidebar-nav-item" id="submitPass">
+                        <div class="sidebar-nav-item" id="submitPass" data-action="open-hourly-pass" role="button" tabindex="0">
                             <span class="sidebar-item-content">
                                 <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                                 <span class="sidebar-label">ثبت پاس ساعتی</span>
@@ -560,7 +558,7 @@
 
                                     <div class="progress-ring-text">
                                         <strong id="ringWorkHoursText">{{ today_work_hours or '۰:۰۰' }}</strong>
-                                        <span>ساعت کار</span>
+                                        <span>کارکرد</span>
                                     </div>
 
                                 </div>
@@ -760,7 +758,7 @@
 
         <!-- پاپ‌آپ پاس ساعتی -->
         <div id="hourlyPassModal" class="morakhaci-sabt" style="display: none;">
-            <div  class="modal">
+            <div  class="modal" id="hourlyPassModalContentmobile">
                 <div class="modal-content">
                     <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeHourlyPassModal()">
                     <h2>پاس ساعتی</h2>
@@ -786,6 +784,83 @@
         </div>
 
         <!-- پاپ‌آپ ثبت تیکت -->
+        <div id="profilePanel" class="profile-panel" inert>
+            <div class="profile-panel-backdrop" id="profilePanelBackdrop"></div>
+            <div class="profile-panel-dialog" role="dialog" aria-modal="true" aria-labelledby="profilePanelTitle">
+                <div class="profile-panel-header">
+                    <div>
+                        <h2 id="profilePanelTitle">ویرایش پروفایل</h2>
+                    </div>
+                    <button type="button" class="profile-panel-close" data-action="close-profile-panel" aria-label="بستن پنل پروفایل">×</button>
+                </div>
+                <div class="profile-panel-body">
+                    <div class="profile-panel-avatar-block">
+                        <img class="profile-panel-avatar" id="profilePanelAvatar" src="{{ user_image_url or '/static/images/user.png' }}" alt="تصویر پروفایل">
+                        <div class="profile-panel-avatar-actions">
+                            <button type="button" class="profile-upload-btn" data-action="open-file-input">انتخاب عکس جدید</button>
+                            <button type="button" class="profile-delete-btn" data-action="confirm-delete">حذف عکس</button>
+                        </div>
+                    </div>
+
+                    <div class="profile-panel-grid">
+                        <section class="profile-panel-card">
+                            <h3>📋 اطلاعات شخصی</h3>
+                            <ul class="profile-field-list">
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">در بالای این بخش قابل تغییر است.</span>
+                                    <span class="profile-field-label">تصویر پروفایل</span>
+                                </li>
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">{{ username }}</span>
+                                    <span class="profile-field-label">نام و نام خانوادگی</span>
+                                    
+                                </li>
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">{{ username }}</span>
+                                    <span class="profile-field-label">نام کاربری</span>
+                                </li>
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">{{ user_role or 'کارشناس فناوری اطلاعات' }}</span>
+                                    <span class="profile-field-label">سمت</span>
+                                </li>
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">واحد فناوری اطلاعات</span>
+                                    <span class="profile-field-label">واحد سازمانی</span>
+                                </li>
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">—</span>
+                                    <span class="profile-field-label">شماره تماس</span>
+                                </li>
+                                <li class="profile-field-row">
+                                    <span class="profile-field-value">—</span>
+                                    <span class="profile-field-label">ایمیل</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section class="profile-panel-card">
+                            <h3>🔐 حساب کاربری</h3>
+                            <ul>
+                                <li>تغییر رمز عبور</li>
+                                <li>فعال کردن احراز هویت دو مرحله‌ای</li>
+                                <li>مشاهده دستگاه‌های متصل</li>
+                                <li>خروج از همه دستگاه‌ها</li>
+                            </ul>
+                        </section>
+
+                        <section class="profile-panel-card">
+                            <h3>📈 فعالیت‌ها</h3>
+                            <ul>
+                                <li>آخرین ورودها</li>
+                                <li>تاریخ آخرین تغییر رمز</li>
+                                <li>لاگ فعالیت‌های خود کاربر</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="ticketModal" class="morakhaci-sabt" style="display: none;">
             <div  class="modal" id="ticketModalContentmobile">
                 <div class="modal-content">
