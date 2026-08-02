@@ -1696,8 +1696,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            closeMobileSidebar();
-
             reportsItem.classList.toggle('expanded');
             var expanded = reportsItem.classList.contains('expanded');
             reportsItem.setAttribute('aria-expanded', expanded ? 'true' : 'false');

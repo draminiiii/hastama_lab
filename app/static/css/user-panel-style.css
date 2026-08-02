@@ -2614,9 +2614,20 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
     }
 
     .mrkhc{
-        width: 100%;
+        width: 77%;
         font-size: 0.8rem;
         gap: 38px;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .mrkhc p{
+        margin: 5px;
+    }
+
+    #leaveTable {
+        width: 107%;
+        padding: 5px;
     }
 
     .popupHozoor-content{
@@ -2998,8 +3009,11 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
 
     .report-hour-box,
     #overtimeBox {
-        width: 100%;
+        width: 80%;
+        margin-right: 4.5rem;
     }
+
+    .sidebar-top-card-sub {font-size: 0.7rem;}
 
     .passsaatiReport-table th,
     #OverTimeTable th,
