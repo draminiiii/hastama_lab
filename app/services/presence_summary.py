@@ -57,6 +57,11 @@ def normalize_work_hours(entry_time: str | None, work_start: str | None, work_en
     if not entry_time or not work_start or not work_end:
         return work_start, work_end
 
+    start_time = parse_time(work_start)
+    end_time = parse_time(work_end)
+    if start_time and end_time and end_time[0] * 60 + end_time[1] <= start_time[0] * 60 + start_time[1]:
+        return work_start, work_end
+
     original_range = f"{work_start}-{work_end}"
     swapped_range = f"{work_end}-{work_start}"
     entry_in_original = time_is_inside_range(entry_time, original_range)
@@ -135,12 +140,11 @@ def build_presence_summary(entry_time: str | None, work_start: str | None, work_
                 green_percent = 0
                 today_work_minutes = 0
             elif current_minutes < effective_end_minutes:
-                work_progress_minutes = max(0, current_minutes - work_start_minutes)
                 today_work_minutes = min(max(0, current_minutes - entry_minutes), scheduled_work_minutes)
-                green_percent = min(100, int((work_progress_minutes / timeline_duration) * 100))
+                green_percent = min(100, int((today_work_minutes / timeline_duration) * 100))
             else:
                 today_work_minutes = min(max(0, effective_end_minutes - entry_minutes), scheduled_work_minutes)
-                green_percent = 100
+                green_percent = min(100, int((today_work_minutes / max(timeline_duration, 1)) * 100))
                 overtime_minutes = max(0, current_minutes - effective_end_minutes)
                 blue_percent = min(100, int((overtime_minutes / max(timeline_duration, 1)) * 100))
     else:

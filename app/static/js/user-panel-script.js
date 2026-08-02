@@ -256,7 +256,10 @@ function isPersianLeapYear(year) {
 function getPersianWeekdayIndex(year, month, day) {
     const gregorianDate = persianToGregorian(year, month, day);
     const weekday = gregorianDate.getUTCDay();
-    return (weekday + 1) % 7;
+
+    // در تقویم فارسی، شنبه اولین روز هفته است: شنبه=0, یکشنبه=1, ..., جمعه=6
+    if (weekday === 6) return 0;
+    return weekday + 1;
 }
 
 function parsePersianDateValue(value) {
@@ -416,31 +419,46 @@ function openLeaveDatePicker(input, picker) {
     renderLeaveDatePicker(picker, state);
 }
 
+function attachDatePickerToInput(input) {
+    if (!input || input.dataset.datePickerBound === 'true') return;
+
+    const existingShell = input.closest('.date-input-shell');
+    if (existingShell) {
+        input.dataset.datePickerBound = 'true';
+        return;
+    }
+
+    const shell = document.createElement('div');
+    shell.className = 'date-input-shell';
+    input.parentNode.insertBefore(shell, input);
+    shell.appendChild(input);
+
+    const picker = document.createElement('div');
+    picker.className = 'leave-date-picker';
+    picker.hidden = true;
+    picker.setAttribute('role', 'dialog');
+    picker.setAttribute('aria-label', 'انتخاب تاریخ');
+    shell.appendChild(picker);
+
+    input.addEventListener('focus', (event) => {
+        event.stopPropagation();
+        openLeaveDatePicker(input, picker);
+    });
+    input.addEventListener('click', (event) => {
+        event.stopPropagation();
+        openLeaveDatePicker(input, picker);
+    });
+
+    input.dataset.datePickerBound = 'true';
+}
+
 function initLeaveDatePickers() {
     ['startDate', 'endDate', 'overtimeDate'].forEach((inputId) => {
-        const input = document.getElementById(inputId);
-        if (!input) return;
+        attachDatePickerToInput(document.getElementById(inputId));
+    });
 
-        const shell = document.createElement('div');
-        shell.className = 'date-input-shell';
-        input.parentNode.insertBefore(shell, input);
-        shell.appendChild(input);
-
-        const picker = document.createElement('div');
-        picker.className = 'leave-date-picker';
-        picker.hidden = true;
-        picker.setAttribute('role', 'dialog');
-        picker.setAttribute('aria-label', 'انتخاب تاریخ');
-        shell.appendChild(picker);
-
-        input.addEventListener('focus', (event) => {
-            event.stopPropagation();
-            openLeaveDatePicker(input, picker);
-        });
-        input.addEventListener('click', (event) => {
-            event.stopPropagation();
-            openLeaveDatePicker(input, picker);
-        });
+    document.querySelectorAll('#hourlyPassModal input[id="date"]').forEach((input) => {
+        attachDatePickerToInput(input);
     });
 
     document.addEventListener('click', (event) => {
@@ -1324,6 +1342,11 @@ function updateHourlyPassFields(passType) {
     }
 
     dynamicFields.innerHTML = content;
+
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        attachDatePickerToInput(dateInput);
+    }
 }
 
 // به‌روزرسانی فیلدهای پاس بر اساس نوع انتخاب شده
