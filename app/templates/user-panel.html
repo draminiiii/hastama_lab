@@ -139,7 +139,7 @@
                                     <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </span>
                             </span>
-                            <div class="sidebar-submenu" id="reportsSubmenu" aria-hidden="true">
+                            <div class="sidebar-submenu" id="reportsSubmenu">
                                 <a href="#" class="sidebar-submenu-item" id="reportLeave" data-report="leave">گزارش مرخصی</a>
                                 <a href="#" class="sidebar-submenu-item" id="reportOvertime" data-report="overtime">گزارش اضافه کاری</a>
                                 <a href="#" class="sidebar-submenu-item" id="reportPass" data-report="pass">گزارش پاس های ساعتی</a>
@@ -147,20 +147,266 @@
                             </div>
                         </div>
 
-                        <div class="sidebar-nav-item" id="ticketListIcon" onclick="closeMobileSidebar(); openTicketListPopup();">
+                        <div class="sidebar-nav-item" id="ticketListIcon" onclick="closeMobileSidebar(); if (typeof openTicketModal === 'function') { openTicketModal(); }">
                             <span class="sidebar-item-content">
                                 <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 4V5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                                 <span class="sidebar-label">ثبت تیکت</span>
                             </span>
                         </div>
 
-                        <div class="sidebar-nav-item" id="showMorepopuphourbox">
+                        <div class="sidebar-nav-item" id="showMorepopuphourbox" data-action="toggle-settings-panel" role="button" tabindex="0">
                             <span class="sidebar-item-content">
                                 <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
                                 <span class="sidebar-label">تنظیمات</span>
                             </span>
                         </div>
                     </nav>
+
+                    <div class="settings-panel" id="settingsPanel" aria-hidden="true">
+                        <div class="settings-panel-backdrop" id="settingsPanelBackdrop"></div>
+                        <div class="settings-panel-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsPanelTitle">
+                            <div class="settings-panel-header">
+                                <div>
+                                    <p class="settings-panel-kicker">⚙️ پیکربندی سیستم</p>
+                                    <h2 id="settingsPanelTitle">تنظیمات سامانه</h2>
+                                </div>
+                                <button type="button" class="settings-panel-close" data-action="close-settings-panel" aria-label="بستن تنظیمات">×</button>
+                            </div>
+                            <div class="settings-panel-body">
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="appearance">
+                                        <span>🎨 ظاهر</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-appearance">
+                                        <ul>
+                                            <li>حالت روشن / تاریک / خودکار</li>
+                                            <li>رنگ اصلی سامانه</li>
+                                            <li>اندازه فونت</li>
+                                            <li>نوع فونت</li>
+                                            <li>نمایش انیمیشن‌ها</li>
+                                            <li>نمایش افکت‌های پس‌زمینه</li>
+                                            <li>تراکم نمایش (Compact / Normal)</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="language">
+                                        <span>🌍 زبان و منطقه</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-language">
+                                        <ul>
+                                            <li>زبان سامانه</li>
+                                            <li>تقویم شمسی / میلادی</li>
+                                            <li>قالب تاریخ</li>
+                                            <li>قالب ساعت (24 یا 12)</li>
+                                            <li>منطقه زمانی</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="notifications">
+                                        <span>🔔 اعلان‌ها</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-notifications">
+                                        <ul>
+                                            <li>اعلان داخل سامانه</li>
+                                            <li>ایمیل</li>
+                                            <li>پیامک</li>
+                                            <li>صدای اعلان</li>
+                                            <li>نمایش اعلان روی دسکتاپ</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="security">
+                                        <span>🔒 امنیت</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-security">
+                                        <ul>
+                                            <li>مدت زمان خروج خودکار</li>
+                                            <li>تغییر رمز اجباری</li>
+                                            <li>محدودیت تعداد ورود اشتباه</li>
+                                            <li>لیست نشست‌های فعال</li>
+                                            <li>مدیریت API Token (اگر داشتی)</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="panel">
+                                        <span>🖥️ تنظیمات پنل</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-panel">
+                                        <ul>
+                                            <li>صفحه پیش‌فرض بعد از ورود</li>
+                                            <li>نمایش یا مخفی کردن ویجت‌ها</li>
+                                            <li>ترتیب ویجت‌ها</li>
+                                            <li>تعداد ردیف‌های جدول</li>
+                                            <li>ذخیره فیلترهای جداول</li>
+                                            <li>نمایش ستون‌های جدول</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="reports">
+                                        <span>📄 گزارش‌ها</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-reports">
+                                        <ul>
+                                            <li>فرمت پیش‌فرض خروجی</li>
+                                            <li>PDF</li>
+                                            <li>Excel</li>
+                                            <li>CSV</li>
+                                            <li>جهت چاپ</li>
+                                            <li>سایز کاغذ</li>
+                                            <li>نمایش لوگو</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="company">
+                                        <span>🏢 اطلاعات شرکت (فقط مدیر)</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-company">
+                                        <ul>
+                                            <li>لوگو</li>
+                                            <li>نام شرکت</li>
+                                            <li>آدرس</li>
+                                            <li>تلفن</li>
+                                            <li>کد اقتصادی</li>
+                                            <li>شناسه ملی</li>
+                                            <li>متن پایین گزارش‌ها</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="users">
+                                        <span>👥 کاربران (مدیر)</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-users">
+                                        <ul>
+                                            <li>مدیریت نقش‌ها</li>
+                                            <li>سطح دسترسی</li>
+                                            <li>گروه‌های کاربری</li>
+                                            <li>واحدها</li>
+                                            <li>سمت‌ها</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="attendance">
+                                        <span>🕒 حضور و غیاب</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-attendance">
+                                        <ul>
+                                            <li>ساعات کاری</li>
+                                            <li>شیفت‌ها</li>
+                                            <li>تعطیلات</li>
+                                            <li>قوانین تأخیر</li>
+                                            <li>قوانین اضافه‌کاری</li>
+                                            <li>قوانین مرخصی</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="messages">
+                                        <span>📧 پیام‌ها</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-messages">
+                                        <ul>
+                                            <li>تنظیم SMTP</li>
+                                            <li>پیامک</li>
+                                            <li>قالب ایمیل‌ها</li>
+                                            <li>قالب پیامک‌ها</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="integration">
+                                        <span>🔌 یکپارچه‌سازی</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-integration">
+                                        <ul>
+                                            <li>Active Directory</li>
+                                            <li>LDAP</li>
+                                            <li>API</li>
+                                            <li>Webhook</li>
+                                            <li>سامانه پیامکی</li>
+                                            <li>دستگاه حضور و غیاب</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="backup">
+                                        <span>💾 پشتیبان‌گیری</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-backup">
+                                        <ul>
+                                            <li>تهیه نسخه پشتیبان</li>
+                                            <li>بازیابی نسخه</li>
+                                            <li>دانلود بکاپ</li>
+                                            <li>زمان‌بندی بکاپ</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="logs">
+                                        <span>📊 لاگ سامانه</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-logs">
+                                        <ul>
+                                            <li>لاگ ورود کاربران</li>
+                                            <li>لاگ تغییرات</li>
+                                            <li>خطاها</li>
+                                            <li>لاگ API</li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <section class="settings-section">
+                                    <button type="button" class="settings-accordion-toggle" data-settings-accordion="about">
+                                        <span>ℹ️ درباره سامانه</span>
+                                        <span class="settings-accordion-icon">+</span>
+                                    </button>
+                                    <div class="settings-accordion-content" id="settings-about">
+                                        <ul>
+                                            <li>نسخه هستما</li>
+                                            <li>نسخه دیتابیس</li>
+                                            <li>نسخه سرور</li>
+                                            <li>مجوزها</li>
+                                            <li>راهنما</li>
+                                            <li>قوانین استفاده</li>
+                                        </ul>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="sidebar-logout" onclick="logout()">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -541,11 +787,11 @@
 
         <!-- پاپ‌آپ ثبت تیکت -->
         <div id="ticketModal" class="morakhaci-sabt" style="display: none;">
-            <div  class="modal">
+            <div  class="modal" id="ticketModalContentmobile">
                 <div class="modal-content">
                     <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeTicketModal()">
                     <h2>ثبت تیکت</h2>
-                    <form id="ticketForm" class="tikcet-popup-Req">
+                    <form id="ticketForm" class="ticket-popup-Req">
                         <label for="ticketReceiver">دریافت کننده</label>
                         <select id="ticketReceiver" name="ticketReceiver" required>
                             <option value="" disabled selected>انتخاب کنید</option>
@@ -803,7 +1049,7 @@
             <div class="modal-content">
                 <span class="close" onclick="closeEditTicketModal()">&times;</span>
                 <h2>ثبت تیکت</h2>
-                <form id="ticketEditeForm" class="tikcet-popup-Req">
+                <form id="ticketEditeForm" class="ticket-popup-Req">
                     <label for="ticketEditReceiver">دریافت کننده</label>
                     <select id="ticketEditReceiver" name="ticketEditReceiver" required>
                         <option value="" disabled selected>انتخاب کنید</option>

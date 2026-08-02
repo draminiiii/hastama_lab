@@ -70,6 +70,12 @@ window.addEventListener('load', function() {
             case 'logout':
                 if (typeof logout === 'function') logout();
                 break;
+            case 'toggle-settings-panel':
+                toggleSettingsPanel();
+                break;
+            case 'close-settings-panel':
+                closeSettingsPanel();
+                break;
         }
     });
 
@@ -110,6 +116,50 @@ function formatPersianNumbers(event) {
 
 // اعمال تبدیل placeholderها زمانی که صفحه بارگذاری می‌شود
 window.addEventListener('load', function() {convertPlaceholdersToPersian();});
+
+function toggleSettingsPanel() {
+    var panel = document.getElementById('settingsPanel');
+    if (!panel) return;
+    panel.classList.toggle('is-open');
+    document.body.classList.toggle('settings-panel-open', panel.classList.contains('is-open'));
+    panel.setAttribute('aria-hidden', panel.classList.contains('is-open') ? 'false' : 'true');
+}
+
+function closeSettingsPanel() {
+    var panel = document.getElementById('settingsPanel');
+    if (!panel) return;
+    panel.classList.remove('is-open');
+    document.body.classList.remove('settings-panel-open');
+    panel.setAttribute('aria-hidden', 'true');
+}
+
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeSettingsPanel();
+    }
+});
+
+document.addEventListener('click', function (event) {
+    var toggle = event.target.closest('.settings-accordion-toggle');
+    if (!toggle) return;
+
+    var section = toggle.closest('.settings-section');
+    if (!section) return;
+
+    var isOpen = section.classList.contains('is-open');
+    document.querySelectorAll('.settings-section.is-open').forEach(function (item) {
+        if (item !== section) {
+            item.classList.remove('is-open');
+        }
+    });
+
+    section.classList.toggle('is-open', !isOpen);
+});
+
+var settingsPanelBackdrop = document.getElementById('settingsPanelBackdrop');
+if (settingsPanelBackdrop) {
+    settingsPanelBackdrop.addEventListener('click', closeSettingsPanel);
+}
 
 // تابع تبدیل اعداد به فارسی
 function convertToPersian(input) {
@@ -676,7 +726,6 @@ function collapseReportsSubmenu() {
     }
     if (reportsSubmenu) {
         reportsSubmenu.style.display = 'none';
-        reportsSubmenu.setAttribute('aria-hidden', 'true');
     }
 }
 
@@ -737,6 +786,7 @@ function updateModalOverlayState() {
         { id: 'leaveModal', display: 'flex' },
         { id: 'overtimeModal', display: 'flex' },
         { id: 'hourlyPassModal', display: 'block' },
+        { id: 'ticketModal', display: 'flex' },
         { id: 'popupOverlayMorakhsi', display: 'flex' },
         { id: 'popupOverlayezafe', display: 'flex' },
         { id: 'popupOverlay', display: 'flex' },
@@ -1257,11 +1307,17 @@ document.querySelectorAll('.dropdown-option').forEach(option => {
 });
 
 // باز کردن پاپ اپ گزارش پاس ساعتی کاربر
+// این رفتار برای دکمه تنظیمات غیرفعال است تا فقط پنل تنظیمات باز شود.
 document.getElementById('showMorepopuphourbox').addEventListener('click', function(event) {
-    event.preventDefault(); // جلوگیری از بارگذاری مجدد صفحه
+    if (event.target.closest('[data-action="toggle-settings-panel"]')) {
+        return;
+    }
+    event.preventDefault();
     var popupOverlay = document.getElementById('popupOverlay');
-    popupOverlay.style.display = 'flex'; // نمایش پاپ‌آپ
-    updateModalOverlayState();
+    if (popupOverlay) {
+        popupOverlay.style.display = 'flex';
+        updateModalOverlayState();
+    }
 });
 
 // بستن پاپ اپ گزارش پاس ساعتی کاربر
@@ -1278,11 +1334,15 @@ document.getElementById('closePopup').addEventListener('click', function(event) 
 
 // باز کردن پاپ‌آپ ثبت تیکت
 function openTicketModal() {
-    document.getElementById("ticketModal").style.display = "block";
+    const ticketModal = document.getElementById("ticketModal");
+    if (!ticketModal) return;
+    ticketModal.style.display = "flex";
+    updateModalOverlayState();
     fetch('/get_receivers')
         .then(response => response.json())
         .then(data => {
             const receiverSelect = document.getElementById('ticketReceiver');
+            if (!receiverSelect) return;
             receiverSelect.innerHTML = '<option value="" disabled selected>انتخاب کنید</option>';  // ابتدا گزینه پیش‌فرض را قرار می‌دهیم
             data.forEach(receiver => {
                 const option = document.createElement('option');
@@ -1295,7 +1355,12 @@ function openTicketModal() {
 }
 
 // بستن پاپ‌آپ ثبت تیکت
-function closeTicketModal() {document.getElementById("ticketModal").style.display = "none";}
+function closeTicketModal() {
+    const ticketModal = document.getElementById("ticketModal");
+    if (!ticketModal) return;
+    ticketModal.style.display = "none";
+    updateModalOverlayState();
+}
 
 // باز کردن پاپ‌آپ لیست تیکت‌ها (فقط در موبایل)
 function openTicketListPopup() {
@@ -1601,7 +1666,6 @@ document.addEventListener('DOMContentLoaded', function() {
             reportsItem.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             if (reportsSubmenu) {
                 reportsSubmenu.style.display = expanded ? 'flex' : 'none';
-                reportsSubmenu.setAttribute('aria-hidden', !expanded);
             }
         });
 
@@ -1623,7 +1687,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!reportsItem.contains(event.target)) {
                 if (reportsItem.classList.contains('expanded')) {
                     reportsItem.classList.remove('expanded');
-                    if (reportsSubmenu) reportsSubmenu.setAttribute('aria-hidden', 'true');
+                    if (reportsSubmenu) reportsSubmenu.style.display = 'none';
                 }
             }
         });
