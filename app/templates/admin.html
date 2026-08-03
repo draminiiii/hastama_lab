@@ -12,134 +12,132 @@
 
 <body>
     <div class="koleObject">
-        <!-- باکس لوگو -->
-        <div class="logo-top">
-            <div class="left-text">
-                <span>هستما سامانه جامع حضور و غیاب <span class="small-text">(نسخه آزمایشی)</span></span>
-                <span>آزمــایــشـــگاه دکــتـــر امـــیـنــی</span>
-            </div>
         
-            <div class="right-logo">
-                <img src="{{ url_for('static', path='images/samanehlogo.png') }}" alt="Logo">
-            </div>
-        </div>
-        
-        <div class="admin-topbar">
-            <div class="admin-profile-card">
-                <button type="button" class="profile-button" id="profileButton" onclick="toggleProfileDropdown(event)">
-                    <img src="/static/images/user.png" alt="پروفایل" class="profile-avatar">
-                    <div class="profile-info">
-                        <span class="profile-name">مدیر سیستم</span>
-                        <span class="profile-role">ادمین</span>
+        <header class="topbar admin-topbar-modern">
+            <div class="topbar-actions">
+                <div class="topbar-clock-pill" id="adminTopbarClockBadge" aria-live="polite">
+                    <span class="topbar-clock-date" id="adminTopbarDateText">--</span>
+                    <span class="topbar-clock-time" id="adminTopbarTimeText">--:--:--</span>
+                </div>
+
+                <div class="topbar-icon-btn" id="notificationsButton" onclick="toggleNotifications(event)">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C13.1046 22 14 21.1046 14 20H10C10 21.1046 10.8954 22 12 22Z" fill="currentColor"/>
+                        <path d="M18 16V11C18 7.68629 16.2091 4.86798 13.25 4.21834V3.5C13.25 3.08579 12.9142 2.75 12.5 2.75C12.0858 2.75 11.75 3.08579 11.75 3.5V4.21834C8.79095 4.86798 7 7.68629 7 11V16L5 18V19H19V18L18 16Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <div class="topbar-icon-btn" id="themeToggleButton" onclick="toggleTheme()">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79C20.55 12.93 20.08 13 19.59 13C15.59 13 12.29 9.7 12.29 5.7C12.29 5.21 12.36 4.74 12.5 4.29C9.21 4.84 6.82 7.83 6.82 11.32C6.82 15.14 10.17 18.49 14 18.49C17.49 18.49 20.48 16.1 21.03 12.81C21.02 12.81 21.01 12.79 21 12.79Z" fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <div class="topbar-user" id="profileButton" onclick="toggleProfileDropdown(event)">
+                    <div class="topbar-avatar-wrap">
+                        <img class="topbar-avatar" src="/static/images/user.png" alt="پروفایل مدیریت">
                     </div>
-                </button>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <button type="button" class="dropdown-item">
-                        <img src="/static/images/writing.png" alt="ویرایش پروفایل">
-                        <span>ویرایش پروفایل</span>
-                    </button>
-                    <button type="button" class="dropdown-item">
-                        <img src="/static/images/check-mark.png" alt="وضعیت اشتراک">
-                        <span>وضعیت اشتراک</span>
-                    </button>
-                    <button type="button" class="dropdown-item">
-                        <img src="/static/images/chat.png" alt="پشتیبانی فنی">
-                        <span>پشتیبانی فنی</span>
-                    </button>
+                    <div class="topbar-user-info">
+                        <span class="topbar-user-name">مدیر سیستم</span>
+                        <span class="topbar-user-role">ادمین</span>
+                    </div>
+                    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+                    <div class="profile-dropdown avatar-menu" id="profileDropdown">
+                        <button type="button" class="dropdown-item">
+                            <img src="/static/images/writing.png" alt="ویرایش پروفایل">
+                            <span>ویرایش پروفایل</span>
+                        </button>
+                        <button type="button" class="dropdown-item">
+                            <img src="/static/images/check-mark.png" alt="وضعیت اشتراک">
+                            <span>وضعیت اشتراک</span>
+                        </button>
+                        <button type="button" class="dropdown-item">
+                            <img src="/static/images/chat.png" alt="پشتیبانی فنی">
+                            <span>پشتیبانی فنی</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="admin-action-icons">
-                <button type="button" class="icon-button" id="notificationsButton" onclick="toggleNotifications(event)">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C13.1046 22 14 21.1046 14 20H10C10 21.1046 10.8954 22 12 22Z" fill="#0F172A"/>
-                        <path d="M18 16V11C18 7.68629 16.2091 4.86798 13.25 4.21834V3.5C13.25 3.08579 12.9142 2.75 12.5 2.75C12.0858 2.75 11.75 3.08579 11.75 3.5V4.21834C8.79095 4.86798 7 7.68629 7 11V16L5 18V19H19V18L18 16Z" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button type="button" class="icon-button" id="themeToggleButton" onclick="toggleTheme()">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 12.79C20.55 12.93 20.08 13 19.59 13C15.59 13 12.29 9.7 12.29 5.7C12.29 5.21 12.36 4.74 12.5 4.29C9.21 4.84 6.82 7.83 6.82 11.32C6.82 15.14 10.17 18.49 14 18.49C17.49 18.49 20.48 16.1 21.03 12.81C21.02 12.81 21.01 12.79 21 12.79Z" fill="#0F172A"/>
-                    </svg>
-                </button>
-            </div>
+
             <div class="notifications-panel" id="notificationsPanel">
                 <div class="notifications-content">
                     <span class="notifications-title">اعلان‌ها</span>
                     <p>اعلانی برای نمایش وجود ندارد.</p>
                 </div>
             </div>
-        </div>
+        </header>
 
         <div class="navarha">
-            <!-- سایدبار یکپارچه سمت راست (آیکون‌ها از هر دو نوار منتقل شدند) -->
-            <div class="rightSidebar">
-                <button type="button" class="menu-toggle" id="menu-btn" onclick="toggleSidebar(event)">
-                    <img src="/static/images/menu.png" alt="منو" class="menu-icon">
-                    <div class="menu-expanded">
-                        <img src="/static/images/samanehlogo.png" alt="لوگوی هستما" class="menu-logo">
-                        <span class="menu-label">ســامـانه هـوشــمند<br>حــضـور و غــیـاب هــسـتـمـا</span>
+            <div class="sidebar-top-card">
+                <div class="sidebar-top-card-content">
+                    <div class="sidebar-top-card-mark">
+                        <img src="/static/images/newlogo.png" alt="لوگوی هستما" class="sidebar-top-card-image">
                     </div>
-                </button>
+                    <div class="sidebar-top-card-text">
+                        <span class="sidebar-top-card-title">سامانه هستما</span>
+                        <span class="sidebar-top-card-sub">پنل مدیریت | سامانه هوشمند حضور و غیاب</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- سایدبار یکپارچه سمت راست (آیکون‌ها از هر دو نوار منتقل شدند) -->
+            <aside class="sidebar-right rightSidebar" id="mainSidebar">
+                <div class="icon-container active" onclick="toggleBox('coworkerBox', this)">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="icon-label">داشبورد</span>
+                </div>
 
                 <div class="icon-container" onclick="toggleBox('coworkerBox', this)">
                     <img src="/static/images/coworker-icon.png" alt="همکاران" class="sidebar-icon" data-default-src="/static/images/coworker-icon.png" data-active-src="/static/images/coworker-icon-purple.png">
                     <span class="icon-label">مدیریت کارکنان</span>
-                    <span class="tooltipIconHeader leave-tooltip">مدیریت کارکنان</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('vacationBox', this)">
                     <img src="/static/images/leaveRequest.png" alt="مرخصی" class="sidebar-icon" data-default-src="/static/images/leaveRequest.png" data-active-src="/static/images/leaveRequest-purple.png">
                     <span class="icon-label">مدیریت مرخصی ها</span>
-                    <span class="tooltipIconHeader leave-tooltip">مدیریت مرخصی ها</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('overtimeBox', this)">
                     <img src="/static/images/overtime.png" alt="اضافه کاری" class="sidebar-icon" data-default-src="/static/images/overtime.png" data-active-src="/static/images/overtime-purple.png">
                     <span class="icon-label">مدیریت اضافه کاری ها</span>
-                    <span class="tooltipIconHeader overtime-tooltip">مدیریت اضافه کاری ها</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('hourlyPassBox', this)">
                     <img src="/static/images/clock.png" alt="پاس ساعتی" class="sidebar-icon" data-default-src="/static/images/clock.png" data-active-src="/static/images/clock-purple.png">
                     <span class="icon-label">مدیریت پاس های ساعتی</span>
-                    <span class="tooltipIconHeader hourlyPass-tooltip">مدیریت پاس های ساعتی</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('ticketBox', this)">
                     <img src="/static/images/chat.png" alt="تیکت‌ها" class="sidebar-icon" data-default-src="/static/images/chat.png" data-active-src="/static/images/chat-purple.png">
                     <span class="icon-label">مدیریت تیکت ها</span>
-                    <span class="tooltipIconHeader ticket-tooltip">مدیریت تیکت ها</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('shiftBox', this)">
                     <img src="/static/images/clock.png" alt="مدیریت شیفت‌ها" class="sidebar-icon" data-default-src="/static/images/clock.png" data-active-src="/static/images/clock-purple.png">
                     <span class="icon-label">مدیریت شیفت‌ها</span>
-                    <span class="tooltipIconHeader shift-tooltip">مدیریت شیفت‌ها</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('hozoorbox', this)">
                     <img src="/static/images/user-check.png" alt="مدیریت حضور" class="sidebar-icon" data-default-src="/static/images/user-check.png" data-active-src="/static/images/user-check-purple.png">
                     <span class="icon-label">مدیریت ساعت زن</span>
-                    <span class="tooltipIconHeader ticket-tooltip">مدیریت ساعت زن</span>
                 </div>
 
                 <div class="icon-container" onclick="openTicketModal()">
                     <img src="/static/images/chat.png" alt="ثبت تیکت" class="hourlyPass-icon">
                     <span class="icon-label">ثبت تیکت</span>
-                    <span class="tooltipIconHeader hourlyPass-tooltip">ثبت تیکت</span>
                 </div>
 
                 <div class="icon-container" onclick="toggleBox('vacationBox', this)">
                     <img src="/static/images/answer-icon.png" alt="گزارشات" class="sidebar-icon" data-default-src="/static/images/answer-icon.png" data-active-src="/static/images/answer-icon-purple.png">
                     <span class="icon-label">گزارشات</span>
-                    <span class="tooltipIconHeader overtime-tooltip">گزارشات</span>
                 </div>
 
                 <div class="icon-container" onclick="logout()">
                     <img src="/static/images/exit.png" alt="خروج" class="ticket-icon">
                     <span class="icon-label">خروج</span>
-                    <span class="tooltipIconHeader khorooj-tooltip">خروج</span>
                 </div>
-            </div>
+            </aside>
         </div>
         <!-- باکس اطلاعات کاربران -->
         <div id="userInfoBox" class="management-box">

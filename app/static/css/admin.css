@@ -42,75 +42,146 @@ html, body {
     padding-top: 140px;
 }
 
-.admin-topbar {
+.admin-topbar-modern {
     position: absolute;
-    top: 20px;
+    top: 18px;
     left: 20px;
-    right: auto;
+    right: 20px;
+    z-index: 60;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+
+.admin-topbar-modern .topbar-actions {
     display: flex;
     align-items: center;
     gap: 12px;
-    z-index: 60;
-    background-color: #ffffff;
-    border: 1px solid #e4e7ec;
-    border-radius: 20px;
-    padding: 10px 16px;
-    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+    pointer-events: auto;
+    flex-direction: row-reverse;
 }
 
-.admin-profile-card {
+.topbar-user {
     position: relative;
-}
-
-.profile-button {
+    flex-direction: row-reverse;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border: 1px solid #e4e7ec;
-    border-radius: 16px;
-    background-color: #ffffff;
+    gap: 12px;
     cursor: pointer;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    overflow: visible;
+    max-width: min(100%, 260px);
+    min-width: 0;
+    border: 1px solid #e4e7ec;
 }
 
-.profile-button:hover {
-    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
-    transform: translateY(-1px);
+.topbar-avatar-wrap {
+    position: relative;
+    width: 48px;
+    height: 48px;
 }
 
-.profile-avatar {
-    width: 42px;
-    height: 42px;
+.topbar-avatar {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     background-color: #f1f5f9;
 }
 
-.profile-info {
+.topbar-user-info {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
+    line-height: 1.5;
 }
 
-.profile-name {
-    font-family: 'Vazir', sans-serif;
-    font-size: 0.95rem;
+.topbar-user-name {
     font-weight: 700;
+    font-size: 15px;
     color: #0f172a;
+    font-family: 'Vazir', sans-serif;
 }
 
-.profile-role {
-    font-family: 'Vazir', sans-serif;
-    font-size: 0.78rem;
+.topbar-user-role {
+    font-size: 12px;
     color: #64748b;
+    font-family: 'Vazir', sans-serif;
+}
+
+.chevron-icon {
+    width: 16px;
+    height: 16px;
+    color: #64748b;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-clock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    width: 9rem;
+    border: 1px solid #e4e7ec;
+}
+
+.topbar-clock-date {
+    color: #64748b;
+    font-size: 12px;
+    font-family: 'Vazir', sans-serif;
+}
+
+.topbar-clock-time {
+    color: #0ea5e9;
+    font-family: 'Vazir', sans-serif;
+}
+
+.topbar-icon-btn {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #0f172a;
+    transition: transform 0.15s ease;
+    border: 1px solid #e4e7ec;
+}
+
+.topbar-icon-btn:hover {
+    transform: translateY(-2px);
+}
+
+.topbar-icon-btn svg {
+    width: 19px;
+    height: 19px;
 }
 
 .profile-dropdown {
     position: absolute;
     top: calc(100% + 10px);
-    right: 0;
+    left: 0;
     width: 177px;
     background-color: #ffffff;
     border: 1px solid #e4e7ec;
@@ -161,29 +232,10 @@ html, body {
     height: 18px;
 }
 
-.admin-action-icons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.icon-button {
-    width: 46px;
-    height: 46px;
-    border-radius: 16px;
-    border: 1px solid #e4e7ec;
-    background-color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
 .notifications-panel {
     position: absolute;
     top: calc(100% + 8px);
-    left: 0;
+    left: 20px;
     width: 100%;
     max-width: 340px;
     background-color: #ffffff;
@@ -227,16 +279,6 @@ html, body {
     color: #475569;
 }
 
-.icon-button:hover {
-    transform: translateY(-1px);
-    background-color: #f8fafc;
-}
-
-.icon-button svg {
-    width: 22px;
-    height: 22px;
-}
-
 .dark-theme body {
     background-color: #0f172a;
     color: #f8fafc;
@@ -256,6 +298,18 @@ html, body {
     color: #f8fafc;
 }
 
+.icon-container svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.icon-container.active svg {
+    height: 24px;
+    width: 24px;
+}
+
 .dark-theme .dropdown-item:hover {
     background-color: #111827;
 }
@@ -263,58 +317,119 @@ html, body {
 .dark-theme .profile-avatar {
     background-color: #374151;
 }
-/* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
-/* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
+/* تنظیمات ساید بار سمت راست — هماهنگ‌شده با ظاهر و رفتار سایدبار پنل کاربری */
+/* باز شدن با هاور روی سایدبار (دسکتاپ) یا با کلیک روی دکمه‌ی منو (موبایل/کلاس open) */
 
-.rightSidebar {
-    width: 70px;
-    min-height: 100vh;
-    height: auto;
-    background-color: #ffffff;
+.sidebar-top-card {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    transform: none;
-    border-radius: 0;
-    border: 1px solid #e4e7ec;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    padding: 0px 8px 12px 8px;
-    overflow-y: auto;
-    z-index: 50;
-    transition: width 0.25s ease;
-    overflow: hidden;
-    align-items: stretch;
+    top: 14px;
+    right: 76px;
+    width: clamp(220px, 24vw, 360px);
+    padding: 16px 18px;
+    background: #fff;
+    border-radius: 22px;
+    border: 1px solid #ddd;
+    box-shadow: 0 16px 32px rgba(13, 59, 78, 0.08);
+    z-index: 490;
 }
 
+.sidebar-top-card-content {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-top-card-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    padding: 4px;
+}
+
+.sidebar-top-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.sidebar-top-card-text {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    min-width: 0;
+}
+
+.sidebar-top-card-title {
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #0f172a;
+    font-family: 'Vazir', sans-serif;
+}
+
+.sidebar-top-card-sub {
+    font-size: 0.8rem;
+    color: #4D6B7A;
+    margin-top: 3px;
+    font-family: 'Vazir', sans-serif;
+}
+
+.rightSidebar {
+    width: clamp(64px, 6vw, 78px);
+    height: fit-content;
+    background-color: #ffffff;
+    position: fixed;
+    top: 8rem;
+    right: 0;
+    bottom: 12px;
+    border-radius: 22px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid rgba(13, 59, 78, 0.12);
+    box-shadow: 0 8px 24px rgba(20, 40, 70, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 22px 14px;
+    overflow: hidden;
+    z-index: 500;
+    transition: width 0.3s ease;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.rightSidebar:hover,
 .rightSidebar.open {
-    border: 1px solid #e4e7ec;
-    width: 257px;
-    max-width: 257px;
-    min-width: 180px;
+    width: clamp(180px, 18vw, 230px);
+    overflow-y: auto;
 }
 
 .menu-toggle {
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 10px 12px;
+    padding: 0 0 18px 0;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    min-height: 56px;
+    gap: 10px;
+    min-height: 44px;
+    border-bottom: 1px solid #eef1f6;
+    margin-bottom: 18px;
+    flex-shrink: 0;
 }
 
+.rightSidebar:hover .menu-toggle,
 .rightSidebar.open .menu-toggle {
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .menu-toggle .menu-icon {
@@ -322,7 +437,7 @@ html, body {
     height: 40px;
     flex-shrink: 0;
     background-color: #edf3ff;
-    border-radius: 5px;
+    border-radius: 12px;
     padding: 5px;
     transition: transform 0.2s ease-in-out;
 }
@@ -332,37 +447,41 @@ html, body {
 }
 
 .menu-expanded {
-    display: none;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 2px;
     overflow: hidden;
-    margin: 0 auto;
+    opacity: 0;
+    visibility: hidden;
+    max-width: 0;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, visibility 0.2s ease, max-width 0.3s ease;
 }
 
+.rightSidebar:hover .menu-expanded,
 .rightSidebar.open .menu-expanded {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    max-width: 170px;
 }
 
 .menu-logo {
-    width: 65px;
-    height: 65px;
+    width: 34px;
+    height: 34px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .menu-label {
     display: inline-block;
-    color: #000;
+    color: #0f172a;
     font-family: 'Vazir', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.78rem;
     font-weight: 400;
-    margin-top: 6px;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
     direction: rtl;
-    text-align: center;
-    max-width: 170px;
+    text-align: right;
+    line-height: 1.4;
 }
 
 .icon-container {
@@ -370,80 +489,100 @@ html, body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
+    gap: 0;
     width: 100%;
-    gap: 12px;
-    padding: 10px 12px;
-    min-height: 56px;
+    min-height: 44px;
+    padding: 12px 11px;
+    margin-bottom: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    border-radius: 14px;
+    color: #4D6B7A;
+    transition: background-color .15s ease, color .15s ease, gap .25s ease, padding .25s ease;
+    direction: ltr;
+    flex-shrink: 0;
+}
+
+.rightSidebar:hover .icon-container,
+.rightSidebar.open .icon-container {
+    gap: 10px;
+    padding: 12px 14px;
+}
+
+.icon-container:hover {
+    background-color: #f6f8fb;
 }
 
 .icon-container.active {
-    background-color: #edf3ff;
-    border-radius: 12px;
+    background: linear-gradient(90deg, #22c55e, #14b8a6, #0ea5e9);
+    color: #fff;
+    box-shadow: 0 10px 18px rgba(34, 197, 94, .22);
 }
 
-.icon-container img {
-    width: 40px;
-    height: 40px;
-    background-color: #edf3ff;
-    border-radius: 5px;
-    padding: 5px;
+.icon-container.active .icon-label {
+    color: #fff;
+}
+
+.icon-container.active img {
+    filter: brightness(0) invert(1);
+}
+
+.icon-container img,
+.icon-container .hourlyPass-icon,
+.icon-container .ticket-icon {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
     flex-shrink: 0;
 }
 
-.icon-container img:hover {transform: scale(1.1);}
+.icon-container:hover img {
+    transform: scale(1.08);
+}
 
 .icon-label {
-    display: none;
-    color: #000;
+    display: inline-flex;
+    align-items: center;
+    color: #0D3B4E;
     font-family: 'Vazir', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    font-weight: 600;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     direction: rtl;
     text-align: right;
-    width: calc(100% - 60px);
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease, width 0.25s ease, max-width 0.25s ease;
 }
 
+.rightSidebar:hover .icon-label,
 .rightSidebar.open .icon-label {
-    display: inline-block;
-    margin-left: 0;
-    margin-right: 0;
-}
-
-/* استایل کلی برای متن */
-.tooltipIconHeader {
-    display: none !important;
-}
-
-/* هنگام هاور، متن از راست ظاهر شود */
-.icon-container:hover .tooltipIconHeader {
-    visibility: visible;
     opacity: 1;
-    transform: translateY(-50%) translateX(0px);
+    visibility: visible;
+    width: auto;
+    max-width: 150px;
 }
 
-/* موقعیت متن‌ها */
-.leave-tooltip {
-    right: 3rem;
-    top: 1.3rem;
+/* آیتم خروج همیشه در پایین سایدبار می‌ماند، مثل پنل کاربری */
+.icon-container:last-child {
+    margin-top: auto;
+    margin-bottom: 0;
 }
-.overtime-tooltip {
-    right: 3rem;
-    top: 1.3rem;
+
+.icon-container:last-child:hover {
+    background-color: rgba(239, 68, 68, 0.08);
+    color: #ef4444;
 }
-.hourlyPass-tooltip {
-    right: 3rem;
-    top: 1.3rem;
-}
-.ticket-tooltip {
-    right: 3rem;
-    top: 1.3rem;
+
+.icon-container:last-child:hover .icon-label {
+    color: #ef4444;
 }
 
 /* leftSidebar styles removed — using unified rightSidebar */
@@ -3311,10 +3450,6 @@ margin-left: 15%;
     background-color: #d9534f;
 }
 
-.logo-top {
-    display: none;
-}
-
 .holiday-row {
     background-color: #f8d7da !important;
     color: #721c24 !important;
@@ -3412,924 +3547,7 @@ margin-left: 15%;
     }
 }
 
-@media (max-width: 768px) {
 
-    .koleObject {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-}
-
-        #khorooj {
-        width: 95px;
-        margin-right: 3.7rem;
-    }
-
-            #vorood {
-        width: 95px;
-        margin-right: 4rem;
-    }
-
-    #start_date_hozoor {
-        margin-right: 3.9%;
-    }
-
-    #end_date_hozoor {
-        margin-right: 3.9%;
-    }
-
-    html, body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: max-content;
-        width: 100%;
-    }
-
-    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
-    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
-    /* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو *//* تنظیمات باکس لوگو */
-
-    .logo-top {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        position: relative;
-        width: fit-content;
-        top: 20px;
-        margin: 0 auto;
-        background-color: #fbfff9;
-        border-radius: 20px;
-        box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
-        padding: 5px 11px 0px 10px;
-    }
-
-    .left-text {
-        display: flex;
-        flex-direction: column; /* متن‌ها زیر هم قرار بگیرند */
-        text-align: right;
-        font-weight: bold;
-        font-size: 1rem;
-        margin-top: -8px;
-    }
-
-    .small-text {font-size: 0.6rem;}
-
-    .right-logo {
-        width: 5rem;
-        height: 5rem;
-    }
-
-    .right-logo img {
-        width: 4.5rem;
-        height: 4.5rem;
-        margin-left: 10px;
-    }
-
-    .navarha {
-        width: 100%;
-        height: 100%;
-        margin: 0 auto;
-        display: flex;
-        gap: 82%;
-        justify-content: center;
-        align-items: center;
-        padding: 120px 3px 0 3px;
-    }
-
-    /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
-    /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
-    /* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ *//* تنظمیات ساید بار سمت چپ */
-
-    .leftSidebar {
-        width: 8%;
-        height: 76vh;
-        left: 0;
-        top: 0;
-        transform: translateY(7%);
-        padding-top: 0.3rem;
-        position: relative;
-    }
-
-    .icon-container-leftSidebar img {
-        width: 27px;
-        height: 27px;
-    }
-
-    .leave-tooltip-leftSidebar {
-        left: 1.86rem;
-        top: 0.9rem;
-    }
-
-    .overtime-tooltip-leftSidebar {
-        left: 1.86rem;
-        top: 0.9rem;
-    }
-
-    .hourlyPass-tooltip-leftSidebar {
-        left: 1.86rem;
-        top: 0.9rem;
-    }
-
-    .saatzan-tooltip-leftSidebar {
-        left: 1.86rem;
-        top: 0.9rem;
-    }
-
-    /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
-    /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
-    /* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست *//* تنظیمات ساید بار سمت راست */
-
-    .rightSidebar {
-        width: 8%;
-        height: 76vh;
-        left: 0;
-        right: 0;
-        float: right;
-        top: 0;
-        transform: translateY(7%);
-        padding-top: 0.3rem;
-        position: relative;
-    }
-
-    .icon-container img {
-        width: 27px;
-        height: 27px;
-    }
-
-    .icon-container:hover .tooltipIconHeader {visibility: hidden;}
-
-    .icon-container-leftSidebar:hover .tooltipIconHeader-leftSidebar {visibility: hidden;}
-    /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
-    /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
-    /* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران *//* تنظیمات باکس جدول اطلاعات کاربران */
-
-    #userInfoBox {
-        margin-top: 0;
-        width: 76%;
-        padding: 3px 14px 14px 14px;
-        position: absolute;
-        top: 22rem;
-    }
-
-    #userInfoBox h2 {
-        font-size: 15px;
-        margin-bottom: 8px;
-    }
-
-    #userTable th, #userTable td{font-size: 7px;}
-
-    /* عرض ستون‌ها */
-    #userTable th:nth-child(1),
-    #userTable td:nth-child(1) {
-        width: 5%; /* تغییرات */
-    }
-
-    #userTable th:nth-child(2),
-    #userTable td:nth-child(2) {
-        width: 4%; /* جانشین */
-    }
-
-    #userTable th:nth-child(3),
-    #userTable td:nth-child(3) {
-        width: 6%; /* ساعت‌های کاری */
-    }
-
-    #userTable th:nth-child(4),
-    #userTable td:nth-child(4) {
-        width: 5%; /* بخش فعالیت */
-    }
-
-    #userTable th:nth-child(5),
-    #userTable td:nth-child(5) {
-        width: 4%; /* نام کاربر */
-    }
-
-    #userTable th:nth-child(6),
-    #userTable td:nth-child(6) {
-        width: 4%; /* ردیف */
-    }
-
-    .edit-btn, .trash-icon {margin: -3px;}
-
-    .edit-btn img, .trash-icon img {
-        width: 12px;
-        height: 12px;
-    }
-
-    /* تنظیمات باکس تعریف کاربر جدید *//* تنظیمات باکس تعریف کاربر جدید *//* تنظیمات باکس تعریف کاربر جدید */
-
-    #newUserBox {
-        width: 18.2rem;
-        margin-top: 2.8rem;
-        height: 21.5rem;
-    }
-
-    #newUserBox h2 {
-        font-size: 15px;
-        margin-bottom: 8px;
-        margin-top: 3px;
-    }
-
-    .form-krbrjadid {
-        display: flex;
-        flex-direction: column;
-        gap: 3px; /* فاصله بین فیلدها */
-        max-width: 400px; /* عرض حداکثر فرم */
-        margin: 0 auto; /* فرم وسط صفحه قرار گیرد */
-        direction: rtl;
-        text-align: right;
-    }
-
-    .form-row-krbrjadid {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-row-krbrjadid label {
-        font-weight: bold;
-        width: max-content;
-        font-size: 13px;
-    }
-
-    .form-row-krbrjadid input,
-    .form-row-krbrjadid select {
-        padding: 8px;
-        font-size: 11px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        direction: rtl; /* چون فارسی است */
-        width: 14rem;
-    }
-
-    .save-btn-krbrjad {
-        font-size: 8px;
-        margin-right: auto;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
-        bottom: 0;
-        width: 100%;
-    }
-
-    .form-container {right: 4px;}
-
-    .popupSaatHaftehgi {width: 22rem;}
-
-    #zakhireHaftegiKarbar {margin-left: 0.25rem;}
-
-    /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
-    /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
-    /* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران *//* تنظیمات باکس درخواست های مرخصی های کاربران */
-
-    #vacationRequestBox {
-        position: absolute;
-        top: 4.3rem;
-        padding: 6px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #vacationRequestBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    /* تنظیمات جدول درخواست های مرخصی های کاربران *//* تنظیمات جدول درخواست های مرخصی های کاربران *//* تنظیمات جدول درخواست های مرخصی های کاربران */
-
-    .request-table {table-layout: fixed;}
-
-    .request-table th {
-        padding: 5px;
-        font-size: 7px;
-    }
-
-    .sabt-morkhc-drkhst {width: 4.216%;}
-    .vaziat-morkhc-drkhst {width: 3.765%;}
-    .jnshn-morkhc-drkhst {width: 3.675%;}
-    .rooz-morkhc-drkhst {width: 5.07%;}
-    .tatrkh-morkhc-drkhst {width: 3.5%;}
-    .aztrkh-morkhc-drkhst {width: 6%;}
-    .krbr-morkhc-drkhst {width: 5%;}
-
-    /* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران */
-    /* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران */
-    /* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران *//* تنظیمات باکس گزارش کلی مرخصی های کاربران */
-
-    #vacationBox {
-        position: absolute;
-        top: 14rem;
-        padding: 4px 10px 16px 10px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #vacationBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    /* تنظیمات جدول گزارش کلی مرخصی های کاربران */
-
-    .vacation-table {
-        table-layout: fixed;
-        width: 100%;
-    }
-    .vacation-table th {
-        font-size: 8px;
-        padding: 4px;
-    }
-
-    .vacation-table td {
-        font-size: 11px;
-    }
-
-    .bghmnd-morkhc-gzrsh {width: 5%;}
-
-    .stfdeh-morkhc-gzrsh {width: 6%;}
-
-    .krbr-morkhc-gzrsh {width: 2.36%;}
-
-    /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
-    /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
-    /* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران *//* تنظیمات باکس گزارش انفرادی مرخصی کاربران */
-
-    #individualReportBox {
-    position: absolute;
-    top: 28rem;
-    padding: 4px 10px 10px 10px;
-    width: 74%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-
-    #individualReportBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 5px 0px;
-    }
-
-    .entekhab-form {
-        gap: 11px;
-        column-gap: 51px;
-    }
-
-    .entekhab-form label {
-        margin-left: 0;
-    }
-
-    #userSelect {
-        width: 47%;
-        font-size: 10px;
-        padding: 5px;
-    }
-
-    input[type="text"] {
-        padding: 5px;
-        font-size: 10px;
-    }
-
-    #generategozareshmrkReportBtn {
-        font-size: 10px;
-        padding: 5px 9px 5px 9px;
-        margin-right: 2.5%;
-    }
-
-    /* تنظیمات جدول گزارش انفرادی مرخصی کاربران *//* تنظیمات جدول گزارش انفرادی مرخصی کاربران *//* تنظیمات جدول گزارش انفرادی مرخصی کاربران */
-
-    .individual-report-table {
-        margin-top: 11px;
-        table-layout: fixed;
-    }
-
-    .individual-report-table th, .individual-report-table td {
-        font-size: 6px;
-    }
-
-    .overTimeindivisualReport-table {
-        table-layout: fixed;
-        margin-top: 11px;
-    }
-
-    .sbt-morkhc-nfrdi {width: 4%;}
-    .drkhst-morkhc-nfrdi{width: 3.2%;}
-    .jnshn-morkhc-nfrdi{width: 2.6%;}
-    .rooz-morkhc-nfrdi{width: 2%;}
-    .tatrkh-morkhc-nfrdi{width: 2.432%;}
-    .aztarkh-morkhc-nfrdi{width: 2.52%;}
-    .krbr-morkhc-nfrdi{width: 2.86%;}
-    .rdf-morkhc-nfrdi{width: 2.2%;}
-    
-    .status-navbar {
-        padding: 2px 3px;
-        width: 31px;
-    }
-
-    .status-navbar.approved {
-        font-size: 6px;
-    }
-
-    .update-button {
-        padding: 2px 11px;
-        font-size: 5px;
-    }
-
-    #downloadReportBtn{
-        font-size: 11px;
-        width: 89px;
-        padding: 4px 10px;
-    }
-
-    /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
-    /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
-    /* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران *//* تنظیمات باکس گزارش درخواست های اضافه کاری کاربران */
-    
-    #overtimeBox {
-        position: absolute;
-        top: 4.3rem;
-        padding: 6px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #overtimeBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    /* تنظیمات جدول درخواست های اضافه کاری کاربران *//* تنظیمات جدول درخواست های اضافه کاری کاربران *//* تنظیمات جدول درخواست های اضافه کاری کاربران */
-
-    .overTime-table {
-        table-layout: fixed;
-    }
-
-    .overTime-table th {
-        font-size: 7px;
-        padding: 2px;
-    }
-
-    .sbt-ezafe-drkhst {width: 2.7%;}
-    .vaziat-ezafe-drkhst {width: 3%;}
-    .tzht-ezafe-drkhst {width: 3%;}
-    .mdt-ezafe-drkhst {width: 4%;}
-    .trkh-ezafe-drkhst {width: 3.44%;}
-    .krbr-ezafe-drkhst {width: 2.299%;}
-
-    /* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران */
-    /* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران */
-    /* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران *//* تنظیمات گزارش کلی اضافه کاری کاربران */
-
-    #OverTimeReportBox {
-        position: absolute;
-        top: 14rem;
-        padding: 4px 10px 16px 10px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #OverTimeReportBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    /* تنظیمات جدول گزارش کلی کاربران *//* تنظیمات جدول گزارش کلی کاربران *//* تنظیمات جدول گزارش کلی کاربران *//* تنظیمات جدول گزارش کلی کاربران */
-
-    .overTime-allreport-table th {
-        font-size: 8px;
-    }
-
-    .overTime-allreport-table td {
-        font-size: 12px;
-    }
-
-    .overtimeRadif {
-        width: 2%;
-    }
-
-    .overtimekarbar {
-        width: 4%;
-    }
-
-    .overtimeezafetime {
-        width: 10%;
-    }
-
-    /* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران *//* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران */
-    /* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران *//* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران */
-    /* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران *//* تنظیمات جدول گزارش انفرادی اضافه کاری کاربران */
-
-    #OverTimeIndivisualReportBox {
-        position: absolute;
-        top: 28rem;
-        padding: 4px 10px 10px 10px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #OverTimeIndivisualReportBox h2 {
-        font-size: 15px;
-    }
-
-    #individualOvertimeReportForm {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
-        gap: 11px;
-        column-gap: 34px;
-    }
-
-    .enferadiEzafeUsers label {
-        font-size: 16px;
-        color: #333;
-        font-weight: bold;
-        margin-left: 0px;
-        margin-right: 10px;
-    }
-
-    #submitReport {
-        font-size: 10px;
-        padding: 5px 9px 5px 9px;
-        margin-right: 2.5%;
-    }
-
-    #usernameEzafeReport {
-        width: 47%;
-        font-size: 10px;
-        padding: 5px;
-        border-radius: 10px;
-        border: 1px solid #919191;
-    }
-
-    .overTimeindivisualReport-table th {
-        font-size: 6px;
-        padding: 5px;
-    }
-
-    .sbt-ezafe-gzrsh {width: 2%;}
-    .vaziat-ezafe-gzrsh {width: 2%;}
-    .tzht-ezafe-gzrsh {width: 2%;}
-    .mdt-ezafe-gzrsh {width: 2%;}
-    .trkh-ezafe-gzrsh {width: 2%;}
-    .krbr-ezafe-gzrsh {width: 2%;}
-    .rdf-ezafe-gzrsh {width: 1.3%;}
-
-    #downloadOvertimeReport {
-        font-size: 11px;
-        width: 89px;
-        padding: 4px 10px;
-    }
-
-    /* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران */
-    /* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران */
-    /* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران *//* تنظیمات باکس درخواست های پاس ساعتی کاربران */
-
-    #hourlyPassBox {
-        position: absolute;
-        top: 4.3rem;
-        padding: 6px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #hourlyPassBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    /* تنظیمات جدول مدیریت درخواست های پاس ساعتی کاربران *//* تنظیمات جدول مدیریت درخواست های پاس ساعتی کاربران *//* تنظیمات جدول مدیریت درخواست های پاس ساعتی کاربران */
-
-    .hourlyPassReport-table {
-        table-layout: fixed;
-    }
-
-    .hourlyPassReport-table th {
-        font-size: 7px;
-        padding: 2px;
-    }
-
-    /* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران */
-    /* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران */
-    /* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش کلی پاس های ساعتی کاربران */
-
-    #hourlyPassTotaluser {
-        position: absolute;
-        top: 14rem;
-        padding: 4px 10px 16px 10px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #hourlyPassTotaluser h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    /* تنظیمات جدول گزارش کلی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش کلی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش کلی پاس های ساعتی کاربران */
-
-    .hourlyPassTotaluserReport-table th {
-        font-size: 10px;
-    }
-
-    .hourlyPassTotaluserReport-table td {
-        font-size: 12px;
-    }
-
-    .hourlyPassRadif {
-        width: 2%;
-    }
-
-    .hourlyPasskarbar {
-        width: 4%;
-    }
-
-    .hourlyPassezafetime {
-        width: 10%;
-    }
-
-    /* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران */
-    /* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران */
-    /* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات باکس گزارش انفرادی پاس های ساعتی کاربران */
-
-    #hourlyPassIndivisualuser {
-        position: absolute;
-        top: 28rem;
-        padding: 4px 10px 10px 10px;
-        width: 74%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #hourlyPassIndivisualuser h2 {
-        font-size: 15px;
-    }
-
-    /* تنظیمات جدول گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش انفرادی پاس های ساعتی کاربران *//* تنظیمات جدول گزارش انفرادی پاس های ساعتی کاربران */
-
-    #individualHourlyPassReportForm {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
-        gap: 11px;
-        column-gap: 34px;
-    }
-
-    .hourlypassform label {
-        font-size: 16px;
-        color: #333;
-        font-weight: bold;
-        margin-left: 0px;
-        margin-right: 10px;
-    }
-
-    #usernameHourlypass {
-        width: 47%;
-        font-size: 10px;
-        padding: 5px;
-        border-radius: 10px;
-        border: 1px solid #919191;
-    }
-
-    #submitHourlyPassReport {
-        font-size: 10px;
-        padding: 5px 9px 5px 9px;
-        margin-right: 2.5%;
-    }
-
-    .hourlyPassIndivisualuserReport-table {
-        table-layout: fixed;
-        margin-top: 11px;
-    }
-
-    .hourlyPassIndivisualuserReport-table th {
-        font-size: 7px;
-        padding: 5px;
-    }
-
-    #downloadHourlyPassReport {
-        font-size: 11px;
-        width: 89px;
-        padding: 4px 10px;
-    }
-
-    /* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران */
-    /* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران */
-    /* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران *//* تنظیمات باکس مدیریت تیکت های کاربران */
-
-    #ticketBox {
-        top: 2rem;
-        position: absolute;
-        padding: 4px 10px 16px 10px;
-        width: 74%;
-    }
-
-    #ticketBox h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    .ticketUsersReport-table {
-        table-layout: fixed;
-    }
-
-    .ticketUsersReport-table th {
-        padding: 5px;
-        font-size: 7px;
-    }
-
-    .karbr-ticketboxtable {width: 1.9%;}
-    .tarikhsbt-ticketboxtable {width: 2.03%;}
-    .onvan-ticketboxtable {width: 3%;}
-    .tozihat-ticketboxtable {width: 2%;}
-    .vazeiyat-ticketboxtable {width: 2.5%;}
-    .taghir-ticketboxtable {width: 3%;}
-
-    /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
-    /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
-    /* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران *//* تنظیمات باکس حضور و غیاب کاربران */
-
-    #hozoorbox {
-        width: 80%;
-        padding: 20px;
-        background-color: #fbfff9;
-        margin-top: 3.7rem;
-        display: none;
-        position: relative;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    #hozoorbox h2 {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-
-    #gozareshHozoor {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
-        gap: 11px;
-        column-gap: 45px;
-    }
-
-    .formgozareshhozoor label {
-        font-size: 16px;
-        color: #333;
-        font-weight: bold;
-        margin-left: 0px;
-        margin-right: 10px;
-    }
-
-    #usernameGozareshHozoor {
-        width: 47%;
-        font-size: 10px;
-        padding: 5px;
-        border-radius: 10px;
-        border: 1px solid #919191;
-        margin-right: 0;
-    }
-
-    #hozoorUsersReportTable {
-        margin-top: 9px;
-    }
-
-    .hozoorUsersReport-table th{
-        padding: 5px;
-        font-size: 7px;
-    }
-
-    .hozoorUsersReport-table td {
-        font-size: 6px;
-    }
-
-    .mjmoo-hozoor-gzrsh {width: 2%;}
-    .ezafe-hozoor-gzrsh {width: 2%;}
-    .khorojzd-hozoor-gzrsh {width: 2%;}
-    .shorozd-hozoor-gzrsh {width: 2%;}
-    .takhir-hozoor-gzrsh {width: 2%;}
-    .zmnkhrj-hozoor-gzrsh {width: 2%;}
-    .zmnvrd-hozoor-gzrsh {width: 2%;}
-    .zmnvrd2-hozoor-gzrsh {width: 2%;}
-    .zmnkhrj2-hozoor-gzrsh {width: 2%;}
-    .hfte-hozoor-gzrsh {width: 2.46%;}
-    .sbt-hozoor-gzrsh {width: 2.62%;}
-
-    #extractButton {
-        font-size: 10px;
-        padding: 5px 9px 5px 9px;
-        margin-right: 2.5%;
-    }
-
-    #natigehHozoor {
-        position: absolute;
-        top: 41rem;
-        padding: 4px 10px 16px 10px;
-        width: 74%;
-        height: 22rem;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-left: auto; /* این خط رو می‌تونی حذف کنی چون تاثیر نداره */
-    }
-
-
-    #natigehHozoor h2 {
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    #natigehHozoor .boxha {
-        gap: 15px;
-    }
-
-    #natigehHozoor .boxha div {
-        width: 78%;
-        font-size: 13px;
-        height: 39px;
-    }
-
-    .gozareshNahaei {
-        left: auto;
-        right: 17px;
-        font-size: 11px;
-        padding: 4px 11px;
-        bottom: auto;
-        margin-top: 13px;
-    }
-
-    /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
-    /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
-    /* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی *//* تنظیمات باکس ثبت حضور و غیاب دستی */
-
-    #sabtdst {
-    position: absolute;
-    top: 21rem;
-    padding: 4px 10px 10px 10px;
-    width: 74%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-left: 0; /* این خط رو هم اگر لازم نیست می‌تونی حذف کنی */
-}
-
-
-    #sabtdst h2{
-        font-size: 16px;
-        margin: 0px 0px 4px 0px;
-    }
-
-    #sabtdastHozoor {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-direction: row-reverse;
-        flex-wrap: wrap;
-        gap: 0;
-        column-gap: 0px;
-    }
-
-    .formsabtdast label{
-        font-size: 16px;
-        color: #333;
-        font-weight: bold;
-        margin-left: 0px;
-        margin-right: 0px;
-    }
-
-    #usernamedast {
-        width: 47%;
-        font-size: 10px;
-        padding: 5px;
-        border-radius: 10px;
-        border: 1px solid #919191;
-        margin-right: 18%;
-    }
-
-    #tarikh {
-        width: 100px;
-        padding: 5px;
-        font-size: 10px;
-        margin-right: 41%;
-    }
-
-    #sabt-btn {
-        margin-right: 0;
-        margin-top: 3%;
-        font-size: 11px;
-        padding: 4px 11px;
-    }
-
-    
-}
 /* ==================== مدیریت شیفت‌های ماهانه پرسنل ==================== */
 
 #shiftBox #shiftsTable {
@@ -4504,175 +3722,6 @@ margin-left: 15%;
     background: #ddd;
 }
 
-@media (max-width: 640px) {
-    .shift-popup-content {
-        gap: 18px;
-        padding: 24px 16px;
-    }
-
-    .shift-details-form {
-        grid-template-columns: 1fr;
-    }
-
-    .shift-schedule-grid {
-        grid-template-columns: 82px minmax(0, 1fr);
-        gap: 10px;
-        padding: 14px;
-    }
-}
-
-/* ناوبری واکنش‌گرا: سایدبارهای عمودی با ابعاد متناسب در همهٔ نمایشگرها */
-@media (min-width: 769px) {
-    .leftSidebar,
-    .rightSidebar {
-        width: clamp(56px, 5vw, 84px);
-        height: min(87vh, 760px);
-        gap: 0;
-        justify-content: space-evenly;
-    }
-
-    .icon-container img,
-    .icon-container-leftSidebar img {
-        width: clamp(32px, 3vw, 40px);
-        height: clamp(32px, 3vw, 40px);
-    }
-}
-
-@media (max-width: 768px) {
-    html,
-    body {
-        display: block;
-        width: 100%;
-        min-height: 100%;
-        height: auto;
-    }
-
-    .koleObject {
-        display: block;
-        width: 100%;
-        min-height: 100vh;
-        height: auto;
-        padding: 12px;
-    }
-
-    .logo-top {
-        display: flex;
-        position: static;
-        width: min(100%, 620px);
-        min-height: 68px;
-        margin: 0 auto 16px;
-        padding: 8px 12px;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .left-text {
-        min-width: 0;
-        margin: 0;
-        font-size: clamp(12px, 2.5vw, 16px);
-        line-height: 1.7;
-    }
-
-    .right-logo,
-    .right-logo img {
-        width: 52px;
-        height: 52px;
-        margin: 0;
-        flex: 0 0 auto;
-    }
-
-    .navarha {
-        position: static;
-        display: block;
-        width: auto;
-        height: 0;
-        margin: 0;
-        padding: 0;
-        background: transparent;
-        box-shadow: none;
-    }
-
-    .leftSidebar,
-    .rightSidebar {
-        position: fixed;
-        top: 50%;
-        width: clamp(42px, 12vw, 58px);
-        height: min(70vh, 540px);
-        min-width: 0;
-        padding: 5px;
-        border-radius: 18px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-evenly;
-        gap: 0;
-        transform: translateY(-50%);
-    }
-
-    .leftSidebar {
-        right: auto;
-        left: 4px;
-    }
-
-    .rightSidebar {
-        right: 4px;
-        left: auto;
-        float: none;
-    }
-
-    .icon-container,
-    .icon-container-leftSidebar {
-        display: flex;
-        flex: 0 0 auto;
-        justify-content: center;
-        min-width: 0;
-    }
-
-    .icon-container img,
-    .icon-container-leftSidebar img {
-        width: clamp(21px, 6.5vw, 30px);
-        height: clamp(21px, 6.5vw, 30px);
-        padding: 3px;
-        border-radius: 7px;
-    }
-
-    .tooltipIconHeader,
-    .tooltipIconHeader-leftSidebar {
-        display: none;
-    }
-}
-
-@media (max-width: 380px) {
-    .koleObject {
-        padding-right: 6px;
-        padding-left: 6px;
-    }
-
-    .navarha {
-        padding: 0;
-    }
-
-    .leftSidebar,
-    .rightSidebar {
-        width: 42px;
-        height: min(68vh, 460px);
-        padding: 3px;
-        border-radius: 14px;
-    }
-
-    .icon-container img,
-    .icon-container-leftSidebar img {
-        width: 22px;
-        height: 22px;
-        padding: 2px;
-    }
-
-    .right-logo,
-    .right-logo img {
-        width: 42px;
-        height: 42px;
-    }
-}
-
 .management-box {
     position: static !important;
     top: auto !important;
@@ -4701,7 +3750,801 @@ margin-left: 15%;
     max-width: 100%;
 }
 
+
+
+#natigehHozoor {
+    position: relative !important;
+    padding-bottom: 72px !important;
+}
+
+#natigehHozoor .gozareshNahaei {
+    position: absolute;
+    right: auto;
+    bottom: 18px;
+    left: 20px;
+    margin: 0;
+}
+
+#cancelShiftEditBtn {
+    background-color: #b0b0b0;
+    margin-right: 10px;
+}
+
+#cancelShiftEditBtn:hover {
+    background-color: #8f8f8f;
+}
+
+table thead tr {
+    color: #ffffff !important;
+}
+
+table thead tr th {
+    color: #ffffff !important;
+}
+
+table thead tr,
+table thead tr th,
+table thead tr td {
+    color: #ffffff !important;
+}
+
 @media (max-width: 768px) {
+
+    .koleObject {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+    }
+
+    #khorooj {
+        width: 95px;
+        margin-right: 3.7rem;
+    }
+
+    #vorood {
+        width: 95px;
+        margin-right: 4rem;
+    }
+
+    #start_date_hozoor {
+        margin-right: 3.9%;
+    }
+
+    #end_date_hozoor {
+        margin-right: 3.9%;
+    }
+
+    html, body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: max-content;
+        width: 100%;
+    }
+
+    .navarha {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        gap: 82%;
+        justify-content: center;
+        align-items: center;
+        padding: 120px 3px 0 3px;
+    }
+
+    .leftSidebar {
+        width: 8%;
+        height: 76vh;
+        left: 0;
+        top: 0;
+        transform: translateY(7%);
+        padding-top: 0.3rem;
+        position: relative;
+    }
+
+    .icon-container-leftSidebar img {
+        width: 27px;
+        height: 27px;
+    }
+
+    .leave-tooltip-leftSidebar {
+        left: 1.86rem;
+        top: 0.9rem;
+    }
+
+    .overtime-tooltip-leftSidebar {
+        left: 1.86rem;
+        top: 0.9rem;
+    }
+
+    .hourlyPass-tooltip-leftSidebar {
+        left: 1.86rem;
+        top: 0.9rem;
+    }
+
+    .saatzan-tooltip-leftSidebar {
+        left: 1.86rem;
+        top: 0.9rem;
+    }
+
+    #userInfoBox {
+        margin-top: 0;
+        width: 76%;
+        padding: 3px 14px 14px 14px;
+        position: absolute;
+        top: 22rem;
+    }
+
+    #userInfoBox h2 {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    #userTable th, #userTable td { font-size: 7px; }
+
+    #userTable th:nth-child(1),
+    #userTable td:nth-child(1) {
+        width: 5%;
+    }
+
+    #userTable th:nth-child(2),
+    #userTable td:nth-child(2) {
+        width: 4%;
+    }
+
+    #userTable th:nth-child(3),
+    #userTable td:nth-child(3) {
+        width: 6%;
+    }
+
+    #userTable th:nth-child(4),
+    #userTable td:nth-child(4) {
+        width: 5%;
+    }
+
+    #userTable th:nth-child(5),
+    #userTable td:nth-child(5) {
+        width: 4%;
+    }
+
+    #userTable th:nth-child(6),
+    #userTable td:nth-child(6) {
+        width: 4%;
+    }
+
+    .edit-btn, .trash-icon { margin: -3px; }
+
+    .edit-btn img, .trash-icon img {
+        width: 12px;
+        height: 12px;
+    }
+
+    #newUserBox {
+        width: 18.2rem;
+        margin-top: 2.8rem;
+        height: 21.5rem;
+    }
+
+    #newUserBox h2 {
+        font-size: 15px;
+        margin-bottom: 8px;
+        margin-top: 3px;
+    }
+
+    .form-krbrjadid {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        max-width: 400px;
+        margin: 0 auto;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .form-row-krbrjadid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-row-krbrjadid label {
+        font-weight: bold;
+        width: max-content;
+        font-size: 13px;
+    }
+
+    .form-row-krbrjadid input,
+    .form-row-krbrjadid select {
+        padding: 8px;
+        font-size: 11px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        direction: rtl;
+        width: 14rem;
+    }
+
+    .save-btn-krbrjad {
+        font-size: 8px;
+        margin-right: auto;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .form-container { right: 4px; }
+
+    .popupSaatHaftehgi { width: 22rem; }
+
+    #zakhireHaftegiKarbar { margin-left: 0.25rem; }
+
+    #vacationRequestBox {
+        position: absolute;
+        top: 4.3rem;
+        padding: 6px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #vacationRequestBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .request-table { table-layout: fixed; }
+
+    .request-table th {
+        padding: 5px;
+        font-size: 7px;
+    }
+
+    .sabt-morkhc-drkhst { width: 4.216%; }
+    .vaziat-morkhc-drkhst { width: 3.765%; }
+    .jnshn-morkhc-drkhst { width: 3.675%; }
+    .rooz-morkhc-drkhst { width: 5.07%; }
+    .tatrkh-morkhc-drkhst { width: 3.5%; }
+    .aztrkh-morkhc-drkhst { width: 6%; }
+    .krbr-morkhc-drkhst { width: 5%; }
+
+    #vacationBox {
+        position: absolute;
+        top: 14rem;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #vacationBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .vacation-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .vacation-table th {
+        font-size: 8px;
+        padding: 4px;
+    }
+
+    .vacation-table td {
+        font-size: 11px;
+    }
+
+    .bghmnd-morkhc-gzrsh { width: 5%; }
+    .stfdeh-morkhc-gzrsh { width: 6%; }
+    .krbr-morkhc-gzrsh { width: 2.36%; }
+
+    #individualReportBox {
+        position: absolute;
+        top: 28rem;
+        padding: 4px 10px 10px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #individualReportBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 5px 0px;
+    }
+
+    .entekhab-form {
+        gap: 11px;
+        column-gap: 51px;
+    }
+
+    .entekhab-form label {
+        margin-left: 0;
+    }
+
+    #userSelect {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    #generategozareshmrkReportBtn {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
+    .individual-report-table {
+        margin-top: 11px;
+        table-layout: fixed;
+    }
+
+    .individual-report-table th, .individual-report-table td {
+        font-size: 6px;
+    }
+
+    .overTimeindivisualReport-table {
+        table-layout: fixed;
+        margin-top: 11px;
+    }
+
+    .sbt-morkhc-nfrdi { width: 4%; }
+    .drkhst-morkhc-nfrdi { width: 3.2%; }
+    .jnshn-morkhc-nfrdi { width: 2.6%; }
+    .rooz-morkhc-nfrdi { width: 2%; }
+    .tatrkh-morkhc-nfrdi { width: 2.432%; }
+    .aztarkh-morkhc-nfrdi { width: 2.52%; }
+    .krbr-morkhc-nfrdi { width: 2.86%; }
+    .rdf-morkhc-nfrdi { width: 2.2%; }
+
+    .status-navbar {
+        padding: 2px 3px;
+        width: 31px;
+    }
+
+    .status-navbar.approved {
+        font-size: 6px;
+    }
+
+    .update-button {
+        padding: 2px 11px;
+        font-size: 5px;
+    }
+
+    #downloadReportBtn {
+        font-size: 11px;
+        width: 89px;
+        padding: 4px 10px;
+    }
+
+    #overtimeBox {
+        position: absolute;
+        top: 4.3rem;
+        padding: 6px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #overtimeBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .overTime-table {
+        table-layout: fixed;
+    }
+
+    .overTime-table th {
+        font-size: 7px;
+        padding: 2px;
+    }
+
+    .sbt-ezafe-drkhst { width: 2.7%; }
+    .vaziat-ezafe-drkhst { width: 3%; }
+    .tzht-ezafe-drkhst { width: 3%; }
+    .mdt-ezafe-drkhst { width: 4%; }
+    .trkh-ezafe-drkhst { width: 3.44%; }
+    .krbr-ezafe-drkhst { width: 2.299%; }
+
+    #OverTimeReportBox {
+        position: absolute;
+        top: 14rem;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #OverTimeReportBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .overTime-allreport-table th {
+        font-size: 8px;
+    }
+
+    .overTime-allreport-table td {
+        font-size: 12px;
+    }
+
+    .overtimeRadif { width: 2%; }
+    .overtimekarbar { width: 4%; }
+    .overtimeezafetime { width: 10%; }
+
+    #OverTimeIndivisualReportBox {
+        position: absolute;
+        top: 28rem;
+        padding: 4px 10px 10px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #OverTimeIndivisualReportBox h2 {
+        font-size: 15px;
+    }
+
+    #individualOvertimeReportForm {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 11px;
+        column-gap: 34px;
+    }
+
+    .enferadiEzafeUsers label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+
+    #submitReport {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
+    #usernameEzafeReport {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+    }
+
+    .overTimeindivisualReport-table th {
+        font-size: 6px;
+        padding: 5px;
+    }
+
+    .sbt-ezafe-gzrsh { width: 2%; }
+    .vaziat-ezafe-gzrsh { width: 2%; }
+    .tzht-ezafe-gzrsh { width: 2%; }
+    .mdt-ezafe-gzrsh { width: 2%; }
+    .trkh-ezafe-gzrsh { width: 2%; }
+    .krbr-ezafe-gzrsh { width: 2%; }
+    .rdf-ezafe-gzrsh { width: 1.3%; }
+
+    #downloadOvertimeReport {
+        font-size: 11px;
+        width: 89px;
+        padding: 4px 10px;
+    }
+
+    #hourlyPassBox {
+        position: absolute;
+        top: 4.3rem;
+        padding: 6px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #hourlyPassBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .hourlyPassReport-table {
+        table-layout: fixed;
+    }
+
+    .hourlyPassReport-table th {
+        font-size: 7px;
+        padding: 2px;
+    }
+
+    #hourlyPassTotaluser {
+        position: absolute;
+        top: 14rem;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #hourlyPassTotaluser h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .hourlyPassTotaluserReport-table th {
+        font-size: 10px;
+    }
+
+    .hourlyPassTotaluserReport-table td {
+        font-size: 12px;
+    }
+
+    .hourlyPassRadif { width: 2%; }
+    .hourlyPasskarbar { width: 4%; }
+    .hourlyPassezafetime { width: 10%; }
+
+    #hourlyPassIndivisualuser {
+        position: absolute;
+        top: 28rem;
+        padding: 4px 10px 10px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #hourlyPassIndivisualuser h2 {
+        font-size: 15px;
+    }
+
+    #individualHourlyPassReportForm {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 11px;
+        column-gap: 34px;
+    }
+
+    .hourlypassform label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+
+    #usernameHourlypass {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+    }
+
+    #submitHourlyPassReport {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
+    .hourlyPassIndivisualuserReport-table {
+        table-layout: fixed;
+        margin-top: 11px;
+    }
+
+    .hourlyPassIndivisualuserReport-table th {
+        font-size: 7px;
+        padding: 5px;
+    }
+
+    #downloadHourlyPassReport {
+        font-size: 11px;
+        width: 89px;
+        padding: 4px 10px;
+    }
+
+    #ticketBox {
+        top: 2rem;
+        position: absolute;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+    }
+
+    #ticketBox h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    .ticketUsersReport-table {
+        table-layout: fixed;
+    }
+
+    .ticketUsersReport-table th {
+        padding: 5px;
+        font-size: 7px;
+    }
+
+    .karbr-ticketboxtable { width: 1.9%; }
+    .tarikhsbt-ticketboxtable { width: 2.03%; }
+    .onvan-ticketboxtable { width: 3%; }
+    .tozihat-ticketboxtable { width: 2%; }
+    .vazeiyat-ticketboxtable { width: 2.5%; }
+    .taghir-ticketboxtable { width: 3%; }
+
+    #hozoorbox {
+        width: 80%;
+        padding: 20px;
+        background-color: #fbfff9;
+        margin-top: 3.7rem;
+        display: none;
+        position: relative;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #hozoorbox h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    #gozareshHozoor {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 11px;
+        column-gap: 45px;
+    }
+
+    .formgozareshhozoor label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+
+    #usernameGozareshHozoor {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+        margin-right: 0;
+    }
+
+    #hozoorUsersReportTable {
+        margin-top: 9px;
+    }
+
+    .hozoorUsersReport-table th {
+        padding: 5px;
+        font-size: 7px;
+    }
+
+    .hozoorUsersReport-table td {
+        font-size: 6px;
+    }
+
+    .mjmoo-hozoor-gzrsh { width: 2%; }
+    .ezafe-hozoor-gzrsh { width: 2%; }
+    .khorojzd-hozoor-gzrsh { width: 2%; }
+    .shorozd-hozoor-gzrsh { width: 2%; }
+    .takhir-hozoor-gzrsh { width: 2%; }
+    .zmnkhrj-hozoor-gzrsh { width: 2%; }
+    .zmnvrd-hozoor-gzrsh { width: 2%; }
+    .zmnvrd2-hozoor-gzrsh { width: 2%; }
+    .zmnkhrj2-hozoor-gzrsh { width: 2%; }
+    .hfte-hozoor-gzrsh { width: 2.46%; }
+    .sbt-hozoor-gzrsh { width: 2.62%; }
+
+    #extractButton {
+        font-size: 10px;
+        padding: 5px 9px 5px 9px;
+        margin-right: 2.5%;
+    }
+
+    #natigehHozoor {
+        position: absolute;
+        top: 41rem;
+        padding: 4px 10px 16px 10px;
+        width: 74%;
+        height: 22rem;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: auto;
+    }
+
+    #natigehHozoor h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    #natigehHozoor .boxha {
+        gap: 15px;
+    }
+
+    #natigehHozoor .boxha div {
+        width: 78%;
+        font-size: 13px;
+        height: 39px;
+    }
+
+    .gozareshNahaei {
+        left: auto;
+        right: 17px;
+        font-size: 11px;
+        padding: 4px 11px;
+        bottom: auto;
+        margin-top: 13px;
+    }
+
+    #sabtdst {
+        position: absolute;
+        top: 21rem;
+        padding: 4px 10px 10px 10px;
+        width: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 0;
+    }
+
+    #sabtdst h2 {
+        font-size: 16px;
+        margin: 0px 0px 4px 0px;
+    }
+
+    #sabtdastHozoor {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        gap: 0;
+        column-gap: 0px;
+    }
+
+    .formsabtdast label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    #usernamedast {
+        width: 47%;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        border: 1px solid #919191;
+        margin-right: 18%;
+    }
+
+    #tarikh {
+        width: 100px;
+        padding: 5px;
+        font-size: 10px;
+        margin-right: 41%;
+    }
+
+    #sabt-btn {
+        margin-right: 0;
+        margin-top: 3%;
+        font-size: 11px;
+        padding: 4px 11px;
+    }
+
     .koleObject {
         padding-top: 12px;
         padding-bottom: 24px;
@@ -4772,59 +4615,102 @@ margin-left: 15%;
     #sabtdastHozoor br {
         display: none;
     }
-}
 
-@media (max-width: 480px) {
-    .management-box {
-        width: calc(100% - 128px) !important;
+    html,
+    body {
+        display: block;
+        width: 100%;
+        min-height: 100%;
+        height: auto;
+    }
+
+    .koleObject {
+        display: block;
+        width: 100%;
+        min-height: 100vh;
+        height: auto;
+        padding: 12px;
+    }
+
+    .navarha {
+        position: static;
+        display: block;
+        width: auto;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .rightSidebar {
+        position: fixed;
+        top: 4.5rem;
+        right: 4px;
+        left: auto;
+        bottom: 10px;
+        width: 18vw;
+        max-width: 74px;
+        min-width: 54px;
+        height: 80%;
+        margin: 0;
+        padding: 14px 8px;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        overflow-x: hidden;
+        overflow-y: auto;
+        border-radius: 18px 0 0 18px;
+        transform: none;
+        float: none;
+        transition: width 0.25s ease;
+    }
+
+    .rightSidebar:hover {
+        width: 18vw;
+        max-width: 74px;
+    }
+
+    .rightSidebar.open {
+        width: min(230px, 76vw);
+        max-width: min(230px, 76vw);
+        min-width: 0;
+    }
+
+    .menu-toggle {
+        min-height: 40px;
+        padding: 0 0 10px 0;
+        margin-bottom: 8px;
+    }
+
+    .menu-icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .icon-container {
+        justify-content: center;
+        min-width: 0;
+        padding: 10px 6px;
+    }
+
+    .rightSidebar.open .icon-container {
+        justify-content: flex-start;
+        padding: 10px 10px;
+    }
+
+    .icon-container img {
+        width: clamp(21px, 6.5vw, 30px);
+        height: clamp(21px, 6.5vw, 30px);
+        padding: 0;
+        border-radius: 7px;
+    }
+
+    .icon-label {
+        display: none;
+    }
+
+    .rightSidebar.open .icon-label {
+        display: inline-flex;
     }
 }
-
-@media (max-width: 380px) {
-    .management-box {
-        width: calc(100% - 96px) !important;
-        padding: 10px !important;
-    }
-}
-
-/* دکمهٔ گزارش نهایی در پایینِ سمت چپِ باکس مجموع ساعت کاری */
-#natigehHozoor {
-    position: relative !important;
-    padding-bottom: 72px !important;
-}
-
-#natigehHozoor .gozareshNahaei {
-    position: absolute;
-    right: auto;
-    bottom: 18px;
-    left: 20px;
-    margin: 0;
-}
-
-#cancelShiftEditBtn {
-    background-color: #b0b0b0;
-    margin-right: 10px;
-}
-
-#cancelShiftEditBtn:hover {
-    background-color: #8f8f8f;
-}
-
-
-/* ????? ???? ??????? ??? ???? */
-table thead tr {
-    color: #ffffff !important;
-}
-table thead tr th {
-    color: #ffffff !important;
-}
-
-
-
-/* ????: ??? ??? ??? ???? */
-table thead tr,
-table thead tr th,
-table thead tr td {
-    color: #ffffff !important;
-}
-

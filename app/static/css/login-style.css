@@ -88,7 +88,7 @@ body::before {
 }
 
 body::after {
-    bottom: -6rem;
+    bottom: 8rem;
     right: -5rem;
     width: 16rem;
     height: 16rem;

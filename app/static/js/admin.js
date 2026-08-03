@@ -33,8 +33,33 @@ document.addEventListener("DOMContentLoaded", function() {
 // تابع برای تبدیل اعداد انگلیسی به فارسی
 function convertToPersianNumbers(number) {
     const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-    return number.replace(/\d/g, (digit) => persianNumbers[digit]);
+    return String(number).replace(/\d/g, (digit) => persianNumbers[digit]);
 }
+
+function updateTopbarClock() {
+    const dateEl = document.getElementById('adminTopbarDateText');
+    const timeEl = document.getElementById('adminTopbarTimeText');
+    if (!dateEl || !timeEl) return;
+
+    const now = new Date();
+    const persianDate = new Intl.DateTimeFormat('fa-IR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(now);
+    const persianTime = new Intl.DateTimeFormat('fa-IR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).format(now);
+
+    dateEl.textContent = convertToPersianNumbers(persianDate);
+    timeEl.textContent = convertToPersianNumbers(persianTime);
+}
+
+document.addEventListener('DOMContentLoaded', updateTopbarClock);
+setInterval(updateTopbarClock, 1000);
 
 // فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع// فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع// فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع
 // فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع// فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع// فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع
