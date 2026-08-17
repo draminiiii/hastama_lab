@@ -3819,6 +3819,8 @@ margin-left: 15%;
     align-items: center; /* مرکزیت افقی گزینه‌ها */
 }
 
+
+
 /* تغییر رنگ پس‌زمینه برای هر گزینه خاص در dropdown */
 .status-dropdown .status-option.pending {
     background-color: #ffbd2c;
