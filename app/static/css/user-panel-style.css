@@ -171,9 +171,10 @@ body.settings-panel-open {
     justify-content: space-between;
     gap: 12px;
     padding: 8px 8px 12px 8px;
-    overflow-y: auto;
+    overflow: hidden;
     z-index: 500;
-    transition: width 0.25s ease;
+    transition: width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: width;
 }
 
 .sidebar-top-card {
@@ -248,62 +249,6 @@ body.settings-panel-open {
     opacity: 0 !important;
 }
 
-.menu-toggle {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 10px 12px;
-    width: 100%;
-    display: none;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    min-height: 56px;
-}
-
-.menu-icon {
-    width: 40px;
-    height: 40px;
-    background-color: var(--surface);
-    border-radius: 5px;
-    padding: 5px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.menu-toggle:hover .menu-icon {
-    transform: scale(1.1);
-}
-
-.menu-expanded {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.sidebar-right.open .menu-expanded {
-    display: flex;
-}
-
-.menu-logo {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-}
-
-.menu-label {
-    display: inline-block;
-    color: #000;
-    font-family: 'Vazir';
-    font-size: 0.95rem;
-    font-weight: 400;
-    margin-top: 4px;
-    text-align: center;
-}
-
 .sidebar-group {
     display: flex;
     flex-direction: column;
@@ -335,7 +280,12 @@ body.settings-panel-open {
 }
 .reports-item .sidebar-item-content { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .reports-item.expanded .sidebar-submenu { display:flex; }
-.sidebar-right:not(.open):not(:hover) .sidebar-submenu { display:none !important; }
+.sidebar-right:not(.open) .sidebar-submenu { display:none; }
+
+/* On touch-only devices, enforce hidden with !important to prevent accidental reveals */
+@media (hover: none) {
+    .sidebar-right:not(.open) .sidebar-submenu { display: none !important; }
+}
 .submenu-caret { opacity: 0; visibility: hidden; margin-right: 8px; transition: opacity 0.2s ease, visibility 0.2s ease; }
 .sidebar-right:hover .submenu-caret,
 .reports-item.expanded .submenu-caret { opacity: 0.75; visibility: visible; }
@@ -555,6 +505,7 @@ body.leave-modal-open .morakhaci-sabt .modal {
     left: 41.5%;
     top: 55%;
     width: 77%;
+    margin-top: 10%;
 }
 
 /* استایل پاپ‌آپ در وسط صفحه */
@@ -2656,12 +2607,8 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
     .popupHozoor-content{
         width:25rem;
     }
-}
 
-
-/* اصلاحات تکمیلی موبایل: نوارهای چپ و راست، پروفایل و جدول تیکت */
-@media (max-width: 768px) {
-    body {
+     body {
         margin: 0;
         padding: 0;
         overflow-x: hidden;
@@ -2935,6 +2882,10 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
         text-align: center;
     }
 
+    .radif-ezafetime{
+        width: 12%;
+    }
+
     .ticket-status-box {
         position: relative;
         clear: both;
@@ -3030,10 +2981,20 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
         color: #333;
     }
 
-    .report-hour-box,
+    #popupOverlayezafe, #popupOverlayMorakhci {
+        justify-content: flex-start;
+        padding-bottom: 1rem;
+    }
+
+    .report-hour-box{
+        width: 75%;
+        margin-left: 1rem;
+        padding: 10px;
+    }
+
     #overtimeBox {
-        width: 80%;
-        margin-right: 4.5rem;
+        width: 75%;
+        font-size: 0.7rem;
     }
 
     .sidebar-top-card-sub {font-size: 0.7rem;}
@@ -3260,7 +3221,7 @@ body {
     font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
-    width: 8.5rem;
+    width: 9.5rem;
 }
 
 .topbar-clock-date { color: var(--ink-muted); font-size: 12px; }
@@ -3294,7 +3255,8 @@ body {
     position: relative;
     top: 0px;
     overflow: hidden;
-    transition: width 0.3s ease;
+    transition: width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: width;
 }
 .sidebar-right:hover {
     width: clamp(180px, 18vw, 230px);
@@ -4086,7 +4048,7 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
 @media (max-width: 860px) {
     .app-body { flex-direction: column; }
     .topbar {
-        padding: 12px 14px;
+        padding: 12px 7px;
         flex-wrap: wrap;
         gap: 10px;
         position: fixed;
@@ -4099,9 +4061,18 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         gap: 11px;
     }
     .topbar-clock-pill {
-        width: 9rem;
+        width: 9.5rem;
         padding: 8px 10px;
         
+    }
+
+    #popupOverlayMorakhsi {
+        justify-content: flex-start;
+        padding-bottom: 1rem;
+    }
+
+    .sidebar-top-card-sub{
+        font-size: 0.6rem;
     }
     .sidebar-top-card {
         top: 4.8rem;
@@ -4125,18 +4096,6 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         z-index: 489;
         left: 41.5%;
         width: 80.5%;
-    }
-    .menu-toggle {
-        display: flex;
-        width: auto;
-        min-height: 40px;
-        padding: 8px;
-        margin: 0 auto 10px auto;
-        flex-direction: column;
-    }
-    .menu-icon {
-        width: 26px;
-        height: 26px;
     }
     .sidebar-right {
         --mobile-sidebar-collapsed-width: 18%;
@@ -4244,6 +4203,15 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         visibility: visible;
         display: inline-flex;
     }
+
+    /* Ensure caret is visible on hover for pointer devices (desktop) even when .open isn't present */
+    @media (hover: hover) and (pointer: fine) {
+        .sidebar-right:hover .submenu-caret {
+            opacity: 0.75;
+            visibility: visible;
+            display: inline-flex;
+        }
+    }
     .sidebar-nav-item {
         padding: 0;
         white-space: nowrap;
@@ -4297,5 +4265,473 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     .reports-item .sidebar-item-content {
         justify-content: center;
         align-items: center;
+    }
+}
+
+/* Responsive mobile experience: additive overrides to preserve desktop UI. */
+.mobile-menu-toggle,
+.mobile-sidebar-close,
+.mobile-sidebar-overlay {
+    display: none;
+}
+
+@media (min-width: 861px) and (max-width: 1199px) {
+    .dashboard-main {
+        width: calc(100% - 78px);
+        padding-left: 18px;
+        padding-right: 96px;
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .top-cards-row,
+    .timeline-request-row,
+    .calendar-row,
+    .two-col-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ticket-status-card,
+    .requests-card {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 860px) {
+    html,
+    body,
+    .app-shell,
+    .app-body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    body.mobile-sidebar-open {
+        overflow: hidden;
+    }
+
+    .topbar {
+        inset: 0 0 auto 0;
+        width: 100%;
+        max-width: 100%;
+        min-height: 64px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface-strong);
+        color: var(--text);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        flex: 0 0 auto;
+        cursor: pointer;
+        z-index: 780;
+    }
+
+    .mobile-menu-toggle span {
+        width: 20px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+        display: block;
+    }
+
+    .topbar-actions {
+        width: auto;
+        min-width: 0;
+        flex: 1;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: 8px;
+        overflow: visible;
+    }
+
+    .topbar-clock-pill {
+        width: auto;
+        min-width: 0;
+        max-width: 128px;
+        padding: 7px 9px;
+        gap: 6px;
+        font-size: 11px;
+        flex-shrink: 1;
+    }
+
+    .topbar-icon-btn {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .topbar-user {
+        width: 46px;
+        height: 46px;
+        padding: 4px;
+        flex: 0 0 auto;
+    }
+
+    .topbar-avatar-wrap,
+    .topbar-avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    .topbar-user .chevron-icon,
+    .topbar-user-info {
+        display: none;
+    }
+
+    .sidebar-top-card {
+        position: fixed;
+        top: 76px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: 16px;
+        z-index: 120;
+    }
+
+    .sidebar-top-card-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .sidebar-top-card-title {
+        font-size: 0.9rem;
+    }
+
+    .sidebar-top-card-sub {
+        font-size: 0.72rem;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .mobile-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        display: block;
+        background: rgba(15, 23, 42, 0.42);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+        z-index: 650;
+    }
+
+    body.mobile-sidebar-open .mobile-sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .mobile-sidebar-close {
+        display: flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 12px;
+        background: var(--panel-contrast);
+        color: var(--text);
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        margin: 0 0 10px auto;
+        flex: 0 0 auto;
+    }
+
+    .sidebar-right,
+    .sidebar-right:hover {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(82vw, 320px);
+        max-width: min(82vw, 320px);
+        min-width: 0;
+        height: 100dvh;
+        padding: 16px 14px 24px;
+        border-radius: 0 0 0 22px;
+        transform: translateX(105%);
+        transition: transform 0.24s ease;
+        z-index: 700;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-shadow: -18px 0 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .sidebar-right.open,
+    .sidebar-right.open:hover {
+        width: min(82vw, 320px);
+        max-width: min(82vw, 320px);
+        transform: translateX(0);
+    }
+
+    .sidebar-logo {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .sidebar-label,
+    .sidebar-logo-text,
+    .sidebar-right.open .sidebar-label,
+    .sidebar-right.open .sidebar-logo-text {
+        display: inline-flex;
+        opacity: 1;
+        visibility: visible;
+        width: auto;
+        max-width: 190px;
+    }
+
+    .sidebar-nav {
+        gap: 8px;
+    }
+
+    .sidebar-nav-item,
+    .sidebar-item-content,
+    .sidebar-right.open .sidebar-item-content {
+        min-height: 48px;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 10px 12px;
+        white-space: normal;
+    }
+
+    .sidebar-submenu {
+        width: 100%;
+        padding-right: 14px;
+    }
+
+    .sidebar-submenu .sidebar-submenu-item {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        overflow-wrap: anywhere;
+    }
+
+    .dashboard-main {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 142px;
+        padding: 12px 12px 28px;
+        gap: 12px;
+    }
+
+    .top-cards-row,
+    .timeline-request-row,
+    .calendar-row,
+    .two-col-row,
+    .stats-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        width: 100%;
+    }
+
+    .greet-card,
+    .panel-card,
+    .stat-card,
+    .clock-card {
+        min-width: 0;
+        max-width: 100%;
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .greet-text h1 {
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .greet-text p,
+    .panel-title,
+    .stat-label,
+    .notif-text strong,
+    .notif-text span {
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    .timeline-body,
+    .panel-title-row,
+    .leave-row,
+    .timeline-ring-top {
+        flex-wrap: wrap;
+    }
+
+    .timeline-ring-wrap,
+    .timeline-ring-wrap .progress-ring {
+        width: 116px;
+        height: 116px;
+    }
+
+    .live-clock,
+    .clock-card .live-clock {
+        font-size: 25px;
+    }
+
+    .table-scroll,
+    .ticket-status-card,
+    .report-hour-box,
+    .Jadvale-ticket,
+    .table-container {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        max-width: 100%;
+    }
+
+    .requests-table,
+    #ticket-status-table,
+    #ticket-status-table-popup,
+    .passsaatiReport-table,
+    #OverTimeTable,
+    #leaveTable,
+    #HozoorTableReport {
+        min-width: 620px;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .ticket-container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .mobile-box {
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .modal,
+    #ticketModalContentmobile,
+    #overtimeModalContentmobile,
+    #hourlyPassModalContentmobile,
+    body.leave-modal-open .morakhaci-sabt .modal,
+    .modal-content,
+    .ticket-popup-box,
+    .ticket-status-box,
+    .report-hour-box,
+    .popupHozoor-content,
+    .MoshahdePopup,
+    .popup-box-massageBox,
+    .settings-panel-dialog,
+    .profile-panel-dialog,
+    .modal-content-hazfPopup {
+        left: 50% !important;
+        right: auto !important;
+        top: 50% !important;
+        width: min(100% - 24px, 520px) !important;
+        max-width: calc(100vw - 24px) !important;
+        max-height: calc(100dvh - 32px) !important;
+        margin: 0 !important;
+        transform: translate(-50%, -50%) !important;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .morakhaci-sabt {
+        padding: 12px;
+        align-items: center;
+    }
+
+    .modal-content input,
+    .modal-content textarea,
+    .modal-content select,
+    #substitute,
+    .ticket-popup-Req input,
+    .ticket-popup-Req textarea,
+    .ticket-popup-Req select {
+        width: 100%;
+        max-width: 100%;
+        min-height: 44px;
+        font-size: 14px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .modal-buttons button,
+    .btn-confirm,
+    .btn-cancel,
+    .new-leave-btn,
+    .detail-btn,
+    .close-popup,
+    #closePopup,
+    #closePopupMorakhciPopuppbox,
+    #closePopupezafekarijadvalbox {
+        min-height: 44px;
+        padding: 10px 14px;
+        white-space: normal;
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar {
+        padding: 8px 10px;
+    }
+
+    .topbar-clock-pill {
+        display: none;
+    }
+
+    .sidebar-top-card {
+        top: 66px;
+        right: 10px;
+        left: 10px;
+        padding: 9px 10px;
+    }
+
+    .dashboard-main {
+        margin-top: 132px;
+        padding-inline: 10px;
+    }
+
+    .greet-card,
+    .panel-card,
+    .stat-card,
+    .clock-card {
+        padding: 12px;
+    }
+
+    .mobile-menu-toggle,
+    .topbar-icon-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .sidebar-right,
+    .sidebar-right.open,
+    .sidebar-right:hover {
+        width: min(88vw, 310px);
+        max-width: min(88vw, 310px);
     }
 }

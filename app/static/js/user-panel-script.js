@@ -159,6 +159,7 @@ window.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeSettingsPanel();
         closeProfilePanel();
+        closeMobileSidebar();
     }
 });
 
@@ -422,23 +423,23 @@ function openLeaveDatePicker(input, picker) {
 function attachDatePickerToInput(input) {
     if (!input || input.dataset.datePickerBound === 'true') return;
 
-    const existingShell = input.closest('.date-input-shell');
-    if (existingShell) {
-        input.dataset.datePickerBound = 'true';
-        return;
+    let shell = input.closest('.date-input-shell');
+    if (!shell) {
+        shell = document.createElement('div');
+        shell.className = 'date-input-shell';
+        input.parentNode.insertBefore(shell, input);
+        shell.appendChild(input);
     }
 
-    const shell = document.createElement('div');
-    shell.className = 'date-input-shell';
-    input.parentNode.insertBefore(shell, input);
-    shell.appendChild(input);
-
-    const picker = document.createElement('div');
-    picker.className = 'leave-date-picker';
-    picker.hidden = true;
-    picker.setAttribute('role', 'dialog');
-    picker.setAttribute('aria-label', 'انتخاب تاریخ');
-    shell.appendChild(picker);
+    let picker = shell.querySelector('.leave-date-picker');
+    if (!picker) {
+        picker = document.createElement('div');
+        picker.className = 'leave-date-picker';
+        picker.hidden = true;
+        picker.setAttribute('role', 'dialog');
+        picker.setAttribute('aria-label', 'انتخاب تاریخ');
+        shell.appendChild(picker);
+    }
 
     input.addEventListener('focus', (event) => {
         event.stopPropagation();
@@ -448,6 +449,10 @@ function attachDatePickerToInput(input) {
         event.stopPropagation();
         openLeaveDatePicker(input, picker);
     });
+    input.addEventListener('touchstart', (event) => {
+        event.stopPropagation();
+        openLeaveDatePicker(input, picker);
+    }, { passive: true });
 
     input.dataset.datePickerBound = 'true';
 }
@@ -685,24 +690,34 @@ function updatePresenceRing() {
     const shiftState = getShiftTimelineState(currentMinutes, startMinutes, endMinutes);
     const entryMinutes = parseClock(entryTime);
     const currentNormalizedMinutes = shiftState.normalizedCurrentMinutes;
-    const greenPercent = shiftState.progressPercent;
+
+    // Helper to compute elapsed minutes since entry, using normalized current minutes
+    const computeElapsedSinceEntry = (entryMin, normalizedCurrentMin) => {
+        if (!Number.isInteger(entryMin) || !Number.isInteger(normalizedCurrentMin)) return 0;
+        let normalizedCurrent = normalizedCurrentMin;
+        if (normalizedCurrent < entryMin) normalizedCurrent += 24 * 60;
+        let diff = Math.max(0, normalizedCurrent - entryMin);
+        // If the page has been open many hours/days, avoid counting whole days repeatedly.
+        // Keep the elapsed within a 24-hour window so displayed worked time matches reality.
+        if (diff >= 24 * 60) {
+            diff = diff % (24 * 60);
+        }
+        return diff;
+    };
+
+    // If the user has an explicit check-in (`entryTime`), compute progress based on worked minutes
+    let displayWorkedMinutes = shiftState.workedMinutes;
+    if (entryMinutes !== null) {
+        displayWorkedMinutes = computeElapsedSinceEntry(entryMinutes, currentNormalizedMinutes);
+    }
+
+    const greenPercent = Math.min(100, Math.max(0, (displayWorkedMinutes / Math.max(shiftState.duration, 1)) * 100));
     const bluePercent = Math.min(100, Math.max(0, (shiftState.overtimeMinutes / Math.max(shiftState.duration, 1)) * 100));
     const greenLength = (circumference * greenPercent) / 100;
     const blueLength = (circumference * bluePercent) / 100;
     const blueOffset = -greenLength;
 
     animateTo(greenPercent, bluePercent);
-
-    const getElapsedSinceEntry = (entryMin, currentMin) => {
-        if (!Number.isInteger(entryMin) || !Number.isInteger(currentMin)) {
-            return 0;
-        }
-        let normalizedCurrent = currentMin;
-        if (normalizedCurrent < entryMin) {
-            normalizedCurrent += 24 * 60;
-        }
-        return Math.max(0, normalizedCurrent - entryMin);
-    };
 
     const formatMinutes = (totalMinutes) => {
         const hours = Math.floor(Math.max(0, totalMinutes) / 60);
@@ -712,7 +727,7 @@ function updatePresenceRing() {
 
     let workedMinutes = 0;
     if (entryMinutes !== null) {
-        workedMinutes = getElapsedSinceEntry(entryMinutes, currentMinutes);
+        workedMinutes = computeElapsedSinceEntry(entryMinutes, currentNormalizedMinutes);
     } else {
         workedMinutes = shiftState.workedMinutes;
     }
@@ -730,32 +745,30 @@ window.addEventListener('load', function() {
     setInterval(updatePresenceRing, 1000);
 });
 
-function toggleSidebarMenu(event) {
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    const sidebar = document.getElementById('mainSidebar');
-    if (!sidebar) return;
-
-    sidebar.classList.toggle('open');
-}
-
 function closeMobileSidebar() {
     const sidebar = document.getElementById('mainSidebar');
     if (!sidebar) return;
-
-    const isMobile = window.innerWidth <= 860;
-    if (!isMobile) return;
-
     sidebar.classList.remove('open');
+    document.body.classList.remove('mobile-sidebar-open');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+    collapseReportsSubmenu();
+    document.removeEventListener('click', documentClickCloseSidebar);
 }
 
 function isSidebarExpanded() {
     const sidebar = document.querySelector('.sidebar-right');
     if (!sidebar) return false;
-    return sidebar.classList.contains('open') || sidebar.matches(':hover');
+    // Consider it expanded if it has the `open` class, is hovered, or
+    // its computed width is large (desktop expanded state).
+    try {
+        const computedWidth = parseFloat(getComputedStyle(sidebar).width) || 0;
+        return sidebar.classList.contains('open') || sidebar.matches(':hover') || computedWidth > 100;
+    } catch (e) {
+        return sidebar.classList.contains('open') || sidebar.matches(':hover');
+    }
 }
 
 function collapseReportsSubmenu() {
@@ -779,6 +792,11 @@ function toggleSidebar(event) {
     }
 
     const isOpen = sidebar.classList.toggle('open');
+    document.body.classList.toggle('mobile-sidebar-open', isOpen && window.innerWidth <= 860);
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
     if (!isOpen) {
         collapseReportsSubmenu();
     }
@@ -807,15 +825,12 @@ function setupSidebarReportsObserver() {
 
 function documentClickCloseSidebar(event) {
     const sidebar = document.querySelector('.sidebar-right');
-    const menuBtn = document.getElementById('menu-btn');
     if (!sidebar || !sidebar.classList.contains('open')) return;
     const target = event.target;
-    if (sidebar.contains(target) || (menuBtn && menuBtn.contains(target))) {
+    if (sidebar.contains(target) || target.closest('.mobile-menu-toggle')) {
         return;
     }
-    sidebar.classList.remove('open');
-    collapseReportsSubmenu();
-    document.removeEventListener('click', documentClickCloseSidebar);
+    closeMobileSidebar();
 }
 
 // تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی// تنظیمات پاپ اپ ثبت درخواست مرخصی
@@ -1714,7 +1729,17 @@ document.addEventListener('DOMContentLoaded', function() {
         reportsItem.addEventListener('click', function(e) {
             e.stopPropagation();
 
-            if (!isSidebarExpanded()) {
+            // Robust check for expanded state: class, hover, or large computed width
+            const sidebar = document.querySelector('.sidebar-right');
+            let computedWidth = 0;
+            try {
+                computedWidth = sidebar ? (parseFloat(getComputedStyle(sidebar).width) || 0) : 0;
+            } catch (err) {
+                computedWidth = 0;
+            }
+            const expandedAllowed = (sidebar && (sidebar.classList.contains('open') || sidebar.matches(':hover') || computedWidth > 100));
+
+            if (!expandedAllowed) {
                 collapseReportsSubmenu();
                 return;
             }
@@ -1730,6 +1755,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('#reportsSubmenu .sidebar-submenu-item').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                // first collapse the submenu so it is not visible when sidebar closes
+                collapseReportsSubmenu();
+                // then close the mobile sidebar
                 closeMobileSidebar();
                 const reportType = this.getAttribute('data-report');
                 if (reportType === 'attendance') {

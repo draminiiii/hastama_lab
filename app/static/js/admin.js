@@ -58,7 +58,39 @@ function updateTopbarClock() {
     timeEl.textContent = convertToPersianNumbers(persianTime);
 }
 
-document.addEventListener('DOMContentLoaded', updateTopbarClock);
+function renderDashboardBarHeights() {
+    document.querySelectorAll('.dashboard-chart .bar-value').forEach(bar => {
+        const percent = parseInt(bar.dataset.percent, 10);
+        if (!isNaN(percent)) {
+            bar.style.height = `${percent}%`;
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateTopbarClock();
+    renderDashboardBarHeights();
+
+    document.querySelectorAll('.dropdown-item[data-panel]').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation();
+            openProfilePanel(this.getAttribute('data-panel'));
+        });
+    });
+
+    const overlay = document.getElementById('profilePanelOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeProfilePanel);
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeProfilePanel();
+            closeProfileDropdown();
+            closeMobileSidebar();
+        }
+    });
+});
 setInterval(updateTopbarClock, 1000);
 
 // فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع// فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع// فارسی کردن اعداد جدول گزارش کلی افراد به صورت جامع
@@ -129,19 +161,23 @@ function toggleBox(boxId, iconContainer) {
     // نمایش باکس انتخابی
     const selectedBox = document.getElementById(boxId);
     if (selectedBox) {
-        selectedBox.style.display = 'block';
+        if (boxId === 'vacationRequestBox') {
+            selectedBox.style.display = 'inline-table';
+        } else {
+            selectedBox.style.display = 'flex';
+        }
     }
 
     // اگر مدیریت مرخصی‌ها انتخاب شده باشد، باکس‌های زیر را نیز نمایش دهید
     if (boxId === 'vacationBox') {
         const requestBox = document.getElementById('vacationRequestBox');
         if (requestBox) {
-            requestBox.style.display = 'block';
+            requestBox.style.display = 'inline-table';
         }
 
         const individualReportBox = document.getElementById('individualReportBox');
         if (individualReportBox) {
-            individualReportBox.style.display = 'block';
+            individualReportBox.style.display = 'inline-table';
         }
     }
 
@@ -217,24 +253,6 @@ function toggleBox(boxId, iconContainer) {
 // تابع برای باز و بسته کردن منوی گزینه‌ها// تابع برای باز و بسته کردن منوی گزینه‌ها// تابع برای باز و بسته کردن منوی گزینه‌ها
 // تابع برای باز و بسته کردن منوی گزینه‌ها// تابع برای باز و بسته کردن منوی گزینه‌ها// تابع برای باز و بسته کردن منوی گزینه‌ها
 
-function toggleMenu() {
-    const menuOptions = document.querySelector('.menu-options');
-    const menuBtn = document.getElementById("menu-btn");
-
-    // بررسی وضعیت منو
-    const isOpen = menuOptions.classList.contains('open');
-    
-    // تغییر وضعیت منو
-    if (isOpen) {
-        menuOptions.classList.remove('open'); // بستن منو
-    } else {
-        menuOptions.classList.add('open'); // باز کردن منو
-    }
-
-    // اطمینان از اینکه دکمه منو در جای خود باقی بماند
-    menuBtn.classList.toggle("active"); // به دکمه منو کلاس 'active' اضافه می‌کنیم
-}
-
 // تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری
 // تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری
 // تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری// تابع برای باز و بسته کردن نوار کناری
@@ -245,6 +263,176 @@ function toggleProfileDropdown(event) {
     if (dropdown) {
         dropdown.classList.toggle('open');
     }
+}
+
+function closeProfileDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown) {
+        dropdown.classList.remove('open');
+    }
+}
+
+function openProfilePanel(panelType) {
+    closeProfileDropdown();
+
+    const overlay = document.getElementById('profilePanelOverlay');
+    const panel = document.getElementById('profilePanel');
+    const title = document.getElementById('profilePanelTitle');
+    const subtitle = document.getElementById('profilePanelSubtitle');
+    const body = document.getElementById('profilePanelBody');
+
+    if (!overlay || !panel || !title || !subtitle || !body) {
+        return;
+    }
+
+    const panelConfig = {
+        profile: {
+            title: 'پروفایل من',
+            subtitle: 'اطلاعات حساب و وضعیت دسترسی',
+            content: `
+                <div class="profile-panel-card">
+                    <div class="profile-panel-avatar">
+                        <img src="/static/images/user.png" alt="پروفایل کاربر">
+                    </div>
+                    <div class="profile-panel-user">
+                        <strong>مدیر سیستم</strong>
+                        <span>ادمین | سطح دسترسی ۳</span>
+                    </div>
+                </div>
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>اطلاعات پایه</h4>
+                    <ul>
+                        <li><span>نام کاربری</span><strong>admin</strong></li>
+                        <li><span>ایمیل</span><strong>admin@hastama.ir</strong></li>
+                        <li><span>آخرین ورود</span><strong>امروز ۱۴:۳۰</strong></li>
+                    </ul>
+                </div>
+            `
+        },
+        security: {
+            title: 'امنیت و رمز عبور',
+            subtitle: 'تنظیمات حفاظت از حساب کاربری',
+            content: `
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>تغییر رمز عبور</h4>
+                    <form class="profile-form">
+                        <label>رمز عبور فعلی<input type="password" value="********"></label>
+                        <label>رمز عبور جدید<input type="password" placeholder="رمز عبور جدید"></label>
+                        <label>تکرار رمز عبور<input type="password" placeholder="تکرار رمز عبور"></label>
+                        <button type="button">ذخیره تغییرات</button>
+                    </form>
+                </div>
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>اقدامات پیشنهادی</h4>
+                    <div class="profile-setting-row"><span>احراز هویت دو مرحله‌ای</span><strong>فعال</strong></div>
+                    <div class="profile-setting-row"><span>هشدار ورود مشکوک</span><strong>روشن</strong></div>
+                </div>
+            `
+        },
+        subscription: {
+            title: 'اشتراک من',
+            subtitle: 'وضعیت بسته اشتراک و امکانات',
+            content: `
+                <div class="profile-panel-card">
+                    <div class="profile-panel-badge">اشتراک حرفه‌ای</div>
+                    <div class="profile-panel-stat"><strong>۲۳۱ روز باقی‌مانده</strong><span>تا ۱۴۰۵/۱۲/۲۹</span></div>
+                </div>
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>امکانات فعال</h4>
+                    <div class="profile-setting-row"><span>پشتیبانی ویژه</span><strong>فعال</strong></div>
+                    <div class="profile-setting-row"><span>گزارش‌های پیشرفته</span><strong>فعال</strong></div>
+                    <div class="profile-setting-row"><span>مدیریت چندین شعبه</span><strong>فعال</strong></div>
+                </div>
+                <button type="button" class="profile-panel-action">تمدید اشتراک</button>
+            `
+        },
+        billing: {
+            title: 'فاکتورها و پرداخت',
+            subtitle: 'تاریخچه صورتحساب و وضعیت پرداخت',
+            content: `
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>آخرین فاکتورها</h4>
+                    <div class="profile-invoice-item">
+                        <div>
+                            <strong>فاکتور خرداد ۱۴۰۵</strong>
+                            <span>پرداخت شده · ۲۵/۰۳/۱۴۰۵</span>
+                        </div>
+                        <strong>۲٬۴۵۰٬۰۰۰ تومان</strong>
+                    </div>
+                    <div class="profile-invoice-item">
+                        <div>
+                            <strong>فاکتور اردیبهشت ۱۴۰۵</strong>
+                            <span>در انتظار پرداخت</span>
+                        </div>
+                        <strong>۱٬۸۹۰٬۰۰۰ تومان</strong>
+                    </div>
+                </div>
+                <button type="button" class="profile-panel-action">مشاهده همه فاکتورها</button>
+            `
+        },
+        support: {
+            title: 'پشتیبانی فنی',
+            subtitle: 'ارسال درخواست و راه‌های تماس',
+            content: `
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>ارسال تیکت جدید</h4>
+                    <form class="profile-form">
+                        <label>موضوع<input type="text" placeholder="مشکل در ورود"></label>
+                        <label>توضیح<textarea placeholder="شرح مشکل خود را بنویسید"></textarea></label>
+                        <button type="button">ارسال درخواست</button>
+                    </form>
+                </div>
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <h4>راه‌های دسترسی</h4>
+                    <div class="profile-setting-row"><span>تلفن پشتیبانی</span><strong>۰۲۱-۴۴۴۴۵۵۵۵</strong></div>
+                    <div class="profile-setting-row"><span>پشتیبانی آنلاین</span><strong>۲۴ ساعته</strong></div>
+                </div>
+            `
+        },
+        settings: {
+            title: 'تنظیمات سامانه',
+            subtitle: 'سفارشی‌سازی تجربه کاربری',
+            content: `
+                <div class="profile-panel-card profile-panel-card--stacked">
+                    <div class="profile-setting-row"><span>حالت تیره</span><strong>روشن</strong></div>
+                    <div class="profile-setting-row"><span>اعلان‌های کشویی</span><strong>فعال</strong></div>
+                    <div class="profile-setting-row"><span>زبان پیش‌فرض</span><strong>فارسی</strong></div>
+                </div>
+                <button type="button" class="profile-panel-action">ذخیره تنظیمات</button>
+            `
+        }
+    };
+
+    const config = panelConfig[panelType];
+    if (!config) {
+        return;
+    }
+
+    title.textContent = config.title;
+    subtitle.textContent = config.subtitle;
+    body.innerHTML = config.content;
+
+    overlay.hidden = false;
+    panel.hidden = false;
+    requestAnimationFrame(() => {
+        overlay.classList.add('open');
+        panel.classList.add('open');
+    });
+}
+
+function closeProfilePanel() {
+    const overlay = document.getElementById('profilePanelOverlay');
+    const panel = document.getElementById('profilePanel');
+    if (!overlay || !panel) {
+        return;
+    }
+
+    overlay.classList.remove('open');
+    panel.classList.remove('open');
+    setTimeout(() => {
+        overlay.hidden = true;
+        panel.hidden = true;
+    }, 220);
 }
 
 function toggleNotifications(event) {
@@ -268,6 +456,15 @@ function toggleSidebar(event) {
     }
 
     const isOpen = sidebar.classList.toggle('open');
+    document.body.classList.toggle('mobile-sidebar-open', isOpen && window.innerWidth <= 768);
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+    const pageShell = document.querySelector('.page-shell');
+    if (pageShell) {
+        pageShell.classList.toggle('sidebar-expanded', isOpen && window.innerWidth > 768);
+    }
 
     if (isOpen) {
         document.addEventListener('click', documentClickCloseSidebar);
@@ -278,15 +475,48 @@ function toggleSidebar(event) {
 
 function documentClickCloseSidebar(event) {
     const sidebar = document.querySelector('.rightSidebar');
-    const menuBtn = document.getElementById('menu-btn');
     if (!sidebar || !sidebar.classList.contains('open')) return;
     const target = event.target;
-    if (sidebar.contains(target) || (menuBtn && menuBtn.contains(target))) {
+    if (sidebar.contains(target) || target.closest('.mobile-menu-toggle')) {
         return;
     }
+    closeMobileSidebar();
+}
+
+function closeMobileSidebar() {
+    const sidebar = document.querySelector('.rightSidebar');
+    if (!sidebar) return;
     sidebar.classList.remove('open');
+    document.body.classList.remove('mobile-sidebar-open');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+    const pageShell = document.querySelector('.page-shell');
+    if (pageShell) {
+        pageShell.classList.remove('sidebar-expanded');
+    }
     document.removeEventListener('click', documentClickCloseSidebar);
 }
+
+// باز/بسته شدن سایدبار هنگام هاور (دسکتاپ) — کلاس sidebar-expanded روی
+// .page-shell اضافه/حذف می‌شود تا باکس‌های مدیریتی بتوانند بر همان اساس فشرده شوند
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebarEl = document.querySelector('.rightSidebar');
+    const pageShellEl = document.querySelector('.page-shell');
+    if (!sidebarEl || !pageShellEl) return;
+
+    sidebarEl.addEventListener('mouseenter', function () {
+        pageShellEl.classList.add('sidebar-expanded');
+    });
+
+    sidebarEl.addEventListener('mouseleave', function () {
+        // اگر با کلیک (روی موبایل) باز نگه داشته شده، با خارج شدن ماوس بسته نشود
+        if (!sidebarEl.classList.contains('open')) {
+            pageShellEl.classList.remove('sidebar-expanded');
+        }
+    });
+});
 
 // تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی
 // تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی// تابع برای تبدیل اعداد به فارسی
@@ -361,11 +591,30 @@ function loadLeaveRequests() {
             });
         // افزودن event listener برای بستن dropdown زمانی که خارج از آن کلیک می‌شود
         document.addEventListener('click', function (event) {
-            // بررسی اینکه آیا کلیک درون یک dropdown نیست
+            const clickedNavbar = event.target.closest('.status-navbar');
+            const clickedContainer = clickedNavbar ? clickedNavbar.closest('.status-container') : null;
+
             const dropdowns = document.querySelectorAll('.status-dropdown');
             dropdowns.forEach(dropdown => {
-                if (!dropdown.contains(event.target) && !event.target.matches('.status-navbar')) {
-                    dropdown.style.display = 'none'; // بستن dropdown
+                const origParent = dropdown.__origParent || dropdown.parentElement;
+                const dropdownContainer = origParent ? origParent.closest('.status-container') : null;
+
+                // اگر کلیک داخل خود dropdown یا روی navbar متعلق به آن بوده، نادیده بگیر
+                if (dropdown.contains(event.target)) return;
+                if (clickedContainer && dropdownContainer && clickedContainer === dropdownContainer) return;
+
+                // در غیر این صورت dropdown را ببند و در صورت جابجا شدن، آن را به والد اصلی بازگردان
+                if (dropdown.style.display === 'flex') {
+                    dropdown.style.display = 'none';
+                }
+                if (dropdown.__origParent) {
+                    dropdown.__origParent.appendChild(dropdown);
+                    dropdown.style.position = '';
+                    dropdown.style.left = '';
+                    dropdown.style.top = '';
+                    dropdown.style.right = '';
+                    dropdown.style.visibility = '';
+                    dropdown.__origParent = null;
                 }
             });
         });
@@ -450,7 +699,61 @@ function removeRequestFromTable(requestId) {
 // تابع برای باز و بسته شدن dropdown
 function toggleDropdown(requestId) {
     const dropdown = document.querySelector(`#statusDropdown_${requestId}`);
-    dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+    const navbar = document.querySelector(`#statusNavbar_${requestId}`);
+    if (!dropdown || !navbar) return;
+
+    const isOpen = dropdown.style.display === 'flex';
+    if (isOpen) {
+        dropdown.style.display = 'none';
+        if (dropdown.__origParent) {
+            dropdown.__origParent.appendChild(dropdown);
+            dropdown.style.position = 'fixed';
+            dropdown.style.left = '0px';
+            dropdown.style.top = '0px';
+            dropdown.style.right = 'auto';
+            dropdown.style.visibility = 'visible';
+            dropdown.__origParent = null;
+        }
+        return;
+    }
+
+    document.querySelectorAll('.status-dropdown').forEach(d => {
+        if (d !== dropdown) {
+            d.style.display = 'none';
+            if (d.__origParent) {
+                d.__origParent.appendChild(d);
+                d.style.position = 'fixed';
+                d.style.left = '0px';
+                d.style.top = '0px';
+                d.style.right = 'auto';
+                d.__origParent = null;
+            }
+        }
+    });
+
+    if (!dropdown.__origParent) dropdown.__origParent = dropdown.parentElement;
+
+    document.body.appendChild(dropdown);
+    dropdown.style.position = 'fixed';
+    dropdown.style.display = 'flex';
+    dropdown.style.visibility = 'hidden';
+    dropdown.style.zIndex = '2147483647';
+
+    const rect = navbar.getBoundingClientRect();
+    const width = dropdown.offsetWidth || 160;
+    const height = dropdown.offsetHeight || 120;
+
+    let left = rect.left + (rect.width - width);
+    let top = rect.bottom + 6;
+
+    if (left < 12) left = 12;
+    if (left + width > window.innerWidth - 12) left = window.innerWidth - width - 12;
+    if (top + height > window.innerHeight - 12) top = window.innerHeight - height - 12;
+
+    dropdown.style.left = `${left}px`;
+    dropdown.style.top = `${top}px`;
+    dropdown.style.right = 'auto';
+    dropdown.style.visibility = 'visible';
 }
 
 // بارگذاری درخواست‌ها هنگام لود صفحه
@@ -652,7 +955,7 @@ function toggleDropdown(requestId) {
     });
 
     // نمایش یا مخفی کردن منوی وضعیت مربوط به ردیف فعلی
-    statusDropdown.style.display = statusDropdown.style.display === 'none' ? 'block' : 'none';
+    statusDropdown.style.display = statusDropdown.style.display === 'none' ? 'flex' : 'none';
 }
 
 // تابع دکمه دریافت گزارش// تابع دکمه دریافت گزارش// تابع دکمه دریافت گزارش// تابع دکمه دریافت گزارش// تابع دکمه دریافت گزارش
@@ -893,7 +1196,7 @@ function toggleRequestDropdown(rowId) {
         }
     });
 
-    statusDropdown.style.display = statusDropdown.style.display === 'none' ? 'block' : 'none';
+    statusDropdown.style.display = statusDropdown.style.display === 'none' ? 'flex' : 'none';
 }
 
 // تغییر وضعیت برای ردیف خاص
@@ -1116,7 +1419,7 @@ function toggleDropdown(index) {
     
     const currentDropdown = document.getElementById('statusDropdown_' + index);
     if (currentDropdown.style.display === 'none' || currentDropdown.style.display === '') {
-        currentDropdown.style.display = 'block';
+        currentDropdown.style.display = 'flex';
     } else {
         currentDropdown.style.display = 'none';
     }
@@ -1220,7 +1523,7 @@ function toggleRequestHourlypassDropdown(rowId) {
 
     // باز و بسته کردن منوی کشویی مربوطه
     if (currentDropdown.style.display === 'none' || currentDropdown.style.display === '') {
-        currentDropdown.style.display = 'block';  // باز کردن منوی کشویی
+        currentDropdown.style.display = 'flex';  // باز کردن منوی کشویی
     } else {
         currentDropdown.style.display = 'none';  // بستن منوی کشویی
     }
@@ -1463,7 +1766,7 @@ function toggleRequestHourlypassDropdownReport(rowId) {
 
     // باز و بسته کردن منوی کشویی مربوطه
     if (currentDropdown.style.display === 'none' || currentDropdown.style.display === '') {
-        currentDropdown.style.display = 'block';
+        currentDropdown.style.display = 'flex';
     } else {
         currentDropdown.style.display = 'none';
     }
@@ -1625,7 +1928,7 @@ function loadTicketRequests() {
 // تابع برای باز و بسته کردن دراپ‌داون
 function toggleTicketDropdown(rowId) {
     const dropdown = document.querySelector(`#ticketStatusDropdown_${rowId}`);
-    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    dropdown.style.display = dropdown.style.display === 'none' ? 'flex' : 'none';
 }
 
 // تابع برای تغییر وضعیت

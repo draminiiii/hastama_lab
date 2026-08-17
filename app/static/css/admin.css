@@ -1,7 +1,7 @@
 @font-face {
-    font-family: 'Yekan';
-    src: url('/static/fonts/Yekan.woff2') format('woff2'),
-         url('/static/fonts/Yekan.woff') format('woff');
+    font-family: 'Vazir';
+    src: url('/static/fonts/Vazir.woff2') format('woff2'),
+         url('/static/fonts/Vazir.woff') format('woff');
 }
 
 @font-face {
@@ -9,6 +9,14 @@
     src: url('/static/fonts/Vazir.woff2') format('woff2'),
          url('/static/fonts/Vazir.woff') format('woff'),
          url('/static/fonts/Vazir.ttf') format('truetype');
+}
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 26%),
+                radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.14), transparent 24%),
+                #f8fafc;
+    overflow-x: hidden;
 }
 
 /* برای حذف اسکرول بار عمودی */
@@ -25,28 +33,27 @@
 }
 
 html, body {
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f9fafb;
     height: 100%;
 }
 
-.koleObject {
+.page-shell {
     position: relative;
-    justify-content: center;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    gap: 0px;
-    padding-top: 140px;
+    gap: 20px;
+    padding: 38px 0 24px;
+    min-height: 100vh;
 }
 
 .admin-topbar-modern {
     position: absolute;
-    top: 18px;
-    left: 20px;
-    right: 20px;
+    top: 6px;
+    left: 8px;
+    right: 8px;
     z-index: 60;
     display: flex;
     justify-content: space-between;
@@ -138,7 +145,7 @@ html, body {
     font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
-    width: 9rem;
+    width: 9.5rem;
     border: 1px solid #e4e7ec;
 }
 
@@ -182,12 +189,12 @@ html, body {
     position: absolute;
     top: calc(100% + 10px);
     left: 0;
-    width: 177px;
+    width: 220px;
     background-color: #ffffff;
     border: 1px solid #e4e7ec;
     border-radius: 18px;
     box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
-    padding: 8px 0;
+    padding: 10px 8px;
     max-height: 0;
     opacity: 0;
     visibility: hidden;
@@ -200,19 +207,292 @@ html, body {
 }
 
 .profile-dropdown.open {
-    max-height: 260px;
+    max-height: 320px;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+.profile-panel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.44);
+    backdrop-filter: blur(4px);
+    z-index: 140;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.profile-panel-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.profile-panel {
+    position: fixed;
+    top: 92px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-12px);
+    width: min(460px, calc(100vw - 32px));
+    max-height: min(72vh, 720px);
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+    z-index: 150;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.profile-panel.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.profile-panel-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.profile-panel-title {
+    margin: 0;
+    font-size: 1rem;
+    color: #111827;
+}
+
+.profile-panel-subtitle {
+    margin: 4px 0 0;
+    font-size: 0.83rem;
+    color: #64748b;
+}
+
+.profile-panel-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 999px;
+    background: #f8fafc;
+    color: #334155;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.profile-panel-body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.profile-panel-card {
+    background: linear-gradient(135deg, #f8fbff 0%, #f7f9ff 100%);
+    border: 1px solid #e5ecf7;
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.profile-panel-card--stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-panel-card h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1f2937;
+}
+
+.profile-panel-avatar {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+.profile-panel-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-panel-user {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.profile-panel-user strong {
+    font-size: 0.98rem;
+    color: #0f172a;
+}
+
+.profile-panel-user span {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.profile-panel-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+}
+
+.profile-panel-card li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.86rem;
+    color: #334155;
+}
+
+.profile-panel-card li span {
+    color: #64748b;
+}
+
+.profile-panel-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.profile-panel-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+}
+
+.profile-panel-stat strong {
+    color: #0f172a;
+    font-size: 0.92rem;
+}
+
+.profile-panel-stat span {
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.84rem;
+    color: #334155;
+}
+
+.profile-form input,
+.profile-form textarea {
+    border: 1px solid #dbe4f0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.9rem;
+    background: #fff;
+}
+
+.profile-form textarea {
+    min-height: 86px;
+    resize: vertical;
+}
+
+.profile-form button,
+.profile-panel-action {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    color: #fff;
+    font-family: 'Vazir', sans-serif;
+    cursor: pointer;
+}
+
+.profile-setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.88rem;
+}
+
+.profile-setting-row span {
+    color: #475569;
+}
+
+.profile-invoice-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+}
+
+.profile-invoice-item strong {
+    display: block;
+    color: #111827;
+    font-size: 0.9rem;
+}
+
+.profile-invoice-item span {
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.dropdown-section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    padding: 4px 10px 6px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 4px 8px;
 }
 
 .dropdown-item {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
-    padding: 12px 16px;
+    padding: 10px 12px;
     border: none;
     border-radius: 12px;
     background-color: #ffffff;
@@ -228,8 +508,8 @@ html, body {
 }
 
 .dropdown-item img {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
 
 .notifications-panel {
@@ -330,7 +610,7 @@ html, body {
     border-radius: 22px;
     border: 1px solid #ddd;
     box-shadow: 0 16px 32px rgba(13, 59, 78, 0.08);
-    z-index: 490;
+    z-index: 59;
 }
 
 .sidebar-top-card-content {
@@ -382,7 +662,7 @@ html, body {
 
 .rightSidebar {
     width: clamp(64px, 6vw, 78px);
-    height: fit-content;
+    height: auto;
     background-color: #ffffff;
     position: fixed;
     top: 8rem;
@@ -398,8 +678,9 @@ html, body {
     align-items: stretch;
     padding: 22px 14px;
     overflow: hidden;
-    z-index: 500;
-    transition: width 0.3s ease;
+    z-index: 59;
+    transition: width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.25s ease, gap 0.25s ease;
+    will-change: width;
     justify-content: space-between;
     gap: 12px;
 }
@@ -407,81 +688,7 @@ html, body {
 .rightSidebar:hover,
 .rightSidebar.open {
     width: clamp(180px, 18vw, 230px);
-    overflow-y: auto;
-}
-
-.menu-toggle {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0 0 18px 0;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    min-height: 44px;
-    border-bottom: 1px solid #eef1f6;
-    margin-bottom: 18px;
-    flex-shrink: 0;
-}
-
-.rightSidebar:hover .menu-toggle,
-.rightSidebar.open .menu-toggle {
-    justify-content: flex-start;
-}
-
-.menu-toggle .menu-icon {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    background-color: #edf3ff;
-    border-radius: 12px;
-    padding: 5px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.menu-toggle:hover .menu-icon {
-    transform: scale(1.1);
-}
-
-.menu-expanded {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
     overflow: hidden;
-    opacity: 0;
-    visibility: hidden;
-    max-width: 0;
-    white-space: nowrap;
-    transition: opacity 0.2s ease, visibility 0.2s ease, max-width 0.3s ease;
-}
-
-.rightSidebar:hover .menu-expanded,
-.rightSidebar.open .menu-expanded {
-    opacity: 1;
-    visibility: visible;
-    max-width: 170px;
-}
-
-.menu-logo {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-.menu-label {
-    display: inline-block;
-    color: #0f172a;
-    font-family: 'Vazir', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 400;
-    direction: rtl;
-    text-align: right;
-    line-height: 1.4;
 }
 
 .icon-container {
@@ -587,9 +794,9 @@ html, body {
 
 /* leftSidebar styles removed — using unified rightSidebar */
 
-/* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام */
-/* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام */
-/* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام *//* استایل کلی پیام */
+/*  --- = پیام‌های وضعیت ---  */
+/*  --- = پیام‌های وضعیت ---  */
+/*  --- = پیام‌های وضعیت ---  */
 
 .success-message {
     background-color: #4CAF50;
@@ -653,15 +860,14 @@ html, body {
     cursor: pointer;
     font-size: 10px;  /* سایز مناسب برای دکمه */
     border-radius: 4px;
-    font-family: 'Yekan', sans-serif; /* انتخاب فونت برای دکمه */
+    font-family: 'Vazir', sans-serif; /* انتخاب فونت برای دکمه */
 }
 
 .close-btn-peygham:hover {background-color: #4e7252;}
 
-/* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران */
-/* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران */
-/* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران *//* باکس اطلاعات کاربران */
-
+/*  --- = مدیریت کارکنان ---  */
+/*  --- = مدیریت کارکنان ---  */
+/*  --- = مدیریت کارکنان ---  */
 #userInfoBox {
     display: flex;
     flex-direction: column;
@@ -676,6 +882,7 @@ html, body {
     font-family: 'Vazir', sans-serif;
     text-align: center;
     position: relative;
+    margin-top: 3.79% !important;
 }
 
 /* تنظیم استایل عنوان */
@@ -708,8 +915,8 @@ html, body {
 
 /* استایل برای هدر */
 #userTable thead tr {
-    background-color: #7d91ff;
-    color: rgb(255, 255, 255);
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
     direction: rtl;
 }
 
@@ -863,19 +1070,22 @@ html, body {
     opacity: 1; /* شفافیت کامل */
 }
 
-/* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی */
-/* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی */
-/* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی *//* باکس مدیریت درخواست‌های مرخصی */
-
+/*  --- = پنل درخواست مرخصی ---  */
+/*  --- = پنل درخواست مرخصی ---  */
+/*  --- = پنل درخواست مرخصی ---  */
 #vacationRequestBox {
     margin-left: auto;
     margin-right: auto;
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 3.79% !important; /* فاصله از بالای صفحه */
 }
 
 #vacationRequestBox h2 {
@@ -886,9 +1096,9 @@ html, body {
     font-weight: bold; /* پررنگ کردن عنوان */
 }
 
-/* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی */
-/* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی */
-/* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی *//* جدول درخواست‌های مرخصی */
+/*  --- = جدول درخواست‌های مرخصی ---  */
+/*  --- = جدول درخواست‌های مرخصی ---  */
+/*  --- = جدول درخواست‌های مرخصی ---  */
 
 .request-table {
     width: 100%;
@@ -901,8 +1111,8 @@ html, body {
 }
 
 .request-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .request-table th:first-child {
@@ -941,27 +1151,28 @@ html, body {
 
 .request-table tbody tr:hover {background-color: #f9f9f9;}
 
-/* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران */
-/* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران */
-/* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران *//* باکس گزارش کلی مرخصی های کاربران */
-
+/*  --- = مدیریت مرخصی ---  */
+/*  --- = مدیریت مرخصی ---  */
+/*  --- = مدیریت مرخصی ---  */
 #vacationBox{
     margin-left: auto;
     margin-right: auto;
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: center;
 }
 
 #vacationBox h2 {margin-top: 0;}
 
-/* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران */
-/* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران */
-/* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران *//* جدول گزارش مرخصی های کلی کاربران */
-
+/*  --- = جدول گزارش مرخصی کلی ---  */
+/*  --- = جدول گزارش مرخصی کلی ---  */
+/*  --- = جدول گزارش مرخصی کلی ---  */
 .vacation-table {
     margin: 0 auto;
     width: 90%;
@@ -974,8 +1185,8 @@ html, body {
 }
 
 .vacation-table thead tr {
-    background-color: #7d91ff; /* پس‌زمینه هدر جدول */
-    color: black; /* رنگ متن هدر */
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%); /* پس‌زمینه هدر جدول */
+    color: #fff; /* رنگ متن هدر */
 }
 
 .vacation-table th {
@@ -1006,18 +1217,27 @@ html, body {
     border-bottom-right-radius: 10px; /* گوشه پایینی سمت راست */
 }
 
-/* باکس جدول گزارش مرخصی انفرادی کاربران *//* باکس جدول گزارش مرخصی انفرادی کاربران *//* باکس جدول گزارش مرخصی انفرادی کاربران */
-/* باکس جدول گزارش مرخصی انفرادی کاربران *//* باکس جدول گزارش مرخصی انفرادی کاربران *//* باکس جدول گزارش مرخصی انفرادی کاربران */
-/* باکس جدول گزارش مرخصی انفرادی کاربران *//* باکس جدول گزارش مرخصی انفرادی کاربران *//* باکس جدول گزارش مرخصی انفرادی کاربران */
-
+/*  --- = گزارش مرخصی انفرادی ---  */
+/*  --- = گزارش مرخصی انفرادی ---  */
+/*  --- = گزارش مرخصی انفرادی ---  */
 #individualReportBox{
+    display: none;
     margin-bottom: 50px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
 }
 
-#individualReportBox h2 {margin-top: 0;}
+#individualReportBox h2 {
+    margin-top: 0;
+    text-align: center;
+}
 
-/* استایل فرم به صورت افقی و چیدن المان‌ها از راست به چپ */
+/*  --- = فرم انتخاب گزارش مرخصی ---  */
+/*  --- = فرم انتخاب گزارش مرخصی ---  */
+/*  --- = فرم انتخاب گزارش مرخصی ---  */
 .entekhab-form {
     display: flex;
     align-items: center; /* برای تراز عمودی درست */
@@ -1046,7 +1266,7 @@ html, body {
 
 /* استایل فیلدهای تاریخ */
 input[type="text"] {
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     padding: 8px;
     font-size: 14px;
     border-radius: 10px;
@@ -1071,9 +1291,9 @@ form button {
 
 form button:hover {background-color: #506bff;}
 
-/* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی */
-/* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی */
-/* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی *//* جدول گزارش انفرادی */
+/*  --- = جدول گزارش انفرادی ---  */
+/*  --- = جدول گزارش انفرادی ---  */
+/*  --- = جدول گزارش انفرادی ---  */
 
 .individual-report-table {
     width: 100%;
@@ -1088,9 +1308,9 @@ form button:hover {background-color: #506bff;}
 
 /* استایل برای ردیف عنوان */
 .individual-report-table thead tr {
-    background-color: #7d91ff;
-    color: black;
-    font-family: 'Yekan';
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
+    font-family: 'Vazir';
     direction: rtl;
 }
 
@@ -1126,7 +1346,7 @@ form button:hover {background-color: #506bff;}
 
 #downloadReportBtn {
     display: none;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     padding: 10px 20px;
     background-color: #6c9ec7;
     color: white;
@@ -1150,58 +1370,73 @@ form button:hover {background-color: #506bff;}
     cursor: pointer;
     color: #fff;
     background-color: transparent; /* حذف رنگ پس‌زمینه */
+    background: #fff;
+    box-shadow: unset;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     position: relative; /* برای نمایش tooltip در مکان درست */
+    overflow: visible;
+    z-index: 3;
+    vertical-align: middle;
 }
 
 /* استایل هاور */
-.edit-btn:hover, .trash-icon:hover {background-color: #f1f1f1; /* رنگ پس‌زمینه هنگام هاور */}
+.edit-btn:hover, .trash-icon:hover {
+    background-color: #f1f1f1; /* رنگ پس‌زمینه هنگام هاور */
+    z-index: 30;
+}
 
 /* استایل برای متن tooltip */
 .tooltip-text-table {
     visibility: hidden;
     width: 50px;
     height: 30px;
-    background-color: rgba(0, 0, 0, 0.8); /* پس‌زمینه تیره برای tooltip */
-    color: #fff; /* رنگ متن */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
     text-align: center;
     border-radius: 5px;
     padding: 5px;
     position: absolute;
-    top: 30px; /* موقعیت tooltip بالاتر از آیکون */
+    top: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
     font-size: 12px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     opacity: 0;
     transition: opacity 0.3s;
-    z-index: 1000; /* بالاتر از سایر اجزاء */
+    z-index: 20;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
-/* فلش کوچک برای بالا */
 .tooltip-text-table::after {
     content: "";
     position: absolute;
-    top: -5px; /* بالا‌تر از tooltip */
+    top: -5px;
     left: 50%;
     transform: translateX(-50%);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid rgba(0, 0, 0, 0.8); /* رنگ فلش */
+    border-bottom: 5px solid rgba(0, 0, 0, 0.8);
 }
 
 /* نمایش tooltip هنگام هاور */
-.edit-btn:hover .tooltip-text-table, .trash-icon:hover .tooltip-text-table {
+.edit-btn:hover .tooltip-text-table,
+.trash-icon:hover .tooltip-text-table-del,
+.trash-icon-form:hover .tooltip-text-table-del {
     visibility: visible;
     opacity: 1;
 }
 
 /* استایل برای آیکون‌ها */
 .edit-btn img, .trash-icon img {
-    width: 20px; /* اندازه آیکون */
+    display: block;
+    width: 20px;
     height: 20px;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
 }
 
 /* استایل برای متن tooltip */
@@ -1209,32 +1444,22 @@ form button:hover {background-color: #506bff;}
     visibility: hidden;
     width: 40px;
     height: 30px;
-    background-color: rgba(0, 0, 0, 0.8); /* پس‌زمینه تیره برای tooltip */
-    color: #fff; /* رنگ متن */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
     text-align: center;
     border-radius: 5px;
     padding: 5px;
     position: absolute;
-    top: 30px; /* موقعیت tooltip بالاتر از آیکون */
+    bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
     font-size: 12px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     opacity: 0;
     transition: opacity 0.3s;
-    z-index: 1000; /* بالاتر از سایر اجزاء */
-}
-
-/* فلش کوچک برای بالا */
-.tooltip-text-table-del::after {
-    content: "";
-    position: absolute;
-    top: -5px; /* بالا‌تر از tooltip */
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid rgba(0, 0, 0, 0.8); /* رنگ فلش */
+    z-index: 20;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 /* نمایش tooltip هنگام هاور */
@@ -1256,6 +1481,13 @@ form button:hover {background-color: #506bff;}
     justify-content: center;
     align-items: center;
     position: relative; /* برای نمایش tooltip در مکان درست */
+    overflow: visible;
+    z-index: 3;
+    vertical-align: middle;
+}
+
+.trash-icon-form:hover {
+    z-index: 30;
 }
 
 /* استایل برای مدال تایید حذف */
@@ -1299,7 +1531,7 @@ form button:hover {background-color: #506bff;}
     transition: background-color 0.3s ease;
     margin-right: 20%;
     font-weight: bold;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 .cancel-btn {
@@ -1312,7 +1544,7 @@ form button:hover {background-color: #506bff;}
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-weight: bold;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 /* دکمه بستن مدال */
@@ -1324,7 +1556,7 @@ form button:hover {background-color: #506bff;}
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #fff;
     text-decoration: none;
     cursor: pointer;
 }
@@ -1367,10 +1599,69 @@ form button:hover {background-color: #506bff;}
     color: white;
     border: none;
     padding: 3px 10px;
+
+/* ===== status dropdown adjustments ===== */
+/* Ensure table cells and containers allow the dropdown to overflow and position it absolutely */
+.request-table td {
+    overflow: visible; /* allow dropdown to extend outside cell */
+}
+
+.status-container {
+    position: relative; /* anchor for absolute dropdown */
+    overflow: visible;
+}
+
+.status-navbar {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.status-dropdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 140px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+    display: none; /* toggled by JS */
+    z-index: 2147483647;
+    direction: rtl;
+    text-align: right;
+    overflow: visible;
+    pointer-events: auto;
+}
+
+.status-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.status-option:hover {
+    background-color: #f8fafc;
+}
+
+/* Make sure parent containers don't clip the dropdown */
+.management-box,
+#vacationRequestBox,
+.request-table,
+.request-table tbody,
+.request-table tr {
+    overflow: visible !important;
+}
+
+/* In some browsers table cells create clipping; force visible on cells */
+.request-table td,
+.request-table th {
+    overflow: visible !important;
+}
+
     cursor: pointer;
     font-size: 14px;
     border-radius: 4px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 .close-btn-virayesh:hover {
@@ -1415,7 +1706,7 @@ form button:hover {background-color: #506bff;}
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     width: 100%;
     direction: rtl;
 }
@@ -1430,7 +1721,7 @@ form button:hover {background-color: #506bff;}
     font-size: 16px;
     border-radius: 5px;
     align-self: flex-end;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     margin: 15px;
 }
 
@@ -1502,7 +1793,7 @@ form button:hover {background-color: #506bff;}
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     width: 100%;
     direction: rtl;
 }
@@ -1535,15 +1826,77 @@ form button:hover {background-color: #506bff;}
     margin: 0 auto; /* برای وسط چین کردن فرم در صفحه */
 }
 
-.save-btn-krbrjad {
-    background-color: #7f92fa;
-    color: white;
+form button,
+.save-btn,
+.save-btn-krbrjad,
+.confirm-changes-btn,
+#downloadReportBtn,
+#downloadOvertimeReport,
+#downloadHourlyPassReport,
+#extractButton,
+#submitReport,
+#submitHourlyPassReport,
+#generategozareshmrkReportBtn,
+#zakhireHaftegiKarbar,
+#confirmDeleteBtn,
+#sabt-btn,
+.btn-confirm,
+.ok-btn,
+.show-shift-krbrinmah,
+.add-shift-krbrinmah,
+.update-button,
+.close-btn-peygham,
+.close-btn-virayesh {
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
     border: none;
-    padding: 6px 18px;
-    cursor: pointer;
-    font-size: 16px;
     border-radius: 20px;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     font-family: 'Vazir';
+    box-shadow: 0 10px 18px rgba(34, 197, 94, 0.22);
+}
+
+form button:hover,
+.save-btn:hover,
+.save-btn-krbrjad:hover,
+.confirm-changes-btn:hover,
+#downloadReportBtn:hover,
+#downloadOvertimeReport:hover,
+#downloadHourlyPassReport:hover,
+#extractButton:hover,
+#submitReport:hover,
+#submitHourlyPassReport:hover,
+#generategozareshmrkReportBtn:hover,
+#zakhireHaftegiKarbar:hover,
+#confirmDeleteBtn:hover,
+#sabt-btn:hover,
+.btn-confirm:hover,
+.ok-btn:hover,
+.show-shift-krbrinmah:hover,
+.add-shift-krbrinmah:hover,
+.update-button:hover,
+.close-btn-peygham:hover,
+.close-btn-virayesh:hover {
+    filter: brightness(1.04);
+}
+
+.update-button:active,
+.confirm-changes-btn:active,
+#sabt-btn:active,
+.btn-confirm:active,
+.ok-btn:active,
+.show-shift-krbrinmah:active,
+.add-shift-krbrinmah:active,
+.save-btn-krbrjad:active,
+.save-btn:active,
+form button:active {
+    transform: scale(0.97);
+}
+
+.save-btn-krbrjad {
+    padding: 6px 18px;
+    font-size: 16px;
     position: relative;
     bottom: 70px;
     left: 0;
@@ -1551,31 +1904,29 @@ form button:hover {background-color: #506bff;}
     box-shadow: 0 0px 5px 3px rgba(0, 0, 0, 0.2);
 }
 
-.save-btn-krbrjad:hover {background-color: #506bff;}
-
-/* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها */
-/* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها */
-/* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها *//* باکس مدیریت اضافه کاری ها */
-
+/*  --- = مدیریت اضافه کاری ---  */
+/*  --- = مدیریت اضافه کاری ---  */
+/*  --- = مدیریت اضافه کاری ---  */
 #overtimeBox {
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    margin-top: 3.79% !important; /* فاصله از بالای صفحه */
 }
 
 #overtimeBox h2{
     text-align: center;
 }
 
-/* جدول مدیریت درخواست اضافه کاری کاربران *//* جدول مدیریت درخواست اضافه کاری کاربران *//* جدول مدیریت درخواست اضافه کاری کاربران */
-/* جدول مدیریت درخواست اضافه کاری کاربران *//* جدول مدیریت درخواست اضافه کاری کاربران *//* جدول مدیریت درخواست اضافه کاری کاربران */
-/* جدول مدیریت درخواست اضافه کاری کاربران *//* جدول مدیریت درخواست اضافه کاری کاربران *//* جدول مدیریت درخواست اضافه کاری کاربران */
-
+/*  --- = جدول درخواست اضافه کاری ---  */
+/*  --- = جدول درخواست اضافه کاری ---  */
+/*  --- = جدول درخواست اضافه کاری ---  */
 .overTime-table {
     width: 100%;
     border-collapse: separate; /* برای اعمال border-radius لازم است */
@@ -1587,8 +1938,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .overTime-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .overTime-table th:first-child {
@@ -1629,18 +1980,17 @@ form button:hover {background-color: #506bff;}
     background-color: #f9f9f9;
 }
 
-/* باکس گزارش کلی اضافه کاری کاربران *//* باکس گزارش کلی اضافه کاری کاربران *//* باکس گزارش کلی اضافه کاری کاربران */
-/* باکس گزارش کلی اضافه کاری کاربران *//* باکس گزارش کلی اضافه کاری کاربران *//* باکس گزارش کلی اضافه کاری کاربران */
-/* باکس گزارش کلی اضافه کاری کاربران *//* باکس گزارش کلی اضافه کاری کاربران *//* باکس گزارش کلی اضافه کاری کاربران */
-
+/*  --- = مدیریت گزارش کلی اضافه کاری ---  */
+/*  --- = مدیریت گزارش کلی اضافه کاری ---  */
+/*  --- = مدیریت گزارش کلی اضافه کاری ---  */
 #OverTimeReportBox {
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -1649,9 +1999,9 @@ form button:hover {background-color: #506bff;}
     margin-top: 0;
 }
 
-/* جدول گزارش کلی اضافه کاری کاربران *//* جدول گزارش کلی اضافه کاری کاربران *//* جدول گزارش کلی اضافه کاری کاربران */
-/* جدول گزارش کلی اضافه کاری کاربران *//* جدول گزارش کلی اضافه کاری کاربران *//* جدول گزارش کلی اضافه کاری کاربران */
-/* جدول گزارش کلی اضافه کاری کاربران *//* جدول گزارش کلی اضافه کاری کاربران *//* جدول گزارش کلی اضافه کاری کاربران */
+/*  --- = جدول گزارش کلی اضافه کاری ---  */
+/*  --- = جدول گزارش کلی اضافه کاری ---  */
+/*  --- = جدول گزارش کلی اضافه کاری ---  */
 
 .overTime-allreport-table {
     width: 90%;
@@ -1665,8 +2015,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .overTime-allreport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .overTime-allreport-table th:first-child {
@@ -1719,18 +2069,18 @@ form button:hover {background-color: #506bff;}
     width: 10%;
 }
 
-/* باکس گزارش انفرادی اضافه کاری کاربران *//* باکس گزارش انفرادی اضافه کاری کاربران *//* باکس گزارش انفرادی اضافه کاری کاربران */
-/* باکس گزارش انفرادی اضافه کاری کاربران *//* باکس گزارش انفرادی اضافه کاری کاربران *//* باکس گزارش انفرادی اضافه کاری کاربران */
-/* باکس گزارش انفرادی اضافه کاری کاربران *//* باکس گزارش انفرادی اضافه کاری کاربران *//* باکس گزارش انفرادی اضافه کاری کاربران */
+/*  --- = گزارش انفرادی اضافه کاری ---  */
+/*  --- = گزارش انفرادی اضافه کاری ---  */
+/*  --- = گزارش انفرادی اضافه کاری ---  */
 
 #OverTimeIndivisualReportBox {
+    display: none;
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
-    display: none;
-    border-radius: 8px;
+    background-color: #ffffff;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -1739,9 +2089,9 @@ form button:hover {background-color: #506bff;}
     margin-top: 0;
 }
 
-/* جدول گزارش انفرادی اضافه کاری کاربران *//* جدول گزارش انفرادی اضافه کاری کاربران *//* جدول گزارش انفرادی اضافه کاری کاربران */
-/* جدول گزارش انفرادی اضافه کاری کاربران *//* جدول گزارش انفرادی اضافه کاری کاربران *//* جدول گزارش انفرادی اضافه کاری کاربران */
-/* جدول گزارش انفرادی اضافه کاری کاربران *//* جدول گزارش انفرادی اضافه کاری کاربران *//* جدول گزارش انفرادی اضافه کاری کاربران */
+/*  --- = جدول گزارش انفرادی اضافه کاری ---  */
+/*  --- = جدول گزارش انفرادی اضافه کاری ---  */
+/*  --- = جدول گزارش انفرادی اضافه کاری ---  */
 
 .overTimeindivisualReport-table {
     width: 100%;
@@ -1755,8 +2105,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .overTimeindivisualReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .overTimeindivisualReport-table th:first-child {
@@ -1829,7 +2179,7 @@ form button:hover {background-color: #506bff;}
     font-size: 14px;
     border-radius: 10px;
     border: 1px solid #919191;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 #usernameGozareshHozoor {
@@ -1837,7 +2187,7 @@ form button:hover {background-color: #506bff;}
     font-size: 14px;
     border-radius: 10px;
     border: 1px solid #919191;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 #usernameHourlypass {
@@ -1845,7 +2195,7 @@ form button:hover {background-color: #506bff;}
     font-size: 14px;
     border-radius: 10px;
     border: 1px solid #919191;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 .confirm-changes-btn {
@@ -1858,7 +2208,7 @@ form button:hover {background-color: #506bff;}
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 .confirm-changes-btn:hover {
@@ -1877,13 +2227,12 @@ form button:hover {background-color: #506bff;}
     border: 1px solid #919191;
 }
 
-/* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی *//* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی *//* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی */
-/* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی *//* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی *//* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی */
-/* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی *//* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی *//* تنظیمات دکمه دریافت گزارش اضافه کاری انفرادی */
-
+/*  --- = دکمه دانلود گزارش اضافه کاری ---  */
+/*  --- = دکمه دانلود گزارش اضافه کاری ---  */
+/*  --- = دکمه دانلود گزارش اضافه کاری ---  */
 #downloadOvertimeReport {
     display: none;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     padding: 10px 20px;
     background-color: #6c9ec7;
     color: white;
@@ -1901,19 +2250,20 @@ form button:hover {background-color: #506bff;}
     background-color: #4e7a9e;
 }
 
-/* باکس درخواست های کاربران جهت پاس های ساعتی *//* باکس درخواست های کاربران جهت پاس های ساعتی */
-/* باکس درخواست های کاربران جهت پاس های ساعتی *//* باکس درخواست های کاربران جهت پاس های ساعتی */
-/* باکس درخواست های کاربران جهت پاس های ساعتی *//* باکس درخواست های کاربران جهت پاس های ساعتی */
-
+/*  --- = مدیریت پاس های ساعتی ---  */
+/*  --- = مدیریت پاس های ساعتی ---  */
+/*  --- = مدیریت پاس های ساعتی ---  */
 #hourlyPassBox {
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 3.79% !important; /* فاصله از بالای صفحه */
 }
 
 #hourlyPassBox h2{
@@ -1921,23 +2271,21 @@ form button:hover {background-color: #506bff;}
 }
 
 /*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی *//*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی */
-/*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی *//*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی */
-/*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی *//*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی */
 
 .hourlyPassReport-table {
     width: 100%;
     border-collapse: separate; /* برای اعمال border-radius لازم است */
     border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
     border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
+    overflow: hidden; /* حفظ گوشه‌های گرد در حین hover */
     background-color: #ffffff; /* پس‌زمینه جدول */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
     margin-top: 20px;
 }
 
 .hourlyPassReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .hourlyPassReport-table th:first-child {
@@ -1978,21 +2326,21 @@ form button:hover {background-color: #506bff;}
     background-color: #f9f9f9;
 }
 
-/* باکس گزارش کلی پاس های ساعتی کاربران *//* باکس گزارش کلی پاس های ساعتی کاربران *//* باکس گزارش کلی پاس های ساعتی کاربران */
-/* باکس گزارش کلی پاس های ساعتی کاربران *//* باکس گزارش کلی پاس های ساعتی کاربران *//* باکس گزارش کلی پاس های ساعتی کاربران */
-/* باکس گزارش کلی پاس های ساعتی کاربران *//* باکس گزارش کلی پاس های ساعتی کاربران *//* باکس گزارش کلی پاس های ساعتی کاربران */
-
+/*  --- = گزارش کلی پاس های ساعتی ---  */
+/*  --- = گزارش کلی پاس های ساعتی ---  */
+/*  --- = گزارش کلی پاس های ساعتی ---  */
 #hourlyPassTotaluser {
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     flex-direction: column;
     align-items: center;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
 }
 
 #hourlyPassTotaluser h2 {
@@ -2000,9 +2348,9 @@ form button:hover {background-color: #506bff;}
     margin-top: 0;
 }
 
-/* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی */
-/* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی */
-/* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی *//* جدول گزارش کلی پاس های ساعتی */
+/*  --- = جدول گزارش کلی پاس های ساعتی ---  */
+/*  --- = جدول گزارش کلی پاس های ساعتی ---  */
+/*  --- = جدول گزارش کلی پاس های ساعتی ---  */
 
 .hourlyPassTotaluserReport-table {
     width: 87%;
@@ -2016,8 +2364,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .hourlyPassTotaluserReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .hourlyPassTotaluserReport-table th:first-child {
@@ -2058,18 +2406,18 @@ form button:hover {background-color: #506bff;}
     background-color: #f9f9f9;
 }
 
-/* باکس جدول گزارش گیری پاس های ساعتی انفرادی کاربران *//* باکس جدول گزارش گیری پاس های ساعتی انفرادی کاربران */
-/* باکس جدول گزارش گیری پاس های ساعتی انفرادی کاربران *//* باکس جدول گزارش گیری پاس های ساعتی انفرادی کاربران */
-/* باکس جدول گزارش گیری پاس های ساعتی انفرادی کاربران *//* باکس جدول گزارش گیری پاس های ساعتی انفرادی کاربران */
-
+/*  --- = گزارش انفرادی پاس های ساعتی ---  */
+/*  --- = گزارش انفرادی پاس های ساعتی ---  */
+/*  --- = گزارش انفرادی پاس های ساعتی ---  */
 #hourlyPassIndivisualuser {
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -2078,9 +2426,9 @@ form button:hover {background-color: #506bff;}
     margin-top: 0;
 }
 
-/* جدول گزارش گیری پاس های ساعتی انفرادی کاربران *//* جدول گزارش گیری پاس های ساعتی انفرادی کاربران */
-/* جدول گزارش گیری پاس های ساعتی انفرادی کاربران *//* جدول گزارش گیری پاس های ساعتی انفرادی کاربران */
-/* جدول گزارش گیری پاس های ساعتی انفرادی کاربران *//* جدول گزارش گیری پاس های ساعتی انفرادی کاربران */
+/*  --- = جدول گزارش انفرادی پاس های ساعتی ---  */
+/*  --- = جدول گزارش انفرادی پاس های ساعتی ---  */
+/*  --- = جدول گزارش انفرادی پاس های ساعتی ---  */
 
 .hourlyPassIndivisualuserReport-table {
     width: 100%;
@@ -2094,8 +2442,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .hourlyPassIndivisualuserReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .hourlyPassIndivisualuserReport-table th:first-child {
@@ -2138,7 +2486,7 @@ form button:hover {background-color: #506bff;}
 
 #downloadHourlyPassReport {
     display: none;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     padding: 10px 20px;
     background-color: #6c9ec7;
     color: white;
@@ -2156,29 +2504,29 @@ form button:hover {background-color: #506bff;}
     background-color: #4e7a9e;
 }
 
-/* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران */
-/* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران */
-/* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران *//* باکس مدیریت تیکت های کاربران */
-
+/*  --- = مدیریت تیکت ---  */
+/*  --- = مدیریت تیکت ---  */
+/*  --- = مدیریت تیکت ---  */
 #ticketBox {
     margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
     margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     margin-top: 2rem;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 3.79% !important; /* فاصله از بالای صفحه */
 }
 
 #ticketBox h2{
     text-align: center;
 }
 
-/* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران */
-/* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران */
-/* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران *//* جدول مدیریت تیکت های کاربران */
+/*  --- = جدول مدیریت تیکت کاربران ---  */
+/*  --- = جدول مدیریت تیکت کاربران ---  */
+/*  --- = جدول مدیریت تیکت کاربران ---  */
 
 .ticketUsersReport-table {
     width: 100%;
@@ -2192,8 +2540,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .ticketUsersReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .ticketUsersReport-table th:first-child {
@@ -2234,10 +2582,9 @@ form button:hover {background-color: #506bff;}
     background-color: #f9f9f9;
 }
 
-/* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت */
-/* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت */
-/* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت *//* تنظیمات جدول مدیریت تیکت ها در باکس مدیریت */
-
+/*  --- = جدول تیکت ها ---  */
+/*  --- = جدول تیکت ها ---  */
+/*  --- = جدول تیکت ها ---  */
 .karbr-ticketboxtable {
     width: 1%;
 }
@@ -2282,9 +2629,9 @@ form button:hover {background-color: #506bff;}
     color: white;
 }
 
-/* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام */
-/* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام */
-/* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام *//* تنظیمات تیکت ها و ارسال پیام */
+/*  --- = بخش تبدیل تیکت و پاپ‌آپ ---  */
+/*  --- = بخش تبدیل تیکت و پاپ‌آپ ---  */
+/*  --- = بخش تبدیل تیکت و پاپ‌آپ ---  */
 
 /* پس‌زمینه تاریک */
 .MoshahedeOverlay {
@@ -2329,7 +2676,7 @@ form button:hover {background-color: #506bff;}
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     font-size: 16px;
     margin-top: 10px;
     margin-left: 10px;
@@ -2368,7 +2715,7 @@ form button:hover {background-color: #506bff;}
     font-size: 17px;
     border: 1px solid #919090;
     border-radius: 8px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     padding: 5px 8px 5px 8px;
     box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.2);
     direction: rtl;
@@ -2439,18 +2786,19 @@ form button:hover {background-color: #506bff;}
     margin-left: auto;
 }
 
-/* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران */
-/* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران */
-/* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران *//* باکس مدیریت حضور و غیاب کاربران */
+/*  --- = باکس مدیریت حضور و غیاب ---  */
+/*  --- = باکس مدیریت حضور و غیاب ---  */
+/*  --- = باکس مدیریت حضور و غیاب ---  */
 
 #hozoorbox {
     width: 80%;
     padding: 20px;
-    background-color: #fbfff9;
-    margin-top: 3.7rem;
+    background-color: #ffffff;
+    margin-top: 3.79% !important;
     display: none;
     position: relative;
-    border-radius: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -2487,10 +2835,9 @@ form button:hover {background-color: #506bff;}
     width: 3%;
 }
 
-/* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب */
-/* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب */
-/* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب *//* تنظیمات جدول حضور و غیاب */
-
+/*  --- = مدیریت حضور و غیاب ---  */
+/*  --- = مدیریت حضور و غیاب ---  */
+/*  --- = مدیریت حضور و غیاب ---  */
 .hozoorUsersReport-table {
     width: 100%;
     border-collapse: separate; /* برای اعمال border-radius لازم است */
@@ -2503,8 +2850,8 @@ form button:hover {background-color: #506bff;}
 }
 
 .hozoorUsersReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
+    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
 }
 
 .hozoorUsersReport-table th:first-child {
@@ -2574,9 +2921,9 @@ form button:hover {background-color: #506bff;}
 .zmnkhrj2-hozoor-gzrsh {width: 2%;}
 .zmnvrd2-hozoor-gzrsh {width: 2%;}
 
-/* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران */
-/* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران */
-/* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران *//* تنظیمات باکس مجموعه ساعت کاری همکاران */
+/*  --- = تنظیمات مجموعه ساعت کاری همکاران ---  */
+/*  --- = تنظیمات مجموعه ساعت کاری همکاران ---  */
+/*  --- = تنظیمات مجموعه ساعت کاری همکاران ---  */
 
 #natigehHozoor {
 margin-left: 15%;
@@ -2584,10 +2931,10 @@ margin-left: 15%;
     width: 70%;
     z-index: 10;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     margin-top: 1.5rem;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -2623,16 +2970,16 @@ margin-left: 15%;
     cursor: pointer;
     font-size: 16px;
     border-radius: 20px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     position: absolute;
     box-shadow: 0 0px 5px 3px rgba(0, 0, 0, 0.2);
 }
 
 .gozareshNahaei:hover {background-color: #4e7a9e;}
 
-/* تنظیمات باکس تعریف ساعت های هفتگی کاربر *//* تنظیمات باکس تعریف ساعت های هفتگی کاربر *//* تنظیمات باکس تعریف ساعت های هفتگی کاربر */
-/* تنظیمات باکس تعریف ساعت های هفتگی کاربر *//* تنظیمات باکس تعریف ساعت های هفتگی کاربر *//* تنظیمات باکس تعریف ساعت های هفتگی کاربر */
-/* تنظیمات باکس تعریف ساعت های هفتگی کاربر *//* تنظیمات باکس تعریف ساعت های هفتگی کاربر *//* تنظیمات باکس تعریف ساعت های هفتگی کاربر */
+/*  --- = تنظیمات ساعت‌های هفتگی کاربر ---  */
+/*  --- = تنظیمات ساعت‌های هفتگی کاربر ---  */
+/*  --- = تنظیمات ساعت‌های هفتگی کاربر ---  */
 
 .overlaySaatHafteh {
     display: none;
@@ -2709,7 +3056,7 @@ margin-left: 15%;
 
 #closePopupSaatHaftehgi {
     background-color: red;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     margin-top: 2rem;
     margin-left: 3rem;
     position: absolute;
@@ -2720,14 +3067,14 @@ margin-left: 15%;
 }
 
 #zakhireHaftegiKarbar {
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     margin-top: 2rem;
     margin-left: 1rem;
 }
 
-/* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب */
-/* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب */
-/* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب *//* باکس ثبت دستی حضور و غیاب */
+/*  --- = ثبت دستی حضور و غیاب ---  */
+/*  --- = ثبت دستی حضور و غیاب ---  */
+/*  --- = ثبت دستی حضور و غیاب ---  */
 
 #sabtdst {
     margin-left: 15%;
@@ -2735,16 +3082,18 @@ margin-left: 15%;
     margin-bottom: 3rem;
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     margin-top: 6rem;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
+    text-align: center;
 }
 
 .vorodiha {
-    background-color: #7d91ff;
+    background: #41c3737d;
     border-radius: 13px;
     padding: 9px;
     font-weight: 700;
@@ -2764,7 +3113,7 @@ margin-left: 15%;
     font-size: 14px;
     border-radius: 10px;
     border: 1px solid #919191;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 #tarikh {
@@ -2822,7 +3171,7 @@ margin-left: 15%;
     border: none;
     cursor: pointer;
     padding: 0;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     border-radius: 4px;
     color: #418259;
     font-size: 15px;
@@ -2861,7 +3210,7 @@ margin-left: 15%;
     top: 100%; 
     left: 0;
     z-index: 999;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     justify-content: center;
     align-items: center;
     margin-top: 5px; 
@@ -2913,21 +3262,19 @@ margin-left: 15%;
 
 #sabt-btn {
     padding: 10px 20px;
-    background-color: #6c9ec7;
-    color: white;
     font-size: 14px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     margin-right: 20%;
     font-weight: bold;
     margin: 0;
 }
 
-/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
-/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
-/* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت *//* تنظیمات باکس پاپ اپ ثبت تیکت */
+/*  --- = پاپ‌آپ ثبت تیکت ---  */
+/*  --- = پاپ‌آپ ثبت تیکت ---  */
+/*  --- = پاپ‌آپ ثبت تیکت ---  */
 
 .morakhaci-sabt {
     position: fixed;
@@ -2978,7 +3325,7 @@ margin-left: 15%;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 .tikcet-popup-Req select {
@@ -2986,7 +3333,7 @@ margin-left: 15%;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     width: 100%;
     direction: rtl;
 }
@@ -2997,27 +3344,21 @@ margin-left: 15%;
 }
 
 .btn-confirm {
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
     font-size: 14px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     font-weight: bold;
     margin-top: 2%;
     margin-left: 3rem;
 }
 
-.btn-confirm:hover {
-    background-color: #218838;
-}
-
 .btn-cancel {
     background-color: #dc3545;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     padding: 10px 20px;
     color: white;
     font-size: 14px;
@@ -3044,26 +3385,291 @@ margin-left: 15%;
     width: 20px;
 }
 
-/* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه */
-/* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه */
-/* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه *//* تنظیمات جامع صفحه مدیریت سامانه */
+/*  --- = داشبورد ---  */
+/*  --- = داشبورد ---  */
+/*  --- = داشبورد ---  */
 
-/* استایل برای باکس‌های مدیریت */
-.management-box {
-    margin-left: auto; /* برای وسط‌چین کردن در سمت چپ */
-    margin-right: auto; /* برای وسط‌چین کردن در سمت راست */
-    width: 70%;
-    padding: 20px;
-    background-color: white;
-    display: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: start;
 }
 
-.management-box h2 {
-    color: #333;
-    text-align: center; /* وسط‌چین کردن متن */
-    margin-bottom: 20px; /* فاصله از پایین */
+.dashboard-grid--two-row {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+@media (max-width: 1200px) {
+    .dashboard-grid--two-row {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
+
+.dashboard-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+    border: 1px solid rgba(14, 165, 233, 0.16);
+    border-radius: 20px;
+    padding: 16px 18px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 6px;
+    height: stretch;
+}
+
+.dashboard-card--highlight {
+    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 16px 34px rgba(37, 99, 235, 0.2);
+}
+
+.dashboard-card .card-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #475569;
+}
+
+.dashboard-card--highlight .card-title {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.dashboard-card .card-value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+.dashboard-card--highlight .card-value {
+    color: #ffffff;
+}
+
+.dashboard-card .card-meta {
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.dashboard-card--highlight .card-meta {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.dashboard-chart-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+    min-height: 0;
+}
+
+.dashboard-chart-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f7fbff 100%);
+    border: 1px solid rgba(14, 165, 233, 0.16);
+    border-radius: 22px;
+    padding: 16px 18px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dashboard-chart-card .card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.dashboard-chart {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(60px, 1fr));
+    gap: 8px;
+    align-items: end;
+    min-height: 120px;
+    height: 100%;
+    width: 100%;
+}
+
+.chart-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    height: 100%;
+    min-height: 110px;
+}
+
+.dashboard-table-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f7fbff 100%);
+    border: 1px solid rgba(14, 165, 233, 0.16);
+    border-radius: 20px;
+    padding: 10px 12px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    overflow-x: auto;
+    overflow-y: visible;
+    min-height: 200px;
+    height: auto;
+}
+
+#dashboardBox {
+    display: flex;
+    flex-direction: column;
+    height: auto !important;
+    overflow: visible;
+    margin-top: 3.5% !important;
+    padding: 4px 2px 8px;
+}
+
+.dashboard-quick-panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 6px 0 14px;
+}
+
+.dashboard-quick-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+    border: 1px solid rgba(14, 165, 233, 0.16);
+    border-radius: 20px;
+    padding: 16px 18px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dashboard-quick-card--accent {
+    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 45%, #0ea5e9 100%);
+    color: #fff;
+    border-color: transparent;
+}
+
+.quick-card-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.quick-card-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.quick-card-meta {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.quick-card-btn {
+    margin-top: 6px;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.2);
+    color: inherit;
+    cursor: pointer;
+    font-family: 'Vazir', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+#dashboardBox > h2 {
+    flex: none;
+    margin-bottom: 6px;
+}
+
+#dashboardBox > .dashboard-chart-row,
+#dashboardBox > .dashboard-grid:last-of-type {
+    flex: none;
+    min-height: auto;
+}
+
+#dashboardBox > .dashboard-grid:not(:last-of-type) {
+    flex: none;
+}
+
+.table-title {
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    padding: 3px 5px;
+    text-align: right;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.66rem;
+    color: #334155;
+}
+
+.dashboard-table th {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.dashboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.bar-fill {
+    width: 100%;
+    max-width: 52px;
+    height: 92px;
+    min-height: 92px;
+    background: linear-gradient(180deg, rgba(14, 165, 233, 0.12) 0%, rgba(15, 118, 110, 0.08) 100%);
+    border-radius: 16px;
+    padding: 3px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    flex: 0 0 auto;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.bar-value {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: linear-gradient(180deg, #0ea5e9 0%, #2563eb 100%);
+    border-radius: 12px 12px 0 0;
+    transition: height 0.2s ease;
+}
+
+.bar-value.overtime {
+    background: linear-gradient(180deg, #38bdf8 0%, #0f766e 100%);
+}
+
+.bar-value.users {
+    background: linear-gradient(180deg, #2dd4bf 0%, #10b981 100%);
+}
+
+.bar-number {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.bar-label {
+    font-size: 0.68rem;
+    color: #475569;
+    text-align: center;
+    line-height: 1.3;
 }
 
 /* استایل برای پاپ‌آپ ورود */
@@ -3159,13 +3765,13 @@ margin-left: 15%;
 /* وضعیت انتظار تایید (زرد) */
 .status-navbar.pending {
     background-color: #ffbd2c;
-    color: black;
+    color: #fff;
     font-size: 13px;
 }
 
 .pending-status {
     background-color: #ffbd2c;
-    color: black;
+    color: #fff;
     font-size: 13px;
 }
 
@@ -3207,13 +3813,16 @@ margin-left: 15%;
     margin-top: 5px;
     background-color: white;
     max-height: 200px; /* محدود کردن ارتفاع dropdown */
-    overflow-y: auto; /* فعال کردن اسکرول عمودی */
+    overflow-y: auto;
+    width: 100%; /* فعال کردن اسکرول عمودی */
+    flex-direction: column; /* اطمینان از چیدمان عمودی گزینه‌ها */
+    align-items: center; /* مرکزیت افقی گزینه‌ها */
 }
 
 /* تغییر رنگ پس‌زمینه برای هر گزینه خاص در dropdown */
 .status-dropdown .status-option.pending {
     background-color: #ffbd2c;
-    color: black;
+    color: #fff;
 }
 
 .status-dropdown .status-option.approved {
@@ -3239,11 +3848,11 @@ margin-left: 15%;
     transition: background-color 0.3s ease;
     border-radius: 25px;
     margin-top: 4px;
+    width: 96%;
 }
 
 .update-button {
-    background-color: #d3d3d3;
-    color: #000;
+    color: #fff;
     border: none;
     border-radius: 20px;
     padding: 2px 20px;
@@ -3251,16 +3860,15 @@ margin-left: 15%;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
 }
 
 .update-button:hover {
-    background-color: #a9a9a9; /* رنگ خاکستری تیره‌تر هنگام هاور */
+    background-color: #506bff;
 }
 
 .update-button:active {
-    background-color: #808080; /* رنگ خاکستری تیره‌تر هنگام کلیک */
-    transform: scale(0.95); /* کمی کوچک‌تر شدن دکمه هنگام کلیک */
+    transform: scale(0.95);
 }
 
 /* استایل برای متن tooltip */
@@ -3274,21 +3882,23 @@ margin-left: 15%;
     border-radius: 5px;
     padding: 5px;
     position: absolute;
-    margin-top: 8px;
-    margin-left: 0px;
+    top: calc(100% + 8px);
+    left: 50%;
     transform: translateX(-50%);
     font-size: 12px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     opacity: 0;
     transition: opacity 0.3s;
-    z-index: 200;
+    z-index: 9999;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 /* فلش کوچک برای بالا */
 .tooltip-text-table-del::after {
     content: "";
     position: absolute;
-    top: -5px; /* بالا‌تر از tooltip */
+    top: -5px;
     left: 50%;
     transform: translateX(-50%);
     border-left: 5px solid transparent;
@@ -3311,7 +3921,7 @@ margin-left: 15%;
     margin-left: 47px;
     transform: translateX(-50%);
     font-size: 12px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 200;
@@ -3343,7 +3953,7 @@ margin-left: 15%;
     margin-left: 77px;
     transform: translateX(-50%);
     font-size: 12px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 200;
@@ -3376,7 +3986,8 @@ margin-left: 15%;
 }
 
 /* استایل برای دکمه‌های تغییرات */
-.trash-btn, .view-btn, .check-btn {
+.trash-btn, .view-btn, .check-btn,
+.edit-btn, .trash-icon {
     padding: 5px;
     font-size: 0.9em;
     margin: 2px;
@@ -3384,11 +3995,12 @@ margin-left: 15%;
     border-radius: 5px;
     cursor: pointer;
     color: #fff;
-    background-color: transparent; /* حذف رنگ پس‌زمینه */
+    background-color: transparent;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* برای نمایش tooltip در مکان درست */
+    position: relative;
+    overflow: visible;
 }
 
 /* استایل هاور */
@@ -3419,18 +4031,14 @@ margin-left: 15%;
 
 .ok-btn {
     padding: 4px 15px;
-    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     font-size: 16px;
     margin-top: 10px;
     margin-left: 60px;
-}
-.ok-btn:hover {
-    background-color: #439446;
 }
 
 .cancel-btn-ticket-karbar {
@@ -3440,7 +4048,7 @@ margin-left: 15%;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     font-size: 16px;
     margin-top: 10px;
     margin-left: 42px;
@@ -3455,33 +4063,52 @@ margin-left: 15%;
     color: #721c24 !important;
 }
 
-/* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران */
-/* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران */
-/* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران *//* باکس مدیریت شیفت های کاربران */
-
+/*  --- = مدیریت شیفت ماهانه پرسنل ---  */
+/*  --- = مدیریت شیفت ماهانه پرسنل ---  */
+/*  --- = مدیریت شیفت ماهانه پرسنل ---  */
 #shiftBox {
     margin-left: auto;
     margin-right: auto;
     margin-top: 10rem;
     width: 70%;
     padding: 20px;
-    background-color: #fbfff9;
+    background-color: #ffffff;
     display: none;
-    border-radius: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    text-align: center;
+    margin-top: 3.79% !important;
 }
 
+/*  --- = فرم و جدول شیفت‌ها ---  */
+/*  --- = فرم و جدول شیفت‌ها ---  */
+/*  --- = فرم و جدول شیفت‌ها ---  */
+
 .show-shift-krbrinmah {
-    background-color: #6c9ec7;
     color: white;
     border: none;
     padding: 6px 18px;
     cursor: pointer;
     font-size: 16px;
     border-radius: 20px;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     position: relative;
     box-shadow: 0 0px 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+.add-shift-krbrinmah {
+    color: white;
+    border: none;
+    padding: 6px 18px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 20px;
+    font-family: 'Vazir';
+    position: relative;
+    box-shadow: 0 0px 5px 3px rgba(0, 0, 0, 0.2);
+    width: 13%;
 }
 
 .form-container-shift {
@@ -3497,6 +4124,7 @@ margin-left: 15%;
     padding: 15px;
     background: white;
     box-shadow: 0px 0px 13px rgba(0, 0, 0, 0.2);
+    width: 100%;
 }
 
 .form-shift-krbr {
@@ -3511,9 +4139,9 @@ margin-left: 15%;
 }
 
 
-/* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت *//* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت */
-/* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت *//* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت */
-/* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت *//* توابع معرفی اندازه های مختلف در نمایشگر های متفاوت */
+/*  --- = قوانین پاسخ‌گرا ---  */
+/*  --- = قوانین پاسخ‌گرا ---  */
+/*  --- = قوانین پاسخ‌گرا ---  */
 
 @media (min-width: 1400px) and (max-width: 1680px) {
     form button {
@@ -3548,7 +4176,9 @@ margin-left: 15%;
 }
 
 
-/* ==================== مدیریت شیفت‌های ماهانه پرسنل ==================== */
+/*  --- = جدول‌ها و Popup شیفت‌ها ---  */
+/*  --- = جدول‌ها و Popup شیفت‌ها ---  */
+/*  --- = جدول‌ها و Popup شیفت‌ها ---  */
 
 #shiftBox #shiftsTable {
     display: table;
@@ -3722,6 +4352,9 @@ margin-left: 15%;
     background: #ddd;
 }
 
+/*  --- = ابزارک‌های مدیریت ---  */
+/*  --- = ابزارک‌های مدیریت ---  */
+/*  --- = ابزارک‌های مدیریت ---  */
 .management-box {
     position: static !important;
     top: auto !important;
@@ -3729,15 +4362,26 @@ margin-left: 15%;
     bottom: auto !important;
     left: auto !important;
     transform: none !important;
-    flex: 0 0 auto;
-    width: min(78%, 1180px) !important;
-    max-width: calc(100% - 160px);
+    transform-origin: left center;
+    width: min(88%, 100%) !important;
+    max-width: calc(100% - 80px);
     height: auto !important;
     min-height: 0 !important;
-    margin: 0 auto 24px !important;
+    margin: 0 auto 4px auto !important;
     overflow-x: auto;
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
+    transition: transform 0.25s ease;
+}
+
+.page-shell.sidebar-expanded .management-box {
+    transform: scaleX(0.92) !important;
+}
+
+.page-shell.sidebar-expanded .management-box .dashboard-grid,
+.page-shell.sidebar-expanded .management-box .dashboard-chart-row {
+    transform: none;
+    opacity: 1;
 }
 
 .management-box table {
@@ -3749,7 +4393,6 @@ margin-left: 15%;
 .management-box textarea {
     max-width: 100%;
 }
-
 
 
 #natigehHozoor {
@@ -3790,7 +4433,47 @@ table thead tr td {
 
 @media (max-width: 768px) {
 
-    .koleObject {
+    .admin-topbar-modern {
+        width: 100%;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 11px;
+        position: unset;
+    }
+
+    .admin-topbar-modern .topbar-actions {
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .topbar-user {
+        max-width: none;
+    }
+
+    .topbar-clock-pill {
+        width: auto;
+        min-width: 120px;
+    }
+
+    .sidebar-top-card {
+        position: relative;
+        width: min(100%, 81%);
+        margin-top: 2%;
+        margin-right: 17%;
+        top: unset;
+        right: unset;
+        padding: 3% 1.5%;
+    }
+
+    .sidebar-top-card-content {
+        gap: 8px;
+    }
+
+    .topbar-user-info {
+        display: none;
+    }
+
+    .page-shell {
         width: 100%;
         height: 100%;
         margin: 0 auto;
@@ -3820,17 +4503,6 @@ table thead tr td {
         align-items: center;
         height: max-content;
         width: 100%;
-    }
-
-    .navarha {
-        width: 100%;
-        height: 100%;
-        margin: 0 auto;
-        display: flex;
-        gap: 82%;
-        justify-content: center;
-        align-items: center;
-        padding: 120px 3px 0 3px;
     }
 
     .leftSidebar {
@@ -3869,11 +4541,13 @@ table thead tr td {
     }
 
     #userInfoBox {
-        margin-top: 0;
-        width: 76%;
-        padding: 3px 14px 14px 14px;
-        position: absolute;
-        top: 22rem;
+        left: 1.3% !important;
+        top: 1rem !important;
+        position: relative !important;
+        width: min(80%, 1180px) !important;
+        max-width: calc(100% - 20%) !important;
+        margin: unset !important;
+        padding: 10px !important;
     }
 
     #userInfoBox h2 {
@@ -3921,9 +4595,13 @@ table thead tr td {
     }
 
     #newUserBox {
-        width: 18.2rem;
-        margin-top: 2.8rem;
-        height: 21.5rem;
+        left: 1.3% !important;
+        top: 2rem !important;
+        position: relative !important;
+        width: min(80%, 1180px) !important;
+        max-width: calc(100% - 20%) !important;
+        margin: unset !important;
+        padding: 10px !important;
     }
 
     #newUserBox h2 {
@@ -4545,19 +5223,6 @@ table thead tr td {
         padding: 4px 11px;
     }
 
-    .koleObject {
-        padding-top: 12px;
-        padding-bottom: 24px;
-    }
-
-    .management-box {
-        width: calc(100% - 144px) !important;
-        max-width: none;
-        margin-bottom: 16px !important;
-        padding: 14px !important;
-        border-radius: 12px;
-    }
-
     .entekhab-form,
     #individualOvertimeReportForm,
     #individualHourlyPassReportForm,
@@ -4624,7 +5289,7 @@ table thead tr td {
         height: auto;
     }
 
-    .koleObject {
+    .page-shell {
         display: block;
         width: 100%;
         min-height: 100vh;
@@ -4633,20 +5298,13 @@ table thead tr td {
     }
 
     .navarha {
-        position: static;
-        display: block;
-        width: auto;
-        height: 0;
-        margin: 0;
-        padding: 0;
-        background: transparent;
-        box-shadow: none;
+        display: flex;
+        justify-content: center;
     }
 
     .rightSidebar {
         position: fixed;
-        top: 4.5rem;
-        right: 4px;
+        top: 5.3rem;
         left: auto;
         bottom: 10px;
         width: 18vw;
@@ -4677,17 +5335,6 @@ table thead tr td {
         min-width: 0;
     }
 
-    .menu-toggle {
-        min-height: 40px;
-        padding: 0 0 10px 0;
-        margin-bottom: 8px;
-    }
-
-    .menu-icon {
-        width: 26px;
-        height: 26px;
-    }
-
     .icon-container {
         justify-content: center;
         min-width: 0;
@@ -4712,5 +5359,529 @@ table thead tr td {
 
     .rightSidebar.open .icon-label {
         display: inline-flex;
+    }
+}
+
+/* Responsive mobile experience: additive overrides to preserve desktop UI. */
+.mobile-menu-toggle,
+.mobile-sidebar-close,
+.mobile-sidebar-overlay {
+    display: none;
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+    .management-box {
+        width: calc(100% - 108px) !important;
+        max-width: calc(100% - 108px);
+        margin-left: 20px !important;
+        margin-right: 88px !important;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-chart-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    html,
+    body,
+    .page-shell {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    body.mobile-sidebar-open {
+        overflow: hidden;
+    }
+
+    .page-shell {
+        padding: 76px 12px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 100vh;
+    }
+
+    .admin-topbar-modern {
+        position: fixed;
+        inset: 0 0 auto 0;
+        width: 100%;
+        min-height: 64px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        background: #f8fafc;
+        border-bottom: 1px solid #e4e7ec;
+        z-index: 700;
+        pointer-events: auto;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 1px solid #e4e7ec;
+        border-radius: 12px;
+        background: #fff;
+        color: #0f172a;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        flex: 0 0 auto;
+        cursor: pointer;
+    }
+
+    .mobile-menu-toggle span {
+        width: 20px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+        display: block;
+    }
+
+    .admin-topbar-modern .topbar-actions {
+        width: auto;
+        min-width: 0;
+        flex: 1;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    .topbar-clock-pill {
+        width: auto;
+        min-width: 0;
+        max-width: 128px;
+        padding: 7px 9px;
+        gap: 6px;
+        font-size: 11px;
+        flex-shrink: 1;
+    }
+
+    .topbar-icon-btn {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .topbar-user {
+        width: 46px;
+        height: 46px;
+        padding: 4px;
+        flex: 0 0 auto;
+    }
+
+    .topbar-avatar-wrap,
+    .topbar-avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    .topbar-user .chevron-icon,
+    .topbar-user-info {
+        display: none;
+    }
+
+    .notifications-panel,
+    .profile-dropdown {
+        max-width: calc(100vw - 24px);
+        left: 12px;
+        right: auto;
+    }
+
+    .sidebar-top-card {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: 16px;
+    }
+
+    .sidebar-top-card-content {
+        gap: 8px;
+    }
+
+    .sidebar-top-card-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .sidebar-top-card-title {
+        font-size: 0.9rem;
+    }
+
+    .sidebar-top-card-sub {
+        font-size: 0.72rem;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .mobile-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        display: block;
+        background: rgba(15, 23, 42, 0.42);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+        z-index: 710;
+    }
+
+    body.mobile-sidebar-open .mobile-sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .mobile-sidebar-close {
+        display: flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 12px;
+        background: #f1f5f9;
+        color: #0f172a;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        margin: 0 0 10px auto;
+        flex: 0 0 auto;
+    }
+
+    .rightSidebar,
+    .rightSidebar:hover {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(82vw, 320px);
+        max-width: min(82vw, 320px);
+        min-width: 0;
+        height: 100dvh;
+        padding: 16px 14px 24px;
+        border-radius: 0 0 0 22px;
+        transform: translateX(105%);
+        transition: transform 0.24s ease;
+        z-index: 720;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-shadow: -18px 0 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .rightSidebar.open,
+    .rightSidebar.open:hover {
+        width: min(82vw, 320px);
+        max-width: min(82vw, 320px);
+        transform: translateX(0);
+    }
+
+    .rightSidebar .icon-container,
+    .rightSidebar.open .icon-container {
+        min-height: 48px;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 10px 12px;
+        direction: rtl;
+        white-space: normal;
+    }
+
+    .icon-label,
+    .rightSidebar.open .icon-label {
+        display: inline-flex;
+        opacity: 1;
+        visibility: visible;
+        width: auto;
+        max-width: 190px;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .icon-container img,
+    .icon-container .hourlyPass-icon,
+    .icon-container .ticket-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .page-shell.sidebar-expanded .management-box {
+        transform: none !important;
+    }
+
+    .management-box,
+    #userInfoBox,
+    #newUserBox,
+    #shiftBox,
+    #vacationRequestBox,
+    #vacationBox,
+    #individualReportBox,
+    #overtimeBox,
+    #OverTimeReportBox,
+    #OverTimeIndivisualReportBox,
+    #hourlyPassBox,
+    #hourlyPassTotaluser,
+    #hourlyPassIndivisualuser,
+    #ticketBox,
+    #hozoorbox,
+    #natigehHozoor,
+    #sabtdst {
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        margin: 0 0 12px !important;
+        padding: 14px !important;
+        transform: none !important;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .dashboard-grid,
+    .dashboard-grid--two-row,
+    .dashboard-chart-row,
+    .boxha {
+        grid-template-columns: minmax(0, 1fr) !important;
+        display: grid;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .dashboard-card,
+    .dashboard-quick-card,
+    .dashboard-chart-card,
+    .dashboard-table-card,
+    #natigehHozoor .boxha div {
+        width: 100% !important;
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .management-box h2,
+    .dashboard-card span,
+    .dashboard-quick-card span,
+    .table-title {
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    .form-krbrjadid,
+    .form-shift-krbr,
+    .shift-details-form,
+    .entekhab-form,
+    #individualOvertimeReportForm,
+    #individualHourlyPassReportForm,
+    #gozareshHozoor,
+    #sabtdastHozoor,
+    .formsabtdast,
+    .formgozareshhozoor,
+    .hourlypassform,
+    .tikcet-popup-Req {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 10px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .form-row-krbrjadid,
+    .form-row {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .management-box label,
+    .form-row-krbrjadid label,
+    .form-row label {
+        width: 100% !important;
+        margin: 0 !important;
+        font-size: 13px;
+        line-height: 1.8;
+        text-align: right;
+    }
+
+    .management-box input,
+    .management-box select,
+    .management-box textarea,
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea,
+    .modal-content-sabtTicket input,
+    .modal-content-sabtTicket select,
+    .modal-content-sabtTicket textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 44px;
+        margin: 0 !important;
+        padding: 9px 11px;
+        font-size: 14px;
+    }
+
+    .management-box button,
+    .save-btn-krbrjad,
+    .update-button,
+    .status-navbar,
+    #downloadReportBtn,
+    #downloadOvertimeReport,
+    #downloadHourlyPassReport,
+    #submitReport,
+    #submitHourlyPassReport,
+    #extractButton,
+    #sabt-btn,
+    .modal-buttons button {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 13px;
+        white-space: normal;
+        max-width: 100%;
+    }
+
+    .modal-buttons,
+    .shift-popup-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .management-box table,
+    #userTable,
+    #shiftsTable,
+    .request-table,
+    .vacation-table,
+    .individual-report-table,
+    .overTime-table,
+    .overTime-allreport-table,
+    .overTimeindivisualReport-table,
+    .hourlyPassReport-table,
+    .hourlyPassTotaluserReport-table,
+    .hourlyPassIndivisualuserReport-table,
+    .ticketUsersReport-table,
+    .hozoorUsersReport-table,
+    .dashboard-table {
+        min-width: 680px;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .management-box th,
+    .management-box td {
+        min-width: 92px;
+        padding: 8px 10px;
+        font-size: 12px;
+        line-height: 1.7;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .modal,
+    .modal-content,
+    .modal-virayesh,
+    .modal-content-virayesh,
+    .modal-content-hazfPopup,
+    .modaleSabteTicket,
+    .modal-content-sabtTicket,
+    .popupSaatHaftehgi,
+    .shift-popup,
+    .profile-panel,
+    .MoshahdePopup {
+        left: 50% !important;
+        right: auto !important;
+        top: 50% !important;
+        width: min(100% - 24px, 540px) !important;
+        max-width: calc(100vw - 24px) !important;
+        max-height: calc(100dvh - 32px) !important;
+        margin: 0 !important;
+        transform: translate(-50%, -50%) !important;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .morakhaci-sabt,
+    .shift-popup-overlay,
+    .overlaySaatHafteh,
+    .modal-hazf,
+    .MoshahedeOverlay {
+        padding: 12px;
+    }
+
+    .time-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .time-picker,
+    #calendar-box {
+        max-width: calc(100vw - 36px);
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-shell {
+        padding: 72px 10px 20px;
+    }
+
+    .topbar-clock-pill {
+        display: none;
+    }
+
+    .mobile-menu-toggle,
+    .topbar-icon-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .rightSidebar,
+    .rightSidebar.open,
+    .rightSidebar:hover {
+        width: min(88vw, 310px);
+        max-width: min(88vw, 310px);
+    }
+
+    .management-box,
+    #userInfoBox,
+    #newUserBox,
+    #shiftBox,
+    #vacationRequestBox,
+    #vacationBox,
+    #individualReportBox,
+    #overtimeBox,
+    #OverTimeReportBox,
+    #OverTimeIndivisualReportBox,
+    #hourlyPassBox,
+    #hourlyPassTotaluser,
+    #hourlyPassIndivisualuser,
+    #ticketBox,
+    #hozoorbox,
+    #natigehHozoor,
+    #sabtdst {
+        padding: 12px !important;
     }
 }

@@ -6,6 +6,7 @@ import random
 import pdfkit
 import shutil
 from datetime import datetime, date, time, timedelta
+from collections import Counter
 from persiantools.jdatetime import JalaliDate
 from typing import List
 from io import BytesIO
@@ -18,6 +19,8 @@ from app.api.routes.auth import router as auth_router
 from app.services.presence_summary import build_presence_summary, time_is_inside_range
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
 from core.events import create_start_app_handler
+from core.number_format import convert_to_persian_numbers
+from core.password_utils import hash_password, insert_user_with_optional_hash
 
 from fastapi import FastAPI, HTTPException, Request, Form, Query, Response, Path, Body, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, StreamingResponse
@@ -49,9 +52,7 @@ conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
 cursor = conn.cursor()
 
 # تبدیل اعداد به اعداد فارسی
-def convert_to_persian_numbers(number):
-    persian_digits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
-    return ''.join([persian_digits[int(digit)] if digit.isdigit() else digit for digit in str(number)])
+# این تابع در فایل core/number_format.py تعریف شده و در این ماژول استفاده می‌شود.
 
 # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود
 # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود # تابع صفحه ورود
@@ -59,7 +60,7 @@ def convert_to_persian_numbers(number):
 
 @app.get("/login")
 async def home(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request, "login.html", {"request": request})
 
 # روت مربوط به پنل کاربری# روت مربوط به پنل کاربری# روت مربوط به پنل کاربری# روت مربوط به پنل کاربری# روت مربوط به پنل کاربری
 # روت مربوط به پنل کاربری# روت مربوط به پنل کاربری# روت مربوط به پنل کاربری# روت مربوط به پنل کاربری# روت مربوط به پنل کاربری
@@ -392,7 +393,7 @@ async def user_panel(request: Request):
     except Exception as exc:
         print("presence summary error:", exc)
 
-    return templates.TemplateResponse("user-panel.html", {
+    return templates.TemplateResponse(request, "user-panel.html", {
     "request": request,
     "approved_count": approved_count_farsi,
     "remaining_count": remaining_count_farsi,
@@ -1040,11 +1041,58 @@ def get_is_admin_from_session():
     # فرضی
     return True
 
-# تبدیل زمان به فرمت hh:mm
-def format_time(time_str):
-    time_parts = time_str.split(':')
-    hours = int(time_parts[0])
-    minutes = int(time_parts[1])
+# تبدیل زمان به ثانیه
+def parse_seconds(duration):
+    if duration is None:
+        return 0
+    if isinstance(duration, timedelta):
+        return int(duration.total_seconds())
+    if isinstance(duration, int):
+        return duration
+    if isinstance(duration, float):
+        return int(duration)
+    if isinstance(duration, time):
+        return duration.hour * 3600 + duration.minute * 60 + duration.second
+    if isinstance(duration, str):
+        duration = duration.strip()
+        if duration.isdigit():
+            return int(duration)
+        parts = duration.split(':')
+        if len(parts) == 2:
+            try:
+                return int(parts[0]) * 3600 + int(parts[1]) * 60
+            except ValueError:
+                return 0
+        if len(parts) == 3:
+            try:
+                return int(parts[0]) * 3600 + int(parts[1]) * 60 + int(parts[2])
+            except ValueError:
+                return 0
+    return 0
+
+
+def safe_int(value, default=0):
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value)
+    if isinstance(value, timedelta):
+        return int(value.total_seconds())
+    if isinstance(value, time):
+        return value.hour * 3600 + value.minute * 60 + value.second
+    if isinstance(value, str):
+        value = value.strip()
+        try:
+            return int(value)
+        except ValueError:
+            return parse_seconds(value)
+    return default
+
+# تبدیل ثانیه به فرمت hh:mm
+def format_time(seconds):
+    seconds = safe_int(seconds)
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
     return f"{hours:02}:{minutes:02}"
 
 # تابع صفحه مدیریت # تابع صفحه مدیریت # تابع صفحه مدیریت # تابع صفحه مدیریت # تابع صفحه مدیریت # تابع صفحه مدیریت # تابع صفحه مدیریت
@@ -1093,15 +1141,31 @@ async def admin(request: Request):
         pass_data = cursor.fetchall()
 
         # پردازش داده‌های پاس
+        pass_data_sorted = sorted(pass_data, key=lambda row: safe_int(row[1]), reverse=True)
         pass_reports = [
             PassData(
                 row_number=idx + 1,
                 username=pass_record[0],
-                total_pass_time=f"{pass_record[1] // 3600:02}:{(pass_record[1] % 3600) // 60:02}"
+                total_pass_time=convert_to_persian_numbers(f"{safe_int(pass_record[1]) // 3600:02}:{(safe_int(pass_record[1]) % 3600) // 60:02}")
             )
-            for idx, pass_record in enumerate(pass_data)
+            for idx, pass_record in enumerate(pass_data_sorted)
         ]
-       
+
+        total_pass_seconds = sum(safe_int(record[1]) for record in pass_data)
+        total_pass_time = convert_to_persian_numbers(f"{total_pass_seconds // 3600}:{(total_pass_seconds % 3600) // 60:02}")
+
+        pass_chart_data = []
+        max_pass_seconds = safe_int(pass_data_sorted[0][1]) if pass_data_sorted else 1
+        if max_pass_seconds == 0:
+            max_pass_seconds = 1
+        for pass_record in pass_data_sorted[:5]:
+            pass_seconds = safe_int(pass_record[1])
+            pass_chart_data.append({
+                'username': pass_record[0],
+                'display': convert_to_persian_numbers(f"{pass_seconds // 3600:02}:{(pass_seconds % 3600) // 60:02}"),
+                'percent': min(100, int((pass_seconds / max_pass_seconds) * 100))
+            })
+
         # دریافت اطلاعات از جدول overtime (اضافه‌کاری)
         cursor.execute("""
             SELECT username, total_ezafe_time
@@ -1109,11 +1173,62 @@ async def admin(request: Request):
         """)
         overtime_data = cursor.fetchall()
 
-        # پردازش داده‌های اضافه‌کاری
+        overtime_data_sorted = sorted(overtime_data, key=lambda row: safe_int(row[1]), reverse=True)
         overtime_reports = [
             OvertimeData(row_number=idx + 1, username=overtime[0], total_ezafe_time=format_time(overtime[1]))
-            for idx, overtime in enumerate(overtime_data)
+            for idx, overtime in enumerate(overtime_data_sorted)
         ]
+
+        total_overtime_seconds = sum(safe_int(overtime[1]) for overtime in overtime_data)
+        total_overtime_time = convert_to_persian_numbers(format_time(total_overtime_seconds))
+
+        top_overtime_row = max(overtime_data, key=lambda row: safe_int(row[1]), default=None)
+        top_overtime_user = None
+        if top_overtime_row:
+            top_overtime_user = type('TopUser', (), {
+                'username': top_overtime_row[0],
+                'total_ezafe_time': convert_to_persian_numbers(format_time(top_overtime_row[1]))
+            })
+
+        overtime_chart_data = []
+        max_overtime_seconds = safe_int(overtime_data_sorted[0][1]) if overtime_data_sorted else 1
+        if max_overtime_seconds == 0:
+            max_overtime_seconds = 1
+        for overtime in overtime_data_sorted[:5]:
+            overtime_seconds = safe_int(overtime[1])
+            overtime_chart_data.append({
+                'username': overtime[0],
+                'display': convert_to_persian_numbers(format_time(overtime_seconds)),
+                'percent': min(100, int((overtime_seconds / max_overtime_seconds) * 100))
+            })
+
+        total_leave_taken = sum(safe_int(report[1]) for report in reports)
+        total_leave_requests = len(reports)
+        unique_departments = len({user.department for user in users if user.department})
+
+        average_overtime_per_user = convert_to_persian_numbers(format_time(total_overtime_seconds // max(1, len(users))))
+        average_pass_per_user = convert_to_persian_numbers(format_time(total_pass_seconds // max(1, len(users))))
+
+        overtime_user_count = len({row[0] for row in overtime_data})
+        no_overtime_users = max(0, len(users) - overtime_user_count)
+
+        department_counter = Counter(user.department for user in users if user.department)
+        top_department_name, top_department_count = ('-', 0)
+        if department_counter:
+            top_department_name, top_department_count = department_counter.most_common(1)[0]
+
+        top_pass_row = max(pass_data, key=lambda row: row[1], default=None)
+        top_pass_user = None
+        if top_pass_row:
+            top_pass_user = type('TopUser', (), {
+                'username': top_pass_row[0],
+                'total_pass_time': convert_to_persian_numbers(f"{top_pass_row[1] // 3600:02}:{(top_pass_row[1] % 3600) // 60:02}")
+            })
+
+        total_users = len(users)
+        total_seconds_capacity = max(1, total_users * 3600)
+        pass_percent = min(100, int((total_pass_seconds / total_seconds_capacity) * 100))
+        overtime_percent = min(100, int((total_overtime_seconds / total_seconds_capacity) * 100))
 
         # ساخت لیست کاربران برای منوی کشویی
         user_options = [{'value': user[0], 'label': user[4]} for user in users_data]
@@ -1125,13 +1240,31 @@ async def admin(request: Request):
             conn.commit()
             return RedirectResponse(url="/admin")  # پس از حذف، دوباره صفحه را لود می‌کند
 
-        return templates.TemplateResponse("admin.html", {
+        return templates.TemplateResponse(request, "admin.html", {
             "request": request,
             "users": users,
             "reports": report_data,
             "overtime_reports": overtime_reports,
             "pass_reports": pass_reports,
-            "user_options": user_options
+            "user_options": user_options,
+            "total_users": convert_to_persian_numbers(total_users),
+            "total_pass_time": total_pass_time,
+            "total_overtime_time": convert_to_persian_numbers(total_overtime_time),
+            "total_leave_taken": convert_to_persian_numbers(total_leave_taken),
+            "total_leave_requests": convert_to_persian_numbers(total_leave_requests),
+            "unique_departments": convert_to_persian_numbers(unique_departments),
+            "average_overtime_per_user": convert_to_persian_numbers(average_overtime_per_user),
+            "average_pass_per_user": convert_to_persian_numbers(average_pass_per_user),
+            "overtime_user_count": convert_to_persian_numbers(overtime_user_count),
+            "no_overtime_users": convert_to_persian_numbers(no_overtime_users),
+            "top_department_name": top_department_name,
+            "top_department_count": convert_to_persian_numbers(top_department_count),
+            "top_overtime_user": top_overtime_user,
+            "top_pass_user": top_pass_user,
+            "pass_percent": convert_to_persian_numbers(pass_percent),
+            "overtime_percent": convert_to_persian_numbers(overtime_percent),
+            "pass_chart_data": pass_chart_data,
+            "overtime_chart_data": overtime_chart_data
         })
 
     except Exception as e:
@@ -1169,12 +1302,27 @@ async def add_user(
                               'Trusted_Connection=yes;')
         cursor = conn.cursor()
 
-        cursor.execute(''' 
-            INSERT INTO user_table (id, username, password, name, last_name, department, substitute, work_hours, role, hozoor_num, 
-                                   shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (user_id, username, password, name, last_name, department, substitute, work_hours, role, hozoorNum, 
-              shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh))
+        password_hash = hash_password(password)
+        insert_user_with_optional_hash(
+            cursor,
+            user_id,
+            username,
+            password,
+            password_hash,
+            name,
+            last_name,
+            department,
+            substitute,
+            work_hours,
+            role,
+            hozoorNum,
+            shanbeh,
+            yekshanbeh,
+            doshanbeh,
+            seshanbeh,
+            chrshanbeh,
+            panjshanbeh,
+        )
 
         conn.commit()
         cursor.close()
@@ -1558,7 +1706,7 @@ async def generate_individual_report(request: Request):
 
 @app.get("/leave_report_page", response_class=HTMLResponse)
 async def report_page(request: Request):
-    return templates.TemplateResponse("leave_report_page.html", {"request": request})
+    return templates.TemplateResponse(request, "leave_report_page.html", {"request": request})
 
 @app.get("/fetch_user_data")
 async def fetch_user_data(username: str = Query(...)):
@@ -1668,7 +1816,7 @@ async def change_hourly_pass_status(request: Request):
 
 @app.get("/hourlypass_Report_page", response_class=HTMLResponse)
 async def hourly_pass_report_page(request: Request):
-    return templates.TemplateResponse("hourlypass_Report_page.html", {"request": request})
+    return templates.TemplateResponse(request, "hourlypass_Report_page.html", {"request": request})
 
 @app.post("/get_hourly_pass_report")
 async def get_hourly_pass_report(request: Request):
@@ -1867,7 +2015,7 @@ async def update_overtime_indivisual_status(data: OvertimeStatusUpdate):
 # رندر کردن صفحه گزارش اضافه‌کاری
 @app.get("/overtime_report_page", response_class=HTMLResponse)
 async def overtime_report_page(request: Request):
-    return templates.TemplateResponse("overtime_report_page.html", {"request": request})
+    return templates.TemplateResponse(request, "overtime_report_page.html", {"request": request})
 
 @app.get("/overtime_report", response_class=HTMLResponse)
 async def overtime_report(request: Request):
@@ -1885,10 +2033,10 @@ async def overtime_report(request: Request):
             for idx, row in enumerate(results)
         ]
 
-        return templates.TemplateResponse("overtime_report.html", {"request": request, "reports": reports})
+        return templates.TemplateResponse(request, "overtime_report.html", {"request": request, "reports": reports})
     except Exception as e:
         print("Error:", e)
-        return templates.TemplateResponse("overtime_report.html", {"request": request, "reports": []})
+        return templates.TemplateResponse(request, "overtime_report.html", {"request": request, "reports": []})
 
 @app.post("/get_overtime_report")
 async def get_overtime_report(data: dict):
@@ -2659,7 +2807,7 @@ async def final_report(request: Request):
     # ✅ چاپ در ترمینال برای تست
     print(f"📅 تاریخ امروز شمسی: {month_name} {year}")
 
-    return templates.TemplateResponse("final_report_page.html", {
+    return templates.TemplateResponse(request, "final_report_page.html", {
         "request": request,
         "month_name": month_name,
         "year": year
