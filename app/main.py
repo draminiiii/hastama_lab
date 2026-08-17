@@ -297,7 +297,7 @@ async def user_panel(request: Request):
             WHERE username = ?
         """, (username,))
         user_row = cursor.fetchone()
-        if user_row:
+        if user_row and isinstance(user_row, (tuple, list)) and len(user_row) >= 8:
             hozoor_num, default_work_hours, shanbeh, yekshanbeh, doshanbeh, seshanbeh, chrshanbeh, panjshanbeh = user_row
             weekday_map = {0: shanbeh, 1: yekshanbeh, 2: doshanbeh, 3: seshanbeh, 4: chrshanbeh, 5: panjshanbeh}
 
