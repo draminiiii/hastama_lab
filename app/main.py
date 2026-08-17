@@ -393,34 +393,39 @@ async def user_panel(request: Request):
     except Exception as exc:
         print("presence summary error:", exc)
 
-    return templates.TemplateResponse(request, "user-panel.html", {
-    "request": request,
-    "approved_count": approved_count_farsi,
-    "remaining_count": remaining_count_farsi,
-    "overtime_records": overtime_records,
-    "formatted_overtime": formatted_time_farsi,
-    "ticket_records": ticket_records,
-    "pass_records": pass_records,
-    "leave_details": leave_details,
-    "total_approved_duration": convert_to_persian_numbers(total_approved_duration),
-    "message_records": message_records,
-    "unread_count": convert_to_persian_numbers(unread_count),
-    "total_overtime": formatted_time_farsi,
-    "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration),
-    "user_image_url": user_image_url,
-    "username": username,
-    "today_work_hours": presence_summary.get("today_work_hours", "۰۰:۰۰"),
-    "check_in_time": presence_summary.get("check_in_time", "--:--"),
-    "check_out_time": presence_summary.get("check_out_time", "--:--"),
-    "overtime_hours": presence_summary.get("overtime_hours", "۰۰:۰۰"),
-    "ring_green_percent": presence_summary.get("ring_green_percent", 0),
-    "ring_blue_percent": presence_summary.get("ring_blue_percent", 0),
-    "ring_mode": presence_summary.get("ring_mode", "green"),
-    "entry_time": presence_summary.get("entry_time"),
-    "work_start_time": presence_summary.get("work_start_time"),
-    "work_end_time": presence_summary.get("work_end_time"),
-    "server_now_time": presence_summary.get("server_now_time"),
-})
+    template_context = {
+        "request": request,
+        "approved_count": approved_count_farsi,
+        "remaining_count": remaining_count_farsi,
+        "overtime_records": overtime_records,
+        "formatted_overtime": formatted_time_farsi,
+        "ticket_records": ticket_records,
+        "pass_records": pass_records,
+        "leave_details": leave_details,
+        "total_approved_duration": convert_to_persian_numbers(total_approved_duration),
+        "message_records": message_records,
+        "unread_count": convert_to_persian_numbers(unread_count),
+        "total_overtime": formatted_time_farsi,
+        "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration),
+        "user_image_url": user_image_url,
+        "username": username,
+        "today_work_hours": presence_summary.get("today_work_hours", "۰۰:۰۰"),
+        "check_in_time": presence_summary.get("check_in_time", "--:--"),
+        "check_out_time": presence_summary.get("check_out_time", "--:--"),
+        "overtime_hours": presence_summary.get("overtime_hours", "۰۰:۰۰"),
+        "ring_green_percent": presence_summary.get("ring_green_percent", 0),
+        "ring_blue_percent": presence_summary.get("ring_blue_percent", 0),
+        "ring_mode": presence_summary.get("ring_mode", "green"),
+        "entry_time": presence_summary.get("entry_time"),
+        "work_start_time": presence_summary.get("work_start_time"),
+        "work_end_time": presence_summary.get("work_end_time"),
+        "server_now_time": presence_summary.get("server_now_time"),
+    }
+
+    try:
+        return templates.TemplateResponse(request, "user-panel.html", template_context)
+    except TypeError:
+        return templates.TemplateResponse("user-panel.html", template_context)
 
 # تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری
 # تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری# تابع مربوط به نمایش تقویم در پنل کاربری
