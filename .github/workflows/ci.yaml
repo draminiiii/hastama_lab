@@ -30,9 +30,7 @@ jobs:
           touch .env
 
       - name: Install dependencies
-        run: |
-          make install
+        run: make install
 
       - name: Test with pytest
-        run: |
-          make test
+        run: make test
