@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فریم پیش‌نمایش</title>
+<!--
+  فریم پیش‌نمایش لایهٔ موبایل — مارک‌آپ واقعی جدول‌ها + فایل‌های واقعی لایه:
+    ../app/static/css/responsive-tables.css
+    ../app/static/js/responsive-tables.js
+  استایل‌های «preview-only» صرفاً جایگزین ظاهر صفحهٔ کامل شده‌اند تا کامپوننت‌ها
+  در iso‌لشدنی دیده شوند؛ در خود برنامه، استایل صفحات موجود است.
+-->
+<link rel="stylesheet" href="../app/static/css/responsive-tables.css">
+<style>
+  /* ---------- preview-only chrome (در برنامه وجود ندارد/لازم نیست) ---------- */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 14px 10px 40px;
+    font-family: Tahoma, sans-serif;
+    direction: rtl;
+    background: #f8fafc;
+    color: #1e293b;
+    font-size: 13px;
+  }
+  .pv-sec { margin: 18px 0 26px; }
+  .pv-sec > h2 {
+    font-size: 14px;
+    margin: 0 0 4px;
+    color: #0f766e;
+  }
+  .pv-sec > p.pv-desc { font-size: 11.5px; color: #64748b; margin: 0 0 10px; line-height: 1.9; }
+
+  /* ظاهر پایهٔ جدول‌ها (جایگزین استایل صفحات) */
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  thead tr { background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%); }
+  th { color: #fff; font-size: 12px; padding: 10px 8px; }
+  td { border: 1px solid #e2e8f0; padding: 8px; font-size: 12.5px; text-align: center; }
+
+  /* کنترل وضعیت تعاملی (شبیه admin.css) */
+  .status-container { position: relative; display: inline-block; }
+  .status-navbar {
+    display: inline-block; padding: 5px 12px; border-radius: 999px;
+    background: #fef3c7; color: #b45309; font-size: 12px; font-weight: 700;
+    cursor: pointer; border: 1px solid rgba(245, 158, 11, .4);
+  }
+  .status-navbar.approved { background: #dcfce7; color: #15803d; border-color: rgba(34, 197, 94, .4); }
+  .status-navbar.rejected { background: #fee2e2; color: #b91c1c; border-color: rgba(239, 68, 68, .4); }
+  .status-navbar.cancelled { background: #f1f5f9; color: #475569; border-color: rgba(100, 116, 139, .35); }
+  .status-dropdown {
+    display: none; position: absolute; top: calc(100% + 4px); right: 0; z-index: 50;
+    flex-direction: column; min-width: 150px; background: #fff; border: 1px solid #e2e8f0;
+    border-radius: 10px; box-shadow: 0 10px 30px -10px rgba(15, 23, 42, .35); overflow: hidden;
+  }
+  .status-dropdown[data-open='1'] { display: flex; }
+  .status-option { padding: 10px 14px; cursor: pointer; font-size: 12.5px; }
+  .status-option:hover { background: #f1f5f9; }
+
+  .update-button, .confirm-changes-btn {
+    border: 0; border-radius: 10px; padding: 8px 14px; cursor: pointer;
+    background: linear-gradient(90deg, #14b8a6, #0ea5e9); color: #fff;
+    font-family: inherit; font-size: 12.5px; font-weight: 700;
+  }
+  .edit-btn, .trash-icon, .trash-btn, .view-btn, .check-btn {
+    border: 1px solid #e2e8f0; background: #fff; border-radius: 10px;
+    width: 38px; height: 38px; cursor: pointer; vertical-align: middle;
+  }
+  .tooltip-text-table, .tooltip-text-table-del, .tooltip-text-table-view,
+  .tooltip-text-table-edit, .tooltip-text-table-chk, .tooltip-text-table-check { display: none; }
+  .dropdown div { padding: 6px 10px; cursor: pointer; }
+  .dropdown {
+    display: none; position: absolute; background: #fff; border: 1px solid #ccc;
+    border-radius: 10px; padding: 4px; box-shadow: 0 6px 18px -6px rgba(0,0,0,.3); margin-top: 4px; z-index: 40;
+  }
+  .pv-toolbar {
+    display: flex; gap: 8px; align-items: center; justify-content: space-between;
+    background: #e0f2fe; border: 1px solid #bae6fd; color: #075985;
+    border-radius: 12px; padding: 10px 12px; font-size: 12px; margin-bottom: 6px;
+  }
+  .pv-toolbar b { font-size: 12.5px; }
+</style>
+</head>
+<body>
+
+<div class="pv-toolbar">
+  <b>پیش‌نمایش کامپوننت — دادهٔ نمونه</b>
+  <span id="pv-width">—</span>
+</div>
+
+<!-- ================= پنل کاربری ================= -->
+<section class="pv-sec" id="user">
+  <h2>پنل کاربری</h2>
+  <p class="pv-desc">حضور روزانه (الگوی A — کارت)، تیکت‌ها (کارت + منوی ⋮)، مرخصی‌ها (کارت + نشان وضعیت).</p>
+
+  <table id="HozoorTableReport">
+    <thead><tr>
+      <th class="vazeiyat-hozoorTime">وضعیت</th><th class="zmnkhrj-hozoorTime">زمان خروج</th>
+      <th class="zmnvrd-hozoorTime">زمان ورود</th><th class="trkhsbt-hozoorTime">تاریخ ثبت</th>
+      <th class="radif-hozoorTime">ردیف</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="vazeiyat-hozoorTime">ورود با تاخیر، اضافه کاری</td><td class="zmnkhrj-hozoorTime">۱۸:۱۰</td><td class="zmnvrd-hozoorTime">۰۸:۱۲</td><td class="trkhsbt-hozoorTime">۱۴۰۵/۰۵/۲۰</td><td class="radif-hozoorTime">۱</td></tr>
+      <tr><td class="vazeiyat-hozoorTime">تایید سامانه در ورود و خروج</td><td class="zmnkhrj-hozoorTime">۱۶:۰۰</td><td class="zmnvrd-hozoorTime">۰۸:۰۰</td><td class="trkhsbt-hozoorTime">۱۴۰۵/۰۵/۲۱</td><td class="radif-hozoorTime">۲</td></tr>
+      <tr><td class="vazeiyat-hozoorTime">غیبت</td><td class="zmnkhrj-hozoorTime">—</td><td class="zmnvrd-hozoorTime">—</td><td class="trkhsbt-hozoorTime">۱۴۰۵/۰۵/۲۲</td><td class="radif-hozoorTime">۳</td></tr>
+      <tr><td class="vazeiyat-hozoorTime">تعطیل</td><td class="zmnkhrj-hozoorTime">—</td><td class="zmnvrd-hozoorTime">—</td><td class="trkhsbt-hozoorTime">۱۴۰۵/۰۵/۲۳</td><td class="radif-hozoorTime">۴</td></tr>
+    </tbody>
+  </table>
+
+  <div class="Jadvale-ticket">
+    <table id="ticket-status-table">
+      <thead><tr>
+        <th class="radif-ticket">ردیف</th><th class="noe-ticket">عنوان درخواست</th>
+        <th class="tarikh-ticket">تاریخ درخواست</th><th class="daryaft-ticket">دریافت کننده</th>
+        <th class="vazeiyat-ticket">وضعیت</th><th class="tozihat-ticket">توضیحات</th>
+        <th class="virayesh-ticket">ویرایش</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="radif-ticket">۱</td>
+          <td class="noe-ticket">مشکل در ورود به سامانه پس از تغییر گذرواژه</td>
+          <td class="tarikh-ticket">۱۴۰۵/۰۵/۰۱</td>
+          <td class="daryaft-ticket">مدیر آزمایشگاه</td>
+          <td class="vazeiyat-ticket" onclick="pvToggleTicket(event)">
+            <span id="ticket-status">در حال پیگیری</span>
+            <div class="dropdown">
+              <div class="goz1" onclick="pvTicketStatus(this, 'خوانده شده')">خوانده شده</div>
+              <div class="goz2" onclick="pvTicketStatus(this, 'پاسخ داده شده')">پاسخ داده شده</div>
+              <div class="goz3" onclick="pvTicketStatus(this, 'در حال پیگیری')">در حال پیگیری</div>
+            </div>
+          </td>
+          <td class="tozihat-ticket">پس از تغییر گذرواژه، هنگام ورود خطای اعتبارسنجی نمایش داده می‌شود و با چند بار تلاش نیز برطرف نمی‌شود؛ لطفاً بررسی شود.</td>
+          <td class="virayesh-ticket">
+            <button class="trash-btn" onclick="pvToast('حذف تیکت')"><span class="tooltip-text-table-del">حذف</span>🗑</button>
+            <button class="edit-btn" onclick="pvToast('ویرایش تیکت')"><span class="tooltip-text-table-edit">ویرایش</span>✏️</button>
+            <button class="check-btn"><span class="tooltip-text-table-chk">تایید</span>✔</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <table id="leaveTable">
+    <thead><tr>
+      <th class="vazeiyat-morkhc">وضعیت درخواست</th><th class="tedadrooz-morkhc">تعداد روز</th>
+      <th class="taTarikh-morkhc">تا تاریخ</th><th class="azTarikh-morkhc">از تاریخ</th>
+      <th class="radif-morkhc">ردیف</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="vazeiyat-morkhc">تایید شده</td><td class="tedadrooz-morkhc">۱</td><td class="taTarikh-morkhc">۱۴۰۵/۰۵/۱۰</td><td class="azTarikh-morkhc">۱۴۰۵/۰۵/۰۹</td><td class="radif-morkhc">۱</td></tr>
+      <tr><td class="vazeiyat-morkhc">انتظار تایید</td><td class="tedadrooz-morkhc">۲</td><td class="taTarikh-morkhc">۱۴۰۵/۰۶/۰۲</td><td class="azTarikh-morkhc">۱۴۰۵/۰۶/۰۱</td><td class="radif-morkhc">۲</td></tr>
+      <tr><td class="vazeiyat-morkhc">رد شده</td><td class="tedadrooz-morkhc">۵</td><td class="taTarikh-morkhc">۱۴۰۵/۰۴/۲۰</td><td class="azTarikh-morkhc">۱۴۰۵/۰۴/۱۶</td><td class="radif-morkhc">۳</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= پنل مدیریت ================= -->
+<section class="pv-sec" id="admin">
+  <h2>پنل مدیریت</h2>
+  <p class="pv-desc">کاربران (الگوی C — فهرست فشرده + جزئیات)، درخواست مرخصی (کارت + کنترل وضعیت)، گزارش ۳ ستونی (جدول)، حضور ۱۱ ستونی (الگوی B — اسکرول + سرصفحه/ستون چسبان).</p>
+
+  <div class="management-box" id="userInfoBox">
+    <table id="userTable">
+      <thead><tr>
+        <th class="taghirat">تغییرات</th><th class="janeshin">جانشین</th>
+        <th class="saat-kari">ساعت‌های کاری</th><th class="dapart">بخش فعالیت</th>
+        <th class="nam-karbr">نام کاربر</th><th class="radif">ردیف</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>
+            <form method="POST" class="trash-icon-form">
+              <button type="button" class="trash-icon" onclick="pvToast('حذف کاربر')"><span class="tooltip-text-table-del">حذف</span>🗑</button>
+            </form>
+            <button class="edit-btn" onclick="pvToast('ویرایش کاربر')"><span class="tooltip-text-table">ویرایش</span>✏️</button>
+          </td>
+          <td>محمدی</td><td>۰۸:۰۰ تا ۱۶:۰۰</td><td>امور مالی</td><td>علی احمدی</td><td>۱</td>
+        </tr>
+        <tr>
+          <td>
+            <form method="POST" class="trash-icon-form">
+              <button type="button" class="trash-icon" onclick="pvToast('حذف کاربر')"><span class="tooltip-text-table-del">حذف</span>🗑</button>
+            </form>
+            <button class="edit-btn" onclick="pvToast('ویرایش کاربر')"><span class="tooltip-text-table">ویرایش</span>✏️</button>
+          </td>
+          <td>—</td><td>۰۷:۳۰ تا ۱۵:۳۰</td><td>بیوشیمی</td><td>سارا رضایی</td><td>۲</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="management-box" id="vacationRequestBox">
+    <table class="request-table" id="leaveRequestsTable">
+      <thead><tr>
+        <th class="krbr-morkhc-drkhst">ثبت تغییرات</th><th class="aztrkh-morkhc-drkhst">وضعیت درخواست</th>
+        <th class="tatrkh-morkhc-drkhst">جانشین</th><th class="rooz-morkhc-drkhst">تعداد روزها</th>
+        <th class="jnshn-morkhc-drkhst">تا تاریخ</th><th class="vaziat-morkhc-drkhst">از تاریخ</th>
+        <th class="sabt-morkhc-drkhst">نام کاربر</th>
+      </tr></thead>
+      <tbody>
+        <tr id="row_7">
+          <td><button class="update-button" onclick="pvToast('ثبت تغییرات')">تایید تغییرات</button></td>
+          <td>
+            <div class="status-container">
+              <div class="status-navbar" id="statusNavbar_7" onclick="pvToggleAdmin(7)">انتظار تایید</div>
+              <div class="status-dropdown" id="statusDropdown_7">
+                <div class="status-option approved" onclick="pvAdminStatus(7, 'تایید شده', 'approved')">تایید شده</div>
+                <div class="status-option rejected" onclick="pvAdminStatus(7, 'رد شده', 'rejected')">رد شده</div>
+                <div class="status-option cancelled" onclick="pvAdminStatus(7, 'انصراف', 'cancelled')">انصراف</div>
+              </div>
+            </div>
+          </td>
+          <td>رضایی</td><td>۲</td><td>۱۴۰۵/۰۵/۱۰</td><td>۱۴۰۵/۰۵/۰۸</td><td>علی احمدی</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="management-box" id="vacationBox">
+    <table class="vacation-table">
+      <thead><tr>
+        <th>کل مرخصی‌های باقی‌مانده</th><th>کل مرخصی‌های استفاده شده</th><th>نام کاربر</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>۱۲</td><td>۴</td><td>علی احمدی</td></tr>
+        <tr><td>۹</td><td>۷</td><td>سارا رضایی</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="management-box" id="hozoorbox">
+    <table class="hozoorUsersReport-table" id="hozoorUsersReportTable">
+      <thead><tr>
+        <th>مجموع زمان حضور</th><th>اضافه کاری</th><th>خروج زود هنگام</th><th>شروع زود هنگام</th>
+        <th>تاخیر</th><th>خروج دوم</th><th>ورود دوم</th><th>زمان خروج</th><th>زمان ورود</th>
+        <th>روز هفته</th><th>تاریخ ثبت</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>۰۸:۰۵</td><td>۰۱:۱۰</td><td>۰۰:۰۰</td><td>۰۰:۰۰</td><td>۰۰:۱۲</td><td>—</td><td>—</td><td>۱۸:۱۰</td><td>۰۸:۱۲</td><td>چهارشنبه</td><td>۱۴۰۵/۰۵/۲۰</td></tr>
+        <tr><td>۰۸:۰۰</td><td>۰۰:۰۰</td><td>۰۰:۰۰</td><td>۰۰:۰۰</td><td>۰۰:۰۰</td><td>—</td><td>—</td><td>۱۶:۰۰</td><td>۰۸:۰۰</td><td>پنجشنبه</td><td>۱۴۰۵/۰۵/۲۱</td></tr>
+        <tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>جمعه</td><td>۱۴۰۵/۰۵/۲۲</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+  /* ---- shimهای کوچک تعامل (جایگزین توابع صفحات، فقط برای پیش‌نمایش) ---- */
+  function pvToggleTicket(e) {
+    var dd = e.currentTarget.querySelector('.dropdown');
+    document.querySelectorAll('.dropdown').forEach(function (d) { if (d !== dd) d.style.display = 'none'; });
+    dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+    e.stopPropagation();
+  }
+  function pvTicketStatus(el, s) {
+    var td = el.closest('.vazeiyat-ticket');
+    td.querySelector('#ticket-status').innerText = s;
+    td.querySelector('.dropdown').style.display = 'none';
+  }
+  function pvToggleAdmin(id) {
+    var dd = document.getElementById('statusDropdown_' + id);
+    document.querySelectorAll('.status-dropdown').forEach(function (d) { if (d !== dd) d.removeAttribute('data-open'); });
+    dd.setAttribute('data-open', dd.getAttribute('data-open') === '1' ? '0' : '1');
+  }
+  function pvAdminStatus(id, s, cls) {
+    var nav = document.getElementById('statusNavbar_' + id);
+    nav.textContent = s;
+    nav.className = 'status-navbar ' + cls;
+    document.getElementById('statusDropdown_' + id).removeAttribute('data-open');
+  }
+  function pvToast(msg) {
+    var t = document.createElement('div');
+    t.textContent = '✔ ' + msg + ' (پیش‌نمایش)';
+    t.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:9999;background:#0ea5e9;color:#fff;padding:10px 18px;border-radius:12px;font:700 12.5px Tahoma;box-shadow:0 10px 30px -8px rgba(2,132,199,.6)';
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 1600);
+  }
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.status-dropdown').forEach(function (d) { d.removeAttribute('data-open'); });
+    document.querySelectorAll('.dropdown').forEach(function (d) { d.style.display = 'none'; });
+  });
+  (function () {
+    var w = document.getElementById('pv-width');
+    function up() { w.textContent = 'عرض قاب: ' + window.innerWidth + 'px'; }
+    window.addEventListener('resize', up); up();
+  })();
+</script>
+<script src="../app/static/js/responsive-tables.js"></script>
+</body>
+</html>
