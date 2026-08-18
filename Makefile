@@ -27,7 +27,7 @@ venv:
 		uv venv .venv; \
 	fi
 
-test: venv
+test: install
 	uv run pytest tests -vv --show-capture=all
 
 install: generate_dot_env venv
