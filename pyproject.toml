@@ -6,6 +6,7 @@ description = "short test app"
 authors = [
     { name = "testappmyproject", email = "draminilab57@gmail.com" },
 ]
+
 dependencies = [
     "fastapi>=0.103.0",
     "uvicorn==0.23.2",
@@ -26,6 +27,7 @@ dev = [
     "ipdb>=0.13.0",
     "pylint>=3.0.0"
 ]
+
 aws = [
     "mangum>=0.17.0"
 ]

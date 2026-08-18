@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پیش‌نمایش موبایل جداول — هستما</title>
+<!--
+  پیش‌نمایش کامپوننت‌های لایهٔ موبایل (responsive-tables).
+  این صفحه «فقط ابزار بازبینی طراحی» است و در خود برنامه بارگذاری نمی‌شود؛
+  جدول‌ها همان مارک‌آپ واقعی صفحات‌اند و همان responsive-tables.css/js واقعی
+  از app/static لود می‌شود.
+-->
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Tahoma, 'Vazir', sans-serif;
+    direction: rtl;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 24px 16px 64px;
+  }
+  h1 { font-size: 20px; margin: 0 0 6px; }
+  p.lead { color: #94a3b8; font-size: 13px; line-height: 2; margin: 0 0 20px; }
+  .cols { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+  .frame-card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 12px; }
+  .frame-card h2 { font-size: 13px; color: #7dd3fc; margin: 4px 4px 10px; font-weight: 700; }
+  .frame-card .note { font-size: 11px; color: #64748b; margin: 8px 4px 0; }
+  iframe {
+    width: 100%;
+    border: 0;
+    background: #f8fafc;
+    border-radius: 12px;
+    display: block;
+  }
+  .w360 iframe { height: 780px; }
+  .w390 iframe { height: 780px; }
+  .w768 iframe { height: 620px; }
+  .w-full { flex: 1 1 640px; }
+  .w-full iframe { height: 560px; }
+  .w360 { width: 392px; max-width: 100%; }
+  .w390 { width: 422px; max-width: 100%; }
+  .w768 { width: 800px; max-width: 100%; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 18px 0 22px; font-size: 12px; color: #94a3b8; }
+  .legend b { color: #e2e8f0; }
+  code { background: #0f172a; border: 1px solid #334155; padding: 1px 7px; border-radius: 6px; font-size: 11px; color: #7dd3fc; }
+</style>
+</head>
+<body>
+  <h1>پیش‌نمایش ارائهٔ موبایل جداول (Responsive Tables Layer)</h1>
+  <p class="lead">
+    هر چهار قاب، «همان جدول واقعی» را با مارک‌آپ و دادهٔ نمونهٔ صفحات برنامه نشان می‌دهد؛
+    فقط عرض قاب متفاوت است و لایهٔ ارائهٔ مشترک (<code>responsive-tables.js</code> +
+    <code>responsive-tables.css</code>) بر اساس عرض، الگوی مناسب را انتخاب می‌کند.
+    در قاب‌های موبایل، کارت‌ها، شیت جزئیات، منوی «⋮»، نشان وضعیت و جدول اسکرول‌شونده با ستون چسبان را آزمایش کنید.
+  </p>
+  <div class="legend">
+    <span><b>الگوی A</b> کارت داده (مرخصی/اضافه‌کاری/تیکت/حضور)</span>
+    <span><b>الگوی B</b> جدول اسکرول‌شونده + ستون چسبان (حضور ۱۱ ستونی/شیفت‌ها)</span>
+    <span><b>الگوی C</b> فهرست فشرده + جزئیات (کاربران)</span>
+    <span><b>keep</b> جدول کم‌ستونه (گزارش‌های ۳ ستونی)</span>
+  </div>
+
+  <div class="cols">
+    <div class="frame-card w360">
+      <h2>موبایل کوچک — ۳۶۰px</h2>
+      <iframe src="mobile-preview-frame.html" title="پیش‌نمایش ۳۶۰px"></iframe>
+      <p class="note">پنل کاربری + پنل مدیریت (الگوهای A و C)</p>
+    </div>
+
+    <div class="frame-card w390">
+      <h2>موبایل رایج — ۳۹۰px</h2>
+      <iframe src="mobile-preview-frame.html?view=admin" title="پیش‌نمایش ۳۹۰px مدیریت"></iframe>
+      <p class="note">مدیریت: کاربران، درخواست مرخصی، تیکت‌ها، حضور ۱۱ ستونی</p>
+    </div>
+
+    <div class="frame-card w768">
+      <h2>تبلت — ۷۶۸px</h2>
+      <iframe src="mobile-preview-frame.html?view=admin" title="پیش‌نمایش ۷۶۸px"></iframe>
+      <p class="note">مرز موبایل/تبلت: اسکرول کنترل‌شده + سرصفحهٔ چسبان</p>
+    </div>
+
+    <div class="frame-card w-full">
+      <h2>دسکتاپ — بدون تغییر</h2>
+      <iframe src="mobile-preview-frame.html" title="پیش‌نمایش دسکتاپ"></iframe>
+      <p class="note">در عرض بزرگ، همان جدول‌های معنایی قبلی رندر می‌شوند (حفظ کامل دسکتاپ)</p>
+    </div>
+  </div>
+</body>
+</html>
