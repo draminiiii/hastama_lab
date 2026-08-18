@@ -7,6 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>گزارش مرخصی فردی</title>
         <link rel="stylesheet" href="{{ url_for('static', path='css/leave-report-style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
         <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
     </head>
 
@@ -51,14 +53,14 @@
                 </div>
             </div>
             
-            <table class="individual-report-table">
+            <table class="individual-report-table" data-rt-pattern="card" data-rt-label="مرخصی">
                 <thead>
                     <tr>
-                        <th>جانشین</th>
-                        <th>تعداد روز</th>
-                        <th>تا تاریخ</th>
-                        <th>از تاریخ</th>
-                        <th>ردیف</th>
+                        <th data-rt-role="field">جانشین</th>
+                        <th data-rt-role="field">تعداد روز</th>
+                        <th data-rt-role="field">تا تاریخ</th>
+                        <th data-rt-role="title">از تاریخ</th>
+                        <th data-rt-role="hide">ردیف</th>
                     </tr>
                 </thead>
                 <tbody id="reportTableBody">
@@ -83,6 +85,7 @@
         </div>
 
         <script src="{{ url_for('static', path='js/leave-report-script.js') }}"></script>
+        <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
 
     </body>
 

@@ -7,6 +7,7 @@
     <title>گزارش پاس ساعتی فردی</title>
     <link rel="stylesheet" href="{{ url_for('static', path='css/final-report-style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
 </head>
 
@@ -33,7 +34,7 @@
     <div class="bala">
         <div class="hozoorBox">
             <h2>جدول حضور و غیاب</h2>
-            <table class="hozoorUsersReport-table" id="hozoorUsersReportTable">
+            <table class="hozoorUsersReport-table" id="hozoorUsersReportTable" data-rt-pattern="scroll">
                 <thead>
                     <tr>
                         <th class="stn12">مجموع زمان حضور</th>
@@ -64,7 +65,7 @@
         <div class="left-section">
             <div class="ezafeBox">
                 <h2>جدول اضافه‌کار</h2>
-                <table class="ezafeKarUsersReport-table" id="ezafeKarUsersReportTable">
+                <table class="ezafeKarUsersReport-table" id="ezafeKarUsersReportTable" data-rt-pattern="scroll">
                     <thead>
                         <tr>
                             <th class="stn6-ezafeBox">توضیحات</th>
@@ -83,7 +84,7 @@
 
             <div class="passBox">
                 <h2>جدول مرخصی</h2>
-                <table class="morkhcUsersReport-table" id="morkhcUsersReportTable">
+                <table class="morkhcUsersReport-table" id="morkhcUsersReportTable" data-rt-pattern="scroll">
                     <thead>
                         <tr>
                             <th class="stn5-morkhcBox">جانشین</th>
@@ -101,7 +102,7 @@
 
             <div class="hourlyPassBox">
                 <h2>جدول پاس‌های ساعتی</h2>
-                <table class="hourlyPassUsersReport-table" id="hourlyPassUsersReportTable">
+                <table class="hourlyPassUsersReport-table" id="hourlyPassUsersReportTable" data-rt-pattern="scroll">
                     <thead>
                         <tr>
                             <th class="stn4-hourlyPassBox">مدت پاس</th>
@@ -215,8 +216,7 @@
     <script src="https://cdn.jsdelivr.net/npm/moment-jalaali@0.9.2/build/moment-jalaali.js"></script>
 
     <script src="{{ url_for('static', path='js/final-report-script.js') }}"></script>
-
-
+    <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
 
 </body>
 

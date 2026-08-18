@@ -7,6 +7,7 @@
     <title>پنل کاربری</title>
     <link rel="stylesheet" href="{{ url_for('static', path='css/user-panel-style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
 </head>
 
@@ -894,14 +895,14 @@
                     <p id="remainingLeaves">تعداد مرخصی‌های باقی‌مانده : <span id="remainingCount">{{ remaining_count }}</span>
                     </p>
                 </div>
-                <table id="leaveTable">
+                <table id="leaveTable" data-rt-pattern="card" data-rt-label="مرخصی">
                     <thead>
                         <tr>
-                            <th class="vazeiyat-morkhc">وضعیت درخواست</th>
-                            <th class="tedadrooz-morkhc">تعداد روز</th>
-                            <th class="taTarikh-morkhc">تا تاریخ</th>
-                            <th class="azTarikh-morkhc">از تاریخ</th>
-                            <th class="radif-morkhc">ردیف</th>
+                            <th class="vazeiyat-morkhc" data-rt-role="badge">وضعیت درخواست</th>
+                            <th class="tedadrooz-morkhc" data-rt-role="field">تعداد روز</th>
+                            <th class="taTarikh-morkhc" data-rt-role="field">تا تاریخ</th>
+                            <th class="azTarikh-morkhc" data-rt-role="title">از تاریخ</th>
+                            <th class="radif-morkhc" data-rt-role="hide">ردیف</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -928,14 +929,14 @@
                     <p><span id="dailyOvertime">{{ total_overtime }} جمع ساعت اضافه کاری ماهانه</span></p>
                 </div>
                 
-                    <table id="OverTimeTable">
+                    <table id="OverTimeTable" data-rt-pattern="card" data-rt-label="اضافه‌کاری">
                         <thead>
                             <tr>
-                                <th class="vazeiyat-ezafetime">وضعیت</th>
-                                <th class="tozihat-ezafetime">توضیحات</th>
-                                <th class="ezafemodat-ezafetime">مدت زمان اضافه کاری</th>
-                                <th class="darkhst-ezafetime">تاریخ درخواست</th>
-                                <th class="radif-ezafetime">ردیف</th>
+                                <th class="vazeiyat-ezafetime" data-rt-role="badge">وضعیت</th>
+                                <th class="tozihat-ezafetime" data-rt-role="detail">توضیحات</th>
+                                <th class="ezafemodat-ezafetime" data-rt-role="field">مدت زمان اضافه کاری</th>
+                                <th class="darkhst-ezafetime" data-rt-role="title">تاریخ درخواست</th>
+                                <th class="radif-ezafetime" data-rt-role="hide">ردیف</th>
                             </tr>
                         </thead>
                         <tbody id="overtimeTableBody">
@@ -962,13 +963,13 @@
                 <div id="text-hour-box">
                     <p>مدت زمان پاس های ساعتی: {{ total_approved_pass_duration }}</p>
                 </div>
-                <table class="passsaatiReport-table" id="passsaatiReportTable">
+                <table class="passsaatiReport-table" id="passsaatiReportTable" data-rt-pattern="card" data-rt-label="پاس ساعتی">
                     <thead>
                         <tr>
-                            <th>وضعیت درخواست</th>
-                            <th>مدت زمان پاس</th>
-                            <th>عنوان پاس</th>
-                            <th>تاریخ درخواست</th>
+                            <th data-rt-role="badge">وضعیت درخواست</th>
+                            <th data-rt-role="field">مدت زمان پاس</th>
+                            <th data-rt-role="title">عنوان پاس</th>
+                            <th data-rt-role="field">تاریخ درخواست</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1165,14 +1166,14 @@
                 <a id="close-popupHozoor">بستن</a>
                 <h2>جدول ساعت زن</h2>
                 <div class="table-container">
-                    <table id="HozoorTableReport">
+                    <table id="HozoorTableReport" data-rt-pattern="card" data-rt-label="حضور">
                         <thead>
                             <tr>
-                                <th class="vazeiyat-hozoorTime">وضعیت</th>
-                                <th class="zmnkhrj-hozoorTime">زمان خروج</th>
-                                <th class="zmnvrd-hozoorTime">زمان ورود</th>
-                                <th class="trkhsbt-hozoorTime">تاریخ ثبت</th>
-                                <th class="radif-hozoorTime">ردیف</th>
+                                <th class="vazeiyat-hozoorTime" data-rt-role="badge">وضعیت</th>
+                                <th class="zmnkhrj-hozoorTime" data-rt-role="field">زمان خروج</th>
+                                <th class="zmnvrd-hozoorTime" data-rt-role="field">زمان ورود</th>
+                                <th class="trkhsbt-hozoorTime" data-rt-role="title">تاریخ ثبت</th>
+                                <th class="radif-hozoorTime" data-rt-role="hide">ردیف</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1203,6 +1204,7 @@
         </div>
 
         <script src="{{ url_for('static', path='js/user-panel-script.js') }}"></script>
+        <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
 
     </body>
 

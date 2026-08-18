@@ -7,6 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>گزارش اضافه کاری فردی</title>
         <link rel="stylesheet" href="{{ url_for('static', path='css/overtime-report-style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
         <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
     </head>
 
@@ -52,13 +54,13 @@
                 </div>
             </div>
 
-            <table class="individual-report-table" id="overTimeReportTable">
+            <table class="individual-report-table" id="overTimeReportTable" data-rt-pattern="card" data-rt-label="اضافه‌کاری">
                 <thead>
                     <tr>
-                        <th>توضیحات</th>
-                        <th>مدت اضافه کاری</th>
-                        <th>تاریخ درخواست</th>
-                        <th>ردیف</th>
+                        <th data-rt-role="detail">توضیحات</th>
+                        <th data-rt-role="field">مدت اضافه کاری</th>
+                        <th data-rt-role="title">تاریخ درخواست</th>
+                        <th data-rt-role="hide">ردیف</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,6 +86,7 @@
         </div>
 
         <script src="{{ url_for('static', path='js/overtime-report-script.js') }}"></script>
+        <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
 
     </body>
 

@@ -1,0 +1,452 @@
+/* ==========================================================================
+   responsive-tables.css — لایه نمایش ریسپانسیو جدول‌ها (کارت/لیست موبایل)
+   --------------------------------------------------------------------------
+   اصول:
+   - این فایل صرفاً «لایه نمایش» است؛ داده، منطق، فیلتر/مرتب‌سازی و اکشن‌ها
+     همان جدول دسکتاپ هستند (کارت‌ها از همان DOM ساخته و با آن سینک می‌شوند).
+   - ساختار معنایی جدول (table/thead/tbody) در DOM حفظ می‌شود و فقط در موبایل
+     از دید پنهان و با کارت جایگزین می‌شود؛ در دسکتاپ هیچ تغییری نیست.
+   - تمام قواعد به بدنه‌ای که توسط JS کلاس rt-bp گرفته و در محدوده عرض موبایل
+     است، محدود می‌شوند.
+   ========================================================================== */
+
+/* تعیین برک‌پوینت فعال:
+   پنل کاربری = تا 860px | پنل مدیریت و صفحات گزارش = تا 768px */
+
+@media screen and (max-width: 860px) {
+    body.rt-bp-860 table[data-rt-table].rt-table-hidden {
+        display: none !important;
+    }
+
+    body.rt-bp-860 .rt-cardlist {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body.rt-bp-768 table[data-rt-table].rt-table-hidden {
+        display: none !important;
+    }
+
+    body.rt-bp-768 .rt-cardlist {
+        display: flex;
+    }
+
+    body.rt-bp-768 table[data-rt-pattern="fit"],
+    body.rt-bp-768 .rt-fit table {
+        min-width: 0 !important;
+        width: 100% !important;
+        table-layout: auto !important;
+    }
+}
+
+@media screen and (max-width: 860px) {
+    body.rt-bp-860 table[data-rt-pattern="fit"] {
+        min-width: 0 !important;
+        width: 100% !important;
+        table-layout: auto !important;
+    }
+}
+
+/* ==========================================================================
+   کارت‌های داده موبایل
+   (این عناصر فقط زمانی در DOM وجود دارند که JS در عرض موبایل ساخته باشد)
+   ========================================================================== */
+
+.rt-cardlist {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+.rt-card {
+    --rt-bg: var(--panel-surface, var(--surface-strong, #ffffff));
+    --rt-text: var(--panel-text, var(--text, #0f172a));
+    --rt-muted: var(--panel-muted, var(--text-muted, #64748b));
+    --rt-border: var(--panel-border, var(--border, rgba(15, 23, 42, 0.1)));
+    background: var(--rt-bg);
+    color: var(--rt-text);
+    border: 1px solid var(--rt-border);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+    box-sizing: border-box;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+body.dark-mode .rt-card {
+    --rt-bg: var(--panel-surface, #172233);
+    --rt-text: var(--panel-text, #f1f5f9);
+    --rt-muted: var(--panel-muted, #9aa8bb);
+    --rt-border: var(--panel-border, rgba(255, 255, 255, 0.12));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.rt-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0 0 10px;
+}
+
+.rt-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.8;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.rt-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    max-width: 55%;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.6;
+    cursor: default;
+    white-space: normal;
+    text-align: center;
+    background: #eef2f7;
+    color: #334155;
+}
+
+.rt-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: 0 0 auto;
+}
+
+.rt-badge--ok {
+    background: rgba(34, 197, 94, 0.12);
+    color: #15803d;
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.rt-badge--warn {
+    background: rgba(245, 158, 11, 0.13);
+    color: #b45309;
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.rt-badge--bad {
+    background: rgba(239, 68, 68, 0.11);
+    color: #b91c1c;
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+.rt-badge--info {
+    background: rgba(56, 182, 255, 0.13);
+    color: #0369a1;
+    border-color: rgba(56, 182, 255, 0.4);
+}
+
+body.dark-mode .rt-badge--ok { color: #4ade80; }
+body.dark-mode .rt-badge--warn { color: #fbbf24; }
+body.dark-mode .rt-badge--bad { color: #f87171; }
+body.dark-mode .rt-badge--info { color: #7dd3fc; }
+
+button.rt-badge {
+    min-height: 32px;
+    cursor: pointer;
+}
+
+button.rt-badge::after {
+    content: "▾";
+    font-size: 9px;
+    opacity: 0.6;
+    margin-inline-start: 2px;
+}
+
+.rt-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 0 4px;
+}
+
+.rt-field {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.rt-field-label {
+    color: var(--rt-muted, #64748b);
+    font-size: 12px;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.rt-field-value {
+    text-align: left;
+    font-weight: 600;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.rt-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--rt-border, rgba(15, 23, 42, 0.1));
+}
+
+.rt-actions button,
+.rt-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--rt-border, rgba(15, 23, 42, 0.12));
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.rt-actions button img,
+.rt-actions a img {
+    width: 18px;
+    height: 18px;
+    display: block;
+    pointer-events: none;
+}
+
+.rt-actions .rt-action-primary {
+    background: linear-gradient(135deg, var(--secondary, #38B6FF), var(--accent, #00B894));
+    color: #fff;
+    border: none;
+    flex: 1 1 auto;
+}
+
+.rt-actions .rt-action-more {
+    width: 44px;
+    padding: 8px;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.rt-actions .tooltip-text-table,
+.rt-actions .tooltip-text-table-del,
+.rt-actions .tooltip-text-table-edit,
+.rt-actions .tooltip-text-table-view,
+.rt-actions .tooltip-text-table-chk,
+.rt-actions .tooltip-text-table-check {
+    display: none !important;
+}
+
+.rt-details-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(56, 182, 255, 0.08);
+    color: #0369a1;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+body.dark-mode .rt-details-toggle {
+    color: #7dd3fc;
+    background: rgba(125, 211, 252, 0.1);
+}
+
+.rt-details-toggle .rt-caret {
+    transition: transform 0.2s ease;
+    font-size: 11px;
+}
+
+.rt-details-toggle[aria-expanded="true"] .rt-caret {
+    transform: rotate(180deg);
+}
+
+.rt-details {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(100, 116, 139, 0.06);
+    font-size: 13px;
+    line-height: 2;
+}
+
+.rt-details.rt-open {
+    display: flex;
+}
+
+.rt-card--notice {
+    text-align: center;
+    color: var(--rt-muted, #64748b);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 2;
+}
+
+.rt-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 32px 16px;
+    border: 1px dashed var(--rt-border, rgba(15, 23, 42, 0.15));
+    border-radius: 16px;
+    background: var(--rt-bg, #fff);
+    color: var(--rt-muted, #64748b);
+    font-size: 13px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.rt-empty strong {
+    font-size: 14px;
+    color: var(--rt-text, #0f172a);
+}
+
+.rt-scrollhint {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(56, 182, 255, 0.1);
+    color: #0369a1;
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.7;
+    text-align: center;
+    animation: rt-hint-pulse 2.4s ease-in-out infinite;
+}
+
+body.dark-mode .rt-scrollhint {
+    color: #7dd3fc;
+}
+
+@keyframes rt-hint-pulse {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
+}
+
+@media screen and (max-width: 768px) {
+    body.rt-bp-768 .rt-scrollhint,
+    body.rt-bp-860 .rt-scrollhint {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 860px) {
+    body.rt-bp-860 .rt-scrollhint {
+        display: flex;
+    }
+}
+
+.rt-popover {
+    position: fixed;
+    z-index: 4000;
+    min-width: 170px;
+    max-width: min(240px, 78vw);
+    max-height: min(320px, 60dvh);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--panel-surface, var(--surface-strong, #ffffff));
+    color: var(--panel-text, var(--text, #0f172a));
+    border: 1px solid var(--panel-border, var(--border, rgba(15, 23, 42, 0.12)));
+    border-radius: 14px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.18);
+    padding: 6px;
+    direction: rtl;
+    box-sizing: border-box;
+}
+
+body.dark-mode .rt-popover {
+    background: #1c2940;
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.rt-popover-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.rt-popover-option:hover,
+.rt-popover-option:focus-visible {
+    background: rgba(56, 182, 255, 0.12);
+    outline: none;
+}
+
+.rt-popover-option img {
+    width: 18px;
+    height: 18px;
+}
+
+.rt-popover-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 3999;
+    background: transparent;
+}

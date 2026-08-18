@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>گزارش پاس ساعتی فردی</title>
     <link rel="stylesheet" href="{{ url_for('static', path='css/hourlypass-report-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
 </head>
 
@@ -51,13 +53,13 @@
             </div>
         </div>
 
-        <table class="individual-report-table" id="PasseSaatiReportTable">
+        <table class="individual-report-table" id="PasseSaatiReportTable" data-rt-pattern="card" data-rt-label="پاس ساعتی">
             <thead>
                 <tr>
-                    <th>مدت زمان پاس</th>
-                    <th>عنوان پاس</th>
-                    <th>تاریخ درخواست</th>
-                    <th>ردیف</th>
+                    <th data-rt-role="field">مدت زمان پاس</th>
+                    <th data-rt-role="title">عنوان پاس</th>
+                    <th data-rt-role="field">تاریخ درخواست</th>
+                    <th data-rt-role="hide">ردیف</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,6 +85,7 @@
     </div>
 
     <script src="{{ url_for('static', path='js/hourlypass-report-script.js') }}"></script>
+    <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
 
 </body>
 

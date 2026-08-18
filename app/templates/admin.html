@@ -9,6 +9,7 @@
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}" />
 </head>
 
 <body>
@@ -197,7 +198,7 @@
                 <div class="dashboard-card dashboard-card--highlight">
                     <span class="card-title">دپارتمان برتر</span>
                     <span class="card-value">{{ top_department_name }}</span>
-                    <span class="card-meta">{{ top_department_count }} نفر</span> 
+                    <span class="card-meta">{{ top_department_count }} نفر</span>
                 </div>
             </div>
 
@@ -304,7 +305,7 @@
             <div class="dashboard-grid">
                 <div class="dashboard-table-card">
                     <div class="table-title">جدول پاس‌های برتر</div>
-                    <table class="dashboard-table">
+                    <table class="dashboard-table" data-rt-pattern="fit">
                         <thead>
                             <tr>
                                 <th>ردیف</th>
@@ -325,7 +326,7 @@
                 </div>
                 <div class="dashboard-table-card">
                     <div class="table-title">جدول اضافه‌کاری برتر</div>
-                    <table class="dashboard-table">
+                    <table class="dashboard-table" data-rt-pattern="fit">
                         <thead>
                             <tr>
                                 <th>ردیف</th>
@@ -350,15 +351,15 @@
         <!-- باکس اطلاعات کاربران -->
         <div class="management-box" id="userInfoBox" style="display:none;">
             <h2>اطلاعات کاربران</h2>
-            <table id="userTable">
+            <table id="userTable" data-rt-pattern="card" data-rt-label="کاربر">
                 <thead>
                     <tr>
-                        <th class="taghirat">تغییرات</th>
-                        <th class="janeshin">جانشین</th>
-                        <th class="saat-kari">ساعت‌های کاری</th>
-                        <th class="dapart">بخش فعالیت</th>
-                        <th class="nam-karbr">نام کاربر</th>
-                        <th class="radif">ردیف</th>
+                        <th class="taghirat" data-rt-role="actions">تغییرات</th>
+                        <th class="janeshin" data-rt-role="field">جانشین</th>
+                        <th class="saat-kari" data-rt-role="field">ساعت‌های کاری</th>
+                        <th class="dapart" data-rt-role="field">بخش فعالیت</th>
+                        <th class="nam-karbr" data-rt-role="title">نام کاربر</th>
+                        <th class="radif" data-rt-role="hide">ردیف</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -673,20 +674,20 @@
             </div>
 
             <!-- جدول بازه‌های تعریف‌شده برای پرسنل/ماه انتخابی -->
-            <table class="request-table" id="shiftsTable">
+            <table class="request-table" id="shiftsTable" data-rt-pattern="card" data-rt-label="شیفت">
                 <thead>
                     <tr>
-                        <th>تغییرات</th>
-                        <th>عنوان</th>
-                        <th>جمعه</th>
-                        <th>پنج‌شنبه</th>
-                        <th>چهارشنبه</th>
-                        <th>سه‌شنبه</th>
-                        <th>دوشنبه</th>
-                        <th>یکشنبه</th>
-                        <th>شنبه</th>
-                        <th>تا روز</th>
-                        <th>از روز</th>
+                        <th data-rt-role="actions">تغییرات</th>
+                        <th data-rt-role="title">عنوان</th>
+                        <th data-rt-role="field">جمعه</th>
+                        <th data-rt-role="field">پنج‌شنبه</th>
+                        <th data-rt-role="field">چهارشنبه</th>
+                        <th data-rt-role="field">سه‌شنبه</th>
+                        <th data-rt-role="field">دوشنبه</th>
+                        <th data-rt-role="field">یکشنبه</th>
+                        <th data-rt-role="field">شنبه</th>
+                        <th data-rt-role="field">تا روز</th>
+                        <th data-rt-role="field">از روز</th>
                     </tr>
                 </thead>
                 <tbody id="shiftsTableBody">
@@ -769,16 +770,16 @@
         <!-- باکس مدیریت درخواست‌های مرخصی -->
         <div id="vacationRequestBox" class="management-box">
             <h2>مدیریت درخواست‌های مرخصی</h2>
-            <table class="request-table" id="leaveRequestsTable">
+            <table class="request-table" id="leaveRequestsTable" data-rt-pattern="card" data-rt-label="درخواست مرخصی">
                 <thead>
                     <tr>
-                        <th class="krbr-morkhc-drkhst">ثبت تغییرات</th>
-                        <th class="aztrkh-morkhc-drkhst">وضعیت درخواست</th>
-                        <th class="tatrkh-morkhc-drkhst">جانشین</th>
-                        <th class="rooz-morkhc-drkhst">تعداد روزها</th>
-                        <th class="jnshn-morkhc-drkhst">تا تاریخ</th>
-                        <th class="vaziat-morkhc-drkhst">از تاریخ</th>
-                        <th class="sabt-morkhc-drkhst">نام کاربر</th>
+                        <th class="krbr-morkhc-drkhst" data-rt-role="actions">ثبت تغییرات</th>
+                        <th class="aztrkh-morkhc-drkhst" data-rt-role="badge">وضعیت درخواست</th>
+                        <th class="tatrkh-morkhc-drkhst" data-rt-role="field">جانشین</th>
+                        <th class="rooz-morkhc-drkhst" data-rt-role="field">تعداد روزها</th>
+                        <th class="jnshn-morkhc-drkhst" data-rt-role="field">تا تاریخ</th>
+                        <th class="vaziat-morkhc-drkhst" data-rt-role="field">از تاریخ</th>
+                        <th class="sabt-morkhc-drkhst" data-rt-role="title">نام کاربر</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -798,7 +799,7 @@
         <!-- باکس گزارش مرخصی های کاربران به صورت مختصر -->
         <div id="vacationBox" class="management-box">
             <h2>گزارشات مرخصی‌ها</h2>
-            <table class="vacation-table">
+            <table class="vacation-table" data-rt-pattern="fit">
                 <thead>
                     <tr>
                         <th class="bghmnd-morkhc-gzrsh">کل مرخصی‌های باقی‌مانده</th>
@@ -842,17 +843,17 @@
                 <button type="submit" id="generategozareshmrkReportBtn" style="font-family: 'Vazir', sans-serif;">تهیه گزارش</button>
             </form>
 
-            <table class="individual-report-table">
+            <table class="individual-report-table" data-rt-pattern="card" data-rt-label="مرخصی">
                 <thead>
                     <tr>
-                        <th class="sbt-morkhc-nfrdi">ثبت تغییرات</th>
-                        <th class="drkhst-morkhc-nfrdi">وضعیت درخواست</th>
-                        <th class="jnshn-morkhc-nfrdi">جانشین</th>
-                        <th class="rooz-morkhc-nfrdi">تعداد روز</th>
-                        <th class="tatrkh-morkhc-nfrdi">تا تاریخ</th>
-                        <th class="aztarkh-morkhc-nfrdi">از تاریخ</th>
-                        <th class="krbr-morkhc-nfrdi">نام کاربر</th>
-                        <th class="rdf-morkhc-nfrdi">ردیف</th>
+                        <th class="sbt-morkhc-nfrdi" data-rt-role="actions">ثبت تغییرات</th>
+                        <th class="drkhst-morkhc-nfrdi" data-rt-role="badge">وضعیت درخواست</th>
+                        <th class="jnshn-morkhc-nfrdi" data-rt-role="field">جانشین</th>
+                        <th class="rooz-morkhc-nfrdi" data-rt-role="field">تعداد روز</th>
+                        <th class="tatrkh-morkhc-nfrdi" data-rt-role="field">تا تاریخ</th>
+                        <th class="aztarkh-morkhc-nfrdi" data-rt-role="field">از تاریخ</th>
+                        <th class="krbr-morkhc-nfrdi" data-rt-role="title">نام کاربر</th>
+                        <th class="rdf-morkhc-nfrdi" data-rt-role="hide">ردیف</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -876,15 +877,15 @@
         <!-- باکس مدیریت درخواست های اضافه کاری ها -->
         <div id="overtimeBox" class="management-box" style="display:none;">
             <h2>مدیریت اضافه‌کاری‌ها</h2>
-            <table class="overTime-table" id="overTimeRequestTable">
+            <table class="overTime-table" id="overTimeRequestTable" data-rt-pattern="card" data-rt-label="درخواست اضافه‌کاری">
                 <thead>
                     <tr>
-                        <th class="sbt-ezafe-drkhst">ثبت تغییرات</th>
-                        <th class="vaziat-ezafe-drkhst">وضعیت درخواست</th>
-                        <th class="tzht-ezafe-drkhst">توضیحات</th>
-                        <th class="mdt-ezafe-drkhst">مدت زمان اضافه کاری</th>
-                        <th class="trkh-ezafe-drkhst">تاریخ درخواست</th>
-                        <th class="krbr-ezafe-drkhst">نام کاربر</th>
+                        <th class="sbt-ezafe-drkhst" data-rt-role="actions">ثبت تغییرات</th>
+                        <th class="vaziat-ezafe-drkhst" data-rt-role="badge">وضعیت درخواست</th>
+                        <th class="tzht-ezafe-drkhst" data-rt-role="detail">توضیحات</th>
+                        <th class="mdt-ezafe-drkhst" data-rt-role="field">مدت زمان اضافه کاری</th>
+                        <th class="trkh-ezafe-drkhst" data-rt-role="field">تاریخ درخواست</th>
+                        <th class="krbr-ezafe-drkhst" data-rt-role="title">نام کاربر</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -904,7 +905,7 @@
         <div id="OverTimeReportBox" class="management-box" style="display:none;">
             <h2>گزارش کلی اضافه کاری های کاربران</h2>
 
-            <table class="overTime-allreport-table" id="overTimeReportTable">
+            <table class="overTime-allreport-table" id="overTimeReportTable" data-rt-pattern="fit">
                 <thead>
                     <tr>
                         <th class="overtimeezafetime">کل مدت زمان اضافه کاری</th>
@@ -945,16 +946,16 @@
                 <button type="button" id="submitReport" style="font-family: 'Vazir', sans-serif;">تهیه گزارش</button>
             </form>
 
-            <table class="overTimeindivisualReport-table" id="overTimeIndivisualReportTable">
+            <table class="overTimeindivisualReport-table" id="overTimeIndivisualReportTable" data-rt-pattern="card" data-rt-label="اضافه‌کاری">
                 <thead>
                     <tr>
-                        <th class="sbt-ezafe-gzrsh">ثبت تغییرات</th>
-                        <th class="vaziat-ezafe-gzrsh">وضعیت درخواست</th>
-                        <th class="tzht-ezafe-gzrsh">توضیحات</th>
-                        <th class="mdt-ezafe-gzrsh">مدت زمان اضافه کاری</th>
-                        <th class="trkh-ezafe-gzrsh">تاریخ درخواست</th>
-                        <th class="krbr-ezafe-gzrsh">نام کاربر</th>
-                        <th class="rdf-ezafe-gzrsh">ردیف</th>
+                        <th class="sbt-ezafe-gzrsh" data-rt-role="actions">ثبت تغییرات</th>
+                        <th class="vaziat-ezafe-gzrsh" data-rt-role="badge">وضعیت درخواست</th>
+                        <th class="tzht-ezafe-gzrsh" data-rt-role="detail">توضیحات</th>
+                        <th class="mdt-ezafe-gzrsh" data-rt-role="field">مدت زمان اضافه کاری</th>
+                        <th class="trkh-ezafe-gzrsh" data-rt-role="field">تاریخ درخواست</th>
+                        <th class="krbr-ezafe-gzrsh" data-rt-role="title">نام کاربر</th>
+                        <th class="rdf-ezafe-gzrsh" data-rt-role="hide">ردیف</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -977,15 +978,15 @@
         <!-- باکس مدیریت پاس های ساعتی -->
         <div id="hourlyPassBox" class="management-box" style="display:none;">
             <h2>مدیریت پاس‌های ساعتی</h2>
-            <table class="hourlyPassReport-table" id="hourlyPassReportTable">
+            <table class="hourlyPassReport-table" id="hourlyPassReportTable" data-rt-pattern="card" data-rt-label="درخواست پاس ساعتی">
                 <thead>
                     <tr>
-                        <th>ثبت تغییرات</th>
-                        <th>وضعیت درخواست</th>
-                        <th>مدت زمان پاس</th>
-                        <th>عنوان پاس</th>
-                        <th>تاریخ درخواست</th>
-                        <th>نام کاربر</th>
+                        <th data-rt-role="actions">ثبت تغییرات</th>
+                        <th data-rt-role="badge">وضعیت درخواست</th>
+                        <th data-rt-role="field">مدت زمان پاس</th>
+                        <th data-rt-role="field">عنوان پاس</th>
+                        <th data-rt-role="field">تاریخ درخواست</th>
+                        <th data-rt-role="title">نام کاربر</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -997,7 +998,7 @@
         <!-- باکس گزارش کلی پاس های ساعتی کلیه کاربران -->
         <div id="hourlyPassTotaluser" class="management-box" style="display:none;">
             <h2>مدیریت پاس‌های ساعتی</h2>
-            <table class="hourlyPassTotaluserReport-table" id="hourlyPassTotaluserReportTable">
+            <table class="hourlyPassTotaluserReport-table" id="hourlyPassTotaluserReportTable" data-rt-pattern="fit">
                 <thead>
                     <tr>
                         <th class="hourlyPassezafetime">کل مدت زمان پاس</th>
@@ -1041,15 +1042,15 @@
 
             </form>
 
-            <table class="hourlyPassIndivisualuserReport-table" id="hourlyPassIndivisualuserReportTable">
+            <table class="hourlyPassIndivisualuserReport-table" id="hourlyPassIndivisualuserReportTable" data-rt-pattern="card" data-rt-label="پاس ساعتی">
                 <thead>
                     <tr>
-                        <th>ثبت تغییرات</th>
-                        <th>وضعیت درخواست</th>
-                        <th>مدت زمان پاس</th>
-                        <th>عنوان پاس</th>
-                        <th>تاریخ درخواست</th>
-                        <th>نام کاربر</th>
+                        <th data-rt-role="actions">ثبت تغییرات</th>
+                        <th data-rt-role="badge">وضعیت درخواست</th>
+                        <th data-rt-role="field">مدت زمان پاس</th>
+                        <th data-rt-role="field">عنوان پاس</th>
+                        <th data-rt-role="field">تاریخ درخواست</th>
+                        <th data-rt-role="title">نام کاربر</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1064,15 +1065,15 @@
         <!-- باکس مدیریت تیکت های کاربران -->
         <div id="ticketBox" class="management-box" style="display:none;">
             <h2>مدیریت تیکت‌ها</h2>
-            <table class="ticketUsersReport-table" id="ticketUsersReportTable">
+            <table class="ticketUsersReport-table" id="ticketUsersReportTable" data-rt-pattern="card" data-rt-label="تیکت">
                 <thead>
                     <tr>
-                        <th class="taghir-ticketboxtable">ثبت تغییرات</th>
-                        <th class="vazeiyat-ticketboxtable">وضعیت تیکت</th>
-                        <th class="tozihat-ticketboxtable">توضیحات</th>
-                        <th class="onvan-ticketboxtable">عنوان</th>
-                        <th class="tarikhsbt-ticketboxtable">تاریخ ثبت</th>
-                        <th class="karbr-ticketboxtable">نام کاربر</th>
+                        <th class="taghir-ticketboxtable" data-rt-role="actions">ثبت تغییرات</th>
+                        <th class="vazeiyat-ticketboxtable" data-rt-role="badge">وضعیت تیکت</th>
+                        <th class="tozihat-ticketboxtable" data-rt-role="detail">توضیحات</th>
+                        <th class="onvan-ticketboxtable" data-rt-role="title">عنوان</th>
+                        <th class="tarikhsbt-ticketboxtable" data-rt-role="field">تاریخ ثبت</th>
+                        <th class="karbr-ticketboxtable" data-rt-role="field">نام کاربر</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1129,7 +1130,7 @@
                     <button type="button" id="extractButton" style="font-family: 'Vazir', sans-serif;">تهیه گزارش</button>
                 </form>
             </div>
-            <table class="hozoorUsersReport-table" id="hozoorUsersReportTable">
+            <table class="hozoorUsersReport-table" id="hozoorUsersReportTable" data-rt-pattern="scroll">
                 <thead>
                     <tr>
                         <th class="mjmoo-hozoor-gzrsh">مجموع زمان حضور</th>
@@ -1300,6 +1301,7 @@
     </div>    
 
     <script src="{{ url_for('static', path='js/admin.js') }}"></script>
+    <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.min.js"></script>
 
     
