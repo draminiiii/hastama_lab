@@ -15,7 +15,7 @@ dependencies = [
     "loguru>=0.7.0",
     "joblib>=1.2.0",
     "scikit-learn>=1.5.0",
-    "pyodbc>=5.1.0"
+    "pyodbc>=5.1.0",
     "jdatetime>=5.0.0",
 ]
 
