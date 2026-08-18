@@ -8,6 +8,7 @@
         <title>گزارش اضافه کاری فردی</title>
         <link rel="stylesheet" href="{{ url_for('static', path='css/overtime-report-style.css') }}">
         <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
     </head>
 
     <body>
@@ -83,6 +84,7 @@
             <button id="printReportBtn">چاپ گزارش</button>
         </div>
 
+        <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
         <script src="{{ url_for('static', path='js/overtime-report-script.js') }}"></script>
 
     </body>
