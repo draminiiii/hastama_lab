@@ -28,10 +28,10 @@ venv:
 	fi
 
 test: install
-	. .venv/bin/activate && .venv/bin/python -m pytest tests -vv --show-capture=all
+	uv run pytest tests -vv --show-capture=all
 
 install: generate_dot_env venv
-	uv pip install -e ".[dev]"
+	uv sync --dev
 
 run: venv
 	PYTHONPATH=app/ uv run uvicorn main:app --reload --host 0.0.0.0 --port 8080

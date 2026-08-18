@@ -10,6 +10,8 @@
 حالت‌های خالی/بارگذاری، همگام‌سازی با MutationObserver، بازگشت
 بی‌نقص به دسکتاپ و ستون‌های چسبان جدول‌های اسکرول‌شونده.
 """
+from __future__ import annotations
+
 import shutil
 import subprocess
 from pathlib import Path
