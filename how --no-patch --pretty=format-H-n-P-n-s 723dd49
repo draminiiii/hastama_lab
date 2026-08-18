@@ -1,0 +1,25 @@
+*   [33m008db06[m[33m ([m[1;32mbackup-before-remove-merge[m[33m)[m Merge pull request #5 from draminiiii/mobile-tables-redesign
+[31m|[m[32m\[m  
+[31m|[m * [33mf7294b0[m[33m ([m[1;31morigin/mobile-tables-redesign[m[33m, [m[1;32mmobile-tables-redesign[m[33m)[m Add step to install 'uv' package in CI workflow
+[31m|[m * [33m8426270[m Update CI workflow for Python package and dependencies
+[31m|[m *   [33m35f1946[m Merge branch 'master' into mobile-tables-redesign
+[31m|[m [33m|[m[31m\[m  
+[31m|[m [33m|[m[31m/[m  
+[31m|[m[31m/[m[33m|[m   
+* [33m|[m [33mbca02f4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Refactor CI workflow for Python package
+* [33m|[m [33m853c6a6[m Add 'itsdangerous' to project dependencies
+* [33m|[m [33m11d4571[m Add jinja2 as a required dependency
+* [33m|[m [33mcc48a7c[m Refactor database connection logic in auth.py
+* [33m|[m [33m087ee57[m Update CI workflow for Microsoft ODBC Driver installation
+* [33m|[m [33m3cfed94[m Enhance CI workflow with ODBC Driver installation
+* [33m|[m [33md46e4ad[m Add persiantools as a dependency
+* [33m|[m [33mb1a1390[m Add pdfkit as a dependency in pyproject.toml
+* [33m|[m [33mee38f8e[m Fix formatting in pyproject.toml dependencies
+* [33m|[m [33m723dd49[m Add jdatetime as a required dependency
+* [33m|[m [33md8d747b[m Add pyodbc dependency to pyproject.toml
+* [33m|[m [33m1023d7f[m Enhance Makefile with venv and generate_dot_env targets
+* [33m|[m [33m796d82e[m Update CI workflow to include uv installation
+* [33m|[m [33maa6eb81[m Update CI workflow to modify Python versions and add env file
+* [33m|[m   [33m1933fb1[m Merge pull request #4 from draminiiii/mobile-tables-redesign
+[35m|[m[36m\[m [33m\[m  
+* [36m|[m [33m|[m [33m5fb0872[m Update CI workflow to use newer Python versions
