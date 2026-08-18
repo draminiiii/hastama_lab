@@ -85,13 +85,14 @@
 
   /** نگاشت عبارات وضعیت فارسی → کلید معنایی + آیکون */
   var STATUS_RULES = [
-    { key: 'approved', icon: 'check', words: ['تایید شده', 'تاییدشده', 'مورد تایید', 'present', 'حاضر', 'حضور', 'ورود ثبت شد'] },
+    { key: 'approved', icon: 'check', words: ['تایید شده', 'تاییدشده', 'مورد تایید', 'تایید سامانه', 'present', 'حاضر', 'حضور', 'ورود ثبت شد'] },
     { key: 'rejected', icon: 'cross', words: ['رد شده', 'ردشده', 'غایب', 'غیبت', 'absent'] },
-    { key: 'pending', icon: 'clock', words: ['انتظار تایید', 'در انتظار', 'pending', 'در حال پیگیری'] },
+    { key: 'pending', icon: 'clock', words: ['انتظار تایید', 'در انتظار', 'pending', 'در حال پیگیری', 'تاخیر', 'زودهنگام'] },
     { key: 'cancelled', icon: 'minus', words: ['انصراف', 'لغو شده', 'cancelled'] },
     { key: 'sent', icon: 'send', words: ['ارسال شده'] },
     { key: 'read', icon: 'eye', words: ['خوانده شده'] },
     { key: 'answered', icon: 'reply', words: ['پاسخ داده شده', 'پاسخ دادهشده'] },
+    { key: 'overtime', icon: 'clock', words: ['اضافه کاری', 'اضافه‌کاری', 'اضافهکاری'] },
     { key: 'leave', icon: 'calendar', words: ['مرخصی', 'ماموریت', 'مأموریت'] },
     { key: 'holiday', icon: 'minus', words: ['تعطیل', 'تعطیلات'] }
   ];
@@ -422,6 +423,16 @@
     this.scroller = scroller;
     this.updateHint = updateHint;
     this.applySticky();
+
+    /* باکس‌های مدیریتی با display:none باز/بسته می‌شوند؛ هنگام نمایان شدن
+       جدول، عرض ستون‌های چسبان باید دوباره اندازه‌گیری شود */
+    if ('IntersectionObserver' in window) {
+      this._io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) self.applySticky(); });
+      });
+      this._io.observe(table);
+    }
+    window.addEventListener('load', function () { self.applySticky(); });
   };
 
   /** اعمال ستون‌های چسبان + سرصفحهٔ چسبان (فقط در عرض موبایل مؤثر است) */
@@ -465,16 +476,28 @@
       }
     }
 
-    /* پس‌زمینهٔ مات سرستون‌ها برای چسبان شدن صحیح */
+    /* پس‌زمینهٔ مات سرستون‌ها/سلول‌ها برای چسبان شدن صحیح (پشتیبانی از گرادیان) */
     var th = this.table.querySelector('thead th');
     if (th) {
-      var bg = getComputedStyle(th).backgroundColor;
-      if (bg && bg !== 'rgba(0, 0, 0, 0)') this.scrollWrap.style.setProperty('--rt-th-bg', bg);
+      try {
+        var thSt = getComputedStyle(th);
+        var trSt = getComputedStyle(th.parentElement);
+        var thBg = thSt.backgroundColor;
+        if (!thBg || thBg === 'rgba(0, 0, 0, 0)') thBg = trSt.backgroundColor;
+        if (thBg && thBg !== 'rgba(0, 0, 0, 0)') this.scrollWrap.style.setProperty('--rt-th-bg', thBg);
+        var thImg = trSt.backgroundImage && trSt.backgroundImage !== 'none' ? trSt.backgroundImage : thSt.backgroundImage;
+        if (thImg && thImg !== 'none') this.scrollWrap.style.setProperty('--rt-th-img', thImg);
+      } catch (e) { /* noop */ }
     }
     var td = this.table.querySelector('tbody td');
     if (td) {
-      var bg2 = getComputedStyle(td).backgroundColor;
-      this.scrollWrap.style.setProperty('--rt-td-bg', bg2 && bg2 !== 'rgba(0, 0, 0, 0)' ? bg2 : '#ffffff');
+      try {
+        var tdSt = getComputedStyle(td);
+        var rowSt = getComputedStyle(td.parentElement);
+        var tdBg = tdSt.backgroundColor;
+        if (!tdBg || tdBg === 'rgba(0, 0, 0, 0)') tdBg = rowSt.backgroundColor;
+        this.scrollWrap.style.setProperty('--rt-td-bg', tdBg && tdBg !== 'rgba(0, 0, 0, 0)' ? tdBg : '#ffffff');
+      } catch (e) { /* noop */ }
     }
     if (this.scroller) this.scroller.style.setProperty('--rt-minw', (cfg.minWidth || 640) + 'px');
     if (this.updateHint) this.updateHint();

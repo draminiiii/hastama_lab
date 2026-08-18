@@ -18,3 +18,12 @@
 
 - Run tests: `pytest`
 - Run app locally: `make run`
+
+## Responsive Tables Layer
+
+- `app/static/js/responsive-tables.js` + `app/static/css/responsive-tables.css` are the
+  shared mobile presentation layer for ALL tables (patterns: cards / list / scroll / keep).
+- Mobile views are derived from the same `<table>` DOM (no duplicated API/business logic);
+  interactive controls are moved into cards and restored on desktop/print.
+- To add a table, register it in `CONFIGS` inside responsive-tables.js (see docs/mobile-tables.md).
+- Keep `tests/test_responsive_tables.py` green; the jsdom suite lives in tests/js.
