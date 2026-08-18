@@ -28,10 +28,9 @@ venv:
 	fi
 
 test: install
-	.venv/bin/python -m pytest tests -vv --show-capture=all
+	uv run pytest tests -vv --show-capture=all
 
 install: generate_dot_env venv
-	uv sync --dev
 	uv pip install -e ".[dev]"
 
 run: venv
