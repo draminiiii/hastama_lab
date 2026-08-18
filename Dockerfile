@@ -10,7 +10,7 @@ RUN pip install --upgrade pip && \
     uv pip install -e .  # Installs dependencies using uv
 
 ARG DEV=false
-RUN if [ "$DEV" = "true" ] ; then uv pip install -e .[dev] ; fi
+RUN if [ "$DEV" = "true" ] ; then uv pip install -e . --group dev ; fi
 
 COPY ./app/ ./
 COPY ./ml/model/ ./ml/model/
