@@ -17,18 +17,20 @@ endif
 
 # Target section and Global definitions
 # -----------------------------------------------------------------------------
-.PHONY: all clean test install run deploy down
+
+.PHONY: all clean test install run deploy down venv generate_dot_env
 
 all: clean test install run deploy down
 
 venv:
-	uv venv .venv
+	@if [ ! -d ".venv" ]; then \
+		uv venv .venv; \
+	fi
 
 test: venv
 	uv run pytest tests -vv --show-capture=all
 
 install: generate_dot_env venv
-	pip install uv --break-system-packages
 	uv pip install -e ".[dev]"
 
 run: venv
@@ -42,8 +44,8 @@ down:
 	docker-compose down
 
 generate_dot_env:
-	@if [[ ! -e .env ]]; then \
-		cp .env.example .env; \
+	@if [ ! -e .env ]; then \
+		touch .env; \
 	fi
 
 clean:
