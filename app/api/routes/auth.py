@@ -8,12 +8,48 @@ from core.password_utils import fetch_user_for_login, verify_password
 
 router = APIRouter()
 
+DB_CONN_STR = (
+    'DRIVER={ODBC Driver 17 for SQL Server};'
+    r'SERVER=localhost\SQLEXPRESS;'
+    'DATABASE=userDB;'
+    'Trusted_Connection=yes;'
+)
+
+
+class LazyDBCursor:
+    def __init__(self, conn_str: str = DB_CONN_STR):
+        self.conn_str = conn_str
+        self._conn = None
+        self._cursor = None
+
+    def _connect(self):
+        if self._cursor is not None:
+            return self._cursor
+        try:
+            self._conn = pyodbc.connect(self.conn_str)
+            self._cursor = self._conn.cursor()
+            return self._cursor
+        except Exception:
+            self._conn = None
+            self._cursor = None
+            raise
+
+    def execute(self, *args, **kwargs):
+        return self._connect().execute(*args, **kwargs)
+
+    def fetchone(self, *args, **kwargs):
+        return self._connect().fetchone(*args, **kwargs)
+
+    def fetchall(self, *args, **kwargs):
+        return self._connect().fetchall(*args, **kwargs)
+
+    def __getattr__(self, name):
+        return getattr(self._connect(), name)
+
+
 # اتصال به دیتابیس (میتونی این رو به صورت مشترک تو یه فایل دیگه هم بذاری)
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                      r'SERVER=localhost\SQLEXPRESS;'
-                      'DATABASE=userDB;'
-                      'Trusted_Connection=yes;')
-cursor = conn.cursor()
+conn = None
+cursor = LazyDBCursor()
 
 @router.post("/login_user")
 async def login(request: Request):
