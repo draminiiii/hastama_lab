@@ -9,10 +9,10 @@ from core.password_utils import fetch_user_for_login, verify_password
 router = APIRouter()
 
 DB_CONN_STR = (
-    'DRIVER={ODBC Driver 17 for SQL Server};'
-    r'SERVER=localhost\SQLEXPRESS;'
-    'DATABASE=userDB;'
-    'Trusted_Connection=yes;'
+    "DRIVER={ODBC Driver 17 for SQL Server};"
+    r"SERVER=localhost\SQLEXPRESS;"
+    "DATABASE=userDB;"
+    "Trusted_Connection=yes;"
 )
 
 
@@ -23,16 +23,11 @@ class LazyDBCursor:
         self._cursor = None
 
     def _connect(self):
-        if self._cursor is not None:
-            return self._cursor
-        try:
+        if self._cursor is None:
             self._conn = pyodbc.connect(self.conn_str)
             self._cursor = self._conn.cursor()
-            return self._cursor
-        except Exception:
-            self._conn = None
-            self._cursor = None
-            raise
+
+        return self._cursor
 
     def execute(self, *args, **kwargs):
         return self._connect().execute(*args, **kwargs)
@@ -42,6 +37,24 @@ class LazyDBCursor:
 
     def fetchall(self, *args, **kwargs):
         return self._connect().fetchall(*args, **kwargs)
+
+    def commit(self):
+        self._connect()
+        return self._conn.commit()
+
+    def rollback(self):
+        self._connect()
+        return self._conn.rollback()
+
+    def close(self):
+        if self._cursor is not None:
+            self._cursor.close()
+
+        if self._conn is not None:
+            self._conn.close()
+
+        self._cursor = None
+        self._conn = None
 
     def __getattr__(self, name):
         return getattr(self._connect(), name)
