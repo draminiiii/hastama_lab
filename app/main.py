@@ -3079,11 +3079,40 @@ async def get_hozoor_today(request: Request):
                 "check_out": None,
             }]
 
+        schedule = {"work_start": None, "work_end": None}
+        if not request.session.get("is_admin"):
+            cursor.execute("""
+                SELECT work_hours, shanbeh, yekshanbeh, doshanbeh,
+                       seshanbeh, chrshanbeh, panjshanbeh
+                FROM user_table
+                WHERE username = ?
+            """, (actor,))
+            schedule_row = cursor.fetchone()
+            if schedule_row:
+                default_hours = schedule_row[0]
+                day_hours = {
+                    0: schedule_row[1], 1: schedule_row[2],
+                    2: schedule_row[3], 3: schedule_row[4],
+                    4: schedule_row[5], 5: schedule_row[6],
+                }
+                today_jalali = JalaliDate.today()
+                hours = day_hours.get(
+                    jdatetime.date(
+                        today_jalali.year, today_jalali.month, today_jalali.day
+                    ).weekday()
+                ) or default_hours
+                if hours and "-" in str(hours):
+                    schedule["work_start"], schedule["work_end"] = [
+                        part.strip() for part in str(hours).split("-", 1)
+                    ]
+
         return JSONResponse(content={
             "success": True,
             "data": {
                 "server_now": datetime.now().strftime("%H:%M"),
                 "users": users,
+                "work_start": schedule["work_start"],
+                "work_end": schedule["work_end"],
             },
         })
 

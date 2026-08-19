@@ -108,18 +108,20 @@ window.addEventListener('load', function() {
     // Mobile menu button is handled inline in the template to avoid double toggling.
 });
 
-function updatePresenceFromAttendance(checkIn, serverNow) {
+function updatePresenceFromAttendance(checkIn, serverNow, workStart, workEnd) {
     var wrap = document.querySelector('.timeline-ring-wrap');
     if (!wrap) return;
 
     wrap.setAttribute('data-entry-time', checkIn || '');
     if (serverNow) wrap.setAttribute('data-server-now', serverNow);
+    if (workStart) wrap.setAttribute('data-work-start', workStart);
+    if (workEnd) wrap.setAttribute('data-work-end', workEnd);
     wrap.dataset.loadedAtMs = String(Date.now());
 
     if (typeof updatePresenceRing === 'function') updatePresenceRing();
 }
 
-function updateUserAttendanceState(status, checkIn, checkOut, serverNow) {
+function updateUserAttendanceState(status, checkIn, checkOut, serverNow, workStart, workEnd) {
     var card = document.getElementById('attendanceActionCard');
     if (!card) return;
 
@@ -131,7 +133,7 @@ function updateUserAttendanceState(status, checkIn, checkOut, serverNow) {
 
     if (checkInEl) checkInEl.textContent = checkIn || '--:--';
     if (checkOutEl) checkOutEl.textContent = checkOut || '--:--';
-    updatePresenceFromAttendance(checkIn, serverNow);
+    updatePresenceFromAttendance(checkIn, serverNow, workStart, workEnd);
     if (checkInButton) checkInButton.disabled = status !== 'not_checked_in';
     if (checkOutButton) checkOutButton.disabled = status !== 'checked_in';
     if (statusEl) {
@@ -154,8 +156,14 @@ function loadUserAttendanceState() {
         })
         .then(function(payload) {
             var current = payload.data && payload.data.users && payload.data.users[0];
-            if (current) updateUserAttendanceState(current.status, current.check_in, current.check_out, payload.data.server_now);
-            else updateUserAttendanceState('not_checked_in', null, null, payload.data && payload.data.server_now);
+            if (current) updateUserAttendanceState(
+                current.status, current.check_in, current.check_out,
+                payload.data.server_now, payload.data.work_start, payload.data.work_end
+            );
+            else updateUserAttendanceState(
+                'not_checked_in', null, null, payload.data && payload.data.server_now,
+                payload.data && payload.data.work_start, payload.data && payload.data.work_end
+            );
         })
         .catch(function(error) {
             var statusEl = document.getElementById('attendanceActionStatus');
