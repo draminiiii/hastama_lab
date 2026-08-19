@@ -456,8 +456,16 @@ function toggleNotifications(event) {
     }
 }
 
+// مدیریت تم به لایهٔ مشترک theme.js منتقل شد (ذخیره در localStorage + هماهنگی
+// کلاس‌های dark-mode/dark-theme در همهٔ صفحات). این تابع فقط برای سازگاری با
+// onclick موجود در admin.html نگه داشته شده است.
 function toggleTheme() {
+    if (window.HastamaTheme) {
+        window.HastamaTheme.toggle();
+        return;
+    }
     document.body.classList.toggle('dark-theme');
+    document.body.classList.toggle('dark-mode');
 }
 
 function toggleSidebar(event) {

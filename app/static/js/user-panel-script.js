@@ -38,7 +38,12 @@ window.addEventListener('load', function() {
         var action = el.getAttribute('data-action');
         switch (action) {
             case 'toggle-theme':
-                document.body.classList.toggle('dark-mode');
+                // theme.js خودش این کلیک را می‌گیرد و تم را ذخیره می‌کند؛
+                // اینجا فقط برای حالتی که theme.js لود نشده باشد fallback داریم.
+                if (!window.HastamaTheme) {
+                    document.body.classList.toggle('dark-mode');
+                    document.body.classList.toggle('dark-theme');
+                }
                 break;
             case 'open-file-input':
                 var fi = document.getElementById('fileInput'); if (fi) fi.click();
@@ -1896,16 +1901,16 @@ const updateCalendar = () => {
             dayElement.className = 'day';
             dayElement.textContent = convertToPersianNumber(i.toString());
 
-            // اگر روز جمعه باشد، رنگ متن آن قرمز شود
+            // رنگ‌ها به‌جای style اینلاین با کلاس اعمال می‌شوند تا حالت تاریک
+            // بتواند آن‌ها را بازنویسی کند (style اینلاین بر CSS اولویت دارد).
             const dayOfWeek = (firstDayOfWeek + i - 1) % 7;
             if (dayOfWeek === 6) {  // جمعه
-                dayElement.style.color = 'red';
+                dayElement.classList.add('red-day');
             }
 
             // اگر روز تعطیل باشد، استایل خاصی به آن اعمال شود
             if (holidays[currentMonth] && holidays[currentMonth].includes(i)) {
-                dayElement.style.color = 'white';
-                dayElement.style.backgroundColor = 'red';
+                dayElement.classList.add('holiday');
             }
 
             // اگر روز جاری باشد، استایل خاصی به آن اعمال شود
