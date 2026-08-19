@@ -361,6 +361,9 @@
                 <thead>
                     <tr>
                         <th class="taghirat">تغییرات</th>
+                        <th class="vaziat-hozoor">وضعیت حضور</th>
+                        <th class="saat-vorood">ساعت ورود</th>
+                        <th class="saat-khorooj">ساعت خروج</th>
                         <th class="janeshin">جانشین</th>
                         <th class="saat-kari">ساعت‌های کاری</th>
                         <th class="dapart">بخش فعالیت</th>
@@ -370,7 +373,7 @@
                 </thead>
                 <tbody>
                     {% for user in users %}
-                    <tr>
+                    <tr data-username="{{ user.username }}">
                         <td>
                             <!-- دکمه حذف با ارسال اطلاعات به روت /admin -->
                             <form method="POST" action="{{ url_for('admin') }}" class="trash-icon-form"
@@ -388,7 +391,14 @@
                                 <span class="tooltip-text-table">ویرایش</span>
                             </button>
 
+                            <button type="button" class="attendance-action-btn" data-username="{{ user.username }}" disabled>
+                                ثبت حضور
+                            </button>
+
                         </td>
+                        <td class="attendance-status-cell"><span class="attendance-status" data-state="loading">در حال دریافت…</span></td>
+                        <td class="attendance-checkin-cell"><span class="attendance-checkin">—</span></td>
+                        <td class="attendance-checkout-cell"><span class="attendance-checkout">—</span></td>
                         <td>{{ user.substitute }}</td>
                         <td>{{ user.work_hours }}</td>
                         <td>{{ user.department }}</td>
@@ -563,6 +573,31 @@
                 <h2>آیا مطمئن به حذف کاربر هستید؟</h2>
                 <button id="confirmDeleteBtn" class="delete-btn">تایید</button>
                 <button class="cancel-btn" onclick="closeConfirmDialog()">انصراف</button>
+            </div>
+        </div>
+
+        <!-- پنجره مدال تایید خروج (Check-Out) -->
+        <div id="checkoutConfirmModal" class="modal">
+            <div class="modal-content modal-content-checkout">
+                <h2>آیا مطمئن هستید که خروج ثبت شود؟</h2>
+                <div class="checkout-confirm-info">
+                    <div class="checkout-confirm-row">
+                        <span class="checkout-confirm-label">کاربر</span>
+                        <span class="checkout-confirm-value" id="checkoutConfirmUser">—</span>
+                    </div>
+                    <div class="checkout-confirm-row">
+                        <span class="checkout-confirm-label">ساعت ورود</span>
+                        <span class="checkout-confirm-value" id="checkoutConfirmCheckIn">—</span>
+                    </div>
+                    <div class="checkout-confirm-row">
+                        <span class="checkout-confirm-label">ساعت فعلی</span>
+                        <span class="checkout-confirm-value" id="checkoutConfirmNow">—</span>
+                    </div>
+                </div>
+                <div class="checkout-confirm-actions">
+                    <button id="checkoutConfirmBtn" class="checkout-confirm-submit">ثبت خروج</button>
+                    <button class="cancel-btn" onclick="closeCheckoutConfirm()">انصراف</button>
+                </div>
             </div>
         </div>
 

@@ -17,6 +17,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from app.api.routes.api import router as api_router
 from app.api.routes.auth import router as auth_router
 from app.services.presence_summary import build_presence_summary, time_is_inside_range
+from app.services.attendance import compute_attendance_status, format_time_value
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
 from core.events import create_start_app_handler
 from core.number_format import convert_to_persian_numbers
@@ -2796,6 +2797,294 @@ async def sabt_hozoor(request: Request):
     except Exception as e:
         conn.rollback()
         return JSONResponse(content={"success": False, "message": f"خطا در ثبت اطلاعات: {str(e)}"})
+
+
+# ثبت ورود دستی (Check-In) از صفحه کاربران # ثبت ورود دستی (Check-In) از صفحه کاربران
+# ثبت ورود دستی (Check-In) از صفحه کاربران # ثبت ورود دستی (Check-In) از صفحه کاربران
+# ثبت ورود دستی (Check-In) از صفحه کاربران # ثبت ورود دستی (Check-In) از صفحه کاربران
+
+def _attendance_actor(request: Request):
+    """کاربر احراز هویت‌شدهٔ فعلی را برمی‌گرداند؛ اگر ادمین نباشد پاسخ خطا می‌دهد.
+
+    خروجی یک tuple است: ``(username, None)`` در حالت موفق و
+    ``(None, JSONResponse)`` در حالت عدم دسترسی.
+    """
+    username = request.session.get("username")
+    is_admin = request.session.get("is_admin")
+    if not username or not is_admin:
+        return None, JSONResponse(
+            status_code=401,
+            content={"success": False, "message": "ورود به سامانه الزامی است."},
+        )
+    return username, None
+
+
+def _attendance_payload_status(username: str, check_in: str | None, check_out: str | None):
+    """ساخت بدنهٔ پاسخ مشترک برای وضعیت حضور."""
+    return {
+        "username": username,
+        "status": compute_attendance_status(
+            check_in, check_out
+        )["status"],
+        "check_in": check_in,
+        "check_out": check_out,
+        "server_now": datetime.now().strftime("%H:%M"),
+    }
+
+
+@app.post("/sabt_hozoor_checkin")
+async def sabt_hozoor_checkin(request: Request):
+    """ثبت ورود (Check-In) برای یک کاربر — زمان از سمت سرور تعیین می‌شود."""
+    _actor, _auth_error = _attendance_actor(request)
+    if _auth_error:
+        return _auth_error
+
+    try:
+        payload = await request.json()
+    except Exception:
+        return JSONResponse(status_code=400, content={"success": False, "message": "درخواست نامعتبر است."})
+
+    username = (payload or {}).get("username") if isinstance(payload, dict) else None
+    if not username:
+        return JSONResponse(status_code=400, content={"success": False, "message": "کاربر مشخص نشده است."})
+    username = str(username)
+
+    now = datetime.now()
+    today = now.date()
+    now_time = now.time()
+
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT username FROM user_table WHERE username = ?", (username,))
+        if cursor.fetchone() is None:
+            return JSONResponse(status_code=404, content={"success": False, "message": "کاربر مورد نظر یافت نشد."})
+
+        # قفل برای جلوگیری از ثبت هم‌زمان (Race Condition)
+        # ۱) اگر ورودِ فعالی (بدون خروج) از قبل وجود دارد — حتی از روز قبل برای شیفت شب — رد شود
+        cursor.execute(
+            "SELECT TOP 1 [date], vrood FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
+            "WHERE username = ? AND vrood IS NOT NULL AND khoroj IS NULL "
+            "ORDER BY [date] DESC",
+            (username,),
+        )
+        active = cursor.fetchone()
+        if active is not None:
+            return JSONResponse(status_code=409, content={"success": False, "message": "کاربر قبلاً ورود خود را ثبت کرده است."})
+
+        # ۲) اگر رکورد امروز از قبل تکمیل شده باشد، رد شود
+        cursor.execute(
+            "SELECT vrood, khoroj FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
+            "WHERE username = ? AND [date] = ?",
+            (username, today),
+        )
+        row = cursor.fetchone()
+        if row is not None and row[1] is not None:
+            return JSONResponse(status_code=409, content={"success": False, "message": "حضور این کاربر قبلاً تکمیل شده است."})
+
+        if row is not None:
+            cursor.execute(
+                "UPDATE hozoor SET vrood = ? WHERE username = ? AND [date] = ?",
+                (now_time, username, today),
+            )
+        else:
+            cursor.execute(
+                "INSERT INTO hozoor (username, [date], vrood, khoroj) VALUES (?, ?, ?, NULL)",
+                (username, today, now_time),
+            )
+
+        conn.commit()
+
+        return JSONResponse(content={
+            "success": True,
+            "message": "ورود با موفقیت ثبت شد.",
+            "data": _attendance_payload_status(username, now_time.strftime("%H:%M"), None),
+        })
+
+    except Exception as exc:
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        print("check-in error:", exc)
+        return JSONResponse(status_code=500, content={"success": False, "message": "خطا در ثبت اطلاعات. لطفاً دوباره تلاش کنید."})
+    finally:
+        if cursor is not None:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+
+@app.post("/sabt_hozoor_checkout")
+async def sabt_hozoor_checkout(request: Request):
+    """ثبت خروج (Check-Out) برای یک کاربر — زمان از سمت سرور تعیین می‌شود."""
+    _actor, _auth_error = _attendance_actor(request)
+    if _auth_error:
+        return _auth_error
+
+    try:
+        payload = await request.json()
+    except Exception:
+        return JSONResponse(status_code=400, content={"success": False, "message": "درخواست نامعتبر است."})
+
+    username = (payload or {}).get("username") if isinstance(payload, dict) else None
+    if not username:
+        return JSONResponse(status_code=400, content={"success": False, "message": "کاربر مشخص نشده است."})
+    username = str(username)
+
+    now = datetime.now()
+    today = now.date()
+    now_time = now.time()
+
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT username FROM user_table WHERE username = ?", (username,))
+        if cursor.fetchone() is None:
+            return JSONResponse(status_code=404, content={"success": False, "message": "کاربر مورد نظر یافت نشد."})
+
+        # یافتن ورودِ فعال (بدون خروج) — برای شیفت شب ممکن است متعلق به روز قبل باشد
+        cursor.execute(
+            "SELECT TOP 1 [date], vrood FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
+            "WHERE username = ? AND vrood IS NOT NULL AND khoroj IS NULL "
+            "ORDER BY [date] DESC",
+            (username,),
+        )
+        active = cursor.fetchone()
+
+        if active is None:
+            return JSONResponse(status_code=409, content={"success": False, "message": "کاربر هیچ ورود فعالی ندارد."})
+
+        active_date, active_vrood = active[0], active[1]
+        check_in = format_time_value(active_vrood)
+
+        cursor.execute(
+            "UPDATE hozoor SET khoroj = ? WHERE username = ? AND [date] = ?",
+            (now_time, username, active_date),
+        )
+        conn.commit()
+
+        return JSONResponse(content={
+            "success": True,
+            "message": "خروج با موفقیت ثبت شد.",
+            "data": _attendance_payload_status(username, check_in, now_time.strftime("%H:%M")),
+        })
+
+    except Exception as exc:
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        print("check-out error:", exc)
+        return JSONResponse(status_code=500, content={"success": False, "message": "خطا در ثبت اطلاعات. لطفاً دوباره تلاش کنید."})
+    finally:
+        if cursor is not None:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+
+@app.get("/get_hozoor_today")
+async def get_hozoor_today(request: Request):
+    """وضعیت حضور امروزِ همهٔ کاربران را در یک درخواست برمی‌گرداند (بدون N+1)."""
+    _actor, _auth_error = _attendance_actor(request)
+    if _auth_error:
+        return _auth_error
+
+    today = datetime.now().date()
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # برای هر کاربر، ورودِ فعال (بدون خروج) و رکوردِ امروز را می‌خوانیم؛
+        # ورودِ فعال برای شیفت شب ممکن است متعلق به روز قبل باشد.
+        cursor.execute("""
+            SELECT u.username, h.[date], h.vrood, h.khoroj
+            FROM user_table u
+            LEFT JOIN hozoor h ON u.username = h.username
+                AND ( (h.vrood IS NOT NULL AND h.khoroj IS NULL) OR h.[date] = ? )
+        """, (today,))
+        rows = cursor.fetchall()
+
+        by_user = {}
+        for username, record_date, vrood, khoroj in rows:
+            entry = by_user.setdefault(username, {"active": None, "today": None})
+            if vrood is not None and khoroj is None:
+                entry["active"] = (record_date, vrood)
+            # نرمال‌سازی نوع تاریخ (درایور ممکن است datetime برگرداند)
+            normalized_date = record_date.date() if isinstance(record_date, datetime) else record_date
+            if normalized_date is not None and normalized_date == today:
+                entry["today"] = (vrood, khoroj)
+
+        users = []
+        for username, entry in by_user.items():
+            if entry["active"] is not None:
+                item = {
+                    "username": username,
+                    "status": "checked_in",
+                    "check_in": format_time_value(entry["active"][1]),
+                    "check_out": None,
+                }
+            elif entry["today"] is not None and entry["today"][0] is not None and entry["today"][1] is not None:
+                item = {
+                    "username": username,
+                    "status": "checked_out",
+                    "check_in": format_time_value(entry["today"][0]),
+                    "check_out": format_time_value(entry["today"][1]),
+                }
+            else:
+                item = {
+                    "username": username,
+                    "status": "not_checked_in",
+                    "check_in": None,
+                    "check_out": None,
+                }
+            users.append(item)
+
+        return JSONResponse(content={
+            "success": True,
+            "data": {
+                "server_now": datetime.now().strftime("%H:%M"),
+                "users": users,
+            },
+        })
+
+    except Exception as exc:
+        print("get_hozoor_today error:", exc)
+        return JSONResponse(status_code=500, content={"success": False, "message": "خطا در دریافت اطلاعات حضور و غیاب."})
+    finally:
+        if cursor is not None:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass
 
 
 @app.get("/final_report_page", response_class=HTMLResponse)

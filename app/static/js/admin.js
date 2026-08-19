@@ -2751,6 +2751,230 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// ============================================================================
+// ثبت ورود / خروج از صفحهٔ کاربران (Check-In / Check-Out)
+// زمان رسمی حضور و غیاب همیشه در سمت سرور تعیین می‌شود؛ این کد فقط وضعیت را
+// از سرور می‌گیرد و نتیجه را در جدول کاربران منعکس می‌کند.
+// ============================================================================
+
+var ATTENDANCE_STATUS_LABELS = {
+    "not_checked_in": "ثبت نشده",
+    "checked_in": "در حال کار",
+    "checked_out": "تکمیل شده"
+};
+
+var ATTENDANCE_BUTTON_LABELS = {
+    "not_checked_in": "ثبت ورود",
+    "checked_in": "ثبت خروج",
+    "checked_out": "تکمیل شده"
+};
+
+// آخرین وضعیت تأییدشده توسط سرور، برای بازگردانی UI پس از خطا
+var ATTENDANCE_CACHE = {};
+var ATTENDANCE_SERVER_NOW = null;
+
+function findAttendanceRow(username) {
+    var rows = document.querySelectorAll("#userTable tbody tr[data-username]");
+    for (var i = 0; i < rows.length; i++) {
+        if (rows[i].getAttribute("data-username") === username) return rows[i];
+    }
+    return null;
+}
+
+function findAttendanceButton(username) {
+    // دکمه ممکن است در جدول (دسکتاپ) یا داخل کارت موبایل (منتقل‌شده توسط لایهٔ ریسپانسیو) باشد
+    var buttons = document.querySelectorAll(".attendance-action-btn[data-username]");
+    for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].getAttribute("data-username") === username) return buttons[i];
+    }
+    return null;
+}
+
+function applyAttendanceState(username, status, checkIn, checkOut) {
+    ATTENDANCE_CACHE[username] = { status: status, check_in: checkIn, check_out: checkOut };
+
+    var row = findAttendanceRow(username);
+    var statusEl = row ? row.querySelector(".attendance-status") : null;
+    var checkInEl = row ? row.querySelector(".attendance-checkin") : null;
+    var checkOutEl = row ? row.querySelector(".attendance-checkout") : null;
+
+    if (statusEl) {
+        statusEl.textContent = ATTENDANCE_STATUS_LABELS[status] || "—";
+        statusEl.setAttribute("data-state", status);
+    }
+    if (checkInEl) checkInEl.textContent = checkIn || "—";
+    if (checkOutEl) checkOutEl.textContent = checkOut || "—";
+
+    var btn = findAttendanceButton(username);
+    if (btn) {
+        btn.disabled = false;
+        btn.textContent = ATTENDANCE_BUTTON_LABELS[status] || "—";
+        btn.setAttribute("data-action", status);
+        btn.classList.remove("attendance-action-btn--checkin", "attendance-action-btn--checkout", "attendance-action-btn--done", "attendance-action-btn--loading");
+        btn.classList.add(
+            status === "not_checked_in" ? "attendance-action-btn--checkin" :
+            status === "checked_in" ? "attendance-action-btn--checkout" :
+            "attendance-action-btn--done"
+        );
+        if (status === "checked_out") {
+            btn.disabled = true;
+        }
+    }
+
+    // بازتاب تغییرات در نمای موبایل (کارت/فهرست) در صورت فعال بودن
+    if (window.RT && window.RT.refresh) {
+        try { window.RT.refresh(); } catch (e) { /* noop */ }
+    }
+}
+
+function setAttendanceLoading(username, loading) {
+    var btn = findAttendanceButton(username);
+    if (!btn) return;
+    if (loading) {
+        btn.disabled = true;
+        btn.classList.add("attendance-action-btn--loading");
+        btn.textContent = btn.getAttribute("data-action") === "not_checked_in" ? "در حال ثبت ورود…" : "در حال ثبت خروج…";
+    } else {
+        btn.classList.remove("attendance-action-btn--loading");
+        // بازگردانی از حافظهٔ کش (آخرین وضعیت تأییدشده)
+        var cached = ATTENDANCE_CACHE[username];
+        if (cached) applyAttendanceState(username, cached.status, cached.check_in, cached.check_out);
+    }
+}
+
+function loadAttendanceStatuses() {
+    fetch("/get_hozoor_today", { method: "GET", credentials: "same-origin" })
+        .then(function (resp) {
+            if (!resp.ok) throw new Error("HTTP " + resp.status);
+            return resp.json();
+        })
+        .then(function (data) {
+            if (!data.success || !data.data) throw new Error(data.message || "خطا");
+            if (data.data.server_now) ATTENDANCE_SERVER_NOW = data.data.server_now;
+            var users = data.data.users || [];
+            for (var i = 0; i < users.length; i++) {
+                applyAttendanceState(users[i].username, users[i].status, users[i].check_in, users[i].check_out);
+            }
+        })
+        .catch(function (err) {
+            console.error("خطا در دریافت وضعیت حضور:", err);
+        });
+}
+
+function doCheckIn(username) {
+    setAttendanceLoading(username, true);
+    fetch("/sabt_hozoor_checkin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ username: username })
+    })
+        .then(function (resp) {
+            return resp.json().then(function (data) { return { ok: resp.ok, data: data }; });
+        })
+        .then(function (r) {
+            if (!r.ok || !r.data.success) throw new Error(r.data.message || "خطا در ثبت ورود");
+            var d = r.data.data || {};
+            applyAttendanceState(username, d.status, d.check_in, d.check_out);
+            alert(r.data.message || "ورود با موفقیت ثبت شد.");
+        })
+        .catch(function (err) {
+            console.error(err);
+            alert(err.message || "خطا در ثبت ورود.");
+            setAttendanceLoading(username, false);
+        });
+}
+
+function doCheckOut(username) {
+    closeCheckoutConfirm();
+    setAttendanceLoading(username, true);
+    fetch("/sabt_hozoor_checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ username: username })
+    })
+        .then(function (resp) {
+            return resp.json().then(function (data) { return { ok: resp.ok, data: data }; });
+        })
+        .then(function (r) {
+            if (!r.ok || !r.data.success) throw new Error(r.data.message || "خطا در ثبت خروج");
+            var d = r.data.data || {};
+            applyAttendanceState(username, d.status, d.check_in, d.check_out);
+            alert(r.data.message || "خروج با موفقیت ثبت شد.");
+        })
+        .catch(function (err) {
+            console.error(err);
+            alert(err.message || "خطا در ثبت خروج.");
+            setAttendanceLoading(username, false);
+        });
+}
+
+var CHECKOUT_PENDING_USERNAME = null;
+
+function openCheckoutConfirm(username) {
+    var cached = ATTENDANCE_CACHE[username];
+    var checkIn = cached ? cached.check_in : "—";
+    var nowLabel = ATTENDANCE_SERVER_NOW || formatCurrentTime();
+
+    var userEl = document.getElementById("checkoutConfirmUser");
+    var checkInEl = document.getElementById("checkoutConfirmCheckIn");
+    var nowEl = document.getElementById("checkoutConfirmNow");
+    if (userEl) userEl.textContent = username;
+    if (checkInEl) checkInEl.textContent = checkIn || "—";
+    if (nowEl) nowEl.textContent = nowLabel;
+
+    CHECKOUT_PENDING_USERNAME = username;
+    document.getElementById("checkoutConfirmModal").style.display = "block";
+}
+
+function closeCheckoutConfirm() {
+    CHECKOUT_PENDING_USERNAME = null;
+    var modal = document.getElementById("checkoutConfirmModal");
+    if (modal) modal.style.display = "none";
+}
+
+function formatCurrentTime() {
+    var now = new Date();
+    var hh = String(now.getHours()).padStart(2, "0");
+    var mm = String(now.getMinutes()).padStart(2, "0");
+    return hh + ":" + mm;
+}
+
+document.addEventListener("click", function (e) {
+    var target = e.target;
+    if (!target || !target.closest) return;
+
+    var btn = target.closest(".attendance-action-btn");
+    if (btn && !btn.disabled) {
+        e.preventDefault();
+        var username = btn.getAttribute("data-username");
+        var action = btn.getAttribute("data-action");
+        if (!username) return;
+        if (action === "not_checked_in") {
+            doCheckIn(username);
+        } else if (action === "checked_in") {
+            openCheckoutConfirm(username);
+        }
+        return;
+    }
+
+    // بستن مدال تایید خروج با کلیک روی پس‌زمینه
+    if (target === document.getElementById("checkoutConfirmModal")) {
+        closeCheckoutConfirm();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var confirmBtn = document.getElementById("checkoutConfirmBtn");
+    if (confirmBtn) {
+        confirmBtn.addEventListener("click", function () {
+            if (CHECKOUT_PENDING_USERNAME) doCheckOut(CHECKOUT_PENDING_USERNAME);
+        });
+    }
+    loadAttendanceStatuses();
+});
+
 // تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده
 // تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده
 // تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده// تنظمیات انتخاب روز از تقویم شخصی سازی شده

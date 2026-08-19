@@ -1137,7 +1137,7 @@
     /* کاربران: دادهٔ اداری پیچیده → فهرست فشرده + جزئیات (Pattern C) */
     {
       sel: '#userTable', pattern: 'list',
-      titleFrom: ['نام کاربر'], metaFrom: ['بخش فعالیت', 'ساعت‌های کاری'],
+      titleFrom: ['نام کاربر'], metaFrom: ['وضعیت حضور', 'بخش فعالیت', 'ساعت‌های کاری'],
       actionsFrom: ['تغییرات'], primary: '.edit-btn',
       detailsTitle: 'جزئیات کاربر'
     },
