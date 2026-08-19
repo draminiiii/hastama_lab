@@ -131,12 +131,25 @@
 
     /* یک شنوندهٔ سراسری: هر عنصری با data-action="toggle-theme" یا آیدی‌های
        شناخته‌شده، بدون نیاز به onclick اینلاین کار می‌کند (سازگار با CSP). */
+    var TOGGLE_SELECTOR = '[data-action="toggle-theme"], #themeToggleBtn, #themeToggleButton, .theme-toggle';
+
     function bindDelegate() {
         document.addEventListener('click', function (e) {
-            var el = e.target.closest
-                ? e.target.closest('[data-action="toggle-theme"], #themeToggleBtn, #themeToggleButton, .theme-toggle')
-                : null;
+            var el = e.target.closest ? e.target.closest(TOGGLE_SELECTOR) : null;
             if (!el) return;
+            e.preventDefault();
+            toggle();
+        });
+
+        /* دسترس‌پذیری: کلیدهای Enter/Space روی کلیدهایی که <button> نیستند
+           (مثل div.topbar-icon-btn) هم تم را عوض کنند. عناصر بومی مثل
+           button/a/input خودشان کلیک کیبوردی دارند و رد می‌شوند. */
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+            var el = e.target && e.target.closest ? e.target.closest(TOGGLE_SELECTOR) : null;
+            if (!el) return;
+            var tag = el.tagName;
+            if (tag === 'BUTTON' || tag === 'A' || tag === 'INPUT') return;
             e.preventDefault();
             toggle();
         });

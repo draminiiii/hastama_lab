@@ -1084,7 +1084,186 @@ body.dark-mode .no-ticket-message {
 }
 
 /* =============================================================================
-   ۱۲) چاپ: همیشه روشن
+   ۱۲) تکمیل پوشش — سطوح جامانده از صفحات (بدون هیچ تغییری در حالت روشن)
+   ========================================================================== */
+
+/* متغیرهای بازطراحی v2 پنل کاربری که برای تم تیره بازنویسی نشده بودند؛
+   چیپ‌های رنگی آیکون‌ها (stat/leave/notif) و سایهٔ کارت‌ها */
+body.dark-mode {
+    --shadow-card: var(--dk-shadow-sm);
+    --tint-blue-bg: rgba(56, 189, 248, 0.16);
+    --tint-blue-ink: #7dd3fc;
+    --tint-purple-bg: rgba(167, 139, 250, 0.16);
+    --tint-purple-ink: #c4b5fd;
+    --tint-orange-bg: rgba(251, 146, 60, 0.16);
+    --tint-orange-ink: #fdba74;
+    --tint-green-bg: rgba(74, 222, 128, 0.14);
+    --tint-green-ink: #86efac;
+}
+
+/* --- پنل کاربری: لوگو، تقویم، پاپ‌آپ ساعت‌زن و جداکننده‌ها --- */
+body.dark-mode .logo-top {
+    background-color: var(--dk-surface);
+    box-shadow: var(--dk-shadow-sm);
+}
+
+body.dark-mode .calendar-grid {
+    background-color: var(--dk-surface-2);
+}
+
+body.dark-mode .day:hover {
+    background-color: var(--dk-surface-3);
+}
+
+body.dark-mode .decrease:hover,
+body.dark-mode .increase:hover {
+    background-color: var(--dk-surface-3);
+}
+
+body.dark-mode .popupHozoor-content {
+    background-color: var(--dk-surface);
+    color: var(--dk-text);
+    box-shadow: var(--dk-shadow);
+}
+
+body.dark-mode .popupHozoor-content h2 {
+    color: var(--dk-text);
+}
+
+body.dark-mode .line-separator {
+    border-top-color: var(--dk-line);
+}
+
+body.dark-mode .onvaneticket,
+body.dark-mode .tatikhticket {
+    border-bottom-color: var(--dk-line);
+}
+
+/* هاور دکمه‌های آیکونی جدول‌ها در هر دو پنل (در روشن #f1f1f1 بود) */
+body.dark-mode .edit-btn:hover,
+body.dark-mode .trash-btn:hover,
+body.dark-mode .view-btn:hover,
+body.dark-mode .check-btn:hover,
+body.dark-mode .trash-icon:hover {
+    background-color: var(--dk-surface-3);
+}
+
+/* پس‌زمینهٔ روشن تراشهٔ آیکون‌های ساید‌بار (فقط پنل کاربری؛ ساید‌بار ادمین
+   در حالت روشن تراشه ندارد و در تیره هم نباید اضافه شود) */
+body.dark-mode .sidebar-right .icon-container img,
+body.dark-mode .icon-container-leftSidebar img {
+    background-color: var(--dk-surface-2);
+}
+
+/* دکمهٔ حذف پروفایل: قرمز تیره روی سطح روشن، در تیره باید روشن‌تر شود */
+body.dark-mode .profile-delete-btn {
+    background: rgba(248, 113, 113, 0.16);
+    color: var(--dk-danger);
+}
+
+/* هاور ردیف‌های جدول وضعیت تیکت‌ها */
+body.dark-mode #ticket-status-table tbody tr:hover,
+body.dark-mode #ticket-status-table-popup tbody tr:hover {
+    background-color: var(--dk-surface-3);
+}
+
+/* گزینه‌های رنگی تغییر وضعیت تیکت: خود تراشه روشن است، متن تیره می‌ماند
+   تا در هر دو تم خوانا باشد؛ هاورها که پس‌زمینهٔ تیره دارند متن سفید می‌گیرند */
+body.dark-mode .goz1,
+body.dark-mode .goz2,
+body.dark-mode .goz3 {
+    color: #14233d;
+}
+
+body.dark-mode .dropdown .goz1:hover,
+body.dark-mode .dropdown .goz2:hover,
+body.dark-mode .dropdown .goz3:hover {
+    color: #fff;
+}
+
+/* --- پنل مدیریت: قرص وضعیت، دکمه‌های خنثی و باکس‌های نتیجه --- */
+/* قرص پایهٔ وضعیت؛ واریانت‌های رنگی (approved/rejected/...) با :not مستثنا شده‌اند */
+body.dark-mode .status-navbar:not(.approved):not(.rejected):not(.pending):not(.cancelled) {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text);
+}
+
+/* هاور گزینه‌های داخل dropdown وضعیت، بدون پوشاندن گزینه‌های رنگی */
+body.dark-mode .status-option:not(.pending):not(.approved):not(.rejected):not(.cancelled):hover {
+    background-color: var(--dk-surface-3);
+}
+
+/* نشان «خوانده شده» در تیره به جای خاکستری روشن، رنگ slate می‌گیرد */
+body.dark-mode .status-read {
+    background-color: #64748b;
+    color: #fff;
+}
+
+/* باکس‌های کوچک نتیجهٔ حضور */
+body.dark-mode #natigehHozoor .boxha div {
+    background-color: var(--dk-surface-2);
+    border-color: var(--dk-border);
+    color: var(--dk-text);
+}
+
+/* دکمه‌های خنثی (در روشن خاکستری با متن مشکی بودند) */
+body.dark-mode .confirm-changes-btn {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text);
+}
+
+body.dark-mode .confirm-changes-btn:hover {
+    background-color: #2f405c;
+}
+
+body.dark-mode .confirm-changes-btn:active {
+    background-color: #243349;
+}
+
+body.dark-mode #cancelShiftEditBtn {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text);
+}
+
+body.dark-mode #cancelShiftEditBtn:hover {
+    background-color: #2f405c;
+}
+
+/* سرستون‌های بنفش کم‌رنگ جدول‌های پنل کاربری با همان رنگ سرستون گزارش‌ها
+   هماهنگ می‌شوند (متن سفید از قبل با !important در شیت صفحه تضمین شده) */
+body.dark-mode #OverTimeTable thead,
+body.dark-mode #leaveTable thead tr,
+body.dark-mode #ticket-status-table thead tr,
+body.dark-mode #ticket-status-table-popup thead tr,
+body.dark-mode .passsaatiReport-table thead tr,
+body.dark-mode #HozoorTableReport thead {
+    background-color: #4c5bd4;
+}
+
+/* --- صفحات گزارش --- */
+/* باکس‌های امضا در برخی بریک‌پوینت‌ها پس‌زمینهٔ سفید می‌گیرند */
+body.dark-mode .signature-box,
+body.dark-mode .signature-box-hamkar {
+    background-color: var(--dk-surface);
+}
+
+/* --- دسترس‌پذیری و جزئیات سراسری --- */
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--dk-bg-2);
+}
+
+/* نمای بودن فوکوس کیبوردی در تم تیره */
+body.dark-mode button:focus-visible,
+body.dark-mode a:focus-visible,
+body.dark-mode [role="button"]:focus-visible,
+body.dark-mode [tabindex]:focus-visible,
+body.dark-mode .theme-toggle-floating:focus-visible {
+    outline: 2px solid var(--dk-accent);
+    outline-offset: 2px;
+}
+
+/* =============================================================================
+   ۱۳) چاپ: همیشه روشن
    ========================================================================== */
 @media print {
     html.dark-mode,
