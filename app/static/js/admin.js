@@ -156,11 +156,15 @@ function toggleBox(boxId, iconContainer) {
 
     // پنهان کردن تمام باکس‌ها
     const boxes = document.querySelectorAll('.management-box');
-    boxes.forEach(box => box.style.display = 'none');
+    boxes.forEach(box => {
+        box.style.display = 'none';
+        box.classList.remove('is-visible');
+    });
 
     // نمایش باکس انتخابی
     const selectedBox = document.getElementById(boxId);
     if (selectedBox) {
+        selectedBox.classList.add('is-visible');
         if (boxId === 'vacationRequestBox') {
             selectedBox.style.display = 'inline-table';
         } else {
@@ -172,11 +176,13 @@ function toggleBox(boxId, iconContainer) {
     if (boxId === 'vacationBox') {
         const requestBox = document.getElementById('vacationRequestBox');
         if (requestBox) {
+            requestBox.classList.add('is-visible');
             requestBox.style.display = 'inline-table';
         }
 
         const individualReportBox = document.getElementById('individualReportBox');
         if (individualReportBox) {
+            individualReportBox.classList.add('is-visible');
             individualReportBox.style.display = 'inline-table';
         }
     }
@@ -185,11 +191,13 @@ function toggleBox(boxId, iconContainer) {
     if (boxId === 'overtimeBox') {
         const overTimeReportBox = document.getElementById('OverTimeReportBox');
         if (overTimeReportBox) {
+            overTimeReportBox.classList.add('is-visible');
             overTimeReportBox.style.display = 'block';
         }
 
         const OverTimeIndivisualReportBox = document.getElementById('OverTimeIndivisualReportBox');
         if (OverTimeIndivisualReportBox) {
+            OverTimeIndivisualReportBox.classList.add('is-visible');
             OverTimeIndivisualReportBox.style.display = 'block';
         }
     }
@@ -198,16 +206,19 @@ function toggleBox(boxId, iconContainer) {
     if (boxId === 'hourlyPassBox') {
         const hourlyPassBox = document.getElementById('hourlyPassBox');
         if (hourlyPassBox) {
+            hourlyPassBox.classList.add('is-visible');
             hourlyPassBox.style.display = 'block';
         }
 
         const hourlyPassTotaluser = document.getElementById('hourlyPassTotaluser');
         if (hourlyPassTotaluser) {
+            hourlyPassTotaluser.classList.add('is-visible');
             hourlyPassTotaluser.style.display = 'flex';
         }
 
         const hourlyPassIndivisualuser = document.getElementById('hourlyPassIndivisualuser');
         if (hourlyPassIndivisualuser) {
+            hourlyPassIndivisualuser.classList.add('is-visible');
             hourlyPassIndivisualuser.style.display = 'block';
         }
     }
@@ -240,10 +251,12 @@ function toggleBox(boxId, iconContainer) {
 
         // اطمینان از نمایش هر دو باکس
         if (newUserBox) {
+            newUserBox.classList.add('is-visible');
             newUserBox.style.display = 'block';
         }
 
         if (userInfoBox) {
+            userInfoBox.classList.add('is-visible');
             userInfoBox.style.display = 'block';
         }
     }

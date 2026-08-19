@@ -1145,10 +1145,13 @@
       visibleFrom: ['از تاریخ', 'تا تاریخ', 'تعداد روزها', 'جانشین'],
       detailsTitle: 'جزئیات درخواست مرخصی'
     },
-    /* شیفت‌ها: شبکهٔ روزهای هفته → جدول اسکرول + ستون چسبان (Pattern B) */
+    /* شیفت‌ها: همانند درخواست‌های مرخصی، هر بازه یک کارت مستقل در موبایل */
     {
-      sel: '#shiftsTable', pattern: 'scroll', stickyStart: 1, stickyHead: true,
-      maxHeight: '55vh', minWidth: 780, label: 'جدول شیفت‌های ماه'
+      sel: '#shiftsTable', pattern: 'cards',
+      titleFrom: ['عنوان'], actionsFrom: ['تغییرات'],
+      primary: '.edit-btn',
+      visibleFrom: ['از روز', 'تا روز', 'شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'],
+      detailsTitle: 'جزئیات بازهٔ شیفت', detailsLabel: 'مشاهده جزئیات شیفت'
     },
     /* گزارش خلاصهٔ مرخصی‌ها: ۳ ستون عددی مقایسه‌ای → جدول (keep) */
     { sel: '.vacation-table', pattern: 'keep', label: 'گزارش مرخصی‌ها' },
@@ -1204,11 +1207,12 @@
       visibleFrom: ['نام کاربر', 'تاریخ ثبت'],
       detailsTitle: 'جزئیات تیکت', detailsLabel: 'مشاهده تیکت'
     },
-    /* گزارش حضور و غیاب ادمین: ۱۱ ستون تحلیلی → اسکرول + سرصفحه/ستون چسبان (Pattern B) */
+    /* حضور و غیاب ادمین: هر روز یک رکورد مستقل در موبایل */
     {
-      sel: '#hozoorbox #hozoorUsersReportTable', pattern: 'scroll',
-      stickyEnd: 1, stickyHead: true, maxHeight: '60vh', minWidth: 880,
-      label: 'گزارش حضور و غیاب'
+      sel: '#hozoorbox #hozoorUsersReportTable', pattern: 'cards',
+      titleFrom: ['تاریخ ثبت'],
+      visibleFrom: ['روز هفته', 'زمان ورود', 'زمان خروج', 'مجموع زمان حضور', 'اضافه کاری'],
+      detailsTitle: 'جزئیات حضور و غیاب', detailsLabel: 'مشاهده جزئیات حضور'
     },
     /* جداول کوچک داشبورد: ۳ ستون → جدول (keep) */
     { sel: '.dashboard-table', pattern: 'keep', label: 'جدول داشبورد' },

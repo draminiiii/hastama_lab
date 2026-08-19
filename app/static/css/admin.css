@@ -5657,6 +5657,14 @@ table thead tr td {
         -webkit-overflow-scrolling: touch;
     }
 
+    .management-box.is-visible {
+        display: block !important;
+    }
+
+    .management-box:not(#dashboardBox):not(.is-visible) {
+        display: none !important;
+    }
+
     .dashboard-grid,
     .dashboard-grid--two-row,
     .dashboard-chart-row,
@@ -5758,7 +5766,7 @@ table thead tr td {
         padding: 10px 14px;
         font-size: 13px;
         white-space: normal;
-        max-width: 100%;
+        width: fit-content;
     }
 
     .modal-buttons,
@@ -5840,6 +5848,10 @@ table thead tr td {
     #calendar-box {
         max-width: calc(100vw - 36px);
         overflow-x: auto;
+    }
+
+    #userInfoBox, #newUserBox{
+        height: 23rem !important;
     }
 }
 

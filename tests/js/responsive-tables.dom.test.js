@@ -188,7 +188,7 @@ function makeDom() {
   const w = dom.window, d = w.document;
   await new Promise(r => setTimeout(r, 30));
   check('no mobile view on desktop', !d.querySelector('.rt-view:not([hidden])'));
-  check('scroll wrapper created even on desktop (harmless)', !!d.querySelector('#shiftsTable') && d.querySelector('#shiftsTable').closest('.rt-scroll') !== null);
+  check('shiftsTable source visible on desktop', !d.querySelector('#shiftsTable').classList.contains('rt-source-hidden'));
   check('source tables visible on desktop', d.querySelector('#leaveRequestsTable').offsetParent !== null || !d.querySelector('#leaveRequestsTable').classList.contains('rt-source-hidden'));
   check('keep table untouched (no cards)', !d.querySelector('.vacation-table').classList.contains('rt-source-hidden'));
 
@@ -246,10 +246,14 @@ function makeDom() {
 
   /* --- scroll patterns --- */
   const shifts = d.querySelector('#shiftsTable');
-  check('shiftsTable wrapped in .rt-scroll', shifts.closest('.rt-scroll') !== null);
-  check('shiftsTable first column sticky (actions)', shifts.querySelector('thead th').classList.contains('rt-sticky--s1'));
+  const shiftsView = shifts.nextElementSibling;
+  check('shiftsTable mobile view created', shiftsView && shiftsView.classList.contains('rt-view'));
+  check('shiftsTable renders records as cards', shiftsView && !!shiftsView.querySelector('.rt-card'));
+  check('shiftsTable edit action retained', shiftsView && !!shiftsView.querySelector('.edit-btn'));
   const hozoorAdmin = d.querySelector('#hozoorbox #hozoorUsersReportTable');
-  check('admin hozoor: last column sticky (date)', hozoorAdmin.querySelector('tbody td:last-child').classList.contains('rt-sticky--e1'));
+  const adminHozoorView = hozoorAdmin.nextElementSibling;
+  check('admin hozoor mobile view created', adminHozoorView && adminHozoorView.classList.contains('rt-view'));
+  check('admin hozoor renders records as cards', adminHozoorView && !!adminHozoorView.querySelector('.rt-card'));
   check('vacation-table (keep) NOT hidden', !d.querySelector('.vacation-table').classList.contains('rt-source-hidden'));
 
   /* --- user panel cards (bp 860) --- */
