@@ -496,7 +496,11 @@
         var rowSt = getComputedStyle(td.parentElement);
         var tdBg = tdSt.backgroundColor;
         if (!tdBg || tdBg === 'rgba(0, 0, 0, 0)') tdBg = rowSt.backgroundColor;
-        this.scrollWrap.style.setProperty('--rt-td-bg', tdBg && tdBg !== 'rgba(0, 0, 0, 0)' ? tdBg : '#ffffff');
+        // fallback باید تابع تم باشد؛ سفید ثابت در حالت تاریک لکهٔ روشن می‌ساخت
+        var isDark = document.body.classList.contains('dark-mode') ||
+                     document.body.classList.contains('dark-theme');
+        var fallbackBg = isDark ? '#182233' : '#ffffff';
+        this.scrollWrap.style.setProperty('--rt-td-bg', tdBg && tdBg !== 'rgba(0, 0, 0, 0)' ? tdBg : fallbackBg);
       } catch (e) { /* noop */ }
     }
     if (this.scroller) this.scroller.style.setProperty('--rt-minw', (cfg.minWidth || 640) + 'px');
@@ -1266,6 +1270,13 @@
     refresh: function () { instances.forEach(function (i) { i.scheduleRender(); if (i.applySticky) i.applySticky(); }); },
     setLoading: function (sel, on) { resolveElements(sel).forEach(function (t) { for (var j = 0; j < instances.length; j++) if (instances[j].table === t) instances[j].setLoading(on); }); }
   };
+
+  /* پس‌زمینهٔ ستون‌های چسبان از getComputedStyle خوانده می‌شود و در لحظهٔ
+     راه‌اندازی «قفل» می‌شود؛ با تغییر تم باید دوباره محاسبه شود، وگرنه
+     ستون چسبان رنگ تم قبلی را نگه می‌دارد. */
+  window.addEventListener('hastama:themechange', function () {
+    try { window.RT.refresh(); } catch (e) { log('theme refresh error', e); }
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () { try { init(); } catch (e) { log('init error', e); } });

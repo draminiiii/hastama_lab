@@ -7,13 +7,16 @@
     <title>سامانه هستما</title>
     <link rel="stylesheet" href="{{ url_for('static', path='css/login-style.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/dark-theme.css') }}">
+    <script src="{{ url_for('static', path='js/theme.js') }}"></script>
 </head>
 
 <body>
     <div class="top-actions">
         <div class="tooltip-wrap">
-            <button type="button" class="theme-toggle" onclick="document.body.classList.toggle('dark-mode')" aria-label="تغییر تم">
-                <span>🌙</span>
+            <button type="button" class="theme-toggle" data-action="toggle-theme" aria-label="تغییر تم">
+                <span class="theme-toggle-moon">🌙</span>
+                <span class="theme-toggle-sun">☀️</span>
             </button>
             <span class="tooltip">تغییر تم</span>
         </div>

@@ -19,6 +19,24 @@
 - Run tests: `pytest`
 - Run app locally: `make run`
 
+## Theme (Light/Dark) Layer
+
+- `app/static/css/dark-theme.css` + `app/static/js/theme.js` are the shared theme
+  layer, loaded LAST in the `<head>` of every template.
+- `theme.js` is the single source of truth: it sets BOTH legacy class names
+  (`dark-mode` and `dark-theme`) on `<html>` and `<body>`, persists the choice in
+  `localStorage` (`hastama-theme`), falls back to the OS preference, and injects a
+  floating toggle on pages with no toggle of their own (the report pages).
+- Any element with `data-action="toggle-theme"` (or `#themeToggleBtn` /
+  `#themeToggleButton` / `.theme-toggle`) toggles the theme — no inline `onclick`.
+- All dark rules live in `dark-theme.css` and are scoped under `body.dark-mode`;
+  do not add dark colors to the per-page stylesheets.
+- Never set colors via inline `style` in JS — inline styles beat the theme layer.
+  Use a class (see the calendar `.holiday` / `.red-day` classes).
+- Print always renders light; keep the `@media print` block at the end intact.
+- Tests: `tests/test_dark_theme.py` (coverage) and `tests/test_dark_theme_dom.py`
+  → `tests/js/theme.dom.test.js` (behavior).
+
 ## Responsive Tables Layer
 
 - `app/static/js/responsive-tables.js` + `app/static/css/responsive-tables.css` are the
