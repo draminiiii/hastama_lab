@@ -1263,6 +1263,62 @@ body.dark-mode .theme-toggle-floating:focus-visible {
 }
 
 /* =============================================================================
+   ۱۲-ب) ثبت ورود / خروج از صفحهٔ کاربران (Check-In / Check-Out)
+   ========================================================================== */
+
+body.dark-mode .attendance-status[data-state="not_checked_in"] {
+    background-color: rgba(248, 113, 113, 0.16);
+    color: var(--dk-danger);
+}
+
+body.dark-mode .attendance-status[data-state="checked_in"] {
+    background-color: rgba(34, 197, 94, 0.16);
+    color: var(--dk-accent-2);
+}
+
+body.dark-mode .attendance-status[data-state="checked_out"],
+body.dark-mode .attendance-status[data-state="loading"] {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text-2);
+}
+
+body.dark-mode .attendance-action-btn--checkin {
+    background-color: rgba(34, 197, 94, 0.18);
+    color: var(--dk-accent-2);
+}
+body.dark-mode .attendance-action-btn--checkin:hover:not(:disabled) {
+    background-color: rgba(34, 197, 94, 0.28);
+}
+
+body.dark-mode .attendance-action-btn--checkout,
+body.dark-mode .checkout-confirm-submit {
+    background-color: rgba(251, 191, 36, 0.18);
+    color: var(--dk-warn);
+}
+body.dark-mode .attendance-action-btn--checkout:hover:not(:disabled),
+body.dark-mode .checkout-confirm-submit:hover {
+    background-color: rgba(251, 191, 36, 0.28);
+}
+
+body.dark-mode .attendance-action-btn--done {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text-3);
+}
+
+body.dark-mode .checkout-confirm-row {
+    background-color: var(--dk-surface-2);
+    border-color: var(--dk-border);
+}
+
+body.dark-mode .checkout-confirm-label {
+    color: var(--dk-text-2);
+}
+
+body.dark-mode .checkout-confirm-value {
+    color: var(--dk-text);
+}
+
+/* =============================================================================
    ۱۳) چاپ: همیشه روشن
    ========================================================================== */
 @media print {

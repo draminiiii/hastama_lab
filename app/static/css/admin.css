@@ -947,31 +947,46 @@ html, body {
 /* عرض ستون‌ها */
 #userTable th:nth-child(1),
 #userTable td:nth-child(1) {
-    width: 5%; /* تغییرات */
+    width: 8%; /* تغییرات */
 }
 
 #userTable th:nth-child(2),
 #userTable td:nth-child(2) {
-    width: 5%; /* جانشین */
+    width: 7%; /* وضعیت حضور */
 }
 
 #userTable th:nth-child(3),
 #userTable td:nth-child(3) {
-    width: 7%; /* ساعت‌های کاری */
+    width: 5%; /* ساعت ورود */
 }
 
 #userTable th:nth-child(4),
 #userTable td:nth-child(4) {
-    width: 5%; /* بخش فعالیت */
+    width: 5%; /* ساعت خروج */
 }
 
 #userTable th:nth-child(5),
 #userTable td:nth-child(5) {
-    width: 4%; /* نام کاربر */
+    width: 5%; /* جانشین */
 }
 
 #userTable th:nth-child(6),
 #userTable td:nth-child(6) {
+    width: 7%; /* ساعت‌های کاری */
+}
+
+#userTable th:nth-child(7),
+#userTable td:nth-child(7) {
+    width: 5%; /* بخش فعالیت */
+}
+
+#userTable th:nth-child(8),
+#userTable td:nth-child(8) {
+    width: 4%; /* نام کاربر */
+}
+
+#userTable th:nth-child(9),
+#userTable td:nth-child(9) {
     width: 2%; /* ردیف */
 }
 
@@ -4559,17 +4574,17 @@ table thead tr td {
 
     #userTable th:nth-child(1),
     #userTable td:nth-child(1) {
-        width: 5%;
+        width: 8%;
     }
 
     #userTable th:nth-child(2),
     #userTable td:nth-child(2) {
-        width: 4%;
+        width: 7%;
     }
 
     #userTable th:nth-child(3),
     #userTable td:nth-child(3) {
-        width: 6%;
+        width: 5%;
     }
 
     #userTable th:nth-child(4),
@@ -4579,12 +4594,27 @@ table thead tr td {
 
     #userTable th:nth-child(5),
     #userTable td:nth-child(5) {
-        width: 4%;
+        width: 5%;
     }
 
     #userTable th:nth-child(6),
     #userTable td:nth-child(6) {
+        width: 7%;
+    }
+
+    #userTable th:nth-child(7),
+    #userTable td:nth-child(7) {
+        width: 5%;
+    }
+
+    #userTable th:nth-child(8),
+    #userTable td:nth-child(8) {
         width: 4%;
+    }
+
+    #userTable th:nth-child(9),
+    #userTable td:nth-child(9) {
+        width: 2%;
     }
 
     .edit-btn, .trash-icon { margin: -3px; }
@@ -5896,4 +5926,153 @@ table thead tr td {
     #sabtdst {
         padding: 12px !important;
     }
+}
+
+/* =============================================================================
+   ثبت ورود / خروج از صفحهٔ کاربران (Check-In / Check-Out)
+   استایل روشن؛ رنگ‌های تیره در dark-theme.css زیر body.dark-mode آمده‌اند.
+   ============================================================================= */
+
+/* دکمهٔ اقدام حضور (ثبت ورود / ثبت خروج / تکمیل شده) */
+.attendance-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    margin: 2px 0;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Vazir', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.attendance-action-btn--checkin {
+    background-color: #4caf50;
+}
+.attendance-action-btn--checkin:hover:not(:disabled) {
+    background-color: #45a049;
+}
+
+.attendance-action-btn--checkout {
+    background-color: #f59e0b;
+}
+.attendance-action-btn--checkout:hover:not(:disabled) {
+    background-color: #d97706;
+}
+
+.attendance-action-btn--done {
+    background-color: #9ca3af;
+    cursor: default;
+}
+
+.attendance-action-btn--loading {
+    opacity: 0.7;
+    cursor: progress;
+}
+
+.attendance-action-btn:disabled {
+    cursor: not-allowed;
+}
+
+/* نشان وضعیت حضور در جدول کاربران */
+.attendance-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.attendance-status[data-state="not_checked_in"] {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.attendance-status[data-state="checked_in"] {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.attendance-status[data-state="checked_out"] {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.attendance-status[data-state="loading"] {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+/* سلول‌های ساعت ورود / خروج */
+.attendance-checkin,
+.attendance-checkout {
+    font-family: 'Vazir', sans-serif;
+    font-size: 14px;
+    direction: ltr;
+    display: inline-block;
+}
+
+/* پنجرهٔ تایید خروج */
+.modal-content-checkout {
+    width: 26rem;
+    max-width: 90%;
+}
+
+.checkout-confirm-info {
+    margin: 14px 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkout-confirm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.checkout-confirm-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.checkout-confirm-value {
+    font-size: 14px;
+    font-weight: bold;
+    direction: ltr;
+}
+
+.checkout-confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.checkout-confirm-submit {
+    padding: 7px 20px;
+    background-color: #f59e0b;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    font-family: 'Vazir';
+}
+
+.checkout-confirm-submit:hover {
+    background-color: #d97706;
 }
