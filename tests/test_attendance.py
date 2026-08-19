@@ -277,7 +277,7 @@ def test_unknown_user_rejected(monkeypatch):
 
 
 def test_auth_required(monkeypatch):
-    db = FakeDB(users=["IT        "])
+    db = FakeDB(users=["IT        ", "user"])
     monkeypatch.setattr(main, "get_db_connection", lambda: FakeConn(db))
 
     # no session at all
@@ -288,12 +288,19 @@ def test_auth_required(monkeypatch):
     assert resp.status_code == 401
     assert body_of(resp)["success"] is False
 
-    # non-admin
+    # authenticated users may register only their own attendance
     resp = run(
         main.sabt_hozoor_checkin,
         FakeRequest({"username": "user", "is_admin": False}, {"username": "IT        "}),
     )
-    assert resp.status_code == 401
+    assert resp.status_code == 403
+
+    resp = run(
+        main.sabt_hozoor_checkin,
+        FakeRequest({"username": "user", "is_admin": False}, {"username": "user"}),
+    )
+    assert resp.status_code == 200
+    assert body_of(resp)["success"] is True
 
 
 def test_status_batch(monkeypatch):

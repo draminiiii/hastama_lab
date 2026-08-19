@@ -72,6 +72,12 @@ window.addEventListener('load', function() {
             case 'open-ticket-list':
                 if (typeof openTicketListPopup === 'function') openTicketListPopup();
                 break;
+            case 'attendance-checkin':
+                submitUserAttendance('checkin');
+                break;
+            case 'attendance-checkout':
+                submitUserAttendance('checkout');
+                break;
             case 'logout':
                 if (typeof logout === 'function') logout();
                 break;
@@ -101,6 +107,97 @@ window.addEventListener('load', function() {
 
     // Mobile menu button is handled inline in the template to avoid double toggling.
 });
+
+function updatePresenceFromAttendance(checkIn, serverNow) {
+    var wrap = document.querySelector('.timeline-ring-wrap');
+    if (!wrap) return;
+
+    wrap.setAttribute('data-entry-time', checkIn || '');
+    if (serverNow) wrap.setAttribute('data-server-now', serverNow);
+    wrap.dataset.loadedAtMs = String(Date.now());
+
+    if (typeof updatePresenceRing === 'function') updatePresenceRing();
+}
+
+function updateUserAttendanceState(status, checkIn, checkOut, serverNow) {
+    var card = document.getElementById('attendanceActionCard');
+    if (!card) return;
+
+    var checkInButton = card.querySelector('[data-action="attendance-checkin"]');
+    var checkOutButton = card.querySelector('[data-action="attendance-checkout"]');
+    var statusEl = document.getElementById('attendanceActionStatus');
+    var checkInEl = document.getElementById('attendanceCheckInText');
+    var checkOutEl = document.getElementById('attendanceCheckOutText');
+
+    if (checkInEl) checkInEl.textContent = checkIn || '--:--';
+    if (checkOutEl) checkOutEl.textContent = checkOut || '--:--';
+    updatePresenceFromAttendance(checkIn, serverNow);
+    if (checkInButton) checkInButton.disabled = status !== 'not_checked_in';
+    if (checkOutButton) checkOutButton.disabled = status !== 'checked_in';
+    if (statusEl) {
+        statusEl.textContent = status === 'checked_in'
+            ? 'ورود ثبت شده؛ خروج خود را ثبت کنید'
+            : status === 'checked_out'
+                ? 'ورود و خروج امروز ثبت شده است'
+                : 'هنوز ورود امروز ثبت نشده است';
+        statusEl.dataset.status = status || 'not_checked_in';
+    }
+}
+
+function loadUserAttendanceState() {
+    var card = document.getElementById('attendanceActionCard');
+    if (!card) return;
+    fetch('/get_hozoor_today', { credentials: 'same-origin' })
+        .then(function(response) {
+            if (!response.ok) throw new Error('خطا در دریافت وضعیت حضور');
+            return response.json();
+        })
+        .then(function(payload) {
+            var current = payload.data && payload.data.users && payload.data.users[0];
+            if (current) updateUserAttendanceState(current.status, current.check_in, current.check_out, payload.data.server_now);
+            else updateUserAttendanceState('not_checked_in', null, null, payload.data && payload.data.server_now);
+        })
+        .catch(function(error) {
+            var statusEl = document.getElementById('attendanceActionStatus');
+            if (statusEl) statusEl.textContent = error.message;
+        });
+}
+
+function submitUserAttendance(action) {
+    var card = document.getElementById('attendanceActionCard');
+    if (!card || card.dataset.loading === 'true') return;
+
+    var username = card.getAttribute('data-username');
+    var endpoint = action === 'checkin' ? '/sabt_hozoor_checkin' : '/sabt_hozoor_checkout';
+    card.dataset.loading = 'true';
+
+    fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ username: username })
+    })
+        .then(function(response) {
+            return response.json().then(function(payload) {
+                if (!response.ok || !payload.success) throw new Error(payload.message || 'ثبت حضور انجام نشد');
+                return payload;
+            });
+        })
+        .then(function(payload) {
+            var data = payload.data || {};
+            updateUserAttendanceState(data.status, data.check_in, data.check_out, data.server_now);
+        })
+        .catch(function(error) {
+            var statusEl = document.getElementById('attendanceActionStatus');
+            if (statusEl) statusEl.textContent = error.message;
+            if (action === 'checkin') loadUserAttendanceState();
+        })
+        .finally(function() {
+            card.dataset.loading = 'false';
+        });
+}
+
+window.addEventListener('load', loadUserAttendanceState);
 
 // تبدیل اعداد انگلیسی به فارسی
 function convertToPersianNumbers(str) {

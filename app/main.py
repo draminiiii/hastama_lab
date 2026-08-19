@@ -1035,7 +1035,12 @@ class OvertimeData:
 
 # اتصال به دیتابیس
 def get_db_connection():
-    conn = pyodbc.connect('DRIVER={SQL Server};SERVER=localhost\\SQLEXPRESS;DATABASE=userDB;Trusted_Connection=yes;')
+    conn = pyodbc.connect(
+        'DRIVER={ODBC Driver 17 for SQL Server};'
+        r'SERVER=localhost\SQLEXPRESS;'
+        'DATABASE=userDB;'
+        'Trusted_Connection=yes;'
+    )
     return conn
 
 # دریافت اطلاعات از session (در اینجا به صورت تابع فرضی)
@@ -2804,14 +2809,13 @@ async def sabt_hozoor(request: Request):
 # ثبت ورود دستی (Check-In) از صفحه کاربران # ثبت ورود دستی (Check-In) از صفحه کاربران
 
 def _attendance_actor(request: Request):
-    """کاربر احراز هویت‌شدهٔ فعلی را برمی‌گرداند؛ اگر ادمین نباشد پاسخ خطا می‌دهد.
+    """کاربر احراز هویت‌شدهٔ فعلی را برمی‌گرداند.
 
     خروجی یک tuple است: ``(username, None)`` در حالت موفق و
     ``(None, JSONResponse)`` در حالت عدم دسترسی.
     """
     username = request.session.get("username")
-    is_admin = request.session.get("is_admin")
-    if not username or not is_admin:
+    if not username:
         return None, JSONResponse(
             status_code=401,
             content={"success": False, "message": "ورود به سامانه الزامی است."},
@@ -2835,7 +2839,7 @@ def _attendance_payload_status(username: str, check_in: str | None, check_out: s
 @app.post("/sabt_hozoor_checkin")
 async def sabt_hozoor_checkin(request: Request):
     """ثبت ورود (Check-In) برای یک کاربر — زمان از سمت سرور تعیین می‌شود."""
-    _actor, _auth_error = _attendance_actor(request)
+    actor, _auth_error = _attendance_actor(request)
     if _auth_error:
         return _auth_error
 
@@ -2848,6 +2852,8 @@ async def sabt_hozoor_checkin(request: Request):
     if not username:
         return JSONResponse(status_code=400, content={"success": False, "message": "کاربر مشخص نشده است."})
     username = str(username)
+    if not request.session.get("is_admin") and username != actor:
+        return JSONResponse(status_code=403, content={"success": False, "message": "دسترسی ثبت حضور کاربر دیگر مجاز نیست."})
 
     now = datetime.now()
     today = now.date()
@@ -2863,31 +2869,22 @@ async def sabt_hozoor_checkin(request: Request):
         if cursor.fetchone() is None:
             return JSONResponse(status_code=404, content={"success": False, "message": "کاربر مورد نظر یافت نشد."})
 
-        # قفل برای جلوگیری از ثبت هم‌زمان (Race Condition)
-        # ۱) اگر ورودِ فعالی (بدون خروج) از قبل وجود دارد — حتی از روز قبل برای شیفت شب — رد شود
-        cursor.execute(
-            "SELECT TOP 1 [date], vrood FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
-            "WHERE username = ? AND vrood IS NOT NULL AND khoroj IS NULL "
-            "ORDER BY [date] DESC",
-            (username,),
-        )
-        active = cursor.fetchone()
-        if active is not None:
-            return JSONResponse(status_code=409, content={"success": False, "message": "کاربر قبلاً ورود خود را ثبت کرده است."})
-
-        # ۲) اگر رکورد امروز از قبل تکمیل شده باشد، رد شود
+        # قفل برای جلوگیری از ثبت هم‌زمان؛ تصمیم فقط بر اساس رکورد امروز است.
         cursor.execute(
             "SELECT vrood, khoroj FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
             "WHERE username = ? AND [date] = ?",
             (username, today),
         )
         row = cursor.fetchone()
-        if row is not None and row[1] is not None:
-            return JSONResponse(status_code=409, content={"success": False, "message": "حضور این کاربر قبلاً تکمیل شده است."})
+        if row is not None and row[0] is not None:
+            if row[1] is None:
+                return JSONResponse(status_code=409, content={"success": False, "message": "ورود امروز قبلاً ثبت شده است."})
+            return JSONResponse(status_code=409, content={"success": False, "message": "ورود و خروج امروز قبلاً ثبت شده است."})
 
         if row is not None:
             cursor.execute(
-                "UPDATE hozoor SET vrood = ? WHERE username = ? AND [date] = ?",
+                "UPDATE hozoor SET vrood = ?, khoroj = NULL "
+                "WHERE username = ? AND [date] = ?",
                 (now_time, username, today),
             )
         else:
@@ -2928,7 +2925,7 @@ async def sabt_hozoor_checkin(request: Request):
 @app.post("/sabt_hozoor_checkout")
 async def sabt_hozoor_checkout(request: Request):
     """ثبت خروج (Check-Out) برای یک کاربر — زمان از سمت سرور تعیین می‌شود."""
-    _actor, _auth_error = _attendance_actor(request)
+    actor, _auth_error = _attendance_actor(request)
     if _auth_error:
         return _auth_error
 
@@ -2941,6 +2938,8 @@ async def sabt_hozoor_checkout(request: Request):
     if not username:
         return JSONResponse(status_code=400, content={"success": False, "message": "کاربر مشخص نشده است."})
     username = str(username)
+    if not request.session.get("is_admin") and username != actor:
+        return JSONResponse(status_code=403, content={"success": False, "message": "دسترسی ثبت خروج کاربر دیگر مجاز نیست."})
 
     now = datetime.now()
     today = now.date()
@@ -2958,10 +2957,10 @@ async def sabt_hozoor_checkout(request: Request):
 
         # یافتن ورودِ فعال (بدون خروج) — برای شیفت شب ممکن است متعلق به روز قبل باشد
         cursor.execute(
-            "SELECT TOP 1 [date], vrood FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
-            "WHERE username = ? AND vrood IS NOT NULL AND khoroj IS NULL "
-            "ORDER BY [date] DESC",
-            (username,),
+            "SELECT [date], vrood FROM hozoor WITH (UPDLOCK, HOLDLOCK) "
+            "WHERE username = ? AND [date] = ? "
+            "AND vrood IS NOT NULL AND khoroj IS NULL",
+            (username, today),
         )
         active = cursor.fetchone()
 
@@ -3006,8 +3005,8 @@ async def sabt_hozoor_checkout(request: Request):
 
 @app.get("/get_hozoor_today")
 async def get_hozoor_today(request: Request):
-    """وضعیت حضور امروزِ همهٔ کاربران را در یک درخواست برمی‌گرداند (بدون N+1)."""
-    _actor, _auth_error = _attendance_actor(request)
+    """وضعیت حضور امروز را برای ادمین‌ها یا کاربر فعلی برمی‌گرداند."""
+    actor, _auth_error = _attendance_actor(request)
     if _auth_error:
         return _auth_error
 
@@ -3018,14 +3017,23 @@ async def get_hozoor_today(request: Request):
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # برای هر کاربر، ورودِ فعال (بدون خروج) و رکوردِ امروز را می‌خوانیم؛
-        # ورودِ فعال برای شیفت شب ممکن است متعلق به روز قبل باشد.
-        cursor.execute("""
-            SELECT u.username, h.[date], h.vrood, h.khoroj
-            FROM user_table u
-            LEFT JOIN hozoor h ON u.username = h.username
-                AND ( (h.vrood IS NOT NULL AND h.khoroj IS NULL) OR h.[date] = ? )
-        """, (today,))
+        # کاربران عادی فقط وضعیت خودشان را می‌خوانند؛ ادمین وضعیت همه را می‌گیرد.
+        # ورود فعال ممکن است مربوط به روز قبلِ یک شیفت شب باشد.
+        if request.session.get("is_admin"):
+            cursor.execute("""
+                SELECT u.username, h.[date], h.vrood, h.khoroj
+                FROM user_table u
+                LEFT JOIN hozoor h ON u.username = h.username
+                    AND ((h.vrood IS NOT NULL AND h.khoroj IS NULL) OR h.[date] = ?)
+            """, (today,))
+        else:
+            cursor.execute("""
+                                SELECT TOP 1 username, [date], vrood, khoroj
+                FROM hozoor
+                                WHERE username = ?
+                                    AND [date] = ?
+                ORDER BY [date] DESC
+            """, (actor, today))
         rows = cursor.fetchall()
 
         by_user = {}
@@ -3062,6 +3070,14 @@ async def get_hozoor_today(request: Request):
                     "check_out": None,
                 }
             users.append(item)
+
+        if not request.session.get("is_admin") and not users:
+            users = [{
+                "username": actor,
+                "status": "not_checked_in",
+                "check_in": None,
+                "check_out": None,
+            }]
 
         return JSONResponse(content={
             "success": True,

@@ -3769,6 +3769,127 @@ body {
     gap: 16px;
 }
 
+.attendance-action-card {
+    margin-top: 16px;
+    padding: 18px 20px;
+}
+
+.attendance-action-header,
+.attendance-action-times,
+.attendance-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.attendance-action-header {
+    justify-content: space-between;
+}
+
+.attendance-action-header .panel-title {
+    margin: 4px 0 0;
+}
+
+.panel-kicker {
+    color: var(--ink-muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.attendance-action-status {
+    color: var(--ink-muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.attendance-action-times {
+    margin: 16px 0;
+}
+
+.attendance-action-times > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 110px;
+}
+
+.attendance-action-times span {
+    color: var(--ink-muted);
+    font-size: 12px;
+}
+
+.attendance-action-times strong {
+    color: var(--ink);
+    font-size: 18px;
+}
+
+.attendance-action-buttons {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.attendance-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.attendance-action-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.attendance-action-btn--in { background: #0f9f78; }
+.attendance-action-btn--out { background: #d97706; }
+.attendance-action-btn:disabled {
+    cursor: not-allowed;
+    opacity: .42;
+}
+
+@media screen and (max-width: 860px) {
+    .attendance-action-card {
+        margin-top: 12px;
+        padding: 14px;
+    }
+
+    .attendance-action-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .attendance-action-status {
+        text-align: right;
+    }
+
+    .attendance-action-times {
+        justify-content: space-between;
+    }
+
+    .attendance-action-times > div {
+        min-width: 0;
+    }
+
+    .attendance-action-buttons {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .attendance-action-btn {
+        width: 100%;
+    }
+}
+
 .stat-card, .stat-clock {
     background: #fff;
     border-radius: 20px;
