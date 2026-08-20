@@ -899,125 +899,85 @@ html, body {
     color: #555; /* رنگ متن محتوای باکس */
 }
 
-/* استایل کلی جدول */
-#userTable {
-    width: 100%; /* جدول تمام عرض باکس را بگیرد */
-    border-collapse: separate; /* به هم پیوسته کردن حاشیه‌ها */
-    border: 1px solid #ddd; /* حاشیه کلی جدول */
-    font-family: 'Vazir';
-    text-align: center; /* متن‌ها وسط‌چین شوند */
-    table-layout: fixed; /* عرض ستون‌ها ثابت باشد */
-    border-radius: 20px; /* گوشه‌های جدول گرد */
-    overflow: hidden; /* مخفی کردن حاشیه‌های اضافی */
-    box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.1);
-    background-color: white;
-}
+/* جدول مستقل مدیریت کاربران در دسکتاپ */
+@media screen and (min-width: 769px) {
+    #userTable {
+        width: 100%;
+        border: 1px solid #e2e8f0;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.05);
+        font-family: 'Vazir', sans-serif;
+        table-layout: fixed;
+        text-align: center;
+        direction: rtl;
+    }
 
-/* استایل برای هدر */
-#userTable thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-    direction: rtl;
-}
+    #userTable thead,
+    #userTable tbody,
+    #userTable tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
 
-/* استایل سلول‌های هدر */
-#userTable th {
-    padding: 7px;
-    text-align: center;
-    border: 1px solid #ddd; /* حاشیه برای هدر */
-    font-size: 18px;
-    font-weight: bold;
-}
+    #userTable thead th {
+        padding: 12px 14px;
+        background: #f8fafc;
+        color: #1e293b;
+        border: 0;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.5;
+        text-align: center;
+        vertical-align: middle;
+    }
 
-/* استایل سلول‌های بدنه جدول */
-#userTable td {
-    padding: 2px;
-    text-align: center;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd; /* حاشیه فقط برای پایین */
-    font-size: 18px;
-    font-weight: bold;
-}
+    #userTable tbody {
+        display: block;
+        max-height: 194px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 
-/* حذف حاشیه سمت چپ و راست برای اولین و آخرین ستون */
-#userTable td:first-child {border-left: none; /* حذف حاشیه سمت چپ برای اولین ستون */}
+    #userTable tbody td {
+        padding: 11px 14px;
+        border: 0;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 13.5px;
+        font-weight: 500;
+        line-height: 1.6;
+        text-align: center;
+        vertical-align: middle;
+        overflow-wrap: anywhere;
+    }
 
-#userTable td:last-child {border-right: none; /* حذف حاشیه سمت راست برای آخرین ستون */}
+    #userTable tbody tr:nth-child(even) td {
+        background: rgba(15, 23, 42, 0.02);
+    }
 
-/* عرض ستون‌ها */
-#userTable th:nth-child(1),
-#userTable td:nth-child(1) {
-    width: 8%; /* تغییرات */
-}
+    #userTable tbody tr:hover td {
+        background: #f1f5f9;
+    }
 
-#userTable th:nth-child(2),
-#userTable td:nth-child(2) {
-    width: 7%; /* وضعیت حضور */
-}
+    #userTable tbody tr:last-child td {
+        border-bottom: 0;
+    }
 
-#userTable th:nth-child(3),
-#userTable td:nth-child(3) {
-    width: 5%; /* ساعت ورود */
-}
-
-#userTable th:nth-child(4),
-#userTable td:nth-child(4) {
-    width: 5%; /* ساعت خروج */
-}
-
-#userTable th:nth-child(5),
-#userTable td:nth-child(5) {
-    width: 5%; /* جانشین */
-}
-
-#userTable th:nth-child(6),
-#userTable td:nth-child(6) {
-    width: 7%; /* ساعت‌های کاری */
-}
-
-#userTable th:nth-child(7),
-#userTable td:nth-child(7) {
-    width: 5%; /* بخش فعالیت */
-}
-
-#userTable th:nth-child(8),
-#userTable td:nth-child(8) {
-    width: 4%; /* نام کاربر */
-}
-
-#userTable th:nth-child(9),
-#userTable td:nth-child(9) {
-    width: 2%; /* ردیف */
-}
-
-/* گرد کردن گوشه‌ها */
-#userTable th:first-child {
-    border-top-left-radius: 20px;
-}
-
-#userTable th:last-child {
-    border-top-right-radius: 20px;
-}
-
-/* رنگ پس‌زمینه ردیف هنگام هاور */
-#userTable tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* محدود کردن ارتفاع و اسکرول برای بدنه جدول */
-#userTable tbody {
-    display: block;
-    max-height: 194px; /* ارتفاع ثابت برای بدنه جدول */
-    overflow-y: auto; /* فعال‌سازی اسکرول عمودی */
-    height: auto; /* ارتفاع خودکار */
-    margin-bottom: 0; /* حذف فاصله در پایین */
-}
-
-/* ثابت کردن هدر و هم‌راستا کردن آن با بدنۀ جدول */
-#userTable thead, #userTable tbody tr {
-    display: table;
-    width: 100%; /* تطابق کامل عرض */
-    table-layout: fixed; /* ثابت بودن عرض ستون‌ها */
+    #userTable th:nth-child(1), #userTable td:nth-child(1) { width: 4%; }
+    #userTable th:nth-child(2), #userTable td:nth-child(2) { width: 10%; }
+    #userTable th:nth-child(3), #userTable td:nth-child(3) { width: 12%; }
+    #userTable th:nth-child(4), #userTable td:nth-child(4) { width: 14%; }
+    #userTable th:nth-child(5), #userTable td:nth-child(5) { width: 12%; }
+    #userTable th:nth-child(6), #userTable td:nth-child(6) { width: 9%; }
+    #userTable th:nth-child(7), #userTable td:nth-child(7) { width: 9%; }
+    #userTable th:nth-child(8), #userTable td:nth-child(8) { width: 12%; }
+    #userTable th:nth-child(9), #userTable td:nth-child(9) { width: 18%; }
 }
 
 /* استایل برای دکمه‌های تغییرات */
@@ -2302,6 +2262,7 @@ form button:active {
     max-height: 315px; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
     overflow-y: auto;
     border-collapse: collapse;
+    margin-top: 1%;
 }
 
 #hozoorUsersReportTable thead, 
@@ -2502,6 +2463,9 @@ margin-left: 15%;
     border-radius: 13px;
     padding: 9px;
     font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
 }
 
 #sabtdastHozoor {
@@ -2530,7 +2494,7 @@ margin-left: 15%;
 }
 
 #calendar-box {
-    position: absolute;
+    position: fixed;
     background: white;
     border: 1px solid #aaa;
     width: 280px;
@@ -2675,6 +2639,7 @@ margin-left: 15%;
     margin-right: 20%;
     font-weight: bold;
     margin: 0;
+    margin-left: 4%;
 }
 
 /*  --- = پاپ‌آپ ثبت تیکت ---  */
@@ -3520,7 +3485,7 @@ margin-left: 15%;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    justify-content: center; /* برای وسط چین کردن فرم و دکمه */
+    justify-content: space-between; /* برای وسط چین کردن فرم و دکمه */
     margin: 0 auto;
     flex-wrap: wrap; /* این مورد به شما کمک می‌کند تا محتوا به طور صحیح در صورت نیاز به خط بعدی منتقل شود */
     position: relative; /* تنظیم موقعیت نسبی برای قرار دادن دکمه در گوشه پایین */
@@ -3540,7 +3505,7 @@ margin-left: 15%;
     gap: 20px; /* فاصله بین ستون‌ها */
     align-items: flex-start; /* تراز عمودی */
     width: 70%;
-    margin: 0 auto; /* برای وسط چین کردن فرم در صفحه */
+    margin-right: 1%; /* برای وسط چین کردن فرم در صفحه */
 }
 
 
@@ -3803,6 +3768,7 @@ margin-left: 15%;
 #natigehHozoor {
     position: relative !important;
     padding-bottom: 72px !important;
+    text-align: center;
 }
 
 #natigehHozoor .gozareshNahaei {
@@ -3950,12 +3916,12 @@ margin-left: 15%;
 
     #userTable th:nth-child(1),
     #userTable td:nth-child(1) {
-        width: 8%;
+        width: 2%;
     }
 
     #userTable th:nth-child(2),
     #userTable td:nth-child(2) {
-        width: 7%;
+        width: 4%;
     }
 
     #userTable th:nth-child(3),
@@ -3965,7 +3931,7 @@ margin-left: 15%;
 
     #userTable th:nth-child(4),
     #userTable td:nth-child(4) {
-        width: 5%;
+        width: 7%;
     }
 
     #userTable th:nth-child(5),
@@ -3975,7 +3941,7 @@ margin-left: 15%;
 
     #userTable th:nth-child(6),
     #userTable td:nth-child(6) {
-        width: 7%;
+        width: 5%;
     }
 
     #userTable th:nth-child(7),
@@ -3985,12 +3951,12 @@ margin-left: 15%;
 
     #userTable th:nth-child(8),
     #userTable td:nth-child(8) {
-        width: 4%;
+        width: 7%;
     }
 
     #userTable th:nth-child(9),
     #userTable td:nth-child(9) {
-        width: 2%;
+        width: 8%;
     }
 
     .edit-btn, .trash-icon { margin: -3px; }
@@ -5451,4 +5417,9 @@ margin-left: 15%;
 
 .checkout-confirm-submit:hover {
     background-color: #d97706;
+}
+
+
+#individualReportTablemrkc, #overTimeIndivisualReportTable, #hourlyPassIndivisualuserReportTable {
+    margin-top: 1%;
 }

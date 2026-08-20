@@ -84,7 +84,7 @@ html, body {
 
 .hozoorBox {
     width: 96rem;
-    max-height: 25rem;
+    max-height: fit-content;
     background-color: #fbfff9;
     padding: 17px;
     border-radius: 20px;
@@ -845,6 +845,48 @@ html, body {
 
 @media print {
 
+    .hozoorUsersReport-table th,
+    .hozoorUsersReport-table td,
+    .ezafeKarUsersReport-table th,
+    .ezafeKarUsersReport-table td,
+    .morkhcUsersReport-table th,
+    .morkhcUsersReport-table td,
+    .hourlyPassUsersReport-table th,
+    .hourlyPassUsersReport-table td {
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+    .ezafeKarUsersReport-table,
+    .morkhcUsersReport-table,
+    .hourlyPassUsersReport-table {
+        border: 1.5px solid rgba(13, 59, 78, 0.28);
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 14px;
+        background: #fbfff9;
+        box-shadow: 0 2px 8px rgba(13, 59, 78, 0.1);
+        overflow: hidden;
+    }
+
+    .ezafeKarUsersReport-table th,
+    .ezafeKarUsersReport-table td,
+    .morkhcUsersReport-table th,
+    .morkhcUsersReport-table td,
+    .hourlyPassUsersReport-table th,
+    .hourlyPassUsersReport-table td {
+        border-left: 1px solid rgba(13, 59, 78, 0.14);
+        border-bottom: 1px solid rgba(13, 59, 78, 0.14);
+    }
+
+    .ezafeKarUsersReport-table th,
+    .morkhcUsersReport-table th,
+    .hourlyPassUsersReport-table th {
+        background: #e8f9ee;
+        color: #0d3b4e;
+        border-bottom: 1.5px solid rgba(0, 184, 148, 0.35);
+    }
+
     /* تنظیمات باکس عنوان صفحه */
 
     .titleBox {
@@ -980,7 +1022,8 @@ html, body {
     .ezafeBox,
     .passBox,
     .hourlyPassBox {
-        width: 100%;
+        width: 95%;
+        margin-inline: auto;
     }
 
     .ezafeBox h2,

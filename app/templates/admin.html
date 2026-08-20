@@ -361,20 +361,28 @@
             <table id="userTable">
                 <thead>
                     <tr>
-                        <th class="taghirat">تغییرات</th>
-                        <th class="vaziat-hozoor">وضعیت حضور</th>
-                        <th class="saat-vorood">ساعت ورود</th>
-                        <th class="saat-khorooj">ساعت خروج</th>
-                        <th class="janeshin">جانشین</th>
-                        <th class="saat-kari">ساعت‌های کاری</th>
-                        <th class="dapart">بخش فعالیت</th>
-                        <th class="nam-karbr">نام کاربر</th>
                         <th class="radif">ردیف</th>
+                        <th class="nam-karbr">نام کاربر</th>
+                        <th class="dapart">بخش فعالیت</th>
+                        <th class="saat-kari">ساعت‌های کاری</th>
+                        <th class="janeshin">جانشین</th>
+                        <th class="saat-khorooj">ساعت خروج</th>
+                        <th class="saat-vorood">ساعت ورود</th>
+                        <th class="vaziat-hozoor">وضعیت حضور</th>
+                        <th class="taghirat">تغییرات</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for user in users %}
                     <tr data-username="{{ user.username }}">
+                        <td>{{ loop.index }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.department }}</td>
+                        <td>{{ user.work_hours }}</td>
+                        <td>{{ user.substitute }}</td>
+                        <td class="attendance-checkout-cell"><span class="attendance-checkout">—</span></td>
+                        <td class="attendance-checkin-cell"><span class="attendance-checkin">—</span></td>
+                        <td class="attendance-status-cell"><span class="attendance-status" data-state="loading">در حال دریافت…</span></td>
                         <td>
                             <!-- دکمه حذف با ارسال اطلاعات به روت /admin -->
                             <form method="POST" action="{{ url_for('admin') }}" class="trash-icon-form"
@@ -397,14 +405,6 @@
                             </button>
 
                         </td>
-                        <td class="attendance-status-cell"><span class="attendance-status" data-state="loading">در حال دریافت…</span></td>
-                        <td class="attendance-checkin-cell"><span class="attendance-checkin">—</span></td>
-                        <td class="attendance-checkout-cell"><span class="attendance-checkout">—</span></td>
-                        <td>{{ user.substitute }}</td>
-                        <td>{{ user.work_hours }}</td>
-                        <td>{{ user.department }}</td>
-                        <td>{{ user.username }}</td>
-                        <td>{{ loop.index }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -885,7 +885,7 @@
                 <button type="submit" id="generategozareshmrkReportBtn" style="font-family: 'Vazir', sans-serif;">تهیه گزارش</button>
             </form>
 
-            <table class="individual-report-table">
+            <table class="individual-report-table" id="individualReportTablemrkc">
                 <thead>
                     <tr>
                         <th class="sbt-morkhc-nfrdi">ثبت تغییرات</th>
@@ -1307,8 +1307,10 @@
 
                     <br><br>
 
-                    <button type="button" id="sabt-btn" style="font-family: 'Vazir', sans-serif;">ثبت اطلاعات</button>
+                    
                 </form>
+
+                <button type="button" id="sabt-btn" style="font-family: 'Vazir', sans-serif;">ثبت اطلاعات</button>
             </div>
         </div>
 

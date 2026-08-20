@@ -2376,6 +2376,9 @@ function convertNumbersToPersianNumber(number) {
 
 // تابع برای فرمت کردن زمان
 function formatTime(timeValue) {
+    if (timeValue === null || timeValue === undefined || timeValue === "") {
+        return "00:00";
+    }
     let str = String(timeValue).padStart(4, "0");  // تبدیل به رشته 4 رقمی و اضافه کردن صفرهای پیش‌نیاز
     return `${str.substring(0, 2)}:${str.substring(2, 4)}`;  // تبدیل به فرمت HH:MM
 }
@@ -3110,15 +3113,19 @@ function updateInputDate() {
 }
 
 function showCalendar() {
-  if (window.innerWidth <= 768) {
-    calendarBox.style.top = "46%";
-    calendarBox.style.left = "4%";
-  } else {
-    calendarBox.style.top = "87%";
-    calendarBox.style.left = "61%";
-  }
   calendarBox.style.display = "block";
   calendarBox.setAttribute("aria-hidden", "false");
+
+    const inputRect = inputTarikh.getBoundingClientRect();
+    const calendarWidth = calendarBox.offsetWidth;
+    const viewportPadding = 8;
+    const left = Math.min(
+        Math.max(viewportPadding, inputRect.right - calendarWidth),
+        window.innerWidth - calendarWidth - viewportPadding
+    );
+
+    calendarBox.style.top = `${inputRect.bottom + 6}px`;
+    calendarBox.style.left = `${left}px`;
 }
 
 
