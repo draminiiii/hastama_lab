@@ -618,6 +618,98 @@ body.dark-mode #substituteDropdown {
     color: var(--dk-text);
 }
 
+/* Redesigned request modal — dark mode */
+body.dark-mode .modal {
+    background-color: var(--dk-surface);
+    border-color: var(--dk-border);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .modal-content input,
+body.dark-mode .modal-content textarea,
+body.dark-mode .modal-content select,
+body.dark-mode #dynamicFields input {
+    background-color: var(--dk-surface-2);
+    border-color: var(--dk-border);
+    color: var(--dk-text);
+}
+
+body.dark-mode .modal-content input:focus,
+body.dark-mode .modal-content textarea:focus,
+body.dark-mode .modal-content select:focus,
+body.dark-mode #dynamicFields input:focus {
+    border-color: var(--dk-accent);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    background-color: var(--dk-surface-2);
+}
+
+body.dark-mode .modal-content input::placeholder,
+body.dark-mode .modal-content textarea::placeholder,
+body.dark-mode #dynamicFields input::placeholder {
+    color: var(--dk-text-3);
+}
+
+body.dark-mode .form-section-header {
+    border-bottom-color: var(--dk-line);
+}
+
+body.dark-mode .close {
+    color: var(--dk-text-2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .close:hover {
+    background: rgba(248, 113, 113, 0.2);
+    color: var(--dk-danger);
+}
+
+body.dark-mode .btn-cancel {
+    background: rgba(248, 113, 113, 0.16);
+    color: var(--dk-danger);
+}
+
+body.dark-mode .btn-cancel:hover {
+    background: rgba(248, 113, 113, 0.28);
+}
+
+body.dark-mode .input-container {
+    background-color: var(--dk-surface-2);
+    border-color: var(--dk-border);
+}
+
+body.dark-mode .input-container input {
+    color: var(--dk-text);
+}
+
+body.dark-mode .days-hint {
+    color: var(--dk-text-2);
+}
+
+body.dark-mode .dropdown-content {
+    background-color: var(--dk-surface);
+    border-color: var(--dk-border);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .dropdown-option {
+    color: var(--dk-text);
+    border-bottom-color: var(--dk-line);
+}
+
+body.dark-mode .dropdown-option:hover {
+    background-color: var(--dk-surface-3);
+}
+
+body.dark-mode #passType {
+    background-color: var(--dk-surface-2);
+    border-color: var(--dk-border);
+    color: var(--dk-text);
+}
+
+body.dark-mode #overtimeMessage {
+    color: var(--dk-danger);
+}
+
 body.dark-mode .close,
 body.dark-mode .closeSabtTicket,
 body.dark-mode .close-shift-popup {

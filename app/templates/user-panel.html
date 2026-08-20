@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa">
 
 <head>
@@ -710,39 +710,43 @@
 
 
         <!-- پاپ‌آپ ثبت مرخصی -->
-        <div id="leaveModal" class="morakhaci-sabt" style="display: none;">
-            <div  class="modal" id="leaveModalContent">
+        <div id="leaveModal" class="morakhaci-sabt" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="leaveModalTitle">
+            <div class="modal" id="leaveModalContent">
                 <div class="modal-content">
-                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeLeaveModal()">
-                    <h2>ثبت مرخصی</h2>
-                    <form id="leaveForm">
-                        <label for="startDate">: از تاریخ</label>
-                        <input type="text" id="startDate" name="startDate" placeholder="1403/01/01" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="numeric">
+                    <button type="button" class="close" onclick="closeLeaveModal()" aria-label="بستن">
+                        <img src="/static/images/close.png" alt="">
+                    </button>
+                    <div class="form-section-header">
+                        <h2 id="leaveModalTitle">ثبت مرخصی</h2>
+                    </div>
+                    <form id="leaveForm" style="padding: 0 var(--req-body-padding) 8px;">
+                        <label for="startDate">از تاریخ</label>
+                        <input type="text" id="startDate" name="startDate" placeholder="۱۴۰۳/۰۱/۰۱" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="numeric" aria-required="true">
 
-                        <label for="endDate">: تا تاریخ</label>
-                        <input type="text" id="endDate" name="endDate" placeholder="1403/01/01" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="numeric">
+                        <label for="endDate">تا تاریخ</label>
+                        <input type="text" id="endDate" name="endDate" placeholder="۱۴۰۳/۰۱/۰۱" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="numeric" aria-required="true">
 
                         <div class="input-container">
-                            <input type="text" id="days" name="days" value="۰" readonly required>
+                            <input type="text" id="days" name="days" value="۰" readonly required aria-label="تعداد روز">
                             <span class="days-hint">تعداد روز</span>
                         </div>
 
-                        <label for="substitute">: جانشین</label>
+                        <label for="substitute">جانشین</label>
                         <input type="text" id="substitute" name="substitute" placeholder="انتخاب جانشین" readonly
-                            onclick="toggleSubstituteDropdown()" required>
-                        <div id="substituteDropdown" class="dropdown-content" style="display: none;">
-                            <div class="dropdown-option" data-value="بدون جانشین" onclick="selectSubstitute(this)">بدون جانشین</div>
-                            <div class="dropdown-option" data-value="فاطمه سالاری فر" onclick="selectSubstitute(this)">فاطمه سالاری فر</div>
-                            <div class="dropdown-option" data-value="مریم براتی" onclick="selectSubstitute(this)">مریم براتی</div>
-                            <div class="dropdown-option" data-value="زهره محمودی" onclick="selectSubstitute(this)">زهره محمودی</div>
-                            <div class="dropdown-option" data-value="محدثه گنجمه" onclick="selectSubstitute(this)">محدثه گنجمه</div>
-                            <div class="dropdown-option" data-value="عالیه سقایی" onclick="selectSubstitute(this)">عالیه سقایی</div>
-                            <div class="dropdown-option" data-value="فرشته ایزدی" onclick="selectSubstitute(this)">فرشته ایزدی</div>
-                            <div class="dropdown-option" data-value="مرتضی کمالی" onclick="selectSubstitute(this)">مرتضی کمالی</div>
-                            <div class="dropdown-option" data-value="فاطمه پاک نفس" onclick="selectSubstitute(this)">فاطمه پاک نفس</div>
-                            <div class="dropdown-option" data-value="سیدمرتضی موسوی پور" onclick="selectSubstitute(this)">سیدمرتضی موسوی پور</div>
-                            <div class="dropdown-option" data-value="محمدمهدی صمدیان" onclick="selectSubstitute(this)">محمدمهدی صمدیان</div>
-                            <div class="dropdown-option" data-value="صبا حلاجی" onclick="selectSubstitute(this)">صبا حلاجی</div>
+                            onclick="toggleSubstituteDropdown()" required aria-required="true" aria-haspopup="listbox">
+                        <div id="substituteDropdown" class="dropdown-content" style="display: none;" role="listbox">
+                            <div class="dropdown-option" data-value="بدون جانشین" onclick="selectSubstitute(this)" role="option">بدون جانشین</div>
+                            <div class="dropdown-option" data-value="فاطمه سالاری فر" onclick="selectSubstitute(this)" role="option">فاطمه سالاری فر</div>
+                            <div class="dropdown-option" data-value="مریم براتی" onclick="selectSubstitute(this)" role="option">مریم براتی</div>
+                            <div class="dropdown-option" data-value="زهره محمودی" onclick="selectSubstitute(this)" role="option">زهره محمودی</div>
+                            <div class="dropdown-option" data-value="محدثه گنجمه" onclick="selectSubstitute(this)" role="option">محدثه گنجمه</div>
+                            <div class="dropdown-option" data-value="عالیه سقایی" onclick="selectSubstitute(this)" role="option">عالیه سقایی</div>
+                            <div class="dropdown-option" data-value="فرشته ایزدی" onclick="selectSubstitute(this)" role="option">فرشته ایزدی</div>
+                            <div class="dropdown-option" data-value="مرتضی کمالی" onclick="selectSubstitute(this)" role="option">مرتضی کمالی</div>
+                            <div class="dropdown-option" data-value="فاطمه پاک نفس" onclick="selectSubstitute(this)" role="option">فاطمه پاک نفس</div>
+                            <div class="dropdown-option" data-value="سیدمرتضی موسوی پور" onclick="selectSubstitute(this)" role="option">سیدمرتضی موسوی پور</div>
+                            <div class="dropdown-option" data-value="محمدمهدی صمدیان" onclick="selectSubstitute(this)" role="option">محمدمهدی صمدیان</div>
+                            <div class="dropdown-option" data-value="صبا حلاجی" onclick="selectSubstitute(this)" role="option">صبا حلاجی</div>
                         </div>
                         <div class="modal-buttons">
                             <button type="submit" class="btn-confirm">تایید</button>
@@ -754,54 +758,61 @@
         </div>
 
         <!-- پاپ‌آپ ثبت اضافه کار -->
-        <div id="overtimeModal" class="morakhaci-sabt" style="display: none;">
-            <div  class="modal" id="overtimeModalContentmobile">
+        <div id="overtimeModal" class="morakhaci-sabt" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="overtimeModalTitle">
+            <div class="modal" id="overtimeModalContentmobile">
                 <div class="modal-content">
-                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeOvertimeModal()">
-                    <h2>ثبت اضافه کار</h2>
-                    <form id="overtimeForm">
-                        <label for="overtimeDate">: تاریخ اضافه‌کار</label>
+                    <button type="button" class="close" onclick="closeOvertimeModal()" aria-label="بستن">
+                        <img src="/static/images/close.png" alt="">
+                    </button>
+                    <div class="form-section-header">
+                        <h2 id="overtimeModalTitle">ثبت اضافه کار</h2>
+                    </div>
+                    <form id="overtimeForm" style="padding: 0 var(--req-body-padding) 8px;">
+                        <label for="overtimeDate">تاریخ اضافه‌کار</label>
                         <div class="date-input-shell">
-                            <input type="text" id="overtimeDate" name="overtimeDate" placeholder="۱۴۰۳/۰۱/۰۱" required autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="numeric">
+                            <input type="text" id="overtimeDate" name="overtimeDate" placeholder="۱۴۰۳/۰۱/۰۱" required autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="numeric" aria-required="true">
                         </div>
 
-                        <label for="fromTime">: از ساعت</label>
-                        <input type="text" id="fromTime" name="fromTime" placeholder="08:00" required autocomplete="off" autocapitalize="off" spellcheck="false"
-                            oninput="convertToPersian(this)">
+                        <label for="fromTime">از ساعت</label>
+                        <input type="text" id="fromTime" name="fromTime" placeholder="۰۸:۰۰" required autocomplete="off" autocapitalize="off" spellcheck="false"
+                            oninput="convertToPersian(this)" aria-required="true">
 
-                        <label for="toTime">: تا ساعت</label>
-                        <input type="text" id="toTime" name="toTime" placeholder="16:00" required
-                            oninput="convertToPersian(this)">
+                        <label for="toTime">تا ساعت</label>
+                        <input type="text" id="toTime" name="toTime" placeholder="۱۶:۰۰" required
+                            oninput="convertToPersian(this)" aria-required="true">
 
-                        <label for="description">: توضیحات</label>
-                        <input type="text" id="description" name="description" placeholder="توضیحات" required>
+                        <label for="description">توضیحات</label>
+                        <input type="text" id="description" name="description" placeholder="توضیحات" required aria-required="true">
+
+                        <div id="overtimeMessage" style="display: none;"></div>
 
                         <div class="modal-buttons">
                             <button type="submit" class="btn-confirm">تایید</button>
                             <button type="button" class="btn-cancel" onclick="closeOvertimeModal()">انصراف</button>
                         </div>
                     </form>
-
-                    <!-- پیام نمایش موفقیت یا خطا -->
-                    <div id="overtimeMessage" style="color: red; display: none; margin-top: 15px;"></div>
                 </div>
             </div>
         </div>
 
         <!-- پاپ‌آپ پاس ساعتی -->
-        <div id="hourlyPassModal" class="morakhaci-sabt" style="display: none;">
-            <div  class="modal" id="hourlyPassModalContentmobile">
+        <div id="hourlyPassModal" class="morakhaci-sabt" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="hourlyPassModalTitle">
+            <div class="modal" id="hourlyPassModalContentmobile">
                 <div class="modal-content">
-                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeHourlyPassModal()">
-                    <h2>پاس ساعتی</h2>
-                    <form id="hourlyPassForm">
+                    <button type="button" class="close" onclick="closeHourlyPassModal()" aria-label="بستن">
+                        <img src="/static/images/close.png" alt="">
+                    </button>
+                    <div class="form-section-header">
+                        <h2 id="hourlyPassModalTitle">پاس ساعتی</h2>
+                    </div>
+                    <form id="hourlyPassForm" style="padding: 0 var(--req-body-padding) 8px;">
                         <label for="passType">نوع پاس</label>
                         <input type="text" id="passType" name="passType" placeholder="انتخاب نوع پاس" readonly
-                            onclick="togglePassTypeDropdown()" required autocomplete="off" autocapitalize="off" spellcheck="false">
-                        <div id="passTypeDropdown" class="dropdown-content" style="display: none;">
-                            <div class="dropdown-option" data-value="first">پاس اول وقت</div>
-                            <div class="dropdown-option" data-value="mid">پاس بین وقت</div>
-                            <div class="dropdown-option" data-value="last">پاس آخر وقت</div>
+                            onclick="togglePassTypeDropdown()" required autocomplete="off" autocapitalize="off" spellcheck="false" aria-required="true" aria-haspopup="listbox">
+                        <div id="passTypeDropdown" class="dropdown-content" style="display: none;" role="listbox">
+                            <div class="dropdown-option" data-value="first" role="option">پاس اول وقت</div>
+                            <div class="dropdown-option" data-value="mid" role="option">پاس بین وقت</div>
+                            <div class="dropdown-option" data-value="last" role="option">پاس آخر وقت</div>
                         </div>
 
                         <div id="dynamicFields"></div>
