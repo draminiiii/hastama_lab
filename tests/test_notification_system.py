@@ -1,0 +1,49 @@
+"""Architecture and security regression tests for the notification feature."""
+from pathlib import Path
+
+from starlette.requests import Request
+
+from app.api.routes import notifications
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _request(session):
+    return Request({"type": "http", "method": "GET", "path": "/", "headers": [], "session": session})
+
+
+def test_notification_schema_is_normalized_and_indexed():
+    sql = (ROOT / "database" / "notifications.sql").read_text(encoding="utf-8")
+    assert "CREATE TABLE dbo.notifications" in sql
+    assert "CREATE TABLE dbo.user_notifications" in sql
+    assert "CREATE TABLE dbo.notification_targets" in sql
+    assert "UQ_user_notifications UNIQUE (notification_id, username)" in sql
+    assert "IX_user_notifications_inbox" in sql
+    assert "IX_user_notifications_unread" in sql
+    assert "action_url IS NULL OR action_url LIKE '/%'" in sql
+
+
+def test_admin_authorization_uses_signed_session_role():
+    assert notifications._actor(_request({"username": "admin", "is_admin": True}), admin=True) == "admin"
+    try:
+        notifications._actor(_request({"username": "alice", "is_admin": False}), admin=True)
+    except Exception as exc:
+        assert exc.status_code == 403
+    else:
+        raise AssertionError("normal user gained admin notification access")
+
+
+def test_notification_ui_is_integrated_in_both_panels():
+    admin = (ROOT / "app/templates/admin.html").read_text(encoding="utf-8")
+    user = (ROOT / "app/templates/user-panel.html").read_text(encoding="utf-8")
+    assert "notificationAdminBox" in admin and "مدیریت اعلان‌ها" in admin
+    assert "notificationBell" in user and "notificationCenter" in user
+    assert "notification-system.css" in admin and "notification-system.css" in user
+    assert "notification-system.js" in admin and "notification-system.js" in user
+
+
+def test_frontend_never_renders_notification_content_as_html():
+    javascript = (ROOT / "app/static/js/notification-system.js").read_text(encoding="utf-8")
+    assert ".innerHTML" not in javascript
+    assert "textContent" in javascript
+    assert "setInterval(refreshCount,60000)" in javascript

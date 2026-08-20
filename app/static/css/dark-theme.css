@@ -1704,3 +1704,65 @@ body.dark-mode .checkout-confirm-value {
         background-color: #555 !important;
     }
 }
+
+/* --------------------------------------------------------------------------
+   Notification system
+   -------------------------------------------------------------------------- */
+body.dark-mode .notification-admin,
+body.dark-mode .notification-center-panel { background-color: var(--dk-bg-2) !important; }
+body.dark-mode .notification-stats article,
+body.dark-mode .notification-toolbar,
+body.dark-mode .notification-center-toolbar,
+body.dark-mode .notification-table-wrap,
+body.dark-mode .notification-dialog-card,
+body.dark-mode .notification-dropdown,
+body.dark-mode .notification-center-head,
+body.dark-mode .notification-user-item,
+body.dark-mode .notification-detail article {
+    background: var(--dk-surface);
+    color: var(--dk-text);
+    border-color: var(--dk-border);
+}
+body.dark-mode .notification-admin-table th,
+body.dark-mode .notification-view-all,
+body.dark-mode .notification-filter-tabs,
+body.dark-mode .notification-detail dl,
+body.dark-mode .notification-dialog-card header button,
+body.dark-mode .notification-center-head > button,
+body.dark-mode .notification-detail-close {
+    background: var(--dk-surface-2);
+    color: var(--dk-text);
+}
+body.dark-mode .notification-admin-table td,
+body.dark-mode .notification-admin-table th,
+body.dark-mode .notification-dialog-card > header,
+body.dark-mode .notification-center-head,
+body.dark-mode .notification-dropdown > header,
+body.dark-mode .notification-view-all { border-color: var(--dk-border); color: var(--dk-text); }
+body.dark-mode .notification-page-head h1,
+body.dark-mode .notification-center-head h2,
+body.dark-mode .notification-stats strong,
+body.dark-mode .notification-title-cell strong,
+body.dark-mode .notification-user-heading,
+body.dark-mode .notification-dialog-card h2,
+body.dark-mode .notification-form-grid label,
+body.dark-mode .notification-detail h2 { color: var(--dk-text); }
+body.dark-mode .notification-page-head p,
+body.dark-mode .notification-center-head p,
+body.dark-mode .notification-stats span,
+body.dark-mode .notification-title-cell span,
+body.dark-mode .notification-user-content p,
+body.dark-mode .notification-user-content time,
+body.dark-mode .notification-detail-message { color: var(--dk-text-2); }
+body.dark-mode .notification-user-item.is-unread { background: linear-gradient(90deg, var(--dk-surface), var(--dk-surface-2)); }
+body.dark-mode .notification-action-btn,
+body.dark-mode .notification-pagination button,
+body.dark-mode .notification-secondary-btn { background: var(--dk-surface-2); color: var(--dk-text); border-color: var(--dk-border); }
+body.dark-mode .notification-filter-tabs button.active { background: var(--dk-surface-3); color: var(--dk-text); }
+body.dark-mode .notification-badge--critical,
+body.dark-mode .notification-badge--warning { background: rgba(248,113,113,.14); color: #fca5a5; }
+body.dark-mode .notification-badge--published,
+body.dark-mode .notification-badge--success { background: rgba(34,197,94,.14); color: #86efac; }
+body.dark-mode .notification-badge--scheduled,
+body.dark-mode .notification-badge--information,
+body.dark-mode .notification-unread-label { background: rgba(56,189,248,.14); color: #7dd3fc; }
