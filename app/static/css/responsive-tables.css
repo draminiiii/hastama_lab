@@ -209,6 +209,7 @@ table.rt-source-hidden { display: none !important; }
 .rt-field__value.rt-clamp {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   cursor: pointer;
@@ -217,6 +218,7 @@ table.rt-source-hidden { display: none !important; }
 .rt-field__value.rt-clamp.is-open {
   display: block;
   -webkit-line-clamp: unset;
+  line-clamp: unset;
   overflow: visible;
 }
 
