@@ -505,9 +505,7 @@ body.leave-modal-open .morakhaci-sabt {
     display: flex;
 }
 
-body.leave-modal-open .morakhaci-sabt .modal {
-    /* Modal is now styled by the redesigned .modal class */
-}
+
 
 /* استایل پاپ‌آپ در وسط صفحه */
 /* =================================================================
@@ -1013,8 +1011,6 @@ body.leave-modal-open .morakhaci-sabt .modal {
 
 /* dropdown styling moved to Request Modal Redesign section above */
 
-#passType { /* passType styling moved to Request Modal Redesign section */ }
-
 #userInfoBox {
     text-align: right;
     direction: rtl;
@@ -1035,14 +1031,6 @@ body.leave-modal-open .morakhaci-sabt .modal {
     line-height: 1.9;
     color: black;
     white-space: nowrap;
-}
-
-#overtimeModalContentmobile {
-    /* positions handled by .modal redesign */
-}
-
-#hourlyPassModalContentmobile {
-    /* positions handled by .modal redesign */
 }
 
 /*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
@@ -3994,10 +3982,6 @@ body {
     min-height: -webkit-fill-available;
 }
 
-#ticketModalContentmobile {
-    /* handled by .modal redesign */
-}
-
 .calendar-card {
     min-height: 320px;
 }
@@ -4394,10 +4378,6 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     background: var(--card-bg);
 }
 
-#leaveModalContent {
-    /* position handled by .modal redesign */
-}
-
 /* واکنش‌گرا */
 @media (max-width: 1200px) {
     .stats-row { grid-template-columns: repeat(3, 1fr); }
@@ -4487,10 +4467,6 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         justify-content: flex-start;
     }
 
-    #overtimeModalContentmobile {
-        /* handled by .modal redesign */
-    }
-
     .profile-panel-body {
         padding: 20px 11px 28px;
     }
@@ -4502,10 +4478,6 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
 
     .profile-panel-avatar-actions {
         flex-direction: row-reverse;
-    }
-
-    #hourlyPassModalContentmobile {
-        /* handled by .modal redesign */
     }
 
     .sidebar-right:hover {
