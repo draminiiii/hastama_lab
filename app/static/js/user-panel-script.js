@@ -2153,6 +2153,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const icon = document.getElementById("massageBoxIcon");
     const popup = document.getElementById("massageBoxPopup");
     const closeBtn = document.getElementById("closeMassageBoxPopup");
+    // صندوق تیکت قدیمی فقط در صفحاتی که محرک آن وجود دارد فعال می‌شود.
+    if (!icon || !popup || !closeBtn) return;
 
     // نمایش پاپ‌آپ
     icon.addEventListener("click", function () {

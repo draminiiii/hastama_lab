@@ -16,6 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app.api.routes.api import router as api_router
 from app.api.routes.auth import router as auth_router
+from app.api.routes.notifications import router as notifications_router
 from app.services.presence_summary import build_presence_summary, time_is_inside_range
 from app.services.attendance import compute_attendance_status, format_time_value
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
@@ -41,6 +42,7 @@ app.add_middleware(SessionMiddleware, secret_key="your_secret_key")
 # ثبت مسیر استاتیک برای فایل‌های CSS و JavaScript
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(auth_router)
+app.include_router(notifications_router)
 
 # تنظیمات برای HTML Templates
 templates = Jinja2Templates(directory="app/templates")
@@ -1054,14 +1056,12 @@ def get_db_connection():
     )
     return conn
 
-# دریافت اطلاعات از session (در اینجا به صورت تابع فرضی)
-def get_user_from_session():
-    # باید برای FastAPI پیاده‌سازی کنید که اطلاعات کاربری را از session یا کوکی دریافت کنید
-    return "admin_user"  # فرضی
+# Admin access is resolved from the signed session created by /login_user.
+def get_user_from_session(request: Request):
+    return str(request.session.get("username") or "").strip() or None
 
-def get_is_admin_from_session():
-    # فرضی
-    return True
+def get_is_admin_from_session(request: Request):
+    return request.session.get("is_admin") is True
 
 # تبدیل زمان به ثانیه
 def parse_seconds(duration):
@@ -1123,11 +1123,11 @@ def format_time(seconds):
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin(request: Request):
-    username = get_user_from_session()
-    is_admin = get_is_admin_from_session()
+    username = get_user_from_session(request)
+    is_admin = get_is_admin_from_session(request)
 
     if not username or not is_admin:
-        return RedirectResponse(url="/")
+        return RedirectResponse(url="/login", status_code=303)
 
     try:
         conn = get_db_connection()
