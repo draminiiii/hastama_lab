@@ -2969,6 +2969,8 @@ margin-left: 15%;
     flex: none;
 }
 
+
+
 @media screen and (min-width: 769px) {
     #dashboardBox {
         height: calc(100vh - 120px);
@@ -5534,4 +5536,8 @@ margin-left: 15%;
 
 #individualReportTablemrkc, #overTimeIndivisualReportTable, #hourlyPassIndivisualuserReportTable {
     margin-top: 1%;
+}
+
+.notification-admin {
+    margin-top: 3.79% !important;
 }
