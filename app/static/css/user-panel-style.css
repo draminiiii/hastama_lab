@@ -804,6 +804,20 @@ body.leave-modal-open .morakhaci-sabt {
     z-index: 1100;
 }
 
+#leaveModalContent {
+    overflow: visible;
+}
+
+#leaveForm {
+    position: relative;
+}
+
+#leaveModalContent #substituteDropdown {
+    width: calc(100% - (var(--req-body-padding) * 2));
+    max-width: none;
+    z-index: 1100;
+}
+
 /* Substitute and pass type readonly inputs */
 #substitute,
 #passType {
