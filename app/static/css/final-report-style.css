@@ -158,65 +158,6 @@ html, body {
     margin-top: 1%;
 }
 
-/* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر */
-/* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر */
-/* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر *//* تنظیمات جدول ساعت های ساعت زن کاربر */
-
-/* تنظیمات جدول حضور و غیاب */
-.hozoorUsersReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 13px;
-}
-
-.hozoorUsersReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
-}
-
-.hozoorUsersReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.hozoorUsersReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.hozoorUsersReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.hozoorUsersReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.hozoorUsersReport-table th {
-    padding: 6px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 14px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.hozoorUsersReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.hozoorUsersReport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
 #hozoorUsersReportTable {
     display: block;
     max-height: 22rem; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
@@ -272,65 +213,6 @@ html, body {
     background-color: #ffeaea !important;
     color: red;
     font-weight: bold;
-}
-
-
-/* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
-/* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
-/* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری *//* تنظیمات جدول اضافه کاری */
-
-/* تنظیمات جدول حضور و غیاب */
-.ezafeKarUsersReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 13px;
-}
-
-.ezafeKarUsersReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
-}
-
-.ezafeKarUsersReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.ezafeKarUsersReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.ezafeKarUsersReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.ezafeKarUsersReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.ezafeKarUsersReport-table th {
-    padding: 6px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 14px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.ezafeKarUsersReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.ezafeKarUsersReport-table tbody tr:hover {
     background-color: #f9f9f9;
 }
 
@@ -380,64 +262,6 @@ html, body {
     width: 3%;
 }
 
-/* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر */
-/* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر */
-/* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر *//* تنظیمات جدول مرخصی های کاربر */
-
-.morkhcUsersReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 13px;
-}
-
-.morkhcUsersReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
-}
-
-.morkhcUsersReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.morkhcUsersReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.morkhcUsersReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.morkhcUsersReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.morkhcUsersReport-table th {
-    padding: 3px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 14px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.morkhcUsersReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.morkhcUsersReport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
 #morkhcUsersReportTable {
     display: block;
     max-height: 22rem; /* مقدار قابل تغییر بسته به ارتفاع هر ردیف */
@@ -481,64 +305,6 @@ html, body {
 
 .stn6-morkhcBox {
     width: 3%;
-}
-
-/* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر */
-/* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر */
-/* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر *//* تنظیمات جدول پاس های ساعتی کاربر */
-
-.hourlyPassUsersReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 13px;
-}
-
-.hourlyPassUsersReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
-}
-
-.hourlyPassUsersReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.hourlyPassUsersReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.hourlyPassUsersReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.hourlyPassUsersReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.hourlyPassUsersReport-table th {
-    padding: 3px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 14px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.hourlyPassUsersReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.hourlyPassUsersReport-table tbody tr:hover {
-    background-color: #f9f9f9;
 }
 
 #hourlyPassUsersReportTable {
@@ -1368,17 +1134,6 @@ html, body {
 }
 
 /* ????? ???? ??????? ??? ???? */
-table thead tr {
-    color: #ffffff !important;
-}
-table thead tr th {
-    color: #ffffff !important;
-}
 
 /* ????: ??? ??? ??? ???? */
-table thead tr,
-table thead tr th,
-table thead tr td {
-    color: #ffffff !important;
-}
 

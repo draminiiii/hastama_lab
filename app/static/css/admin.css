@@ -1111,61 +1111,6 @@ html, body {
     font-weight: bold; /* پررنگ کردن عنوان */
 }
 
-/*  --- = جدول درخواست‌های مرخصی ---  */
-/*  --- = جدول درخواست‌های مرخصی ---  */
-/*  --- = جدول درخواست‌های مرخصی ---  */
-
-.request-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-}
-
-.request-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.request-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.request-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.request-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.request-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.request-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.request-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #f1f1f1;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.request-table tbody tr:hover {background-color: #f9f9f9;}
-
 /*  --- = مدیریت مرخصی ---  */
 /*  --- = مدیریت مرخصی ---  */
 /*  --- = مدیریت مرخصی ---  */
@@ -1184,53 +1129,6 @@ html, body {
 }
 
 #vacationBox h2 {margin-top: 0;}
-
-/*  --- = جدول گزارش مرخصی کلی ---  */
-/*  --- = جدول گزارش مرخصی کلی ---  */
-/*  --- = جدول گزارش مرخصی کلی ---  */
-.vacation-table {
-    margin: 0 auto;
-    width: 90%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px; /* گرد کردن گوشه‌های جدول */
-    overflow: hidden; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-}
-
-.vacation-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%); /* پس‌زمینه هدر جدول */
-    color: #fff; /* رنگ متن هدر */
-}
-
-.vacation-table th {
-    padding: 10px;
-    text-align: center; /* مرکز چین کردن محتوا */
-    border: 1px solid #ffffff; /* خطوط بین سلول‌ها */
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.vacation-table td {
-    padding: 5px;
-    text-align: center; /* مرکز چین کردن محتوا */
-    border: 1px solid #e9e9e9; /* خطوط بین سلول‌ها */
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.vacation-table tbody tr:hover {
-    background-color: #f9f9f9; /* تغییر رنگ ردیف در هاور */
-}
-
-.vacation-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 10px; /* گوشه پایینی سمت چپ */
-}
-
-.vacation-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 10px; /* گوشه پایینی سمت راست */
-}
 
 /*  --- = گزارش مرخصی انفرادی ---  */
 /*  --- = گزارش مرخصی انفرادی ---  */
@@ -1306,58 +1204,6 @@ form button {
 
 form button:hover {background-color: #506bff;}
 
-/*  --- = جدول گزارش انفرادی ---  */
-/*  --- = جدول گزارش انفرادی ---  */
-/*  --- = جدول گزارش انفرادی ---  */
-
-.individual-report-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-/* استایل برای ردیف عنوان */
-.individual-report-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-    font-family: 'Vazir';
-    direction: rtl;
-}
-
-/* گرد کردن گوشه‌های ردیف عنوان */
-.individual-report-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.individual-report-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-/* گرد کردن گوشه‌های آخرین ردیف جدول */
-.individual-report-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.individual-report-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-/* استایل برای سلول‌ها */
-.individual-report-table th, .individual-report-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #fffafa;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* رنگ پس‌زمینه برای ردیف‌های جدول هنگام هاور */
-.individual-report-table tbody tr:hover {background-color: #f9f9f9;}
 
 #downloadReportBtn {
     display: none;
@@ -1939,62 +1785,6 @@ form button:active {
     text-align: center;
 }
 
-/*  --- = جدول درخواست اضافه کاری ---  */
-/*  --- = جدول درخواست اضافه کاری ---  */
-/*  --- = جدول درخواست اضافه کاری ---  */
-.overTime-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-}
-
-.overTime-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.overTime-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.overTime-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.overTime-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.overTime-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.overTime-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.overTime-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #e5e5e5;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.overTime-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
 /*  --- = مدیریت گزارش کلی اضافه کاری ---  */
 /*  --- = مدیریت گزارش کلی اضافه کاری ---  */
 /*  --- = مدیریت گزارش کلی اضافه کاری ---  */
@@ -2014,63 +1804,6 @@ form button:active {
     margin-top: 0;
 }
 
-/*  --- = جدول گزارش کلی اضافه کاری ---  */
-/*  --- = جدول گزارش کلی اضافه کاری ---  */
-/*  --- = جدول گزارش کلی اضافه کاری ---  */
-
-.overTime-allreport-table {
-    width: 90%;
-    margin: 0 auto;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 0px 9px 4px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-}
-
-.overTime-allreport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.overTime-allreport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.overTime-allreport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.overTime-allreport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.overTime-allreport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.overTime-allreport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.overTime-allreport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.overTime-allreport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
 
 .overtimeRadif {
     width: 2%;
@@ -2102,64 +1835,6 @@ form button:active {
 #OverTimeIndivisualReportBox h2 {
     text-align: center;
     margin-top: 0;
-}
-
-/*  --- = جدول گزارش انفرادی اضافه کاری ---  */
-/*  --- = جدول گزارش انفرادی اضافه کاری ---  */
-/*  --- = جدول گزارش انفرادی اضافه کاری ---  */
-
-.overTimeindivisualReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.overTimeindivisualReport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.overTimeindivisualReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.overTimeindivisualReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.overTimeindivisualReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.overTimeindivisualReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.overTimeindivisualReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.overTimeindivisualReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.overTimeindivisualReport-table tbody tr:hover {
-    background-color: #f9f9f9;
 }
 
 #individualOvertimeReportForm {
@@ -2285,62 +1960,6 @@ form button:active {
     text-align: center;
 }
 
-/*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی *//*جدول مدیریت درخواست های کاربران جهت پاس های ساعتی */
-
-.hourlyPassReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: hidden; /* حفظ گوشه‌های گرد در حین hover */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.hourlyPassReport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.hourlyPassReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.hourlyPassReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.hourlyPassReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.hourlyPassReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.hourlyPassReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.hourlyPassReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.hourlyPassReport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
 /*  --- = گزارش کلی پاس های ساعتی ---  */
 /*  --- = گزارش کلی پاس های ساعتی ---  */
 /*  --- = گزارش کلی پاس های ساعتی ---  */
@@ -2363,64 +1982,6 @@ form button:active {
     margin-top: 0;
 }
 
-/*  --- = جدول گزارش کلی پاس های ساعتی ---  */
-/*  --- = جدول گزارش کلی پاس های ساعتی ---  */
-/*  --- = جدول گزارش کلی پاس های ساعتی ---  */
-
-.hourlyPassTotaluserReport-table {
-    width: 87%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.hourlyPassTotaluserReport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.hourlyPassTotaluserReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.hourlyPassTotaluserReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.hourlyPassTotaluserReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.hourlyPassTotaluserReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.hourlyPassTotaluserReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.hourlyPassTotaluserReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.hourlyPassTotaluserReport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
 /*  --- = گزارش انفرادی پاس های ساعتی ---  */
 /*  --- = گزارش انفرادی پاس های ساعتی ---  */
 /*  --- = گزارش انفرادی پاس های ساعتی ---  */
@@ -2441,63 +2002,6 @@ form button:active {
     margin-top: 0;
 }
 
-/*  --- = جدول گزارش انفرادی پاس های ساعتی ---  */
-/*  --- = جدول گزارش انفرادی پاس های ساعتی ---  */
-/*  --- = جدول گزارش انفرادی پاس های ساعتی ---  */
-
-.hourlyPassIndivisualuserReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.hourlyPassIndivisualuserReport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.hourlyPassIndivisualuserReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.hourlyPassIndivisualuserReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.hourlyPassIndivisualuserReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.hourlyPassIndivisualuserReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.hourlyPassIndivisualuserReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.hourlyPassIndivisualuserReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.hourlyPassIndivisualuserReport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
 
 #downloadHourlyPassReport {
     display: none;
@@ -2537,64 +2041,6 @@ form button:active {
 
 #ticketBox h2{
     text-align: center;
-}
-
-/*  --- = جدول مدیریت تیکت کاربران ---  */
-/*  --- = جدول مدیریت تیکت کاربران ---  */
-/*  --- = جدول مدیریت تیکت کاربران ---  */
-
-.ticketUsersReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.ticketUsersReport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.ticketUsersReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.ticketUsersReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.ticketUsersReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.ticketUsersReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.ticketUsersReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.ticketUsersReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.ticketUsersReport-table tbody tr:hover {
-    background-color: #f9f9f9;
 }
 
 /*  --- = جدول تیکت ها ---  */
@@ -2848,62 +2294,6 @@ form button:active {
 
 .taghir-hozoorboxtable {
     width: 3%;
-}
-
-/*  --- = مدیریت حضور و غیاب ---  */
-/*  --- = مدیریت حضور و غیاب ---  */
-/*  --- = مدیریت حضور و غیاب ---  */
-.hozoorUsersReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.hozoorUsersReport-table thead tr {
-    background: linear-gradient(90deg, #22c55e 0%, #14b8a6 45%, #0ea5e9 100%);
-    color: #fff;
-}
-
-.hozoorUsersReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.hozoorUsersReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.hozoorUsersReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.hozoorUsersReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.hozoorUsersReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.hozoorUsersReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.hozoorUsersReport-table tbody tr:hover {
     background-color: #f9f9f9;
 }
 
@@ -4430,20 +3820,6 @@ margin-left: 15%;
 
 #cancelShiftEditBtn:hover {
     background-color: #8f8f8f;
-}
-
-table thead tr {
-    color: #ffffff !important;
-}
-
-table thead tr th {
-    color: #ffffff !important;
-}
-
-table thead tr,
-table thead tr th,
-table thead tr td {
-    color: #ffffff !important;
 }
 
 @media (max-width: 768px) {

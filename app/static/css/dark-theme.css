@@ -538,6 +538,276 @@ body.dark-mode .holiday-row td {
 }
 
 /* =============================================================================
+   ۵-ب) طراحی یکپارچهٔ جدید جداول (tables.css) — هماهنگ‌سازی حالت تاریک
+   هدر خنثی، زبرای ملایم، نشان‌های وضعیت نرم و هاور سلولی
+   ========================================================================== */
+
+/* هدر جدول: پس‌زمینهٔ خنثی + متن تیره → هماهنگ با تم تیره */
+body.dark-mode #userTable thead th,
+body.dark-mode .request-table thead th,
+body.dark-mode .vacation-table thead th,
+body.dark-mode .individual-report-table thead th,
+body.dark-mode .overTime-table thead th,
+body.dark-mode .overTime-allreport-table thead th,
+body.dark-mode .overTimeindivisualReport-table thead th,
+body.dark-mode .hourlyPassReport-table thead th,
+body.dark-mode .hourlyPassTotaluserReport-table thead th,
+body.dark-mode .hourlyPassIndivisualuserReport-table thead th,
+body.dark-mode .ticketUsersReport-table thead th,
+body.dark-mode .hozoorUsersReport-table thead th,
+body.dark-mode .ezafeKarUsersReport-table thead th,
+body.dark-mode .morkhcUsersReport-table thead th,
+body.dark-mode .hourlyPassUsersReport-table thead th,
+body.dark-mode .passsaatiReport-table thead th,
+body.dark-mode .dashboard-table thead th,
+body.dark-mode #OverTimeTable thead th,
+body.dark-mode #leaveTable thead th,
+body.dark-mode #ticket-status-table thead th,
+body.dark-mode #ticket-status-table-popup thead th,
+body.dark-mode #HozoorTableReport thead th,
+body.dark-mode #hozoorUsersReportTable thead th,
+body.dark-mode #ezafeKarUsersReportTable thead th,
+body.dark-mode #morkhcUsersReportTable thead th,
+body.dark-mode #hourlyPassUsersReportTable thead th {
+    background-color: var(--dk-surface-2);
+    color: var(--dk-text);
+    border-bottom-color: var(--dk-line);
+}
+
+/* خط تفکیک ردیف‌ها و آخرین ردیف */
+body.dark-mode #userTable tbody td,
+body.dark-mode .request-table tbody td,
+body.dark-mode .vacation-table tbody td,
+body.dark-mode .individual-report-table tbody td,
+body.dark-mode .overTime-table tbody td,
+body.dark-mode .overTime-allreport-table tbody td,
+body.dark-mode .overTimeindivisualReport-table tbody td,
+body.dark-mode .hourlyPassReport-table tbody td,
+body.dark-mode .hourlyPassTotaluserReport-table tbody td,
+body.dark-mode .hourlyPassIndivisualuserReport-table tbody td,
+body.dark-mode .ticketUsersReport-table tbody td,
+body.dark-mode .hozoorUsersReport-table tbody td,
+body.dark-mode .ezafeKarUsersReport-table tbody td,
+body.dark-mode .morkhcUsersReport-table tbody td,
+body.dark-mode .hourlyPassUsersReport-table tbody td,
+body.dark-mode .passsaatiReport-table tbody td,
+body.dark-mode .dashboard-table tbody td,
+body.dark-mode #OverTimeTable tbody td,
+body.dark-mode #leaveTable tbody td,
+body.dark-mode #ticket-status-table tbody td,
+body.dark-mode #ticket-status-table-popup tbody td,
+body.dark-mode #HozoorTableReport tbody td,
+body.dark-mode #hozoorUsersReportTable tbody td,
+body.dark-mode #ezafeKarUsersReportTable tbody td,
+body.dark-mode #morkhcUsersReportTable tbody td,
+body.dark-mode #hourlyPassUsersReportTable tbody td {
+    border-bottom-color: var(--dk-line);
+}
+
+body.dark-mode #userTable tbody tr:last-child td,
+body.dark-mode .request-table tbody tr:last-child td,
+body.dark-mode .vacation-table tbody tr:last-child td,
+body.dark-mode .individual-report-table tbody tr:last-child td,
+body.dark-mode .overTime-table tbody tr:last-child td,
+body.dark-mode .overTime-allreport-table tbody tr:last-child td,
+body.dark-mode .overTimeindivisualReport-table tbody tr:last-child td,
+body.dark-mode .hourlyPassReport-table tbody tr:last-child td,
+body.dark-mode .hourlyPassTotaluserReport-table tbody tr:last-child td,
+body.dark-mode .hourlyPassIndivisualuserReport-table tbody tr:last-child td,
+body.dark-mode .ticketUsersReport-table tbody tr:last-child td,
+body.dark-mode .hozoorUsersReport-table tbody tr:last-child td,
+body.dark-mode .ezafeKarUsersReport-table tbody tr:last-child td,
+body.dark-mode .morkhcUsersReport-table tbody tr:last-child td,
+body.dark-mode .hourlyPassUsersReport-table tbody tr:last-child td,
+body.dark-mode .passsaatiReport-table tbody tr:last-child td,
+body.dark-mode #OverTimeTable tbody tr:last-child td,
+body.dark-mode #leaveTable tbody tr:last-child td,
+body.dark-mode #ticket-status-table tbody tr:last-child td,
+body.dark-mode #ticket-status-table-popup tbody tr:last-child td,
+body.dark-mode #HozoorTableReport tbody tr:last-child td,
+body.dark-mode #hozoorUsersReportTable tbody tr:last-child td,
+body.dark-mode #ezafeKarUsersReportTable tbody tr:last-child td,
+body.dark-mode #morkhcUsersReportTable tbody tr:last-child td,
+body.dark-mode #hourlyPassUsersReportTable tbody tr:last-child td {
+    border-bottom-color: transparent;
+}
+
+/* زبرای ملایم تیره + هاور سلولی (رنگ روشن tables.css را خنثی می‌کند) */
+body.dark-mode #userTable tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .request-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .vacation-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .individual-report-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .overTime-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .overTime-allreport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .overTimeindivisualReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .hourlyPassReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .hourlyPassTotaluserReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .hourlyPassIndivisualuserReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .ticketUsersReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .hozoorUsersReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .ezafeKarUsersReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .morkhcUsersReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .hourlyPassUsersReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode .passsaatiReport-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #OverTimeTable tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #leaveTable tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #ticket-status-table tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #ticket-status-table-popup tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #HozoorTableReport tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #hozoorUsersReportTable tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #ezafeKarUsersReportTable tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #morkhcUsersReportTable tbody tr:not(.holiday-row):nth-child(even) td,
+body.dark-mode #hourlyPassUsersReportTable tbody tr:not(.holiday-row):nth-child(even) td {
+    background-color: rgba(255, 255, 255, 0.025);
+}
+
+body.dark-mode #userTable tbody tr:not(.holiday-row):hover td,
+body.dark-mode .request-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .vacation-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .individual-report-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .overTime-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .overTime-allreport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .overTimeindivisualReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .hourlyPassReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .hourlyPassTotaluserReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .hourlyPassIndivisualuserReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .ticketUsersReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .hozoorUsersReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .ezafeKarUsersReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .morkhcUsersReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .hourlyPassUsersReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode .passsaatiReport-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode #OverTimeTable tbody tr:not(.holiday-row):hover td,
+body.dark-mode #leaveTable tbody tr:not(.holiday-row):hover td,
+body.dark-mode #ticket-status-table tbody tr:not(.holiday-row):hover td,
+body.dark-mode #ticket-status-table-popup tbody tr:not(.holiday-row):hover td,
+body.dark-mode #HozoorTableReport tbody tr:not(.holiday-row):hover td,
+body.dark-mode #hozoorUsersReportTable tbody tr:not(.holiday-row):hover td,
+body.dark-mode #ezafeKarUsersReportTable tbody tr:not(.holiday-row):hover td,
+body.dark-mode #morkhcUsersReportTable tbody tr:not(.holiday-row):hover td,
+body.dark-mode #hourlyPassUsersReportTable tbody tr:not(.holiday-row):hover td {
+    background-color: var(--dk-surface-3);
+}
+
+/* نشان‌های وضعیت نرم در تم تیره */
+body.dark-mode .status-navbar {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text);
+    border-color: var(--dk-border);
+}
+
+body.dark-mode div.status-navbar.approved {
+    background-color: rgba(34, 197, 94, 0.16);
+    color: #4ade80;
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+body.dark-mode div.status-navbar.rejected {
+    background-color: rgba(248, 113, 113, 0.16);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.35);
+}
+
+body.dark-mode div.status-navbar.pending,
+body.dark-mode div.status-navbar.status-following {
+    background-color: rgba(251, 191, 36, 0.16);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.35);
+}
+
+body.dark-mode div.status-navbar.cancelled {
+    background-color: rgba(148, 163, 184, 0.16);
+    color: #94a3b8;
+    border-color: rgba(148, 163, 184, 0.35);
+}
+
+body.dark-mode div.status-navbar.status-sent {
+    background-color: rgba(56, 189, 248, 0.16);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.35);
+}
+
+body.dark-mode div.status-navbar.status-read {
+    background-color: rgba(167, 139, 250, 0.16);
+    color: #a78bfa;
+    border-color: rgba(167, 139, 250, 0.35);
+}
+
+body.dark-mode div.status-navbar.status-answered {
+    background-color: rgba(45, 212, 191, 0.16);
+    color: #2dd4bf;
+    border-color: rgba(45, 212, 191, 0.35);
+}
+
+/* گزینه‌های منوی کشویی وضعیت در تم تیره */
+body.dark-mode .status-dropdown {
+    background-color: var(--dk-surface);
+    border-color: var(--dk-border);
+}
+
+body.dark-mode .status-dropdown .status-option:hover {
+    background-color: var(--dk-surface-3);
+}
+
+body.dark-mode .status-dropdown .status-option.approved {
+    background-color: rgba(34, 197, 94, 0.16);
+    color: #4ade80;
+}
+
+body.dark-mode .status-dropdown .status-option.rejected {
+    background-color: rgba(248, 113, 113, 0.16);
+    color: #f87171;
+}
+
+body.dark-mode .status-dropdown .status-option.pending {
+    background-color: rgba(251, 191, 36, 0.16);
+    color: #fbbf24;
+}
+
+body.dark-mode .status-dropdown .status-option.cancelled {
+    background-color: rgba(148, 163, 184, 0.16);
+    color: #94a3b8;
+}
+
+/* نشان‌های خنثی پنل کاربری در تم تیره */
+body.dark-mode #ticket-status-table .vazeiyat-ticket > span:first-child,
+body.dark-mode #ticket-status-table-popup .vazeiyat-ticket > span:first-child,
+body.dark-mode #leaveTable tbody td:first-child,
+body.dark-mode #OverTimeTable tbody .vazeiyat-ezafetime,
+body.dark-mode #passsaatiReportTable tbody td:first-child,
+body.dark-mode #HozoorTableReport tbody .vazeiyat-hozoorTime {
+    background-color: var(--dk-surface-3);
+    color: var(--dk-text-2);
+    border-color: var(--dk-border);
+}
+
+/* دکمه‌های آیکونی جدول — هاورهای رنگی روشن در تم تیره جایگزین می‌شوند */
+body.dark-mode button.edit-btn:hover {
+    background-color: rgba(56, 189, 248, 0.16);
+}
+
+body.dark-mode button.trash-btn:hover,
+body.dark-mode button.trash-icon:hover {
+    background-color: rgba(248, 113, 113, 0.16);
+}
+
+body.dark-mode button.view-btn:hover {
+    background-color: rgba(45, 212, 191, 0.16);
+}
+
+body.dark-mode button.check-btn:hover {
+    background-color: rgba(34, 197, 94, 0.16);
+}
+
+body.dark-mode .edit-btn:focus-visible,
+body.dark-mode .trash-btn:focus-visible,
+body.dark-mode .view-btn:focus-visible,
+body.dark-mode .check-btn:focus-visible,
+body.dark-mode .trash-icon:focus-visible {
+    outline-color: var(--dk-accent);
+}
+
+/* =============================================================================
    ۶) مودال‌ها، پاپ‌آپ‌ها و پوشش‌ها (هر دو پنل)
    ========================================================================== */
 body.dark-mode .modal,
@@ -1097,21 +1367,8 @@ body.dark-mode .individual-report-table thead tr {
     color: #fff !important;
 }
 
-/* سر جدول‌های بنفش گزارش نهایی */
-body.dark-mode .hozoorUsersReport-table thead tr,
-body.dark-mode .ezafeKarUsersReport-table thead tr,
-body.dark-mode .morkhcUsersReport-table thead tr,
-body.dark-mode .hourlyPassUsersReport-table thead tr {
-    background-color: #4c5bd4;
-    color: #fff;
-}
-
-body.dark-mode .hozoorUsersReport-table thead tr th,
-body.dark-mode .ezafeKarUsersReport-table thead tr th,
-body.dark-mode .morkhcUsersReport-table thead tr th,
-body.dark-mode .hourlyPassUsersReport-table thead tr th {
-    color: #fff !important;
-}
+/* سر جدول‌های گزارش نهایی — در طراحی یکپارچهٔ جدید (tables.css) همهٔ هدرها
+   خنثی هستند؛ این قواعد قدیمی (سرستون بنفش) حذف شدند تا یکدست بمانند. */
 
 /* =============================================================================
    ۹) لایهٔ موبایل جدول‌ها — responsive-tables.css
@@ -1274,8 +1531,8 @@ body.dark-mode .dropdown .goz3:hover {
 }
 
 /* --- پنل مدیریت: قرص وضعیت، دکمه‌های خنثی و باکس‌های نتیجه --- */
-/* قرص پایهٔ وضعیت؛ واریانت‌های رنگی (approved/rejected/...) با :not مستثنا شده‌اند */
-body.dark-mode .status-navbar:not(.approved):not(.rejected):not(.pending):not(.cancelled) {
+/* قرص پایهٔ وضعیت؛ واریانت‌های رنگی (approved/rejected/... و وضعیت تیکت) مستثنا شده‌اند */
+body.dark-mode .status-navbar:not(.approved):not(.rejected):not(.pending):not(.cancelled):not(.status-sent):not(.status-following):not(.status-read):not(.status-answered) {
     background-color: var(--dk-surface-3);
     color: var(--dk-text);
 }

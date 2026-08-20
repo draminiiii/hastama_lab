@@ -47,54 +47,6 @@ body {
     z-index: 1; /* باکس اطلاعات فردی روی تصویر قرار می‌گیرد */
 }
 
-/* جدول گزارش */
-.individual-report-table {
-    width: 90%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-    margin: 0 auto;
-    position: relative; /* برای قرارگیری در لایه بالاتر از تصویر */
-}
-
-/* استایل برای ردیف عنوان */
-.individual-report-table thead tr {
-    background-color: #555 !important;
-    color: white !important;
-    font-family: 'Yekan';
-    direction: rtl;
-}
-
-/* گرد کردن گوشه‌های ردیف عنوان */
-.individual-report-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.individual-report-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-/* گرد کردن گوشه‌های آخرین ردیف جدول */
-.individual-report-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.individual-report-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-/* استایل برای سلول‌ها */
-.individual-report-table th, .individual-report-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 15px;
-    font-weight: bold;
-}
 
 /* استایل برای دکمه چاپ */
 #printReportBtn {
@@ -425,14 +377,7 @@ body {
 
 
 /* ????? ???? ??????? ??? ???? */
-table thead tr {`r`n    color: #ffffff !important;`r`n}`r`ntable thead tr th {`r`n    color: #ffffff !important;`r`n}
-
-
+/* ????? ???? ??????? ??? ???? */
 
 /* ????: ??? ??? ??? ???? */
-table thead tr,
-table thead tr th,
-table thead tr td {
-    color: #ffffff !important;
-}
 
