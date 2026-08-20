@@ -45,6 +45,17 @@ app.include_router(auth_router)
 # تنظیمات برای HTML Templates
 templates = Jinja2Templates(directory="app/templates")
 
+PASS_TITLE_LABELS = {
+    "avalpss": "پاس اول وقت",
+    "beynpss": "پاس بین وقت",
+    "akhrpss": "پاس آخر وقت",
+}
+
+
+def format_pass_title(value):
+    normalized = str(value or "").strip().lower()
+    return PASS_TITLE_LABELS.get(normalized, value or "پاس ساعتی")
+
 # اتصال به دیتابیس SQL Server
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
                       r'SERVER=localhost\SQLEXPRESS;'
@@ -189,7 +200,7 @@ async def user_panel(request: Request):
         pass_records.append({
             'index': convert_to_persian_numbers(idx),
             'date': convert_to_persian_numbers(jdatetime.date.fromgregorian(date=record[0]).strftime('%Y/%m/%d')),
-            'title': record[1],
+            'title': format_pass_title(record[1]),
             'duration': convert_to_persian_numbers(formatted_duration),
             'status': record[3]
         })

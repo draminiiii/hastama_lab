@@ -108,11 +108,12 @@ window.addEventListener('load', function() {
     // Mobile menu button is handled inline in the template to avoid double toggling.
 });
 
-function updatePresenceFromAttendance(checkIn, serverNow, workStart, workEnd) {
+function updatePresenceFromAttendance(checkIn, checkOut, serverNow, workStart, workEnd) {
     var wrap = document.querySelector('.timeline-ring-wrap');
     if (!wrap) return;
 
     wrap.setAttribute('data-entry-time', checkIn || '');
+    wrap.setAttribute('data-check-out', checkOut || '');
     if (serverNow) wrap.setAttribute('data-server-now', serverNow);
     if (workStart) wrap.setAttribute('data-work-start', workStart);
     if (workEnd) wrap.setAttribute('data-work-end', workEnd);
@@ -133,7 +134,7 @@ function updateUserAttendanceState(status, checkIn, checkOut, serverNow, workSta
 
     if (checkInEl) checkInEl.textContent = checkIn || '--:--';
     if (checkOutEl) checkOutEl.textContent = checkOut || '--:--';
-    updatePresenceFromAttendance(checkIn, serverNow, workStart, workEnd);
+    updatePresenceFromAttendance(checkIn, checkOut, serverNow, workStart, workEnd);
     if (checkInButton) checkInButton.disabled = status !== 'not_checked_in';
     if (checkOutButton) checkOutButton.disabled = status !== 'checked_in';
     if (statusEl) {
@@ -690,6 +691,7 @@ function updatePresenceRing() {
     if (!wrap) return;
 
     const entryTime = wrap.getAttribute('data-entry-time');
+    const checkOutTime = wrap.getAttribute('data-check-out');
     const workStart = wrap.getAttribute('data-work-start');
     const workEnd = wrap.getAttribute('data-work-end');
     const serverNow = wrap.getAttribute('data-server-now');
@@ -755,7 +757,9 @@ function updatePresenceRing() {
     };
 
     if (checkOutText) {
-        checkOutText.textContent = '--:--';
+        checkOutText.textContent = checkOutTime
+            ? convertToPersianNumbers(String(checkOutTime).trim())
+            : '--:--';
     }
 
     if (checkInText) {
@@ -788,8 +792,8 @@ function updatePresenceRing() {
         return serverMinutes + elapsedMinutes;
     };
 
-    const startMinutes = parseClock(workStart);
-    const endMinutes = parseClock(workEnd);
+    let startMinutes = parseClock(workStart);
+    let endMinutes = parseClock(workEnd);
     const currentMinutes = getCurrentMinutes();
 
     if (endMinutes === null || startMinutes === null) {
@@ -797,8 +801,15 @@ function updatePresenceRing() {
         return;
     }
 
+    // Work-hour options are stored/displayed as the later time first (for example 15:00 - 08:00).
+    // The timeline uses the actual same-day duration, so normalize that order before calculating progress.
+    if (endMinutes < startMinutes) {
+        [startMinutes, endMinutes] = [endMinutes, startMinutes];
+    }
+
     const shiftState = getShiftTimelineState(currentMinutes, startMinutes, endMinutes);
     const entryMinutes = parseClock(entryTime);
+    const checkOutMinutes = parseClock(checkOutTime);
     const currentNormalizedMinutes = shiftState.normalizedCurrentMinutes;
 
     // Helper to compute elapsed minutes since entry, using normalized current minutes
@@ -815,14 +826,31 @@ function updatePresenceRing() {
         return diff;
     };
 
-    // If the user has an explicit check-in (`entryTime`), compute progress based on worked minutes
-    let displayWorkedMinutes = shiftState.workedMinutes;
-    if (entryMinutes !== null) {
-        displayWorkedMinutes = computeElapsedSinceEntry(entryMinutes, currentNormalizedMinutes);
+    let workedMinutes = 0;
+    let overtimeMinutes = shiftState.overtimeMinutes;
+
+    if (entryMinutes !== null && checkOutMinutes !== null) {
+        let normalizedCheckOutMinutes = checkOutMinutes;
+        if (normalizedCheckOutMinutes < entryMinutes) {
+            normalizedCheckOutMinutes += 24 * 60;
+        }
+        workedMinutes = Math.max(
+            0,
+            Math.min(normalizedCheckOutMinutes, shiftState.effectiveEndMinutes) - entryMinutes
+        );
+        overtimeMinutes = Math.max(0, normalizedCheckOutMinutes - shiftState.effectiveEndMinutes);
+    } else if (entryMinutes !== null) {
+        workedMinutes = computeElapsedSinceEntry(entryMinutes, currentNormalizedMinutes);
+    } else {
+        workedMinutes = shiftState.workedMinutes;
     }
 
+    // If the user has an explicit check-in but no checkout, compute progress live.
+    let displayWorkedMinutes = shiftState.workedMinutes;
+    displayWorkedMinutes = workedMinutes;
+
     const greenPercent = Math.min(100, Math.max(0, (displayWorkedMinutes / Math.max(shiftState.duration, 1)) * 100));
-    const bluePercent = Math.min(100, Math.max(0, (shiftState.overtimeMinutes / Math.max(shiftState.duration, 1)) * 100));
+    const bluePercent = Math.min(100, Math.max(0, (overtimeMinutes / Math.max(shiftState.duration, 1)) * 100));
     const greenLength = (circumference * greenPercent) / 100;
     const blueLength = (circumference * bluePercent) / 100;
     const blueOffset = -greenLength;
@@ -835,18 +863,11 @@ function updatePresenceRing() {
         return convertToPersianNumbers(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`);
     };
 
-    let workedMinutes = 0;
-    if (entryMinutes !== null) {
-        workedMinutes = computeElapsedSinceEntry(entryMinutes, currentNormalizedMinutes);
-    } else {
-        workedMinutes = shiftState.workedMinutes;
-    }
-
     if (workHoursText) {
         workHoursText.textContent = formatMinutes(workedMinutes);
     }
     if (overtimeText) {
-        overtimeText.textContent = `${formatMinutes(shiftState.overtimeMinutes)} ساعت`;
+        overtimeText.textContent = `${formatMinutes(overtimeMinutes)} ساعت`;
     }
 }
 
@@ -1297,20 +1318,33 @@ function openAttendanceReportPopup() {
     popup.style.display = 'flex';
     updateModalOverlayState();
 
-    const welcomeText = document.querySelector('.welcome-text') || { textContent: '' };
-    const username = (welcomeText.textContent || '').split('،')[0].trim();
+    const attendanceCard = document.getElementById('attendanceActionCard');
+    const username = attendanceCard?.dataset.username?.trim()
+        || document.querySelector('.topbar-user-name')?.textContent?.trim()
+        || '';
 
     fetch('/get_today_date')
         .then((response) => response.json())
         .then((today) => {
             const startDate = `${today.year}/${String(today.month).padStart(2, '0')}/01`;
             const endDate = `${today.year}/${String(today.month).padStart(2, '0')}/${String(today.day).padStart(2, '0')}`;
-            return fetch(`/get_hozoor/${username}?start_date=${startDate}&end_date=${endDate}`);
+            const query = new URLSearchParams({ start_date: startDate, end_date: endDate });
+            return fetch(`/get_hozoor/${encodeURIComponent(username)}?${query}`);
         })
-        .then((response) => response.json())
+        .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || `Attendance request failed (${response.status})`);
+            }
+            return data;
+        })
         .then((data) => {
             const tableBody = document.querySelector('#HozoorTableReport tbody');
             if (!tableBody) return;
+
+            if (!Array.isArray(data)) {
+                throw new Error('Attendance response is not a list');
+            }
 
             tableBody.innerHTML = '';
             data.forEach((entry, index) => {

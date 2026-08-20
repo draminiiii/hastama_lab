@@ -796,6 +796,7 @@ body.leave-modal-open .morakhaci-sabt .modal {
 
 #hourlyPassModalContentmobile {
     left: 46%;
+    top: 29%;
 }
 
 /*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
@@ -3692,7 +3693,7 @@ body {
 
 .top-cards-row {
     display: grid;
-    grid-template-columns: 1.7fr minmax(260px, 375px);
+    grid-template-columns: minmax(220px, 1.2fr) minmax(260px, 1fr) minmax(320px, 1.35fr);
     gap: 16px;
     margin-bottom: 10px;
     align-items: stretch;
@@ -3755,6 +3756,7 @@ body {
     left: 47%;
     max-width: unset;
     width: 50%;
+    top: 29%;
 }
 
 .calendar-card {
@@ -3770,7 +3772,6 @@ body {
 }
 
 .attendance-action-card {
-    margin-top: 16px;
     padding: 18px 20px;
 }
 

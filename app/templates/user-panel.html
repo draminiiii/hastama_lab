@@ -444,6 +444,36 @@
                             {% endif %}
                             <div class="see-all-link" data-action="open-messages">مشاهده همه</div>
                         </section>
+
+                        <section class="attendance-action-card panel-card" id="attendanceActionCard" data-username="{{ username }}">
+                            <div class="attendance-action-header">
+                                <div>
+                                    <span class="panel-kicker">حضور امروز</span>
+                                    <h3 class="panel-title">ثبت ورود و خروج</h3>
+                                </div>
+                                <span class="attendance-action-status" id="attendanceActionStatus">در حال بررسی وضعیت...</span>
+                            </div>
+                            <div class="attendance-action-times">
+                                <div>
+                                    <span>زمان ورود</span>
+                                    <strong id="attendanceCheckInText">{{ check_in_time or '--:--' }}</strong>
+                                </div>
+                                <div>
+                                    <span>زمان خروج</span>
+                                    <strong id="attendanceCheckOutText">{{ check_out_time or '--:--' }}</strong>
+                                </div>
+                            </div>
+                            <div class="attendance-action-buttons">
+                                <button type="button" class="attendance-action-btn attendance-action-btn--in" data-action="attendance-checkin">
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                    ثبت ورود
+                                </button>
+                                <button type="button" class="attendance-action-btn attendance-action-btn--out" data-action="attendance-checkout" disabled>
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    ثبت خروج
+                                </button>
+                            </div>
+                        </section>
                     </section>
 
                     <!-- کارت‌های آماری -->
@@ -515,37 +545,6 @@
                         </div>
                     </section>
 
-                    <section class="attendance-action-card panel-card" id="attendanceActionCard" data-username="{{ username }}">
-                        <div class="attendance-action-header">
-                            <div>
-                                <span class="panel-kicker">حضور امروز</span>
-                                <h3 class="panel-title">ثبت ورود و خروج</h3>
-                            </div>
-                            <span class="attendance-action-status" id="attendanceActionStatus">در حال بررسی وضعیت...</span>
-                        </div>
-                        <div class="attendance-action-times">
-                            <div>
-                                <span>زمان ورود</span>
-                                <strong id="attendanceCheckInText">{{ check_in_time or '--:--' }}</strong>
-                            </div>
-                            <div>
-                                <span>زمان خروج</span>
-                                <strong id="attendanceCheckOutText">{{ check_out_time or '--:--' }}</strong>
-                            </div>
-                        </div>
-                        <div class="attendance-action-buttons">
-                            <button type="button" class="attendance-action-btn attendance-action-btn--in" data-action="attendance-checkin">
-                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                                ثبت ورود
-                            </button>
-                            <button type="button" class="attendance-action-btn attendance-action-btn--out" data-action="attendance-checkout" disabled>
-                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                ثبت خروج
-                            </button>
-                        </div>
-                    </section>
-
-
                     <!-- ردیف تقویم و وضعیت تیکت‌ها -->
                     <section class="calendar-row">
                         <div class="stat-card timeline-ring-card">
@@ -558,6 +557,7 @@
                             <div class="timeline-ring-body">
                                 <div class="timeline-ring-wrap"
                                     data-entry-time="{{ entry_time or '' }}"
+                                    data-check-out=""
                                     data-work-start="{{ work_start_time or '' }}"
                                     data-work-end="{{ work_end_time or '' }}"
                                     data-server-now="{{ server_now_time or '' }}">
