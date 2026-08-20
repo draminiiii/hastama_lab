@@ -449,12 +449,19 @@ body.settings-panel-open {
     inset: 0;
     width: 100%;
     height: 100%;
-    background: transparent;
+    background: rgba(3, 12, 18, 0.55);
+    backdrop-filter: blur(4px);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     padding: 20px;
+    animation: modalOverlayFadeIn 0.25s ease;
+}
+
+@keyframes modalOverlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 body.leave-modal-open .app-shell,
@@ -499,53 +506,395 @@ body.leave-modal-open .morakhaci-sabt {
 }
 
 body.leave-modal-open .morakhaci-sabt .modal {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
-    left: 41.5%;
-    top: 55%;
-    width: 77%;
-    margin-top: 10%;
+    /* Modal is now styled by the redesigned .modal class */
 }
 
 /* استایل پاپ‌آپ در وسط صفحه */
+/* =================================================================
+   Request Modal Redesign — Leave, Overtime, Hourly Pass
+   Consistent design system for all three request modal forms
+   ================================================================= */
+
+:root {
+    --req-modal-max-width: 480px;
+    --req-modal-radius: 20px;
+    --req-header-radius: 20px 20px 0 0;
+    --req-body-padding: 24px;
+    --req-field-gap: 16px;
+    --req-label-size: 13px;
+    --req-label-weight: 700;
+    --req-input-height: 48px;
+    --req-input-radius: 12px;
+    --req-input-border-color: rgba(13, 59, 78, 0.12);
+    --req-input-focus-color: #38B6FF;
+    --req-btn-radius: 12px;
+    --req-btn-height: 48px;
+    --req-close-size: 36px;
+    --req-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+    --req-success-bg: #e8f9ee;
+    --req-success-text: #166534;
+    --req-error-bg: #fef2f2;
+    --req-error-text: #991b1b;
+}
+
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 400px;
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%) scale(1);
+    width: min(100% - 24px, var(--req-modal-max-width));
+    background-color: var(--surface-strong, #ffffff);
+    border-radius: var(--req-modal-radius);
+    padding: 0;
+    box-shadow: var(--req-shadow);
     z-index: 1001;
+    overflow: hidden;
+    border: 1px solid var(--border, rgba(13, 59, 78, 0.12));
+    animation: modalSlideIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
 }
 
 .modal-content {
     text-align: right;
+    direction: rtl;
+    padding: 0;
 }
 
 .modal-content h2 {
     text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text, #0D3B4E);
+    margin: 0;
 }
 
 .modal-content label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 6px;
+    font-weight: var(--req-label-weight);
+    font-size: var(--req-label-size);
+    color: var(--text, #0D3B4E);
+    text-align: right;
 }
 
 .modal-content input,
-.modal-content textarea {
+.modal-content textarea,
+.modal-content select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 12px 14px;
+    margin-bottom: var(--req-field-gap);
+    border: 1.5px solid var(--req-input-border-color);
+    border-radius: var(--req-input-radius);
+    font-size: 15px;
+    font-family: 'Vazir', sans-serif;
+    min-height: var(--req-input-height);
+    background: var(--surface, #F5F7FA);
+    color: var(--text, #0D3B4E);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+    color: var(--text-muted, #4D6B7A);
+    opacity: 0.6;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    outline: none;
+    border-color: var(--req-input-focus-color);
+    box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.15);
+    background: var(--surface-strong, #ffffff);
+}
+
+.modal-content textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Modal form field group — wraps label + input */
+.modal-content label + input,
+.modal-content label + .date-input-shell,
+.modal-content label + .input-container,
+.modal-content label + select {
+    margin-top: 0;
+}
+
+/* Close button in modal header */
+.close {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: var(--req-close-size);
+    height: var(--req-close-size);
+    font-size: 20px;
+    color: var(--text-muted, #4D6B7A);
+    cursor: pointer;
+    border-radius: 50%;
+    background: rgba(13, 59, 78, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    z-index: 2;
+}
+
+.close:hover {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+}
+
+.close img {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+/* Modal action buttons */
+.modal-buttons {
+    display: flex;
+    justify-content: stretch;
+    gap: 10px;
+    padding: 0 var(--req-body-padding) var(--req-body-padding);
+    margin-top: 4px;
+}
+
+.btn-confirm,
+.btn-cancel {
+    font-family: 'Vazir', sans-serif;
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--req-btn-radius);
+    cursor: pointer;
+    min-height: var(--req-btn-height);
+    transition: background-color 0.2s ease, transform 0.1s ease, opacity 0.2s ease;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, #00B894, #38B6FF);
+    color: #ffffff;
+}
+
+.btn-confirm:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-confirm:active {
+    transform: translateY(0);
+}
+
+.btn-confirm:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-cancel {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+}
+
+.btn-cancel:hover {
+    background: rgba(239, 68, 68, 0.18);
+}
+
+/* Input container for day count (leave form) */
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--req-field-gap);
+    background: var(--surface, #F5F7FA);
+    border: 1.5px solid var(--req-input-border-color);
+    border-radius: var(--req-input-radius);
+    padding: 4px 14px;
+    min-height: var(--req-input-height);
+}
+
+.input-container input {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    min-height: auto;
+    box-shadow: none;
+    text-align: center;
+    font-weight: 800;
+    font-size: 18px;
+    width: 50px;
+}
+
+.input-container input:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.days-hint {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted, #4D6B7A);
+}
+
+/* Dropdown content for substitute/pass type */
+.dropdown-content {
+    position: absolute;
+    background-color: var(--surface-strong, #ffffff);
+    width: calc(100% - 48px);
+    max-width: calc(var(--req-modal-max-width) - 48px);
+    border: 1.5px solid var(--req-input-border-color);
+    z-index: 10;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    border-radius: var(--req-input-radius);
+    overflow: hidden;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-option {
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(13, 59, 78, 0.06);
+    color: var(--text, #0D3B4E);
+}
+
+.dropdown-option:last-child {
+    border-bottom: none;
+}
+
+.dropdown-option:hover {
+    background-color: rgba(56, 182, 255, 0.08);
+}
+
+/* Substitute and pass type readonly inputs */
+#substitute,
+#passType {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--req-input-border-color);
+    border-radius: var(--req-input-radius);
+    font-size: 15px;
+    min-height: var(--req-input-height);
+    background: var(--surface, #F5F7FA);
+    cursor: pointer;
     font-family: 'Vazir';
+    color: var(--text, #0D3B4E);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#substitute:focus,
+#passType:focus {
+    outline: none;
+    border-color: var(--req-input-focus-color);
+    box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.15);
+}
+
+#substituteDropdown {
+    position: absolute;
+    width: calc(100% - 48px);
+    max-width: calc(var(--req-modal-max-width) - 48px);
+    z-index: 100;
+}
+
+/* Date input shell (wraps date inputs + date picker) */
+.date-input-shell {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--req-field-gap);
+}
+
+/* Overtime message area */
+#overtimeMessage {
+    padding: 10px 14px;
+    border-radius: var(--req-input-radius);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Dynamic fields container for hourly pass */
+#dynamicFields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+#dynamicFields label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: var(--req-label-weight);
+    font-size: var(--req-label-size);
+    color: var(--text, #0D3B4E);
+    text-align: right;
+}
+
+#dynamicFields input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: var(--req-field-gap);
+    border: 1.5px solid var(--req-input-border-color);
+    border-radius: var(--req-input-radius);
+    font-size: 15px;
+    font-family: 'Vazir', sans-serif;
+    min-height: var(--req-input-height);
+    background: var(--surface, #F5F7FA);
+    color: var(--text, #0D3B4E);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+#dynamicFields input:focus {
+    outline: none;
+    border-color: var(--req-input-focus-color);
+    box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.15);
+    background: var(--surface-strong, #ffffff);
+}
+
+#dynamicFields input::placeholder {
+    color: var(--text-muted, #4D6B7A);
+    opacity: 0.6;
+}
+
+/* Form section header inside modal */
+.modal-content .form-section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: var(--req-body-padding) var(--req-body-padding) 12px;
+    border-bottom: 1px solid var(--line-soft, #eef1f6);
+    margin-bottom: 20px;
+}
+
+.modal-content .form-section-header h2 {
+    margin: 0;
+    text-align: right;
+    flex: 1;
 }
 
 .date-input-shell {
@@ -658,115 +1007,13 @@ body.leave-modal-open .morakhaci-sabt .modal {
     justify-content: space-between;
 }
 
-.btn-confirm {
-    font-family: 'Vazir', sans-serif;
-    padding: 10px 20px;
-    background-color: var(--accent);
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-    margin-top: 2%;
-    margin-left: 3%;
-}
+/* btn-confirm, btn-cancel, .close — moved to Request Modal Redesign section above */
 
-.btn-confirm:hover {
-    background-color: #009073;
-}
+/* substitute styling moved to Request Modal Redesign section above */
 
-.btn-cancel {
-    background-color: #dc3545;
-    font-family: 'Vazir', sans-serif;
-    padding: 10px 20px;
-    color: white;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-    margin-top: 2%;
-    margin-left: 3%;
-}
+/* dropdown styling moved to Request Modal Redesign section above */
 
-.btn-cancel:hover {
-    background-color: #c82333;
-}
-
-.close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    font-size: 24px;
-    color: #000;
-    cursor: pointer;
-    width: 20px;
-}
-
-/* استایل برای فیلد جانشین */
-#substitute {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    font-family: 'Vazir';
-}
-
-#substituteDropdown {
-    max-height: 160px; /* تعیین ارتفاع برای نوار */
-    overflow-y: auto; /* فعال کردن اسکرول */
-    display: none; /* پنهان کردن نوار به صورت پیش‌فرض */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    position: absolute;
-    width: 90%;
-    z-index: 100;
-    margin-top: -7px;
-}
-
-.dropdown-option {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.dropdown-option:hover {
-    background-color: #f0f0f0;
-}
-
-/* استایل کشو */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    width: 359px;
-    border: 1px solid #ddd;
-    z-index: 1;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.dropdown-option {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-    transition: background-color 0.3s;
-}
-
-.dropdown-option:hover {
-    background-color: #f1f1f1;
-}
-
-#passType {
-    cursor: pointer; /* تغییر حالت اشاره‌گر به شکل لینک */
-}
+#passType { /* passType styling moved to Request Modal Redesign section */ }
 
 #userInfoBox {
     text-align: right;
@@ -791,23 +1038,18 @@ body.leave-modal-open .morakhaci-sabt .modal {
 }
 
 #overtimeModalContentmobile {
-    left: 48%;
+    /* positions handled by .modal redesign */
 }
 
 #hourlyPassModalContentmobile {
-    left: 46%;
-    top: 29%;
+    /* positions handled by .modal redesign */
 }
 
 /*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
 /*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
 /*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی *//*توابع مورد استفاده کلی */
 
-.input-container {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-}
+/* input-container styling moved to Request Modal Redesign section above */
 
 .decrease, .increase {
     background-color: #f0f0f0;
@@ -3753,10 +3995,7 @@ body {
 }
 
 #ticketModalContentmobile {
-    left: 47%;
-    max-width: unset;
-    width: 50%;
-    top: 29%;
+    /* handled by .modal redesign */
 }
 
 .calendar-card {
@@ -4156,7 +4395,7 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
 }
 
 #leaveModalContent {
-    top:29%;
+    /* position handled by .modal redesign */
 }
 
 /* واکنش‌گرا */
@@ -4249,9 +4488,7 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     }
 
     #overtimeModalContentmobile {
-        top: 58%;
-        left: 41.5%;
-        width: 77%;
+        /* handled by .modal redesign */
     }
 
     .profile-panel-body {
@@ -4268,10 +4505,8 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     }
 
     #hourlyPassModalContentmobile {
-    left: 41.5%;
-    top: 55%;
-    width: 77%;
-}
+        /* handled by .modal redesign */
+    }
 
     .sidebar-right:hover {
         width: var(--mobile-sidebar-collapsed-width);
@@ -4754,31 +4989,10 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
         overflow-wrap: anywhere;
     }
 
-    .modal,
-    #ticketModalContentmobile,
-    #overtimeModalContentmobile,
-    #hourlyPassModalContentmobile,
-    body.leave-modal-open .morakhaci-sabt .modal,
-    .modal-content,
-    .ticket-popup-box,
-    .ticket-status-box,
-    .report-hour-box,
-    .popupHozoor-content,
-    .MoshahdePopup,
-    .popup-box-massageBox,
-    .settings-panel-dialog,
-    .profile-panel-dialog,
-    .modal-content-hazfPopup {
-        left: 50% !important;
-        right: auto !important;
-        top: 50% !important;
+    .morakhaci-sabt .modal {
         width: min(100% - 24px, 520px) !important;
         max-width: calc(100vw - 24px) !important;
         max-height: calc(100dvh - 32px) !important;
-        margin: 0 !important;
-        transform: translate(-50%, -50%) !important;
-        overflow-y: auto;
-        overflow-x: hidden;
     }
 
     .morakhaci-sabt {
@@ -4792,11 +5006,13 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     #substitute,
     .ticket-popup-Req input,
     .ticket-popup-Req textarea,
-    .ticket-popup-Req select {
-        width: 100%;
-        max-width: 100%;
-        min-height: 44px;
-        font-size: 14px;
+    .ticket-popup-Req select,
+    #dynamicFields input {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 48px;
+        font-size: 15px;
+        box-sizing: border-box;
     }
 
     .modal-buttons {
@@ -4814,8 +5030,8 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     #closePopup,
     #closePopupMorakhciPopuppbox,
     #closePopupezafekarijadvalbox {
-        min-height: 44px;
-        padding: 10px 14px;
+        min-height: 48px;
+        padding: 12px 16px;
         white-space: normal;
     }
 }
