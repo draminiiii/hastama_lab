@@ -1674,64 +1674,6 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
     width: 3%;
 }
 
-/* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر */
-/* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر */
-/* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر *//* جدول مدیریت پاس های ساعتی در باکس مشاهده بیشتر */
-
-.passsaatiReport-table {
-    width: 100%;
-    border-collapse: separate; /* برای اعمال border-radius لازم است */
-    border-spacing: 0; /* فاصله بین سلول‌ها را حذف می‌کند */
-    border-radius: 20px;
-    overflow: visible; /* برش گوشه‌ها */
-    background-color: #ffffff; /* پس‌زمینه جدول */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* سایه برای زیبایی */
-    margin-top: 20px;
-}
-
-.passsaatiReport-table thead tr {
-    background-color: #7d91ff;
-    color: black;
-}
-
-.passsaatiReport-table th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-.passsaatiReport-table th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-.passsaatiReport-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-.passsaatiReport-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-.passsaatiReport-table th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-.passsaatiReport-table td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #f1f1f1;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.passsaatiReport-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
 /* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها */
 /* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها */
 /* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها *//* دکمه های حذف و ویرایش در جدول وضعیت تیکت ها */
@@ -2368,61 +2310,6 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
     gap: 52px;
 }
 
-/* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها */
-/* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها */
-/* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها *//* استایل جدول مرخصی ها */
-
-/* قرار دادن جدول در پایین mrkhc */
-#leaveTable {
-    width: 100%;
-    border: 1px solid #afafaf;
-    border-radius: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    margin-top: 14px;
-}
-
-#leaveTable thead tr {
-    background-color: #7d91ff;
-    color: black;
-}
-
-#leaveTable th:first-child {
-    border-top-left-radius: 20px; /* گرد کردن گوشه سمت چپ ردیف عنوان */
-}
-
-#leaveTable th:last-child {
-    border-top-right-radius: 20px; /* گرد کردن گوشه سمت راست ردیف عنوان */
-}
-
-#leaveTable tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 20px;
-}
-
-#leaveTable tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 20px;
-}
-
-#leaveTable th {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    font-size: 15px;
-    display: table-cell;  /* اطمینان از نمایش عنوان ستون */
-    visibility: visible;  /* اطمینان از قابل مشاهده بودن عنوان‌ها */
-    text-align: center;
-}
-
-#leaveTable td {
-    padding: 5px;
-    text-align: center;
-    border: 1px solid #f1f1f1;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#leaveTable tbody tr:hover {
-    background-color: #f9f9f9;
-}
 
 .vazeiyat-morkhc {
     width: 4%;
@@ -3298,21 +3185,8 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
 
 
 /* ????? ???? ??????? ??? ???? */
-table thead tr {
-    color: #ffffff !important;
-}
-table thead tr th {
-    color: #ffffff !important;
-}
-
-
 
 /* ????: ??? ??? ??? ???? */
-table thead tr,
-table thead tr th,
-table thead tr td {
-    color: #ffffff !important;
-}
 
 
 
