@@ -3693,7 +3693,7 @@ body {
 
 .top-cards-row {
     display: grid;
-    grid-template-columns: minmax(220px, 1.2fr) minmax(260px, 1fr) minmax(320px, 1.35fr);
+    grid-template-columns: minmax(220px, 1.2fr) minmax(260px, 1fr) minmax(320px, 0.73fr);
     gap: 16px;
     margin-bottom: 10px;
     align-items: stretch;
@@ -4153,6 +4153,10 @@ body.dark-mode .topbar-user:hover .avatar-menu,
 body.dark-mode .topbar-user:focus-within .avatar-menu,
 body.dark-mode .topbar-user.menu-open .avatar-menu {
     background: var(--card-bg);
+}
+
+#leaveModalContent {
+    top:29%;
 }
 
 /* واکنش‌گرا */
