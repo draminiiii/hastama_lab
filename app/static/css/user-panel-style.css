@@ -788,6 +788,22 @@ body.leave-modal-open .morakhaci-sabt {
     background-color: rgba(56, 182, 255, 0.08);
 }
 
+#hourlyPassModalContentmobile {
+    overflow: visible;
+}
+
+#hourlyPassForm {
+    position: relative;
+}
+
+#hourlyPassModalContentmobile #passTypeDropdown {
+    top: calc(var(--req-label-size) + 6px + var(--req-input-height) + var(--req-field-gap));
+    right: var(--req-body-padding);
+    width: calc(100% - (var(--req-body-padding) * 2));
+    max-width: none;
+    z-index: 1100;
+}
+
 /* Substitute and pass type readonly inputs */
 #substitute,
 #passType {
