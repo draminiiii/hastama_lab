@@ -3779,6 +3779,35 @@ margin-left: 15%;
     margin: 0;
 }
 
+@media screen and (min-width: 769px) {
+    .attendance-tools-row {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .attendance-tools-row > #natigehHozoor,
+    .attendance-tools-row > #sabtdst {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .attendance-tools-row:has(> #natigehHozoor[style*="display: block"]):has(> #sabtdst[style*="display: block"]) {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .attendance-tools-row:has(> #natigehHozoor[style*="display: block"]):has(> #sabtdst[style*="display: block"]) > #natigehHozoor,
+    .attendance-tools-row:has(> #natigehHozoor[style*="display: block"]):has(> #sabtdst[style*="display: block"]) > #sabtdst {
+        flex: 1 1 0;
+        width: auto;
+        margin: 0;
+    }
+}
+
 #cancelShiftEditBtn {
     background-color: #b0b0b0;
     margin-right: 10px;
