@@ -439,7 +439,7 @@
         const priority = $('#adminTicketPriority'); if (priority) priority.addEventListener('change', () => { state.admin.priority = priority.value; loadAdmin(1); });
         const sort = $('#adminTicketSort'); if (sort) sort.addEventListener('change', () => { state.admin.sort = sort.value; loadAdmin(1); });
         const refresh = $('#refreshTicketRequests'); if (refresh) refresh.addEventListener('click', () => loadAdmin(1));
-        const list = $('#adminTicketList'); list.addEventListener('click', event => { const button = event.target.closest('[data-open-ticket]'); if (button) openAdminTicket(button.dataset.openTicket); });
+        const list = $('#adminTicketList'); list.addEventListener('click', event => { const card = event.target.closest('.helpdesk-ticket-item'); if (card) { event.preventDefault(); openAdminTicket(card.dataset.ticketId); } });
         list.addEventListener('keydown', event => { if (event.key === 'Enter' && event.target.closest('.helpdesk-ticket-item')) openAdminTicket(event.target.closest('.helpdesk-ticket-item').dataset.ticketId); });
         loadAdmin(1);
     }
