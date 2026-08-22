@@ -1,12 +1,12 @@
 @font-face {
-    font-family: 'Yekan';
-    src: url('/static/fonts/Yekan.woff2') format('woff2'),
-         url('/static/fonts/Yekan.woff') format('woff');
+    font-family: 'Vazir';
+    src: url('/static/fonts/Vazir.woff2') format('woff2'),
+         url('/static/fonts/Vazir.woff') format('woff');
 }
 
 /* استایل کلی */
 body {
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -59,7 +59,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-weight: bold;
-    font-family: 'Yekan';
+    font-family: 'Vazir';
     margin-top: 20px;
     margin-left: 5%;
 }
@@ -177,7 +177,7 @@ body {
     border: 2px solid #ddd;
     padding: 10px;
     border-radius: 8px;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     display: flex; /* فعال کردن flexbox برای وسط‌چین کردن محتوا */
     justify-content: center; /* قرار دادن محتوا در وسط افقی */
     align-items: center; /* قرار دادن محتوا در وسط عمودی */
@@ -190,7 +190,7 @@ body {
     border: 2px solid #ddd;
     padding: 10px;
     border-radius: 8px;
-    font-family: 'Yekan', sans-serif;
+    font-family: 'Vazir', sans-serif;
     justify-content: center; /* قرار دادن محتوا در وسط افقی */
     align-items: center; /* قرار دادن محتوا در وسط عمودی */
     height: 100px; /* تعیین ارتفاع باکس */

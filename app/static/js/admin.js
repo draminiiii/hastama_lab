@@ -228,8 +228,8 @@ function toggleBox(boxId, iconContainer) {
         const ticketBox = document.getElementById('ticketBox');
         if (ticketBox) {
             ticketBox.style.display = 'block';
-            // لیست را هنگام ورود به بخش مدیریت تازه‌سازی می‌کنیم.
-            loadTicketRequests();
+            // مرکز جدید تیکت‌ها فقط از API نرمال‌شده استفاده می‌کند.
+            if (window.TicketingWorkspace) window.TicketingWorkspace.loadAdmin(1);
         }
     }
 
@@ -1887,8 +1887,8 @@ function confirmChangesPass(rowId) {
 // تنظیمات باکس مدیریت درخواست های تیکت کاربران// تنظیمات باکس مدیریت درخواست های تیکت کاربران// تنظیمات باکس مدیریت درخواست های تیکت کاربران
 // تنظیمات باکس مدیریت درخواست های تیکت کاربران// تنظیمات باکس مدیریت درخواست های تیکت کاربران// تنظیمات باکس مدیریت درخواست های تیکت کاربران
 
-loadTicketRequests();
-
+// بارگذاری مرکز جدید توسط ticketing.js انجام می‌شود؛ تابع قدیمی زیر فقط برای
+// سازگاری با کدهای قدیمی نگه داشته شده و دیگر در رابط جدید فراخوانی نمی‌شود.
 function loadTicketRequests() {
     fetch('/get_ticket_requests_admin')
         .then(async response => {
@@ -2192,7 +2192,7 @@ function hideViewDialog() {
 // تابع برای ارسال پیام توسط آیکون ارسال پیام// تابع برای ارسال پیام توسط آیکون ارسال پیام// تابع برای ارسال پیام توسط آیکون ارسال پیام
 // تابع برای ارسال پیام توسط آیکون ارسال پیام// تابع برای ارسال پیام توسط آیکون ارسال پیام// تابع برای ارسال پیام توسط آیکون ارسال پیام
 
-document.querySelector('.ersal-icon').addEventListener('click', () => {
+if (!window.__modernTicketing) document.querySelector('.ersal-icon').addEventListener('click', () => {
     if (!ticketData) {
         alert('اطلاعات تیکت در دسترس نیست.');
         return;
@@ -2345,6 +2345,7 @@ function closeTicketModal() {document.getElementById("ticketModal").style.displa
 
 // ارسال فرم ثبت تیکت
 document.getElementById('ticketForm').addEventListener('submit', function(e) {
+    if (window.__modernTicketing) return;
     e.preventDefault(); // جلوگیری از ارسال فرم به طور پیش‌فرض
 
     // دریافت فیلدهای مختلف فرم
@@ -2355,11 +2356,14 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
     const formData = {};
 
     // بررسی فیلدهایی که مقدار دارند و اضافه کردن به formData
-    if (ticketReceiver) formData.ticketReceiver = ticketReceiver;
-    if (ticketTitle) formData.ticketTitle = ticketTitle;
-    if (ticketDescription) formData.ticketDescription = ticketDescription;
-    // ارسال داده‌ها به سرور
-    fetch('/submit_ticket', {
+    if (ticketReceiver) formData.recipient_username = ticketReceiver;
+    if (ticketTitle) formData.subject = ticketTitle;
+    if (ticketDescription) formData.body = ticketDescription;
+    formData.priority = document.getElementById('ticketPriority')?.value || 'normal';
+    const category = document.getElementById('ticketCategory')?.value || '';
+    if (category) formData.category_id = Number(category);
+    // ارسال داده‌ها به API جدید تیکتینگ
+    fetch('/api/tickets', {
         method: 'POST',
         body: JSON.stringify(formData),
         headers: {
@@ -2368,10 +2372,13 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data && data.id) {
             alert('تیکت شما با موفقیت ثبت شد!');
             closeTicketModal(); // بستن پاپ‌آپ
-            loadTicketRequests(); // نمایش فوری تیکت جدید در جدول مدیریت
+            const refresh = () => window.TicketingWorkspace && window.TicketingWorkspace.loadAdmin(1);
+            (window.uploadTicketAttachments ? window.uploadTicketAttachments(data.id) : Promise.resolve())
+                .then(refresh)
+                .catch(error => { console.error(error); alert('تیکت ثبت شد اما بارگذاری پیوست ناموفق بود.'); refresh(); });
         } else {
             alert('خطا در ثبت تیکت! ' + (data.message || ''));
         }

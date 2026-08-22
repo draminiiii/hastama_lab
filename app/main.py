@@ -17,9 +17,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from app.api.routes.api import router as api_router
 from app.api.routes.auth import router as auth_router
 from app.api.routes.notifications import router as notifications_router
+from app.api.routes.ticketing import router as ticketing_router
 from app.services.presence_summary import build_presence_summary, time_is_inside_range
 from app.services.attendance import compute_attendance_status, format_time_value
-from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
+from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION, SECRET_KEY
 from core.events import create_start_app_handler
 from core.number_format import convert_to_persian_numbers
 from core.password_utils import get_user_table_columns, hash_password, insert_user_with_optional_hash
@@ -36,13 +37,15 @@ from pydantic import BaseModel
 # ایجاد اپلیکیشن FastAPI
 app = FastAPI(debug=True)
 
-# اضافه کردن Middleware برای مدیریت Session
-app.add_middleware(SessionMiddleware, secret_key="your_secret_key")
+# کلید نشست باید از محیط اجرا بیاید؛ fallback تصادفی فقط برای اجرای توسعه است.
+_session_secret = os.getenv("SESSION_SECRET_KEY") or str(SECRET_KEY or "") or os.urandom(32).hex()
+app.add_middleware(SessionMiddleware, secret_key=_session_secret)
 
 # ثبت مسیر استاتیک برای فایل‌های CSS و JavaScript
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(auth_router)
 app.include_router(notifications_router)
+app.include_router(ticketing_router)
 
 # تنظیمات برای HTML Templates
 templates = Jinja2Templates(directory="app/templates")
@@ -120,35 +123,9 @@ async def user_panel(request: Request):
             'description': record[3]
         })
 
-    # اطلاعات تیکت‌ها
-    cursor.execute("""
-        SELECT id, ticketTitle, ticketDescription, target_username, ticket_status, ticket_date, Parent_id
-        FROM ticket_table WHERE username = ? OR target_username = ?
-    """, (username, username))
-    all_ticket_records = cursor.fetchall()
-
-    oldest_ticket_per_parent = {}
-    for record in all_ticket_records:
-        parent_id = record[6]
-        if parent_id not in oldest_ticket_per_parent or record[5] < oldest_ticket_per_parent[parent_id]['ticket_date']:
-            oldest_ticket_per_parent[parent_id] = {
-                'ticket_id': record[0],
-                'ticket_title': record[1],
-                'ticket_description': record[2],
-                'target_username': record[3],
-                'ticket_status': record[4],
-                'ticket_date': record[5]
-            }
-
-    ticket_records = [{
-        'index': convert_to_persian_numbers(idx),
-        'ticket_id': v['ticket_id'],
-        'ticket_title': v['ticket_title'],
-        'ticket_description': v['ticket_description'],
-        'target_username': v['target_username'],
-        'ticket_status': v['ticket_status'],
-        'ticket_date': convert_to_persian_numbers(jdatetime.date.fromgregorian(date=v['ticket_date']).strftime('%Y/%m/%d'))
-    } for idx, v in enumerate(oldest_ticket_per_parent.values(), start=1)]
+    # تیکت‌ها در مرکز جدید از API نرمال‌شده بارگذاری می‌شوند؛ این صفحه نباید
+    # جدول قدیمی را دوباره از ticket_table بخواند یا داده را در HTML تکرار کند.
+    ticket_records = []
 
     # اطلاعات مرخصی‌های کاربر
     cursor.execute("""
@@ -217,34 +194,6 @@ async def user_panel(request: Request):
     total_approved_minutes = (total_seconds % 3600) // 60
     total_approved_duration = f"{total_approved_hours:02}:{total_approved_minutes:02}"
     
-    # پیام خوانده‌نشده
-    cursor.execute("""
-        SELECT TOP 1 id, ticketTitle, target_username, ticketDescription, ticket_date
-        FROM ticket_table
-        WHERE target_username = ? AND is_read = 0 AND username <> ?
-        ORDER BY ticket_date DESC
-    """, (username, username))
-    message = cursor.fetchone()
-    message_records = []
-    if message:
-        message_records.append({
-            'id': message[0],
-            'index': convert_to_persian_numbers(1),
-            'ticket_title': message[1],
-            'target_username': message[2],
-            'ticket_description': message[3],
-            'ticket_date': convert_to_persian_numbers(jdatetime.date.fromgregorian(date=message[4]).strftime('%Y/%m/%d'))
-        })
-
-    # جستجو برای تعداد پیام‌های خوانده‌نشده، به جز پیام‌هایی که فرستنده آنها برابر با کاربر باشد
-    cursor.execute("""
-        SELECT COUNT(*)
-        FROM ticket_table
-        WHERE target_username = ? AND is_read = 0 AND username <> ?
-    """, (username, username))
-
-    unread_count = cursor.fetchone()[0]  # دریافت تعداد پیام‌های خوانده‌نشده
-
     # محاسبه مجموع زمان‌های daily_overtime تایید شده
     cursor.execute("""
         SELECT daily_overtime FROM ezafe_table 
@@ -417,8 +366,6 @@ async def user_panel(request: Request):
         "pass_records": pass_records,
         "leave_details": leave_details,
         "total_approved_duration": convert_to_persian_numbers(total_approved_duration),
-        "message_records": message_records,
-        "unread_count": convert_to_persian_numbers(unread_count),
         "total_overtime": formatted_time_farsi,
         "total_approved_pass_duration": convert_to_persian_numbers(total_pass_duration),
         "user_image_url": user_image_url,
@@ -923,6 +870,7 @@ def _ticket_accessible_row(cursor, ticket_id, actor, is_admin):
 
 
 async def _create_ticket_response(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -989,6 +937,7 @@ async def _create_ticket_response(request: Request):
 
 @app.post("/submit_ticket")
 async def submit_ticket(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2290,6 +2239,7 @@ async def get_overtime_report(data: dict):
 
 @app.get("/get_ticket_requests_admin")
 async def get_ticket_requests_admin(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request, admin_only=True)
     if auth_error:
         return auth_error
@@ -2348,6 +2298,7 @@ async def get_ticket_requests_admin(request: Request):
 
 @app.post("/delete-ticket")
 async def delete_ticket(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2384,6 +2335,7 @@ async def delete_ticket(request: Request):
 
 @app.post("/update_ticket")
 async def update_ticket(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2436,6 +2388,7 @@ async def update_ticket(request: Request):
 
 @app.get("/get_ticket_requests")
 async def get_ticket_requests(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2479,6 +2432,7 @@ async def get_ticket_requests(request: Request):
 
 @app.post("/update_ticket_status")
 async def update_ticket_status(request: Request):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2516,6 +2470,7 @@ async def update_ticket_status(request: Request):
 
 @app.get('/get_ticket_details/{ticket_id}')
 async def get_ticket_details(request: Request, ticket_id: int):
+    return JSONResponse(status_code=410, content={"error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2587,6 +2542,7 @@ async def get_ticket_details(request: Request, ticket_id: int):
 
 @app.get('/get_ticket_details_payam/{ticket_id}')
 async def get_ticket_details_payam(request: Request, ticket_id: int):
+    return JSONResponse(status_code=410, content={"error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error
@@ -2666,6 +2622,7 @@ async def add_ticket_response_userpanel(request: Request):
     
 @app.post('/mark_ticket_as_read/{ticket_id}')
 async def mark_ticket_as_read(request: Request, ticket_id: int):
+    return JSONResponse(status_code=410, content={"success": False, "error": "این مسیر قدیمی تیکت منسوخ شده است."})
     actor, auth_error = _ticket_actor(request)
     if auth_error:
         return auth_error

@@ -1035,7 +1035,6 @@
     { re: /\/get_overtime_report/, sels: ['#overTimeIndivisualReportTable', '#overTimeReportTable.individual-report-table'] },
     { re: /\/get_hourly_pass_requests/, sels: ['#hourlyPassReportTable'] },
     { re: /\/get_hourly_pass_report/, sels: ['#hourlyPassIndivisualuserReportTable'] },
-    { re: /\/get_ticket_requests_admin/, sels: ['#ticketUsersReportTable'] },
     { re: /\/get_hozoor\//, sels: ['#hozoorUsersReportTable', '#HozoorTableReport'] },
     { re: /\/get_leave_info/, sels: ['#leaveTable'] },
     { re: /\/get_user_info_final_report_page\//, sels: ['.hozoorBox #hozoorUsersReportTable', '#ezafeKarUsersReportTable', '#morkhcUsersReportTable', '#hourlyPassUsersReportTable'] },

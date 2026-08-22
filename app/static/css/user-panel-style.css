@@ -1903,54 +1903,6 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
     background-color: #d9534f;
 }
 
-/* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام */
-/* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام */
-/* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام *//* تنظیمات پایه برای باکس پاپ‌آپ صندوق پیام */
-
-.popup-box-massageBox {
-    position: fixed;
-    top: -10%;  /* موقعیت اولیه بالا */
-    left: 12rem;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 0px 10px 10px 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 15;
-    text-align: center;
-    width: 340px;
-    opacity: 0;  /* شروع با پنهانی بودن */
-    transition: top 0.3s ease, opacity 0.3s ease; /* انیمیشن برای حرکت و تغییر شفافیت */
-}
-
-/* تنظیمات برای عنوان */
-.popup-box-massageBox h2 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.popup-box-massageBox p {
-    margin-top: 40px;
-    margin-bottom: 40px;
-}
-
-/* دکمه بستن */
-.close-massage-box-btn {
-    margin-top: 20px;
-    padding: 3px 11px;
-    background-color: #6c9ec7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.7rem;
-    float: left;
-    font-family: 'Vazir';
-}
-
-.close-massage-box-btn:hover {background-color: #4e7a9e;}
-
 /* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها */
 /* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها */
 /* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها *//* تنظمیات نوتیف در آیکون پیام ها */
@@ -1971,50 +1923,6 @@ html[lang="fa"] #ticket-status-table-popup tbody tr:last-child td:last-child {
     font-size: 15px;
     font-weight: bold;
     
-}
-
-.userMassage {
-    display: flex;
-    flex-direction: row-reverse; /* ترتیب را از راست به چپ تنظیم می‌کند */
-    justify-content: space-between;
-    align-items: stretch; /* برای هم ارتفاع کردن ستون‌ها */
-    gap: 0.2rem; /* فاصله بین ستون‌ها */
-    border: 1px solid #ccc; /* برای تست بهتر */
-    border-radius: 14px;
-    padding: 0.3rem;
-    box-sizing: border-box;
-    cursor: pointer;
-    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.2);
-}
-
-.userMassage:hover {
-    color: #000; /* رنگ متن را پررنگ‌تر کنید */
-    font-weight: bold; /* متن را پررنگ کنید */
-
-}
-
-.right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 0.5rem;
-    text-align: right; /* متن‌ها راست‌چین شوند */
-}
-
-.onvanMassage,
-.daryafkonandeMassage {
-    background: #f0f0f0;
-    padding: 0.3rem;
-    border-radius: 5px;
-    width: 7.5rem;
-}
-
-.tozihatMassage {
-    flex: 1; /* این بخش باعث می‌شود که توضیحات تمام فضای باقیمانده را بگیرد */
-    background: #e0f1ff;
-    padding: 0.5rem;
-    border-radius: 5px;
-    text-align: right; /* متن داخل توضیحات چپ‌چین می‌شود */
 }
 
 /* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول *//* تنظمیات باکس مشاهده پیام در جدول */
@@ -4340,11 +4248,6 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     .topbar-user:focus-within .avatar-menu,
     .topbar-user.menu-open .avatar-menu {
         width: 10rem;
-    }
-    .popup-box-massageBox{
-        z-index: 489;
-        left: 41.5%;
-        width: 80.5%;
     }
     .sidebar-right {
         --mobile-sidebar-collapsed-width: 18%;

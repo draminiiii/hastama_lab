@@ -633,3 +633,307 @@ body.dark-mode .ticket-conversation-dialog .matn2 { background: rgba(56,182,255,
 }
 
 body.dark-mode .ticket-popup-box .mobile-box { background: rgba(255,255,255,.04); }
+
+/* The user ticket area must stay inside the dashboard column; only the
+   conversation body may scroll when its message history is long. */
+.ticket-status-card {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0 !important;
+}
+
+.ticket-status-card .Jadvale-ticket {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.ticket-status-card #ticket-status-table,
+.ticket-status-card #ticket-status-table-popup {
+    width: 100%;
+    min-width: 0 !important;
+    max-width: 100%;
+    table-layout: fixed;
+}
+
+.ticket-status-card #ticket-status-table td,
+.ticket-status-card #ticket-status-table th,
+.ticket-status-card #ticket-status-table-popup td,
+.ticket-status-card #ticket-status-table-popup th {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.ticket-popup-box {
+    max-width: calc(100vw - 24px) !important;
+    overflow-x: hidden;
+}
+
+.ticket-popup-box .Jadvale-ticket {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.ticket-popup-box #ticket-status-table-popup {
+    width: 100%;
+    min-width: 0 !important;
+    table-layout: fixed;
+}
+
+@media (max-width: 860px) {
+    .ticket-status-card {
+        width: 100%;
+        margin-inline: 0;
+        padding: 0 !important;
+    }
+
+    .ticket-status-card .ticket-card-head,
+    .ticket-status-card .ticket-toolbar {
+        padding-inline: 12px;
+    }
+
+    .ticket-status-card .Jadvale-ticket {
+        padding-inline: 10px;
+    }
+
+    .ticket-popup-box {
+        width: calc(100vw - 24px) !important;
+        max-height: calc(100dvh - 24px) !important;
+    }
+}
+
+/* Keep the dashboard grid inside the viewport on tablets and small laptops. */
+@media (max-width: 1200px) {
+    .dashboard-main {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .calendar-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .calendar-row .ticket-status-card {
+        grid-column: 1 / -1;
+    }
+}
+
+/* The dashboard table becomes a readable card list instead of a horizontally
+   scrolling seven-column table on touch screens. */
+@media (max-width: 860px) {
+    .calendar-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .calendar-row .ticket-status-card {
+        grid-column: auto;
+    }
+
+    .ticket-status-card .Jadvale-ticket {
+        display: block !important;
+        overflow: visible;
+        padding: 0 10px 12px;
+    }
+
+    .ticket-status-card #ticket-status-table {
+        display: block;
+        width: 100%;
+        min-width: 0 !important;
+        table-layout: auto;
+    }
+
+    .ticket-status-card #ticket-status-table thead {
+        display: none;
+    }
+
+    .ticket-status-card #ticket-status-table tbody,
+    .ticket-status-card #ticket-status-table tbody tr {
+        display: block;
+        width: 100%;
+    }
+
+    .ticket-status-card #ticket-status-table tbody tr {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin: 0 0 10px;
+        padding: 11px;
+        border: 1px solid var(--ticket-border);
+        border-radius: 14px;
+        background: var(--ticket-muted-surface);
+    }
+
+    .ticket-status-card #ticket-status-table tbody tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .ticket-status-card #ticket-status-table tbody td {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+        min-width: 0;
+        padding: 5px 0;
+        border: 0;
+        text-align: right;
+        font-size: .72rem;
+        line-height: 1.6;
+    }
+
+    .ticket-status-card #ticket-status-table tbody td::before {
+        flex: 0 0 auto;
+        color: var(--ticket-muted);
+        font-size: .64rem;
+        font-weight: 800;
+    }
+
+    .ticket-status-card #ticket-status-table tbody td.radif-ticket { display: none; }
+    .ticket-status-card #ticket-status-table tbody td.noe-ticket { grid-column: 1 / -1; }
+    .ticket-status-card #ticket-status-table tbody td.noe-ticket::before { content: 'عنوان'; }
+    .ticket-status-card #ticket-status-table tbody td.tarikh-ticket::before { content: 'تاریخ'; }
+    .ticket-status-card #ticket-status-table tbody td.daryaft-ticket::before { content: 'گیرنده'; }
+    .ticket-status-card #ticket-status-table tbody td.vazeiyat-ticket::before { content: 'وضعیت'; }
+    .ticket-status-card #ticket-status-table tbody td.tozihat-ticket {
+        grid-column: 1 / -1;
+        display: block;
+    }
+    .ticket-status-card #ticket-status-table tbody td.tozihat-ticket::before {
+        content: 'توضیحات';
+        display: block;
+        margin-bottom: 2px;
+    }
+    .ticket-status-card #ticket-status-table tbody td.virayesh-ticket {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        border-top: 1px solid var(--ticket-border);
+        padding-top: 8px;
+    }
+    .ticket-status-card #ticket-status-table tbody td.virayesh-ticket::before { content: 'عملیات'; }
+}
+
+@media (max-width: 480px) {
+    .ticket-status-card .ticket-card-head,
+    .ticket-status-card .ticket-toolbar {
+        padding-inline: 10px;
+    }
+
+    .ticket-status-card .ticket-card-head h3 {
+        font-size: 1rem;
+    }
+
+    .ticket-status-card #ticket-status-table tbody tr {
+        grid-template-columns: 1fr;
+    }
+
+    .ticket-status-card #ticket-status-table tbody td.noe-ticket,
+    .ticket-status-card #ticket-status-table tbody td.tozihat-ticket,
+    .ticket-status-card #ticket-status-table tbody td.virayesh-ticket {
+        grid-column: auto;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Modern helpdesk workspace
+   -------------------------------------------------------------------------- */
+.ticket-legacy-fallback { display: none !important; }
+.helpdesk-layout { display: grid; grid-template-columns: 190px minmax(330px, 1fr) minmax(300px, .9fr); gap: 14px; min-height: 610px; }
+.helpdesk-views, .helpdesk-list-pane, .helpdesk-context { min-width: 0; border: 1px solid var(--ticket-border); border-radius: 18px; background: var(--ticket-surface); }
+.helpdesk-views { padding: 14px 10px; background: var(--ticket-muted-surface); }
+.helpdesk-views-head { display: flex; flex-direction: column; gap: 3px; padding: 6px 8px 14px; border-bottom: 1px solid var(--ticket-border); color: var(--ticket-text); }
+.helpdesk-views-head strong { font-size: 1rem; }
+.helpdesk-view { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 5px; padding: 10px 9px; border: 0; border-radius: 10px; background: transparent; color: var(--ticket-muted); cursor: pointer; font: inherit; font-size: .75rem; text-align: right; }
+.helpdesk-view b { min-width: 22px; padding: 2px 5px; border-radius: 999px; background: rgba(56,182,255,.12); color: var(--ticket-blue); font-size: .68rem; }
+.helpdesk-view:hover, .helpdesk-view.is-active { background: rgba(56,182,255,.1); color: var(--ticket-primary); }
+.helpdesk-list-pane { display: flex; flex-direction: column; overflow: hidden; }
+.helpdesk-pane-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px; border-bottom: 1px solid var(--ticket-border); }
+.helpdesk-pane-head h2 { margin: 0; color: var(--ticket-text); font-size: 1.2rem; }
+.helpdesk-pane-head p { margin: 5px 0 0; color: var(--ticket-muted); font-size: .75rem; }
+.helpdesk-head-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+.helpdesk-head-actions .ticket-refresh-btn, .helpdesk-head-actions .ticket-new-btn { min-height: 38px; padding: 7px 11px; }
+.helpdesk-list-pane > .ticket-toolbar { padding: 14px 18px 0; margin-bottom: 10px; }
+.helpdesk-ticket-list { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 0 18px 12px; overflow: auto; }
+.helpdesk-ticket-item { padding: 12px; border: 1px solid var(--ticket-border); border-radius: 14px; background: var(--ticket-surface); cursor: pointer; transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+.helpdesk-ticket-item:hover, .helpdesk-ticket-item:focus-visible { border-color: rgba(56,182,255,.5); box-shadow: 0 7px 18px rgba(13,59,78,.08); transform: translateY(-1px); outline: none; }
+.helpdesk-ticket-item-head, .ticket-user-item-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.helpdesk-ticket-item-title { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.helpdesk-ticket-item-title strong, .ticket-user-item-head strong { color: var(--ticket-text); font-size: .82rem; overflow-wrap: anywhere; }
+.helpdesk-ticket-item-title span, .helpdesk-ticket-item-meta, .ticket-user-item-details { color: var(--ticket-muted); font-size: .68rem; }
+.helpdesk-ticket-item-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.ticket-workspace-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 24px; padding: 3px 7px; border-radius: 999px; background: var(--ticket-muted-surface); color: var(--ticket-muted); font-size: .62rem; font-weight: 800; white-space: nowrap; }
+.ticket-workspace-badge--new, .ticket-workspace-badge--open { background: rgba(56,182,255,.12); color: #0876a9; }
+.ticket-workspace-badge--in_progress, .ticket-workspace-badge--waiting_for_support { background: rgba(245,201,72,.18); color: #8a6500; }
+.ticket-workspace-badge--waiting_for_user { background: rgba(139,92,246,.12); color: #7044bb; }
+.ticket-workspace-badge--resolved { background: rgba(0,184,148,.13); color: #00866c; }
+.ticket-workspace-badge--closed { background: rgba(100,116,139,.14); color: #475569; }
+.ticket-workspace-badge--priority-urgent { background: rgba(239,68,68,.13); color: #b42318; }
+.ticket-workspace-badge--priority-high { background: rgba(245,158,11,.15); color: #9a5c00; }
+.ticket-workspace-badge--priority-normal { background: rgba(56,182,255,.1); color: #0876a9; }
+.ticket-workspace-badge--priority-low { background: rgba(100,116,139,.13); color: #475569; }
+.helpdesk-ticket-item-meta, .ticket-user-item-details { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+.helpdesk-ticket-item-preview, .ticket-user-item-preview { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 8px 0 0; color: var(--ticket-muted); font-size: .73rem; line-height: 1.75; overflow-wrap: anywhere; }
+.helpdesk-ticket-item-foot, .ticket-user-item-foot { display: flex; align-items: center; justify-content: space-between; gap: 7px; margin-top: 9px; }
+.ticket-inline-action { min-height: 32px; padding: 5px 9px; border: 1px solid var(--ticket-border); border-radius: 9px; background: transparent; color: var(--ticket-blue); cursor: pointer; font: inherit; font-size: .68rem; }
+.ticket-inline-action:hover { background: rgba(56,182,255,.1); }
+.ticket-pagination { display: flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 6px 12px; color: var(--ticket-muted); font-size: .7rem; }
+.ticket-page-btn { min-height: 32px; padding: 5px 10px; border: 1px solid var(--ticket-border); border-radius: 8px; background: var(--ticket-surface); color: var(--ticket-text); cursor: pointer; font: inherit; }
+.ticket-page-btn:disabled { cursor: not-allowed; opacity: .45; }
+.ticket-loading-state, .ticket-error-state, .ticket-empty-state { display: grid; place-items: center; min-height: 140px; padding: 20px; color: var(--ticket-muted); text-align: center; font-size: .78rem; }
+.ticket-error-state { color: #b42318; }
+.helpdesk-context { display: flex; flex-direction: column; overflow: hidden; }
+.ticket-context-empty { display: grid; place-items: center; align-content: center; gap: 8px; height: 100%; min-height: 300px; padding: 25px; color: var(--ticket-muted); text-align: center; }
+.ticket-context-empty span { color: var(--ticket-blue); font-size: 1.8rem; }
+.ticket-context-empty strong { color: var(--ticket-text); }
+.ticket-context-empty p { margin: 0; font-size: .74rem; }
+.helpdesk-context-head { display: flex; justify-content: space-between; gap: 8px; padding: 15px; border-bottom: 1px solid var(--ticket-border); background: linear-gradient(135deg, rgba(0,184,148,.08), rgba(56,182,255,.08)); }
+.helpdesk-context-head h3 { margin: 4px 0 0; color: var(--ticket-text); font-size: .9rem; overflow-wrap: anywhere; }
+.helpdesk-context-close { width: 30px; height: 30px; border: 0; border-radius: 9px; background: rgba(13,59,78,.08); color: var(--ticket-text); cursor: pointer; font-size: 1.2rem; }
+.helpdesk-context-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 12px 15px 0; }
+.helpdesk-context-fields label { color: var(--ticket-muted); font-size: .67rem; }
+.ticket-context-select { width: 100%; min-height: 34px; grid-row: 2; border: 1px solid var(--ticket-border); border-radius: 8px; background: var(--ticket-muted-surface); color: var(--ticket-text); font: inherit; font-size: .68rem; }
+.helpdesk-requester-card { display: flex; flex-direction: column; gap: 3px; margin: 12px 15px; padding: 10px; border: 1px solid var(--ticket-border); border-radius: 11px; background: var(--ticket-muted-surface); color: var(--ticket-text); font-size: .73rem; }
+.helpdesk-requester-card small { color: var(--ticket-muted); font-size: .64rem; }
+.ticket-workspace-timeline { flex: 1; display: flex; flex-direction: column; gap: 9px; min-height: 150px; padding: 0 15px 12px; overflow: auto; }
+.ticket-workspace-message { max-width: 92%; padding: 9px 11px; border: 1px solid var(--ticket-border); border-radius: 13px; background: rgba(56,182,255,.08); align-self: flex-start; }
+.ticket-workspace-message--agent { align-self: flex-end; background: rgba(0,184,148,.1); }
+.ticket-workspace-message--internal { align-self: stretch; max-width: 100%; background: rgba(245,201,72,.14); border-color: rgba(214,160,0,.3); }
+.ticket-workspace-message-head { display: flex; justify-content: space-between; gap: 10px; color: var(--ticket-muted); font-size: .63rem; }
+.ticket-workspace-message-head strong { color: var(--ticket-text); }
+.ticket-workspace-message-body { margin: 6px 0 0; color: var(--ticket-text); font-size: .75rem; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ticket-attachment-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; color: var(--ticket-muted); font-size: .65rem; }
+.ticket-attachment-list--standalone { padding: 8px 10px; border: 1px dashed var(--ticket-border); border-radius: 9px; }
+.ticket-attachment-link { display: inline-flex; max-width: 100%; padding: 4px 7px; border-radius: 7px; background: rgba(56,182,255,.1); color: var(--ticket-blue); overflow-wrap: anywhere; text-decoration: none; }
+.ticket-attachment-link:hover { text-decoration: underline; }
+.ticket-workspace-composer { display: grid; grid-template-columns: 125px 1fr auto; gap: 7px; padding: 11px 15px 15px; border-top: 1px solid var(--ticket-border); }
+.ticket-workspace-composer select, .ticket-workspace-composer textarea { width: 100%; min-height: 40px; padding: 8px; border: 1px solid var(--ticket-border); border-radius: 9px; background: var(--ticket-muted-surface); color: var(--ticket-text); font: inherit; font-size: .7rem; }
+.ticket-workspace-composer textarea { min-height: 42px; resize: vertical; }
+.ticket-workspace-composer .ticket-new-btn { min-height: 42px; padding-inline: 10px; }
+.ticket-user-list { display: flex; flex-direction: column; gap: 8px; padding: 0 14px; }
+/* The dashboard card stays compact; pagination remains available for longer lists. */
+.ticket-status-card .ticket-user-list { max-height: 224px; overflow-y: auto; }
+.ticket-status-card .ticket-user-item { padding: 8px 10px; }
+.ticket-status-card .ticket-user-item-preview { display: none; }
+.ticket-status-card .ticket-user-item-details { margin-top: 5px; }
+.ticket-status-card .ticket-user-item-foot { margin-top: 5px; }
+.ticket-user-item { padding: 11px; border: 1px solid var(--ticket-border); border-radius: 13px; background: var(--ticket-surface); }
+.ticket-user-item:hover, .ticket-user-item:focus-visible { border-color: rgba(56,182,255,.45); outline: none; }
+.ticket-user-item-preview { margin-top: 6px; }
+.ticket-dialog-open { overflow: hidden; }
+
+@media (max-width: 1100px) {
+    .helpdesk-layout { grid-template-columns: 165px minmax(300px, 1fr); }
+    .helpdesk-context { grid-column: 1 / -1; min-height: 430px; }
+}
+@media (max-width: 760px) {
+    .helpdesk-layout { display: flex; flex-direction: column; min-height: 0; }
+    .helpdesk-views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+    .helpdesk-views-head { grid-column: 1 / -1; }
+    .helpdesk-view { margin-top: 0; }
+    .helpdesk-pane-head { flex-direction: column; }
+    .helpdesk-head-actions { width: 100%; }
+    .helpdesk-head-actions button { flex: 1; }
+    .helpdesk-ticket-list { overflow: visible; }
+    .helpdesk-context { min-height: 520px; }
+    .ticket-workspace-composer { grid-template-columns: 1fr; }
+    .ticket-workspace-composer .ticket-new-btn { width: 100%; }
+}

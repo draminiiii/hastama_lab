@@ -835,7 +835,6 @@ body.dark-mode .shift-popup-content,
 body.dark-mode .MoshahdePopup,
 body.dark-mode .tikcet-popup-Req,
 body.dark-mode .ticket-popup-Req,
-body.dark-mode .popup-box-massageBox,
 body.dark-mode .ticket-popup-box,
 body.dark-mode .border-vir,
 body.dark-mode .form-container,
@@ -1047,7 +1046,6 @@ body.dark-mode .mobile-box,
 body.dark-mode #calender,
 body.dark-mode .calendar-container,
 body.dark-mode .profileHa,
-body.dark-mode .userMassage,
 body.dark-mode .top-notif-card,
 body.dark-mode .sidebar-submenu {
     background-color: var(--dk-surface);
@@ -1070,22 +1068,6 @@ body.dark-mode .ticket-status-box p {
 body.dark-mode .Information-box a,
 body.dark-mode .ticket-status-box a {
     color: var(--dk-accent);
-}
-
-body.dark-mode .onvanMassage,
-body.dark-mode .daryafkonandeMassage {
-    background: var(--dk-surface-2);
-    color: var(--dk-text);
-}
-
-body.dark-mode .tozihatMassage {
-    background: rgba(56, 189, 248, 0.12);
-    color: var(--dk-text);
-}
-
-body.dark-mode .userMassage:hover {
-    color: var(--dk-text);
-    background: var(--dk-surface-3);
 }
 
 body.dark-mode .NumberNotif,

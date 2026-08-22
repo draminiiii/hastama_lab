@@ -51,9 +51,6 @@ window.addEventListener('load', function() {
             case 'confirm-delete':
                 if (typeof confirmDelete === 'function') confirmDelete();
                 break;
-            case 'open-messages':
-                var msg = document.getElementById('massageBoxIcon'); if (msg) msg.click();
-                break;
             case 'open-hourly-pass':
                 if (typeof openHourlyPassModal === 'function') openHourlyPassModal();
                 break;
@@ -1597,6 +1594,7 @@ function closeTicketListPopup(event) {
 
 // ارسال فرم ثبت تیکت
 document.getElementById('ticketForm').addEventListener('submit', function(e) {
+    if (window.__modernTicketing) return;
     e.preventDefault(); // جلوگیری از ارسال فرم به طور پیش‌فرض
 
     // دریافت فیلدهای مختلف فرم
@@ -1607,11 +1605,15 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
     const formData = {};
 
     // بررسی فیلدهایی که مقدار دارند و اضافه کردن به formData
-    if (ticketReceiver) formData.ticketReceiver = ticketReceiver;
-    if (ticketTitle) formData.ticketTitle = ticketTitle;
-    if (ticketDescription) formData.ticketDescription = ticketDescription;
-    // ارسال داده‌ها به سرور
-    fetch('/submit_ticket', {
+    if (ticketReceiver) formData.recipient_username = ticketReceiver;
+    if (ticketTitle) formData.subject = ticketTitle;
+    if (ticketDescription) formData.body = ticketDescription;
+    const priority = document.getElementById('ticketPriority')?.value || 'normal';
+    const category = document.getElementById('ticketCategory')?.value || '';
+    formData.priority = priority;
+    if (category) formData.category_id = Number(category);
+    // ارسال داده‌ها به API جدید تیکتینگ
+    fetch('/api/tickets', {
         method: 'POST',
         body: JSON.stringify(formData),
         headers: {
@@ -1620,12 +1622,13 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data && data.id) {
             alert('تیکت شما با موفقیت ثبت شد!');
             closeTicketModal(); // بستن پاپ‌آپ
-            setTimeout(() => {
-                location.reload(); // رفرش صفحه بعد از کمی تأخیر
-            }, 500); // 0.5 ثانیه تأخیر برای تجربه کاربری بهتر
+            const refresh = () => location.reload();
+            (window.uploadTicketAttachments ? window.uploadTicketAttachments(data.id) : Promise.resolve())
+                .then(refresh)
+                .catch(error => { console.error(error); alert('تیکت ثبت شد اما بارگذاری پیوست ناموفق بود.'); refresh(); });
         } else {
             alert('خطا در ثبت تیکت! ' + (data.message || ''));
         }
@@ -2141,32 +2144,7 @@ document.querySelectorAll('.next-month').forEach((btn) => btn.addEventListener('
 // به‌روزرسانی تقویم هنگام بارگذاری صفحه
 fetchDateFromServer();
 
-// تنظیمات باز کردن باکس کوچک نوتیف های کاربر// تنظیمات باز کردن باکس کوچک نوتیف های کاربر// تنظیمات باز کردن باکس کوچک نوتیف های کاربر
-// تنظیمات باز کردن باکس کوچک نوتیف های کاربر// تنظیمات باز کردن باکس کوچک نوتیف های کاربر// تنظیمات باز کردن باکس کوچک نوتیف های کاربر
-// تنظیمات باز کردن باکس کوچک نوتیف های کاربر// تنظیمات باز کردن باکس کوچک نوتیف های کاربر// تنظیمات باز کردن باکس کوچک نوتیف های کاربر
-
-document.addEventListener("DOMContentLoaded", function () {
-    const icon = document.getElementById("massageBoxIcon");
-    const popup = document.getElementById("massageBoxPopup");
-    const closeBtn = document.getElementById("closeMassageBoxPopup");
-    // صندوق تیکت قدیمی فقط در صفحاتی که محرک آن وجود دارد فعال می‌شود.
-    if (!icon || !popup || !closeBtn) return;
-
-    // نمایش پاپ‌آپ
-    icon.addEventListener("click", function () {
-        popup.style.display = "block";
-    
-        setTimeout(function () {
-            // بررسی عرض نمایشگر و تنظیم مقدار top بر اساس آن
-            if (window.matchMedia("(max-width: 768px)").matches) {
-                popup.style.top = "10.99rem"; 
-            } else {
-                popup.style.top = "12.5rem"; 
-            }
-            popup.style.opacity = "1"; // نمایان شدن پاپ‌آپ
-        }, 10); 
-    });
-
+/* legacy notification popup removed
     // بستن پاپ‌آپ
     closeBtn.addEventListener("click", function () {
         popup.style.top = "-10%";  // موقعیت پنهان شدن
@@ -2186,7 +2164,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
     });
-});
+*/
 
 // تنظمیات کامل باز شدن و چت کردن در تیکت ها// تنظمیات کامل باز شدن و چت کردن در تیکت ها// تنظمیات کامل باز شدن و چت کردن در تیکت ها
 // تنظمیات کامل باز شدن و چت کردن در تیکت ها// تنظمیات کامل باز شدن و چت کردن در تیکت ها// تنظمیات کامل باز شدن و چت کردن در تیکت ها
@@ -2288,10 +2266,10 @@ function openViewDialog(button) {
 
 
 // رویداد کلیک روی ersal-icon
-document.querySelector('.ersal-icon').addEventListener('click', sendTicketResponse);
+if (!window.__modernTicketing) document.querySelector('.ersal-icon').addEventListener('click', sendTicketResponse);
 
 // رویداد keydown برای دکمه Enter
-document.querySelector('#matnErsali').addEventListener('keydown', (event) => {
+if (!window.__modernTicketing) document.querySelector('#matnErsali').addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault(); // جلوگیری از ارسال فرم (اگر فرم وجود داشته باشد)
         sendTicketResponse();
@@ -2357,86 +2335,7 @@ function sendTicketResponse() {
     });
 }
 
-function openViewMassageBoxDialog(button) {
-    // نمایش پاپ‌آپ
-    document.querySelector('#popupMoshahedeoverlay').style.display = 'block';
-    document.querySelector('#MoshahedePopupbox').style.display = 'block';
 
-    // استخراج شناسه و عنوان تیکت
-    const ticketId = button.getAttribute('data-id');
-    const ticketTitle = button.querySelector('.onvanMassage')?.textContent?.trim();
-    const titleElement = document.querySelector('#ticketConversationTitle');
-    if (titleElement && ticketTitle) titleElement.textContent = ticketTitle;
-
-    // ارسال درخواست به سرور برای به‌روزرسانی مقدار is_read
-    fetch(`/mark_ticket_as_read/${ticketId}`, { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('وضعیت تیکت به خوانده‌شده تغییر یافت.');
-            } else {
-                console.error('خطا در به‌روزرسانی وضعیت تیکت:', data.error);
-            }
-        })
-        .catch(error => {
-            console.error('خطای ارتباط با سرور:', error);
-        });
-
-    // درخواست به سرور برای دریافت جزئیات تیکت
-    fetch(`/get_ticket_details_payam/${ticketId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error(data.error);
-                alert('خطایی در دریافت اطلاعات تیکت رخ داده است.');
-                return;
-            }
-
-            // ذخیره اطلاعات تیکت در متغیر ticketData
-            ticketData = data;
-
-            // دریافت و نمایش پیام‌ها
-            const kadrMatnContainer = document.querySelector('#MoshahedePopupbox .kadr-matn');
-            kadrMatnContainer.innerHTML = ''; // پاک کردن پیام‌های قبلی
-
-            const sortedMessages = data.messages.sort((a, b) => new Date(a.ticket_date) - new Date(b.ticket_date));
-
-            let userClasses = {};
-
-            sortedMessages.forEach((message) => {
-                const messageDiv = document.createElement('div');
-                const currentUsername = message.username.trim().toLowerCase();
-
-                if (!userClasses['karbar1']) {
-                    userClasses['karbar1'] = currentUsername;
-                    messageDiv.classList.add('matn1');
-                } else if (!userClasses['karbar2'] && currentUsername !== userClasses['karbar1']) {
-                    userClasses['karbar2'] = currentUsername;
-                    messageDiv.classList.add('matn2');
-                } else if (currentUsername === userClasses['karbar1']) {
-                    messageDiv.classList.add('matn1');
-                } else if (currentUsername === userClasses['karbar2']) {
-                    messageDiv.classList.add('matn2');
-                } else {
-                    messageDiv.classList.add('matn3');
-                }
-
-                const messageText = document.createElement('p');
-                messageText.textContent = message.ticketDescription || '';
-                const messageTime = document.createElement('div');
-                messageTime.className = 'zaman';
-                messageTime.textContent = message.ticket_date || '';
-                messageDiv.append(messageText, messageTime);
-                kadrMatnContainer.appendChild(messageDiv);
-            });
-
-            // اسکرول به پایین‌ترین قسمت پس از بارگذاری پیام‌ها
-            kadrMatnContainer.scrollTop = kadrMatnContainer.scrollHeight;
-        })
-        .catch(error => {
-            console.error('Error fetching ticket details:', error);
-        });
-}
 
 // تنظیمات تایمر بستن صفحه پنل کاربر// تنظیمات تایمر بستن صفحه پنل کاربر// تنظیمات تایمر بستن صفحه پنل کاربر// تنظیمات تایمر بستن صفحه پنل کاربر
 // تنظیمات تایمر بستن صفحه پنل کاربر// تنظیمات تایمر بستن صفحه پنل کاربر// تنظیمات تایمر بستن صفحه پنل کاربر// تنظیمات تایمر بستن صفحه پنل کاربر

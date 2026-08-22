@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/tables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/ticketing.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/notification-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/vazir.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/dark-theme.css') }}">
     <script src="{{ url_for('static', path='js/theme.js') }}"></script>
 </head>
@@ -1166,50 +1167,33 @@
             <button id="downloadHourlyPassReport">دریافت گزارش</button>
         </div>
 
-        <!-- باکس مدیریت تیکت های کاربران -->
+        <!-- مرکز مدیریت تیکت‌ها: صندوق ورودی، فهرست و فضای مکالمه -->
         <div id="ticketBox" class="management-box ticketing-panel" style="display:none;">
-            <div class="ticket-panel-head">
-                <div>
-                    <span class="ticket-panel-kicker">مرکز پشتیبانی</span>
-                    <h2>مدیریت تیکت‌ها</h2>
-                    <p>پیام‌های دریافتی و ارسالی کارکنان را یکجا پیگیری کنید.</p>
-                </div>
-                <button type="button" class="ticket-refresh-btn" id="refreshTicketRequests" aria-label="تازه‌سازی فهرست تیکت‌ها">
-                    <span aria-hidden="true">↻</span> تازه‌سازی
-                </button>
-            </div>
-            <div class="ticket-metrics" aria-label="خلاصه تیکت‌ها">
-                <div class="ticket-metric ticket-metric--accent"><span>کل مکالمه‌ها</span><strong id="adminTicketTotal">۰</strong></div>
-                <div class="ticket-metric"><span>در انتظار پاسخ</span><strong id="adminTicketPending">۰</strong></div>
-                <div class="ticket-metric"><span>پاسخ داده‌شده</span><strong id="adminTicketAnswered">۰</strong></div>
-                <div class="ticket-metric"><span>خوانده‌نشده</span><strong id="adminTicketUnread">۰</strong></div>
-            </div>
-            <div class="ticket-toolbar" role="search">
-                <label class="ticket-search" for="adminTicketSearch"><span class="sr-only">جستجو در تیکت‌ها</span><input type="search" id="adminTicketSearch" placeholder="جستجو در عنوان، متن یا نام کاربر…" autocomplete="off"></label>
-                <select id="adminTicketFilter" class="ticket-filter" aria-label="فیلتر وضعیت تیکت">
-                    <option value="all">همه وضعیت‌ها</option>
-                    <option value="ارسال شده">ارسال شده</option>
-                    <option value="در حال پیگیری">در حال پیگیری</option>
-                    <option value="خوانده شده">خوانده شده</option>
-                    <option value="پاسخ داده شده">پاسخ داده شده</option>
-                </select>
-            </div>
-            <div class="ticket-table-wrap">
-            <table class="ticketUsersReport-table" id="ticketUsersReportTable">
-                <thead>
-                    <tr>
-                        <th class="taghir-ticketboxtable">ثبت تغییرات</th>
-                        <th class="vazeiyat-ticketboxtable">وضعیت تیکت</th>
-                        <th class="tozihat-ticketboxtable">توضیحات</th>
-                        <th class="onvan-ticketboxtable">عنوان</th>
-                        <th class="tarikhsbt-ticketboxtable">تاریخ ثبت</th>
-                        <th class="karbr-ticketboxtable">نام کاربر</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="6" class="ticket-empty-state">در حال دریافت تیکت‌ها…</td></tr>
-                </tbody>
-            </table>
+            <div class="helpdesk-layout" dir="rtl">
+                <aside class="helpdesk-views" aria-label="نماهای تیکت">
+                    <div class="helpdesk-views-head"><span class="ticket-panel-kicker">فضای کاری پشتیبانی</span><strong>صندوق تیکت</strong></div>
+                    <button type="button" class="helpdesk-view is-active" data-ticket-view="all">همه تیکت‌ها <b id="adminViewCountAll">۰</b></button>
+                    <button type="button" class="helpdesk-view" data-ticket-view="new">جدید <b id="adminViewCountNew">۰</b></button>
+                    <button type="button" class="helpdesk-view" data-ticket-view="in_progress">در حال بررسی <b id="adminViewCountProgress">۰</b></button>
+                    <button type="button" class="helpdesk-view" data-ticket-view="waiting_for_user">در انتظار کاربر <b id="adminViewCountUser">۰</b></button>
+                    <button type="button" class="helpdesk-view" data-ticket-view="waiting_for_support">در انتظار پشتیبانی <b id="adminViewCountSupport">۰</b></button>
+                    <button type="button" class="helpdesk-view" data-ticket-view="resolved">حل‌شده <b id="adminViewCountResolved">۰</b></button>
+                    <button type="button" class="helpdesk-view" data-ticket-view="closed">بسته‌شده <b id="adminViewCountClosed">۰</b></button>
+                </aside>
+                <section class="helpdesk-list-pane" aria-label="فهرست تیکت‌ها">
+                    <header class="helpdesk-pane-head">
+                        <div><span class="ticket-panel-kicker">مرکز پشتیبانی</span><h2>تیکت‌ها</h2><p id="adminTicketSummary">تیکت‌های قابل پیگیری را مدیریت کنید.</p></div>
+                        <div class="helpdesk-head-actions"><button type="button" class="ticket-refresh-btn" id="refreshTicketRequests" aria-label="تازه‌سازی فهرست تیکت‌ها">↻ تازه‌سازی</button><button type="button" class="ticket-new-btn" onclick="openTicketModal()">+ تیکت جدید</button></div>
+                    </header>
+                    <div class="ticket-toolbar" role="search">
+                        <label class="ticket-search" for="adminTicketSearch"><span class="sr-only">جستجو در تیکت‌ها</span><input type="search" id="adminTicketSearch" placeholder="جستجو بر اساس شماره، موضوع یا کاربر…" autocomplete="off"></label>
+                        <select id="adminTicketPriority" class="ticket-filter" aria-label="فیلتر اولویت"><option value="">همه اولویت‌ها</option><option value="urgent">فوری</option><option value="high">زیاد</option><option value="normal">عادی</option><option value="low">کم</option></select>
+                        <select id="adminTicketSort" class="ticket-filter" aria-label="مرتب‌سازی"><option value="newest">جدیدترین فعالیت</option><option value="oldest">قدیمی‌ترین</option><option value="priority">اولویت</option></select>
+                    </div>
+                    <div id="adminTicketList" class="helpdesk-ticket-list"><div class="ticket-loading-state">در حال دریافت تیکت‌ها…</div></div>
+                    <div id="adminTicketPagination" class="ticket-pagination" aria-label="صفحه‌بندی تیکت‌ها"></div>
+                </section>
+                <aside id="adminTicketContext" class="helpdesk-context" aria-label="جزئیات تیکت"><div class="ticket-context-empty"><span>←</span><strong>یک تیکت را انتخاب کنید</strong><p>مکالمه و مشخصات آن در این بخش نمایش داده می‌شود.</p></div></aside>
             </div>
         </div>
 
@@ -1424,9 +1408,18 @@
                     
                         <label for="ticketTitleAdmin">عنوان تیکت</label>
                         <input type="text" id="ticketTitleAdmin" name="ticketTitleAdmin" required maxlength="180" autocomplete="off" autocapitalize="off" spellcheck="false">
+
+                        <label for="ticketCategory">دسته‌بندی</label>
+                        <select id="ticketCategory" name="category_id"><option value="">عمومی</option></select>
+
+                        <label for="ticketPriority">اولویت</label>
+                        <select id="ticketPriority" name="priority"><option value="normal">عادی</option><option value="low">کم</option><option value="high">زیاد</option><option value="urgent">فوری</option></select>
                     
                         <label for="ticketDescription">توضیحات</label>
                         <textarea id="ticketDescription" name="ticketDescription" rows="4" required maxlength="4000"></textarea>
+
+                        <label for="ticketAttachments">پیوست (اختیاری، حداکثر ۱۰ مگابایت برای هر فایل)</label>
+                        <input type="file" id="ticketAttachments" name="attachments" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx,.xls,.xlsx">
                     
                         <div class="modal-buttons">
                             <button type="submit" class="btn-confirm">تایید</button>
@@ -1440,6 +1433,7 @@
     </div>    
 
         <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
+<script>window.__modernTicketing = true;</script>
 <script src="{{ url_for('static', path='js/admin.js') }}"></script>
 <script src="{{ url_for('static', path='js/ticketing.js') }}"></script>
 <script src="{{ url_for('static', path='js/notification-system.js') }}"></script>
