@@ -646,88 +646,10 @@
                                 <p>وضعیت درخواست‌ها و پاسخ‌های پشتیبانی را یکجا ببینید.</p>
                             </div>
                             <button type="button" class="support-launcher-action" onclick="openUserSupportCenter()">
-                                ورود به مرکز پشتیبانی <span aria-hidden="true">←</span>
+                                مشاهده جزئیات پشتیبانی <span aria-hidden="true">←</span>
                             </button>
                         </section>
 
-                        <div class="panel-card ticket-status-card user-ticketing-legacy">
-                            <div class="ticket-card-head">
-                                <div>
-                                    <span class="ticket-panel-kicker">مرکز پشتیبانی</span>
-                                    <h3>وضعیت تیکت‌ها</h3>
-                                    <p>پیگیری درخواست‌ها و پاسخ‌های شما</p>
-                                </div>
-                            </div>
-                            <div class="ticket-metrics">
-                                <div class="ticket-metric ticket-metric--accent"><span>کل مکالمه‌ها</span><strong id="userTicketTotal">۰</strong></div>
-                                <div class="ticket-metric"><span>در انتظار پاسخ</span><strong id="userTicketPending">۰</strong></div>
-                            </div>
-                            <div class="ticket-toolbar" role="search">
-                                <label class="ticket-search" for="userTicketSearch"><span class="sr-only">جستجو در تیکت‌ها</span><input type="search" id="userTicketSearch" placeholder="جستجو در تیکت‌ها…" autocomplete="off"></label>
-                                <select id="userTicketFilter" class="ticket-filter" aria-label="فیلتر وضعیت تیکت">
-                                    <option value="all">همه وضعیت‌ها</option>
-                                    <option value="new">جدید</option>
-                                    <option value="open">باز</option>
-                                    <option value="in_progress">در حال بررسی</option>
-                                    <option value="waiting_for_user">در انتظار کاربر</option>
-                                    <option value="waiting_for_support">در انتظار پشتیبانی</option>
-                                    <option value="resolved">حل‌شده</option>
-                                    <option value="closed">بسته‌شده</option>
-                                </select>
-                            </div>
-                            <div id="userTicketList" class="ticket-user-list" aria-live="polite"><div class="ticket-loading-state">در حال دریافت تیکت‌ها…</div></div>
-                            <div id="userTicketPagination" class="ticket-pagination"></div>
-                            <div class="Jadvale-ticket ticket-legacy-fallback">
-                                <table id="ticket-status-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="radif-ticket">ردیف</th>
-                                            <th class="noe-ticket">عنوان درخواست</th>
-                                            <th class="tarikh-ticket">تاریخ درخواست</th>
-                                            <th class="daryaft-ticket">دریافت کننده</th>
-                                            <th class="vazeiyat-ticket">وضعیت</th>
-                                            <th class="tozihat-ticket">توضیحات</th>
-                                            <th class="virayesh-ticket">ویرایش</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for ticket in ticket_records %}
-                                        <tr>
-                                            <td class="radif-ticket">{{ ticket.index }}</td>
-                                            <td class="noe-ticket">{{ ticket.ticket_title }}</td>
-                                            <td class="tarikh-ticket">{{ ticket.ticket_date }}</td>
-                                            <td class="daryaft-ticket">{{ ticket.target_username }}</td>
-                                            <td class="vazeiyat-ticket">
-                                                <span class="ticket-status">{{ ticket.ticket_status }}</span>
-                                            </td>
-                                            <td class="tozihat-ticket">{{ ticket.ticket_description }}</td>
-                                            <td class="virayesh-ticket">
-                                                <button class="trash-btn" onclick="showConfirmDialog('{{ ticket.ticket_id }}')">
-                                                    <img src="/static/images/trash.png" alt="حذف">
-                                                    <span class="tooltip-text-table-del">حذف</span>
-                                                </button>
-                                                {% if ticket.ticket_status == 'ارسال شده' %}
-                                                    <button class="edit-btn" 
-                                                            onclick="openEditTicketModal(this)" 
-                                                            data-id="{{ ticket.ticket_id }}"
-                                                            data-receiver="{{ ticket.target_username }}" 
-                                                            data-title="{{ ticket.ticket_title }}" 
-                                                            data-description="{{ ticket.ticket_description }}">
-                                                        <img src="/static/images/writing.png" alt="ویرایش">
-                                                        <span class="tooltip-text-table-edit">ویرایش</span>
-                                                    </button>
-                                                {% endif %}
-                                                <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
-                                                    <img src="/static/images/view.png" alt="مشاهده">
-                                                    <span class="tooltip-text-table-view">مشاهده</span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </section>
 
                     <!-- عناصر مخفی برای سازگاری با اسکریپت اصلی -->

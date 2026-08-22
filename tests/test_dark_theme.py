@@ -149,7 +149,6 @@ ADMIN_SURFACES = [
     ".dashboard-quick-card",
     ".profile-dropdown",
     ".profile-panel",
-    ".notifications-panel",
     ".sidebar-top-card",
     ".rightSidebar",
     ".topbar-user",

@@ -1,17 +1,4 @@
-@font-face {
-    font-family: 'Vazir';
-    src: url('/static/fonts/Vazir.woff2') format('woff2'),
-         url('/static/fonts/Vazir.woff') format('woff');
-}
-
-@font-face {
-    font-family: 'Vazir';
-    src: url('/static/fonts/Vazir.woff2') format('woff2'),
-         url('/static/fonts/Vazir.woff') format('woff'),
-         url('/static/fonts/Vazir.ttf') format('truetype');
-}
-
-body {
+/* ==========================================================================\n   ساختار فایل: پایه و توکن‌ها → هدر → سایدبار → مدیریت → جدول‌ها → مدال‌ها → واکنش‌گرا\n   فونت مشترک در vazir.css تعریف می‌شود.\n   ========================================================================== */\n\nbody {
     min-height: 100vh;
     background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 26%),
                 radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.14), transparent 24%),
@@ -511,53 +498,6 @@ html, body {
 .dropdown-item img {
     width: 16px;
     height: 16px;
-}
-
-.notifications-panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 20px;
-    width: 100%;
-    max-width: 340px;
-    background-color: #ffffff;
-    border: 1px solid #e4e7ec;
-    border-radius: 18px;
-    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
-    padding: 16px;
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden;
-    overflow: hidden;
-    transform: translateY(-10px);
-    transition: max-height 0.28s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
-    z-index: 90;
-}
-
-.notifications-panel.open {
-    max-height: 220px;
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.notifications-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.notifications-title {
-    font-family: 'Vazir', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.notifications-panel p {
-    margin: 0;
-    font-family: 'Vazir', sans-serif;
-    font-size: 0.92rem;
-    color: #475569;
 }
 
 .dark-theme body {
@@ -4977,7 +4917,6 @@ margin-left: 15%;
         display: none;
     }
 
-    .notifications-panel,
     .profile-dropdown {
         max-width: calc(100vw - 24px);
         left: 12px;

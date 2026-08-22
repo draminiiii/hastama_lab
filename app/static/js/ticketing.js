@@ -148,9 +148,13 @@
         container.append(files);
     }
 
-    function renderAdminContext(ticket) {
+    function renderAdminContext(response) {
         const container = $('#adminTicketContext'); if (!container) return;
-        container.replaceChildren(); state.admin.detail = ticket;
+        container.replaceChildren();
+        const messages = response.messages || [];
+        const attachments = response.attachments || [];
+        const ticket = response.ticket || response;
+        state.admin.detail = ticket;
         const head = node('header', 'helpdesk-context-head');
         const heading = node('div'); heading.append(node('span', 'ticket-panel-kicker', ticket.ticket_number), node('h3', '', ticket.subject));
         const close = node('button', 'helpdesk-context-close', '×'); close.type = 'button'; close.setAttribute('aria-label', 'بستن جزئیات'); close.onclick = () => { container.replaceChildren(node('div', 'ticket-context-empty', 'یک تیکت را انتخاب کنید')); state.admin.detail = null; };
@@ -164,9 +168,9 @@
         const requester = node('div', 'helpdesk-requester-card'); requester.append(node('strong', '', 'درخواست‌کننده'), node('span', '', ticket.requester_username || '—'), node('small', '', ticket.category_name || 'دسته‌بندی عمومی'));
         container.append(fields, requester);
         const timeline = node('div', 'ticket-workspace-timeline');
-        (ticket.messages || []).forEach(message => appendMessage(timeline, message, true, ticket.attachments || []));
-        if (!ticket.messages?.length) timeline.append(node('div', 'ticket-empty-state', 'هنوز پیامی ثبت نشده است.'));
-        appendUnlinkedAttachments(timeline, ticket.attachments || []);
+        messages.forEach(message => appendMessage(timeline, message, true, attachments));
+        if (!messages.length) timeline.append(node('div', 'ticket-empty-state', 'هنوز پیامی ثبت نشده است.'));
+        appendUnlinkedAttachments(timeline, attachments);
         container.append(timeline);
         const form = document.createElement('form'); form.className = 'ticket-workspace-composer';
         const visibility = document.createElement('select'); visibility.name = 'visibility'; visibility.innerHTML = '<option value="public">پاسخ عمومی</option><option value="internal">یادداشت داخلی</option>';
@@ -259,8 +263,12 @@
         catch (error) { errorState(container, 'دریافت درخواست‌ها ناموفق بود. دوباره تلاش کنید.'); const retry = node('button', 'user-support-empty-action', 'تلاش دوباره'); retry.onclick = () => loadUser(current.page); container.append(retry); }
     }
 
-    function renderUserDetail(detail) {
+    function renderUserDetail(response) {
         const container = $('#userSupportDetail'); if (!container) return;
+        const detail = response.ticket || response;
+        const messages = response.messages || detail.messages || [];
+        const attachments = response.attachments || detail.attachments || [];
+        const events = response.events || detail.events || [];
         state.user.detail = detail; window.__ticketingActiveDetail = detail; container.replaceChildren();
         const status = ticketStatus(detail), priority = priorityKind(detail.priority);
         const head = node('header', 'user-support-detail-head');
@@ -273,18 +281,18 @@
         [['new','ثبت درخواست'], ['in_progress','بررسی پشتیبانی'], ['waiting_for_user','پاسخ شما'], ['resolved','حل‌شده']].forEach(([value, label], index) => { const step = node('span', index === stageIndex ? 'is-current' : (index < stageIndex ? 'is-done' : ''), label); progress.append(step); });
         container.append(progress);
         const timeline = node('div', 'user-support-timeline');
-        (detail.messages || []).forEach(message => {
+        messages.forEach(message => {
             const isMine = message.author_username === detail.requester_username;
             const item = node('article', `user-support-message ${message.visibility === 'internal' ? 'is-system' : (isMine ? 'is-mine' : 'is-support')}`);
             const messageHead = node('header', 'user-support-message-head'); messageHead.append(node('strong', '', message.visibility === 'internal' ? 'رویداد سیستم' : (isMine ? 'شما' : 'پشتیبانی')), node('time', '', formatDate(message.created_at)));
             item.append(messageHead, node('p', 'user-support-message-body', message.body));
-            const related = (detail.attachments || []).filter(file => Number(file.message_id) === Number(message.id));
+            const related = attachments.filter(file => Number(file.message_id) === Number(message.id));
             if (related.length) { const files = node('div', 'user-support-attachments'); related.forEach(file => { const link = node('a', '', file.original_name || 'پیوست'); link.href = file.download_url; link.target = '_blank'; link.rel = 'noopener'; files.append(link); }); item.append(files); }
             timeline.append(item);
         });
-        (detail.events || []).filter(event => event.event_type !== 'created').forEach(event => timeline.append(node('div', 'user-support-event', `${USER_EVENT_LABELS[event.event_type] || 'رویداد درخواست'} · ${formatDate(event.created_at)}`)));
+        events.filter(event => event.event_type !== 'created').forEach(event => timeline.append(node('div', 'user-support-event', `${USER_EVENT_LABELS[event.event_type] || 'رویداد درخواست'} · ${formatDate(event.created_at)}`)));
         if (!timeline.children.length) timeline.append(node('div', 'user-support-empty-list', 'هنوز پیامی در این درخواست وجود ندارد.'));
-        appendUnlinkedAttachments(timeline, detail.attachments || []); container.append(timeline);
+        appendUnlinkedAttachments(timeline, attachments); container.append(timeline);
         const actions = node('div', 'user-support-detail-actions');
         if (status === 'resolved') { const reopen = node('button', 'user-support-secondary-action', 'بازگشایی درخواست'); reopen.onclick = () => updateUserTicket(detail.id, { status: 'open' }); actions.append(reopen); }
         if (!['resolved','closed'].includes(status)) { const resolve = node('button', 'user-support-secondary-action', 'اعلام حل‌شدن مشکل'); resolve.onclick = () => updateUserTicket(detail.id, { status: 'resolved' }); actions.append(resolve); }
@@ -296,7 +304,13 @@
             const fileLabel = node('label', 'user-support-file-button', 'افزودن پیوست'); fileLabel.append(files);
             const statusText = node('small', 'user-support-upload-status', ''); const submit = node('button', 'user-support-send', 'ارسال پاسخ'); submit.type = 'submit';
             form.append(textarea, fileLabel, statusText, submit); container.append(form);
-            form.onsubmit = async event => { event.preventDefault(); if (!text(textarea.value)) return; submit.disabled = true; try { const updated = await api(`/api/tickets/${detail.id}/messages`, { method: 'POST', body: { body: textarea.value, visibility: 'public' } }); const last = (updated.messages || []).at(-1); if (files.files.length && last) await uploadReplyAttachments(files, detail.id, last.id, statusText); renderUserDetail(await api(`/api/tickets/${detail.id}`)); await loadUser(state.user.page); } catch (error) { announce(error.message, true); } finally { submit.disabled = false; } };
+            form.onsubmit = async event => { event.preventDefault(); if (!text(textarea.value)) return; submit.disabled = true; try {            await api(`/api/tickets/${detail.id}/messages`, { method: 'POST', body: { body: textarea.value, visibility: 'public' } });
+            if (files.files.length) {
+                const refreshed = await api(`/api/tickets/${detail.id}`);
+                const lastMsg = (refreshed.messages || []).at(-1);
+                if (lastMsg) await uploadReplyAttachments(files, detail.id, lastMsg.id, statusText);
+            }
+            renderUserDetail(await api(`/api/tickets/${detail.id}`)); await loadUser(state.user.page); } catch (error) { announce(error.message, true); } finally { submit.disabled = false; } };
         }
         requestAnimationFrame(() => { const timeline = container.querySelector('.user-support-timeline'); if (timeline) timeline.scrollTop = timeline.scrollHeight; });
     }

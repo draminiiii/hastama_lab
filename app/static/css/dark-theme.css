@@ -181,7 +181,6 @@ body.dark-mode .mobile-menu-toggle {
 
 body.dark-mode .topbar-user-name,
 body.dark-mode .topbar-clock-time,
-body.dark-mode .notifications-title,
 body.dark-mode .sidebar-top-card-title,
 body.dark-mode .profile-panel-title {
     color: var(--dk-text);
@@ -192,7 +191,6 @@ body.dark-mode .topbar-clock-date,
 body.dark-mode .chevron-icon,
 body.dark-mode .sidebar-top-card-sub,
 body.dark-mode .dropdown-section-title,
-body.dark-mode .notifications-panel p,
 body.dark-mode .profile-panel-subtitle {
     color: var(--dk-text-2);
 }
@@ -207,7 +205,6 @@ body.dark-mode .profile-panel-avatar {
 
 /* منوی پروفایل و اعلان‌ها */
 body.dark-mode .profile-dropdown,
-body.dark-mode .notifications-panel,
 body.dark-mode .status-dropdown {
     background: var(--dk-surface);
     border-color: var(--dk-border);

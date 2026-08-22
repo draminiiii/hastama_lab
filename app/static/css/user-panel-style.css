@@ -1,14 +1,7 @@
-/* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان */
-/* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان */
-/* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان *//* افزودن فونت یکان */
-
-@font-face {
-    font-family: 'Vazir';
-    src: url('/static/fonts/Vazir.woff2') format('woff2'),
-         url('/static/fonts/Vazir.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+/* ==========================================================================
+   ساختار فایل: پایه و توکن‌ها → هدر → سایدبار → داشبورد → مدال‌ها → واکنش‌گرا
+   فونت مشترک در vazir.css تعریف می‌شود و در قالب‌ها به‌صورت مرکزی بارگذاری شده است.
+   ========================================================================== */
 
 *,
 *::before,
@@ -4854,5 +4847,546 @@ body.dark-mode .topbar-user.menu-open .avatar-menu {
     .sidebar-right:hover {
         width: min(88vw, 310px);
         max-width: min(88vw, 310px);
+    }
+}
+
+/* Viewport-fit dashboard: keep the desktop overview inside the visible screen. */
+@media screen and (min-width: 1200px) {
+    .user-panel-page .app-body {
+        min-height: 0;
+        height: calc(90dvh - 82px);
+    }
+
+    .user-panel-page .sidebar-right {
+        min-height: 0;
+        height: calc(90dvh - 102px);
+    }
+
+    .user-panel-page .dashboard-main {
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        gap: 8px;
+        padding-bottom: 12px;
+    }
+
+    /* ردیف خوش‌آمدگویی کوتاه‌تر است تا تقویم و رویداد امروز فضای بیشتری داشته باشند. */
+    .user-panel-page .top-cards-row {
+        flex: 0.72 1 0;
+        min-height: 0;
+        gap: 12px;
+        margin-bottom: 0;
+    }
+
+    .user-panel-page .greet-card,
+    .user-panel-page .clock-card,
+    .user-panel-page .top-notif-card,
+    .user-panel-page .attendance-action-card {
+        min-height: 0;
+        padding: 12px 16px;
+        gap: 8px;
+    }
+
+    .user-panel-page .greet-card {
+        justify-content: center;
+    }
+
+    .user-panel-page .attendance-action-times {
+        margin: 8px 0;
+    }
+
+    /* کارت حضور امروز: چیدمان مستقل و فشرده برای جلوگیری از خروج دکمه‌ها */
+    .user-panel-page .attendance-action-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+        min-height: 0;
+        padding: 12px 14px;
+        overflow: hidden;
+        border: 1px solid rgba(15, 159, 120, .18);
+        border-radius: 18px;
+        background: linear-gradient(145deg, #f8fffc 0%, #ffffff 68%);
+    }
+
+    .user-panel-page .attendance-action-card::before {
+        content: '';
+        position: absolute;
+        inset-block: 14px;
+        inset-inline-start: 0;
+        width: 3px;
+        border-radius: 0 4px 4px 0;
+        background: linear-gradient(180deg, #00b894, #38b6ff);
+    }
+
+    .user-panel-page .attendance-action-header {
+        min-width: 0;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .user-panel-page .attendance-action-header > div {
+        min-width: 0;
+    }
+
+    .user-panel-page .attendance-action-header .panel-kicker {
+        display: block;
+        font-size: 10px;
+        line-height: 1.4;
+    }
+
+    .user-panel-page .attendance-action-header .panel-title {
+        margin: 2px 0 0;
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-panel-page .attendance-action-status {
+        flex: 0 1 auto;
+        max-width: 48%;
+        padding: 4px 7px;
+        border: 1px solid rgba(56, 182, 255, .16);
+        border-radius: 999px;
+        background: rgba(56, 182, 255, .08);
+        color: #28728e;
+        font-size: 9px;
+        line-height: 1.4;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-panel-page .attendance-action-times {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        width: 100%;
+        margin: 7px 0;
+    }
+
+    .user-panel-page .attendance-action-times > div {
+        min-width: 0;
+        gap: 2px;
+        padding: 6px 8px;
+        border: 1px solid rgba(13, 59, 78, .08);
+        border-radius: 10px;
+        background: rgba(13, 59, 78, .035);
+    }
+
+    .user-panel-page .attendance-action-times span {
+        font-size: 9px;
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+    .user-panel-page .attendance-action-times strong {
+        font-size: 15px;
+        line-height: 1.3;
+        direction: ltr;
+        text-align: right;
+    }
+
+    .user-panel-page .attendance-action-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .user-panel-page .attendance-action-btn {
+        min-width: 0;
+        width: 100%;
+        min-height: 32px;
+        height: 32px;
+        padding: 5px 6px;
+        border: 0;
+        border-radius: 9px;
+        font-size: 10px;
+        line-height: 1.3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: transform .18s ease, filter .18s ease, opacity .18s ease;
+    }
+
+    .user-panel-page .attendance-action-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        filter: brightness(.96);
+    }
+
+    .user-panel-page .attendance-action-btn svg {
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+    }
+
+    .user-panel-page .attendance-action-btn--in {
+        background: #0f9f78;
+    }
+
+    .user-panel-page .attendance-action-btn--out {
+        background: #d97706;
+    }
+
+    .user-panel-page .attendance-action-btn:disabled {
+        filter: none;
+    }
+
+    .user-panel-page .stats-row {
+        flex: 1 1 0;
+        gap: 12px;
+        min-height: 0;
+    }
+
+    .user-panel-page .stat-card,
+    .user-panel-page .stats-row .panel-card {
+        min-height: 0;
+        height: 100%;
+        padding: 10px 12px;
+        gap: 4px;
+        overflow: hidden;
+    }
+
+    .user-panel-page .stat-icon-circle,
+    .user-panel-page .leave-icon-circle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .user-panel-page .pass-list {
+        gap: 3px;
+        margin-top: 2px;
+    }
+
+    .user-panel-page .pass-item {
+        padding: 4px 7px;
+        gap: 1px;
+        font-size: 11px;
+    }
+
+    .user-panel-page .leave-row {
+        padding: 6px 8px;
+        margin-bottom: 5px;
+        gap: 8px;
+    }
+
+    .user-panel-page .new-leave-btn {
+        padding: 8px;
+        border-radius: 10px;
+        font-size: 12px;
+    }
+
+    .user-panel-page .calendar-row {
+        flex: 1.32 1 0;
+        min-height: 0;
+        margin-top: 0;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .user-panel-page .calendar-row > .stat-card,
+    .user-panel-page .calendar-row > .panel-card {
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .user-panel-page .timeline-ring-card {
+        gap: 6px;
+    }
+
+    .user-panel-page .timeline-ring-body {
+        flex: 1 1 auto;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .user-panel-page .timeline-ring-wrap,
+    .user-panel-page .timeline-ring-wrap .progress-ring {
+        width: clamp(84px, 11dvh, 112px);
+        height: clamp(84px, 11dvh, 112px);
+    }
+
+    .user-panel-page .timeline-ring-details {
+        gap: 11px;
+    }
+
+    .user-panel-page .timeline-ring-item {
+        padding: 5px 7px;
+        font-size: 11px;
+    }
+
+    .user-panel-page .calendar-card {
+        min-height: 0;
+    }
+
+    .user-panel-page .calendar-card-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+    }
+
+    .user-panel-page .calendar-container {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        width: 100%;
+        min-height: 0;
+        height: auto;
+    }
+
+    .user-panel-page .calendar-grid {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+        overflow: hidden;
+        grid-auto-rows: minmax(0, 1fr);
+        gap: 2px;
+        padding: 4px;
+    }
+
+    .user-panel-page .calendar-header {
+        flex: 0 0 auto;
+        padding: 4px;
+    }
+
+    .user-panel-page .calendar-header .prev-month,
+    .user-panel-page .calendar-header .next-month {
+        width: 27px;
+        height: 27px;
+        padding: 4px;
+        margin-inline: 4px;
+    }
+
+    .user-panel-page .calendar-header .month-year {
+        font-size: 13px;
+    }
+
+    .user-panel-page .calendar-grid .day-name {
+        min-height: 0;
+        padding: 1px;
+        font-size: 9px;
+    }
+
+    .user-panel-page .calendar-grid .day {
+        width: auto;
+        height: auto;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        line-height: 1;
+        font-size: 11px;
+    }
+
+    .user-panel-page .user-support-launcher {
+        min-height: 0;
+        padding: 14px;
+    }
+
+    body.dark-mode .user-panel-page .attendance-action-card {
+        border-color: rgba(0, 184, 148, .28);
+        background: linear-gradient(145deg, #173b39 0%, #182233 72%);
+    }
+
+    body.dark-mode .user-panel-page .attendance-action-status {
+        border-color: rgba(56, 182, 255, .25);
+        background: rgba(56, 182, 255, .12);
+        color: #8fd9f5;
+    }
+
+    body.dark-mode .user-panel-page .attendance-action-times > div {
+        border-color: rgba(255, 255, 255, .1);
+        background: rgba(255, 255, 255, .06);
+    }
+
+    /* تقویم: سطح‌بندی ساده و نمایش کامل ماه در فضای ردیف سوم */
+    .user-panel-page .calendar-card {
+        padding: 10px 12px;
+        border: 1px solid rgba(56, 182, 255, .18);
+        border-radius: 18px;
+        background: linear-gradient(145deg, #f7fcff 0%, #ffffff 72%);
+    }
+
+    .user-panel-page .calendar-card .panel-title-row {
+        flex: 0 0 auto;
+        margin: 0 2px 7px;
+    }
+
+    .user-panel-page .calendar-card .panel-title {
+        margin: 0;
+        font-size: 13px;
+        color: #0d3b4e;
+    }
+
+    .user-panel-page .calendar-card-body {
+        padding: 4px;
+        border: 1px solid rgba(13, 59, 78, .08);
+        border-radius: 14px;
+        background: #f4fafd;
+    }
+
+    .user-panel-page .calendar-container {
+        border: 1px solid rgba(56, 182, 255, .14);
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 5px 16px rgba(13, 59, 78, .06);
+        overflow: hidden;
+    }
+
+    .user-panel-page .calendar-header {
+        min-height: 34px;
+        padding: 3px 7px;
+        border-radius: 11px 11px 0 0;
+        background: linear-gradient(135deg, #0d3b4e, #16718b);
+        text-shadow: none;
+    }
+
+    .user-panel-page .calendar-header .prev-month,
+    .user-panel-page .calendar-header .next-month {
+        display: grid;
+        place-items: center;
+        width: 25px;
+        height: 25px;
+        margin-inline: 2px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, .32);
+        background: rgba(255, 255, 255, .12);
+        box-shadow: none;
+        font-size: 14px;
+        transition: background .18s ease, transform .18s ease;
+    }
+
+    .user-panel-page .calendar-header .prev-month:hover,
+    .user-panel-page .calendar-header .next-month:hover {
+        background: rgba(255, 255, 255, .24);
+        transform: translateY(-1px);
+    }
+
+    .user-panel-page .calendar-header .month-year {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .1px;
+    }
+
+    .user-panel-page .calendar-grid {
+        display: grid;
+        grid-template-rows: repeat(7, minmax(0, 1fr));
+        align-items: center;
+        justify-items: center;
+        background: #fbfdfe;
+        border-radius: 0 0 11px 11px;
+    }
+
+    .user-panel-page .calendar-grid .day-name {
+        width: 100%;
+        color: #78909c;
+        background: transparent;
+        font-size: 8px;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .user-panel-page .calendar-grid .day {
+        width: clamp(20px, 2.2dvh, 27px);
+        aspect-ratio: 1;
+        height: auto;
+        border: 1px solid transparent;
+        color: #315566;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
+        transition: background .16s ease, color .16s ease, transform .16s ease;
+    }
+
+    .user-panel-page .calendar-grid .day:hover {
+        background: #e7f5fb;
+        color: #0d3b4e;
+        transform: scale(1.06);
+    }
+
+    .user-panel-page .calendar-grid .day.red-day {
+        color: #d05b62;
+    }
+
+    .user-panel-page .calendar-grid .day.today {
+        border-color: #00a886;
+        background: #00b894;
+        color: #ffffff;
+        box-shadow: 0 3px 8px rgba(0, 184, 148, .25);
+    }
+
+    .user-panel-page .calendar-grid .day.holiday {
+        border-color: rgba(208, 91, 98, .18);
+        background: #fff0f0;
+        color: #c04b55;
+    }
+
+    body.dark-mode .user-panel-page .calendar-card {
+        border-color: rgba(56, 182, 255, .28);
+        background: linear-gradient(145deg, #182d3b 0%, #182233 72%);
+    }
+
+    body.dark-mode .user-panel-page .calendar-card .panel-title {
+        color: #e8edf5;
+    }
+
+    body.dark-mode .user-panel-page .calendar-card-body {
+        border-color: rgba(255, 255, 255, .1);
+        background: #131c2d;
+    }
+
+    body.dark-mode .user-panel-page .calendar-container {
+        border-color: rgba(255, 255, 255, .1);
+        background: #182233;
+        box-shadow: none;
+    }
+
+    body.dark-mode .user-panel-page .calendar-grid {
+        background: #1b293a;
+    }
+
+    body.dark-mode .user-panel-page .calendar-grid .day-name {
+        color: #9fadc2;
+    }
+
+    body.dark-mode .user-panel-page .calendar-grid .day {
+        color: #d9e3ee;
+    }
+
+    body.dark-mode .user-panel-page .calendar-grid .day:hover {
+        background: #263b50;
+        color: #ffffff;
+    }
+
+    body.dark-mode .user-panel-page .calendar-grid .day.red-day {
+        color: #fca5a5;
+    }
+
+    body.dark-mode .user-panel-page .calendar-grid .day.holiday {
+        border-color: rgba(248, 113, 113, .28);
+        background: rgba(248, 113, 113, .2);
+        color: #fca5a5;
+    }
+}
+
+/* در بازه‌ی لپ‌تاپ نیز ردیف تقویم فقط سه کارت دارد. */
+@media screen and (min-width: 861px) and (max-width: 1199px) {
+    .user-panel-page .calendar-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .user-panel-page .calendar-row > * {
+        min-width: 0;
     }
 }

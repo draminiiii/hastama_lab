@@ -18,6 +18,19 @@ class UserPanelLayoutTests(unittest.TestCase):
         self.assertIn('رویداد امروز', calendar_section)
         self.assertNotIn('رویداد امروز', stats_section)
 
+    def test_support_dashboard_has_one_launcher_and_popup_center(self):
+        template_path = Path(__file__).resolve().parents[1] / "app" / "templates" / "user-panel.html"
+        template = template_path.read_text(encoding="utf-8")
+
+        calendar_start = template.index('<section class="calendar-row">')
+        calendar_end = template.index('</section>', calendar_start + 1)
+        calendar_section = template[calendar_start:calendar_end]
+
+        self.assertEqual(calendar_section.count('user-support-launcher'), 1)
+        self.assertNotIn('class="panel-card ticket-status-card user-ticketing-legacy"', calendar_section)
+        self.assertIn('id="userSupportCenter"', template)
+        self.assertIn('class="user-support-dialog"', template)
+
     def test_profile_panel_markup_exists(self):
         template_path = Path(__file__).resolve().parents[1] / "app" / "templates" / "user-panel.html"
         template = template_path.read_text(encoding="utf-8")
