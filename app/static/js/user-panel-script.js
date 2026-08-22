@@ -1662,9 +1662,12 @@ function loadUsersForEdit(selectedReceiver) {
     if (!receiverSelect) return Promise.resolve();
 
     return fetch('/get_receivers')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('خطا در دریافت گیرندگان');
+            return response.json();
+        })
         .then(data => {
-            if (!response.ok || !Array.isArray(data)) {
+            if (!Array.isArray(data)) {
                 throw new Error(data.message || 'خطا در دریافت گیرندگان');
             }
 

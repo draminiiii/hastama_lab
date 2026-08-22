@@ -1096,12 +1096,11 @@
                                     <img src="/static/images/writing.png" alt="ویرایش">
                                     <span class="tooltip-text-table-edit">ویرایش</span>
                                 </button>
-                                {% else %}
+                                {% endif %}
                                 <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
                                     <img src="/static/images/view.png" alt="مشاهده">
                                     <span class="tooltip-text-table-view">مشاهده</span>
                                 </button>
-                                {% endif %}
                             </div>
                         </div>
                         {% endfor %}
@@ -1142,12 +1141,10 @@
                                         <span class="tooltip-text-table-edit">ویرایش</span>
                                     </button>
                                 {% endif %}
-                                {% if ticket.ticket_status != 'ارسال شده' %}
                                 <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
                                     <img src="/static/images/view.png" alt="مشاهده">
                                     <span class="tooltip-text-table-view">مشاهده</span>
                                 </button>
-                                {% endif %}
                             </td>
                             <td class="tozihat-ticket">{{ ticket.ticket_description }}</td>
                             <td class="vazeiyat-ticket">
