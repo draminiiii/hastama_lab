@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/tables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/ticketing.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/user-ticketing.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/notification-system.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', path='css/vazir.css') }}">
@@ -17,7 +18,7 @@
     <script src="{{ url_for('static', path='js/theme.js') }}"></script>
 </head>
 
-    <body>
+    <body class="user-panel-page">
 
         <div class="app-shell">
 
@@ -637,7 +638,19 @@
                             </div>
                         </div>
 
-                        <div class="panel-card ticket-status-card">
+                        <section class="panel-card user-support-launcher" aria-labelledby="supportLauncherTitle">
+                            <div class="support-launcher-icon" aria-hidden="true">?</div>
+                            <div class="support-launcher-copy">
+                                <span class="ticket-panel-kicker">پشتیبانی هستما</span>
+                                <h3 id="supportLauncherTitle">مرکز درخواست‌های من</h3>
+                                <p>وضعیت درخواست‌ها و پاسخ‌های پشتیبانی را یکجا ببینید.</p>
+                            </div>
+                            <button type="button" class="support-launcher-action" onclick="openUserSupportCenter()">
+                                ورود به مرکز پشتیبانی <span aria-hidden="true">←</span>
+                            </button>
+                        </section>
+
+                        <div class="panel-card ticket-status-card user-ticketing-legacy">
                             <div class="ticket-card-head">
                                 <div>
                                     <span class="ticket-panel-kicker">مرکز پشتیبانی</span>
@@ -926,39 +939,49 @@
             </div>
         </div>
 
-        <div id="ticketModal" class="morakhaci-sabt" style="display: none;">
-            <div  class="modal" id="ticketModalContentmobile">
-                <div class="modal-content">
-                    <img src="/static/images/close.png" alt="بستن" class="close" onclick="closeTicketModal()">
-                    <h2>ثبت تیکت</h2>
-                    <form id="ticketForm" class="ticket-popup-Req">
-                        <label for="ticketReceiver">دریافت کننده</label>
-                        <select id="ticketReceiver" name="ticketReceiver" required>
-                            <option value="" disabled selected>انتخاب کنید</option>
-                        </select>
-                    
-                        <label for="ticketTitle">عنوان تیکت</label>
-                        <input type="text" id="ticketCreateTitle" name="ticketTitle" required maxlength="180" autocomplete="off" autocapitalize="off" spellcheck="false">
-
-                        <label for="ticketCategory">دسته‌بندی</label>
-                        <select id="ticketCategory" name="category_id"><option value="">عمومی</option></select>
-
-                        <label for="ticketPriority">اولویت</label>
-                        <select id="ticketPriority" name="priority"><option value="normal">عادی</option><option value="low">کم</option><option value="high">زیاد</option><option value="urgent">فوری</option></select>
-                    
-                        <label for="ticketDescription">توضیحات</label>
-                        <textarea id="ticketDescription" name="ticketDescription" rows="4" required maxlength="4000"></textarea>
-
-                        <label for="ticketAttachments">پیوست (اختیاری، حداکثر ۱۰ مگابایت برای هر فایل)</label>
-                        <input type="file" id="ticketAttachments" name="attachments" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx,.xls,.xlsx">
-                    
-                        <div class="modal-buttons">
-                            <button type="submit" class="btn-confirm">تایید</button>
-                            <button type="button" class="btn-cancel" onclick="closeTicketModal()">انصراف</button>
-                        </div>
-                    </form>
+        <div id="userSupportCenter" class="user-support-center" hidden>
+            <div class="user-support-backdrop" onclick="closeUserSupportCenter()"></div>
+            <section class="user-support-dialog" role="dialog" aria-modal="true" aria-labelledby="userSupportTitle">
+                <header class="user-support-header">
+                    <div class="user-support-heading"><button type="button" class="user-support-back" onclick="closeUserSupportCenter()" aria-label="بازگشت">→</button><div><span class="ticket-panel-kicker">فضای شخصی پشتیبانی</span><h2 id="userSupportTitle">مرکز پشتیبانی من</h2><p>درخواست‌ها، پاسخ‌ها و پیگیری‌های شما</p></div></div>
+                    <div class="user-support-header-actions"><button type="button" class="user-support-refresh" onclick="window.TicketingWorkspace && window.TicketingWorkspace.loadUser(1)" aria-label="تازه‌سازی">↻</button><button type="button" class="user-support-new" onclick="openTicketModal()">+ درخواست جدید</button><button type="button" class="user-support-close" onclick="closeUserSupportCenter()" aria-label="بستن مرکز پشتیبانی">×</button></div>
+                </header>
+                <div class="user-support-summary" aria-label="خلاصه وضعیت تیکت‌ها">
+                    <button type="button" data-user-view="" class="is-active"><strong id="userSupportAllCount">۰</strong><span>همه درخواست‌ها</span></button>
+                    <button type="button" data-user-view="open"><strong id="userSupportOpenCount">۰</strong><span>در حال پیگیری</span></button>
+                    <button type="button" data-user-view="waiting_for_user"><strong id="userSupportWaitingCount">۰</strong><span>منتظر پاسخ من</span></button>
+                    <button type="button" data-user-view="resolved"><strong id="userSupportResolvedCount">۰</strong><span>حل‌شده</span></button>
                 </div>
-            </div>
+                <div class="user-support-layout">
+                    <aside class="user-support-nav" aria-label="فیلتر درخواست‌ها"><div class="user-support-nav-title">درخواست‌های من</div><button type="button" data-user-view="" class="is-active">همه درخواست‌ها <span>›</span></button><button type="button" data-user-view="new">تازه ثبت‌شده <span>›</span></button><button type="button" data-user-view="in_progress">در حال بررسی <span>›</span></button><button type="button" data-user-view="waiting_for_user">نیازمند پاسخ من <span>›</span></button><button type="button" data-user-view="waiting_for_support">در انتظار پشتیبانی <span>›</span></button><button type="button" data-user-view="resolved">حل‌شده <span>›</span></button><button type="button" data-user-view="closed">بسته‌شده <span>›</span></button><div class="user-support-help"><strong>راهنما</strong><span>پاسخ‌های جدید در همین مرکز نمایش داده می‌شوند.</span></div></aside>
+                    <section class="user-support-list-pane" aria-label="فهرست درخواست‌های پشتیبانی"><div class="user-support-list-head"><div><span class="user-support-eyebrow">فهرست درخواست‌ها</span><h3>پیگیری‌های اخیر</h3></div><label class="user-support-search"><span class="sr-only">جست‌وجوی درخواست</span><input id="userSupportSearch" type="search" placeholder="شماره یا موضوع را جست‌وجو کنید…" autocomplete="off"></label></div><div id="userSupportTicketList" class="user-support-ticket-list" aria-live="polite"><div class="user-support-skeleton"></div><div class="user-support-skeleton"></div></div><div id="userSupportPagination" class="user-support-pagination"></div></section>
+                    <section id="userSupportDetail" class="user-support-detail" aria-label="جزئیات درخواست"><div class="user-support-detail-empty"><div class="user-support-empty-mark">✦</div><h3>یک درخواست را انتخاب کنید</h3><p>آخرین پاسخ و جزئیات درخواست انتخاب‌شده اینجا نمایش داده می‌شود.</p></div></section>
+                </div>
+                <section class="user-support-activity"><div><span class="user-support-eyebrow">آخرین فعالیت</span><h3>در جریان درخواست‌ها بمانید</h3></div><p id="userSupportActivityText">برای دیدن آخرین رویدادها، یک درخواست را انتخاب کنید.</p></section>
+            </section>
+        </div>
+
+        <div id="ticketModal" class="user-ticket-create" hidden>
+            <div class="user-ticket-create-backdrop" onclick="closeTicketModal()"></div>
+            <section class="user-ticket-create-dialog" role="dialog" aria-modal="true" aria-labelledby="ticketCreateHeading">
+                <header class="user-ticket-create-head">
+                    <div><span class="ticket-panel-kicker">درخواست جدید</span><h2 id="ticketCreateHeading">چطور می‌توانیم کمک کنیم؟</h2><p>موضوع را کوتاه و روشن بنویسید تا سریع‌تر پاسخ بگیرید.</p></div>
+                    <button type="button" class="user-ticket-close" onclick="closeTicketModal()" aria-label="بستن فرم">×</button>
+                </header>
+                <div class="user-ticket-steps" aria-label="مراحل ثبت درخواست"><span class="is-active">۱ دسته‌بندی</span><span>۲ توضیح مشکل</span><span>۳ ارسال</span></div>
+                <form id="ticketForm" class="user-ticket-create-form">
+                    <div class="user-ticket-form-grid">
+                        <label for="ticketCategory">دسته‌بندی درخواست<select id="ticketCategory" name="category_id"><option value="">عمومی</option></select></label>
+                        <label for="ticketPriority">اهمیت<select id="ticketPriority" name="priority"><option value="normal">عادی</option><option value="low">کم</option><option value="high">زیاد</option><option value="urgent">فوری</option></select></label>
+                        <label for="ticketReceiver">ارسال برای<select id="ticketReceiver" name="ticketReceiver" required><option value="" disabled selected>انتخاب واحد یا همکار</option></select></label>
+                        <label for="ticketCreateTitle" class="span-2">موضوع درخواست<input type="text" id="ticketCreateTitle" name="ticketTitle" required maxlength="180" autocomplete="off" placeholder="مثلاً مشکل در ثبت ورود"></label>
+                        <label for="ticketDescription" class="span-2">شرح درخواست<textarea id="ticketDescription" name="ticketDescription" rows="6" required maxlength="4000" placeholder="چه اتفاقی افتاده و چه کمکی نیاز دارید؟"></textarea><small>حداکثر ۴۰۰۰ نویسه</small></label>
+                        <label for="ticketAttachments" class="span-2 user-attachment-picker">پیوست‌های اختیاری<input type="file" id="ticketAttachments" name="attachments" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx,.xls,.xlsx"><small>هر فایل حداکثر ۱۰ مگابایت</small></label>
+                    </div>
+                    <div class="user-ticket-create-error" id="ticketCreateError" role="alert"></div>
+                    <footer><button type="button" class="user-ticket-cancel" onclick="closeTicketModal()">انصراف</button><button type="submit" class="user-ticket-submit">ثبت درخواست <span aria-hidden="true">←</span></button></footer>
+                </form>
+            </section>
         </div>
 
         <!-- پاپ اپ جدول مرخصی های کاربر -->
@@ -1207,8 +1230,8 @@
         </div>
 
         <!-- پاپ‌آپ مشاهده تیکت ارسال شده -->
-        <div id="popupMoshahedeoverlay" class="MoshahedeOverlay ticket-conversation-overlay" onclick="hideViewDialog()"></div>
-        <div id="MoshahedePopupbox" class="MoshahdePopup ticket-conversation-dialog" role="dialog" aria-modal="true" aria-labelledby="ticketConversationTitle">
+        <div id="popupMoshahedeoverlay" class="MoshahedeOverlay ticket-conversation-overlay user-ticketing-legacy" onclick="hideViewDialog()"></div>
+        <div id="MoshahedePopupbox" class="MoshahdePopup ticket-conversation-dialog user-ticketing-legacy" role="dialog" aria-modal="true" aria-labelledby="ticketConversationTitle">
             <div class="ticket-conversation-head">
                 <div><p id="ticketConversationTitle">گفت‌وگوی تیکت</p><span>تاریخچه مکالمه</span></div>
                 <button type="button" class="ticket-conversation-close" onclick="hideViewDialog()" aria-label="بستن">×</button>

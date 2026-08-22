@@ -275,7 +275,8 @@ class TicketService:
             f"""SELECT t.id,t.requester_username,t.recipient_username,t.subject,t.status,t.priority,
                        t.category_id,c.name category_name,t.assigned_to,t.created_at,t.updated_at,
                        t.last_message_at,t.sla_due_at,
-                       (SELECT TOP 1 tm.body FROM ticket_messages tm WHERE tm.ticket_id=t.id AND tm.visibility='public' ORDER BY tm.created_at DESC,tm.id DESC) last_message_preview
+                       (SELECT TOP 1 tm.body FROM ticket_messages tm WHERE tm.ticket_id=t.id AND tm.visibility='public' ORDER BY tm.created_at DESC,tm.id DESC) last_message_preview,
+                       (SELECT TOP 1 tm.author_username FROM ticket_messages tm WHERE tm.ticket_id=t.id AND tm.visibility='public' ORDER BY tm.created_at DESC,tm.id DESC) last_responder
                 FROM tickets t LEFT JOIN ticket_categories c ON c.id=t.category_id
                 WHERE {where} ORDER BY {order} OFFSET ? ROWS FETCH NEXT ? ROWS ONLY""",
             tuple(params + [(page - 1) * page_size, page_size]),
