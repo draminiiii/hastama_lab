@@ -361,8 +361,8 @@
                         <th class="dapart">بخش فعالیت</th>
                         <th class="saat-kari">ساعت‌های کاری</th>
                         <th class="janeshin">جانشین</th>
-                        <th class="saat-khorooj">ساعت خروج</th>
                         <th class="saat-vorood">ساعت ورود</th>
+                        <th class="saat-khorooj">ساعت خروج</th>
                         <th class="vaziat-hozoor">وضعیت حضور</th>
                         <th class="taghirat">تغییرات</th>
                     </tr>
@@ -375,8 +375,8 @@
                         <td>{{ user.department }}</td>
                         <td>{{ user.work_hours }}</td>
                         <td>{{ user.substitute }}</td>
-                        <td class="attendance-checkout-cell"><span class="attendance-checkout">—</span></td>
                         <td class="attendance-checkin-cell"><span class="attendance-checkin">—</span></td>
+                        <td class="attendance-checkout-cell"><span class="attendance-checkout">—</span></td>
                         <td class="attendance-status-cell"><span class="attendance-status" data-state="loading">در حال دریافت…</span></td>
                         <td>
                             <!-- دکمه حذف با ارسال اطلاعات به روت /admin -->
@@ -1322,54 +1322,54 @@
 
                     <!-- ساعت ورود -->
                     <div class="time-container">
-    <input type="text" id="vorood" name="vorood" placeholder="--:--" onclick="toggleTimePicker('vorood')">
-    <label for="vorood">: ساعت ورود</label>
+                        <input type="text" id="vorood" name="vorood" placeholder="--:--" onclick="toggleTimePicker('vorood')">
+                        <label for="vorood">: ساعت ورود</label>
 
-    <div class="time-picker" id="timepicker-vorood">
-        <div class="time-section">
-            <div class="time-btn" onclick="changeTime('vorood', 'hour', 1)">▲</div>
-            <span id="hour-vorood">00</span>
-            <div class="time-btn" onclick="changeTime('vorood', 'hour', -1)">▼</div>
-        </div>
-        <span class="colon">:</span>
-        <div class="time-section">
-            <div class="time-btn" onclick="changeTime('vorood', 'minute', 1)">▲</div>
-            <span id="minute-vorood">00</span>
-            <div class="time-btn" onclick="changeTime('vorood', 'minute', -1)">▼</div>
-        </div>
-    </div>
-</div>
+                        <div class="time-picker" id="timepicker-vorood">
+                            <div class="time-section">
+                                <div class="time-btn" onclick="changeTime('vorood', 'hour', 1)">▲</div>
+                                <span id="hour-vorood">00</span>
+                                <div class="time-btn" onclick="changeTime('vorood', 'hour', -1)">▼</div>
+                            </div>
+                            <span class="colon">:</span>
+                            <div class="time-section">
+                                <div class="time-btn" onclick="changeTime('vorood', 'minute', 1)">▲</div>
+                                <span id="minute-vorood">00</span>
+                                <div class="time-btn" onclick="changeTime('vorood', 'minute', -1)">▼</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <br><br>
 
                     <!-- ساعت خروج -->
                     <div class="time-container">
-    <input type="text" id="khorooj" name="khorooj" placeholder="--:--" onclick="toggleTimePicker('khorooj')">
-    <label for="khorooj">: ساعت خروج</label>
+                        <input type="text" id="khorooj" name="khorooj" placeholder="--:--" onclick="toggleTimePicker('khorooj')">
+                        <label for="khorooj">: ساعت خروج</label>
 
-    <div class="time-picker" id="timepicker-khorooj">
-        <div class="time-section">
-            <div class="time-btn" onclick="changeTime('khorooj', 'hour', 1)">▲</div>
-            <span id="hour-khorooj">00</span>
-            <div class="time-btn" onclick="changeTime('khorooj', 'hour', -1)">▼</div>
-        </div>
-        <span class="colon">:</span>
-        <div class="time-section">
-            <div class="time-btn" onclick="changeTime('khorooj', 'minute', 1)">▲</div>
-            <span id="minute-khorooj">00</span>
-            <div class="time-btn" onclick="changeTime('khorooj', 'minute', -1)">▼</div>
-        </div>
-    </div>
-</div>
+                        <div class="time-picker" id="timepicker-khorooj">
+                            <div class="time-section">
+                                <div class="time-btn" onclick="changeTime('khorooj', 'hour', 1)">▲</div>
+                                <span id="hour-khorooj">00</span>
+                                <div class="time-btn" onclick="changeTime('khorooj', 'hour', -1)">▼</div>
+                            </div>
+                            <span class="colon">:</span>
+                            <div class="time-section">
+                                <div class="time-btn" onclick="changeTime('khorooj', 'minute', 1)">▲</div>
+                                <span id="minute-khorooj">00</span>
+                                <div class="time-btn" onclick="changeTime('khorooj', 'minute', -1)">▼</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <br><br>
 
-                    
                 </form>
-
-                <button type="button" id="sabt-btn" style="font-family: 'Vazir', sans-serif;">ثبت اطلاعات</button>
+                <button type="button" id="sabt-btn" style="font-family: 'Vazir', sans-serif;">
+                    ثبت اطلاعات
+                </button>
+                </div>
             </div>
-        </div>
         </div>
 
         <!-- پاپ‌آپ ثبت تیکت -->
