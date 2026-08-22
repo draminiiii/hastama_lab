@@ -228,6 +228,8 @@ function toggleBox(boxId, iconContainer) {
         const ticketBox = document.getElementById('ticketBox');
         if (ticketBox) {
             ticketBox.style.display = 'block';
+            // لیست را هنگام ورود به بخش مدیریت تازه‌سازی می‌کنیم.
+            loadTicketRequests();
         }
     }
 
@@ -1066,8 +1068,12 @@ function openEditPopup(username, substitute, work_hours, department) {
     // پاپ‌آپ را نمایش می‌دهیم
     document.getElementById('editPopup').style.display = 'block';
 
+    // نام کاربری قبلی برای پیدا کردن رکورد در زمان تغییر نام حفظ می‌شود
+    document.getElementById('editOriginalUsername').value = username;
+
     // فیلدهای فرم را با اطلاعات کاربر پر می‌کنیم
     document.getElementById('editUsername').value = username;
+    document.getElementById('editPassword').value = '';
 
     // انتخاب مقدار جانشین
     var substituteSelect = document.getElementById('editSubstitute');
@@ -1089,39 +1095,47 @@ function closeEditPopup() {
 }
 
 function updateUser() {
-
-    const username = document.getElementById("editUsername").value;
+    const currentUsername = document.getElementById("editOriginalUsername").value.trim();
+    const username = document.getElementById("editUsername").value.trim();
+    const password = document.getElementById("editPassword").value;
     const substitute = document.getElementById("editSubstitute").value;
     const work_hours = document.getElementById("editWorkHours").value;
     const department = document.getElementById("editDepartment").value;
 
-    fetch("/update_user", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        username: document.getElementById("editUsername").value,
-        substitute: document.getElementById("editSubstitute").value,
-        work_hours: document.getElementById("editWorkHours").value,
-        department: document.getElementById("editDepartment").value
-    })
-})
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("خطا در ثبت اطلاعات");
-        }
+    if (!currentUsername || !username) {
+        alert("نام کاربری را وارد کنید.");
+        return;
+    }
 
-        return response.text();
+    fetch("/update_user", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            current_username: currentUsername,
+            username: username,
+            password: password,
+            substitute: substitute,
+            work_hours: work_hours,
+            department: department
+        })
     })
-    .then(() => {
-        alert("اطلاعات با موفقیت ثبت شد.");
-        location.reload();
-    })
-    .catch(error => {
-        console.error(error);
-        alert("خطا در ثبت اطلاعات.");
-    });
+        .then(async response => {
+            const result = await response.json();
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || "خطا در ثبت اطلاعات");
+            }
+            return result;
+        })
+        .then(() => {
+            alert("اطلاعات با موفقیت ثبت شد.");
+            location.reload();
+        })
+        .catch(error => {
+            console.error(error);
+            alert(error.message || "خطا در ثبت اطلاعات.");
+        });
 
 }
 
@@ -1876,73 +1890,130 @@ function confirmChangesPass(rowId) {
 loadTicketRequests();
 
 function loadTicketRequests() {
-    fetch('/get_ticket_requests_admin') // درخواست به سرور
-        .then(response => response.json())
+    fetch('/get_ticket_requests_admin')
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok || !Array.isArray(data)) {
+                throw new Error(data.error || 'خطا در دریافت تیکت‌ها');
+            }
+            return data;
+        })
         .then(data => {
             const tableBody = document.querySelector('#ticketUsersReportTable tbody');
-            tableBody.innerHTML = ''; // پاک کردن محتوای قبلی
+            if (!tableBody) return;
+            tableBody.replaceChildren();
 
-            // نمایش داده‌ها در جدول
-            data.forEach((ticket) => {
+            const statusClasses = {
+                'ارسال شده': 'status-sent',
+                'در حال پیگیری': 'status-following',
+                'خوانده شده': 'status-read',
+                'پاسخ داده شده': 'status-answered'
+            };
+            const pendingCount = data.filter(ticket => ['ارسال شده', 'در حال پیگیری'].includes(String(ticket.ticket_status || '').trim())).length;
+            const answeredCount = data.filter(ticket => String(ticket.ticket_status || '').trim() === 'پاسخ داده شده').length;
+            const unreadCount = data.filter(ticket => !ticket.is_read).length;
+            const setMetric = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value.toLocaleString('fa-IR');
+            };
+            setMetric('adminTicketTotal', data.length);
+            setMetric('adminTicketPending', pendingCount);
+            setMetric('adminTicketAnswered', answeredCount);
+            setMetric('adminTicketUnread', unreadCount);
+
+            if (!data.length) {
+                const emptyRow = document.createElement('tr');
+                const emptyCell = document.createElement('td');
+                emptyCell.colSpan = 6;
+                emptyCell.className = 'ticket-empty-state';
+                emptyCell.textContent = 'هنوز مکالمه‌ای ثبت نشده است.';
+                emptyRow.appendChild(emptyCell);
+                tableBody.appendChild(emptyRow);
+                return;
+            }
+
+            data.forEach(ticket => {
                 const row = document.createElement('tr');
-                const rowId = ticket.id;
+                row.dataset.ticketId = ticket.id;
+                const rowId = Number(ticket.id);
+                const ticketStatus = String(ticket.ticket_status || 'ارسال شده').trim();
+                const appendTextCell = (value) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value == null ? '—' : String(value);
+                    return cell;
+                };
+                const createAction = (className, image, label, handler) => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = className;
+                    button.setAttribute('aria-label', label);
+                    const icon = document.createElement('img');
+                    icon.src = image;
+                    icon.alt = '';
+                    const tooltip = document.createElement('span');
+                    tooltip.className = 'tooltip-text-table-' + (className === 'trash-btn' ? 'del' : className === 'view-btn' ? 'view' : 'check');
+                    tooltip.textContent = label;
+                    button.append(icon, tooltip);
+                    button.addEventListener('click', handler);
+                    return button;
+                };
 
-                // تعیین کلاس مرتبط با وضعیت
-                let statusClass = '';
-                const ticketStatus = ticket.ticket_status.trim(); // حذف فاصله‌های اضافی
+                const actionsCell = document.createElement('td');
+                const actions = document.createElement('div');
+                actions.className = 'ticket-action-group';
+                actions.append(
+                    createAction('trash-btn', '/static/images/trash.png', 'حذف', () => openConfirmDialogTicket(rowId)),
+                    createAction('view-btn', '/static/images/view.png', 'مشاهده', () => openViewDialog(rowId)),
+                    createAction('check-btn', '/static/images/check-mark.png', 'ذخیره وضعیت', () => confirmTicketStatusChange(rowId))
+                );
+                actionsCell.appendChild(actions);
+                row.appendChild(actionsCell);
 
-                if (ticketStatus === 'ارسال شده') {
-                    statusClass = 'status-sent';
-                } else if (ticketStatus === 'در حال پیگیری') {
-                    statusClass = 'status-following';
-                } else if (ticketStatus === 'خوانده شده') {
-                    statusClass = 'status-read';
-                } else if (ticketStatus === 'پاسخ داده شده') {
-                    statusClass = 'status-answered';
-                }
-
-                // تبدیل تاریخ به اعداد فارسی
-                const persianDate = toPersianDigits(ticket.ticket_date);
-
-                row.innerHTML = `
-                    <td>
-                        <button class="trash-btn" onclick="openConfirmDialogTicket(${rowId})">
-                            <img src="/static/images/trash.png" alt="حذف">
-                            <span class="tooltip-text-table-del">حذف</span>
-                        </button>
-                        <button class="view-btn" onclick="openViewDialog(${rowId})">
-                            <img src="/static/images/view.png" alt="مشاهده">
-                            <span class="tooltip-text-table-view">مشاهده</span>
-                        </button>
-                        <button class="check-btn">
-                            <img src="/static/images/check-mark.png" alt="تایید تغییرات" onclick="confirmTicketStatusChange(${rowId})">
-                            <span class="tooltip-text-table-check">تایید تغییرات</span>
-                        </button>
-                    </td>
-                    <td>
-                        <div class="status-container">
-                            <div class="status-navbar ${statusClass}" id="statusNavbar_${rowId}" onclick="toggleTicketDropdown(${rowId})">
-                                ${ticketStatus}
-                            </div>
-                            <div class="status-dropdown" id="ticketStatusDropdown_${rowId}" style="display: none;">
-                                <div class="status-option" onclick="changeTicketStatus(${rowId}, 'در حال پیگیری')">در حال پیگیری</div>
-                                <div class="status-option" onclick="changeTicketStatus(${rowId}, 'خوانده شده')">خوانده شده</div>
-                                <div class="status-option" onclick="changeTicketStatus(${rowId}, 'پاسخ داده شده')">پاسخ داده شده</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${ticket.ticketDescription}</td>
-                    <td>${ticket.ticketTitle}</td>
-                    <td>${persianDate}</td> <!-- نمایش تاریخ به صورت فارسی -->
-                    <td>${ticket.username}</td>
-                    <td style="display: none;">${ticket.id}</td> <!-- این ستون برای استفاده داخلی است -->
-                `;
-
+                const statusCell = document.createElement('td');
+                const statusContainer = document.createElement('div');
+                statusContainer.className = 'status-container';
+                const statusButton = document.createElement('button');
+                statusButton.type = 'button';
+                statusButton.className = `status-navbar ${statusClasses[ticketStatus] || ''}`;
+                statusButton.id = `statusNavbar_${rowId}`;
+                statusButton.textContent = ticketStatus;
+                statusButton.addEventListener('click', () => toggleTicketDropdown(rowId));
+                const dropdown = document.createElement('div');
+                dropdown.className = 'status-dropdown';
+                dropdown.id = `ticketStatusDropdown_${rowId}`;
+                dropdown.style.display = 'none';
+                ['در حال پیگیری', 'خوانده شده', 'پاسخ داده شده'].forEach(status => {
+                    const option = document.createElement('button');
+                    option.type = 'button';
+                    option.className = 'status-option';
+                    option.textContent = status;
+                    option.addEventListener('click', event => {
+                        event.stopPropagation();
+                        changeTicketStatus(rowId, status);
+                    });
+                    dropdown.appendChild(option);
+                });
+                statusContainer.append(statusButton, dropdown);
+                statusCell.appendChild(statusContainer);
+                row.appendChild(statusCell);
+                row.appendChild(appendTextCell(ticket.ticketDescription));
+                row.appendChild(appendTextCell(ticket.ticketTitle));
+                row.appendChild(appendTextCell(toPersianDigits(ticket.ticket_date || '')));
+                row.appendChild(appendTextCell(ticket.username));
                 tableBody.appendChild(row);
             });
         })
         .catch(error => {
             console.error('Error fetching ticket requests:', error);
+            const tableBody = document.querySelector('#ticketUsersReportTable tbody');
+            if (!tableBody) return;
+            const emptyRow = document.createElement('tr');
+            const emptyCell = document.createElement('td');
+            emptyCell.colSpan = 6;
+            emptyCell.className = 'ticket-empty-state ticket-empty-state--error';
+            emptyCell.textContent = error.message || 'خطا در دریافت تیکت‌ها.';
+            emptyRow.appendChild(emptyCell);
+            tableBody.replaceChildren(emptyRow);
         });
 }
 
@@ -1997,6 +2068,7 @@ function confirmTicketStatusChange(rowId) {
     .then(data => {
         if (data.success) {
             alert("وضعیت تیکت‌های مرتبط به‌روزرسانی شد.");
+            loadTicketRequests();
         } else {
             alert("خطایی رخ داد: " + data.error);
         }
@@ -2068,7 +2140,7 @@ function openViewDialog(ticketId) {
             ticketData = data;
 
             // نمایش عنوان تیکت در بخش p
-            document.querySelector('#ticketTitle').textContent = data.ticketTitle;
+            document.querySelector('#ticketConversationTitle').textContent = data.ticketTitle;
 
             // مرتب‌سازی پیام‌ها بر اساس تاریخ
             const sortedMessages = data.messages.sort((a, b) => new Date(a.ticket_date) - new Date(b.ticket_date));
@@ -2092,11 +2164,12 @@ function openViewDialog(ticketId) {
                     messageDiv.classList.add('matn3');
                 }
 
-                messageDiv.innerHTML = `
-                    <p>${message.ticketDescription}</p>
-                    <div class="zaman">${message.ticket_date}</div>
-                `;
-
+                const messageText = document.createElement('p');
+                messageText.textContent = message.ticketDescription || '';
+                const messageTime = document.createElement('div');
+                messageTime.className = 'zaman';
+                messageTime.textContent = message.ticket_date || '';
+                messageDiv.append(messageText, messageTime);
                 kadrMatnContainer.appendChild(messageDiv);
             });
 
@@ -2140,12 +2213,8 @@ document.querySelector('.ersal-icon').addEventListener('click', () => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            ticketTitle: ticketTitle,
             ticketDescription: ticketDescription,
-            username: username,
-            target_username: target_username,
-            parent_id: parent_id,
-            ticket_status: ticket_status
+            parent_id: parent_id
         })
     })
     .then(response => response.json())
@@ -2158,11 +2227,12 @@ document.querySelector('.ersal-icon').addEventListener('click', () => {
             messageDiv.classList.add('matn1');
             const currentDateTime = new Date();
             const formattedDate = `${currentDateTime.toLocaleDateString('fa-IR')} - ${currentDateTime.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}`;
-
-            messageDiv.innerHTML = `
-                <p>${ticketDescription}</p>
-                <div class="zaman">${formattedDate}</div>
-            `;
+            const messageText = document.createElement('p');
+            messageText.textContent = ticketDescription;
+            const messageTime = document.createElement('div');
+            messageTime.className = 'zaman';
+            messageTime.textContent = formattedDate;
+            messageDiv.append(messageText, messageTime);
             kadrMatnContainer.appendChild(messageDiv);
 
             // اسکرول به انتهای باکس
@@ -2281,17 +2351,13 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
     const ticketReceiver = document.getElementById('ticketReceiver') ? document.getElementById('ticketReceiver').value : '';
     const ticketTitle = document.getElementById('ticketTitleAdmin') ? document.getElementById('ticketTitleAdmin').value : '';
     const ticketDescription = document.getElementById('ticketDescription') ? document.getElementById('ticketDescription').value : '';
-    const username = sessionStorage.getItem('username'); // فرض می‌کنیم که نام کاربری در سشن ذخیره شده است
-
-    // ایجاد یک شیء برای ارسال به سرور
+    // هویت فرستنده فقط از session سمت سرور تعیین می‌شود.
     const formData = {};
 
     // بررسی فیلدهایی که مقدار دارند و اضافه کردن به formData
     if (ticketReceiver) formData.ticketReceiver = ticketReceiver;
     if (ticketTitle) formData.ticketTitle = ticketTitle;
     if (ticketDescription) formData.ticketDescription = ticketDescription;
-    if (username) formData.username = username;
-
     // ارسال داده‌ها به سرور
     fetch('/submit_ticket', {
         method: 'POST',
@@ -2305,6 +2371,7 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
         if (data.success) {
             alert('تیکت شما با موفقیت ثبت شد!');
             closeTicketModal(); // بستن پاپ‌آپ
+            loadTicketRequests(); // نمایش فوری تیکت جدید در جدول مدیریت
         } else {
             alert('خطا در ثبت تیکت! ' + (data.message || ''));
         }

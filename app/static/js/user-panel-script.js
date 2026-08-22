@@ -1601,19 +1601,15 @@ document.getElementById('ticketForm').addEventListener('submit', function(e) {
 
     // دریافت فیلدهای مختلف فرم
     const ticketReceiver = document.getElementById('ticketReceiver') ? document.getElementById('ticketReceiver').value : '';
-    const ticketTitle = document.getElementById('ticketTitle') ? document.getElementById('ticketTitle').value : '';
+    const ticketTitle = document.getElementById('ticketCreateTitle') ? document.getElementById('ticketCreateTitle').value : '';
     const ticketDescription = document.getElementById('ticketDescription') ? document.getElementById('ticketDescription').value : '';
-    const username = sessionStorage.getItem('username'); // فرض می‌کنیم که نام کاربری در سشن ذخیره شده است
-
-    // ایجاد یک شیء برای ارسال به سرور
+    // هویت فرستنده فقط از session سمت سرور تعیین می‌شود.
     const formData = {};
 
     // بررسی فیلدهایی که مقدار دارند و اضافه کردن به formData
     if (ticketReceiver) formData.ticketReceiver = ticketReceiver;
     if (ticketTitle) formData.ticketTitle = ticketTitle;
     if (ticketDescription) formData.ticketDescription = ticketDescription;
-    if (username) formData.username = username;
-
     // ارسال داده‌ها به سرور
     fetch('/submit_ticket', {
         method: 'POST',
@@ -1660,32 +1656,33 @@ function loadReceivers() {
         .catch(error => console.error('Error fetching receivers:', error));
 }
 
-// بارگذاری لیست کاربران برای ویرایش
-function loadUsersForEdit() {
-    fetch('/get_users')
+// بارگذاری فهرست گیرندگان مجاز برای ویرایش
+function loadUsersForEdit(selectedReceiver) {
+    const receiverSelect = document.getElementById('ticketEditReceiver');
+    if (!receiverSelect) return Promise.resolve();
+
+    return fetch('/get_receivers')
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                const receiverSelect = document.getElementById('ticketEditReceiver');
-                
-                receiverSelect.innerHTML = '<option value="" disabled selected>انتخاب کنید</option>';
-                
-                const adminOption = document.createElement('option');
-                adminOption.value = 'admin';
-                adminOption.textContent = 'admin';
-                receiverSelect.appendChild(adminOption);
-
-                data.users.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user.value;  // مقدار username
-                    option.textContent = user.value;  // نمایش username به جای name
-                    receiverSelect.appendChild(option);
-                });
-            } else {
-                console.error('Error fetching users:', data.message);
+            if (!response.ok || !Array.isArray(data)) {
+                throw new Error(data.message || 'خطا در دریافت گیرندگان');
             }
-        })
-        .catch(error => console.error('Error:', error));
+
+            receiverSelect.replaceChildren();
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.disabled = true;
+            placeholder.textContent = 'انتخاب کنید';
+            receiverSelect.appendChild(placeholder);
+
+            data.forEach(username => {
+                const option = document.createElement('option');
+                option.value = username;
+                option.textContent = username;
+                receiverSelect.appendChild(option);
+            });
+            receiverSelect.value = selectedReceiver || '';
+        });
 }
 
 // باز کردن پاپ‌آپ ثبت تیکت برای ویرایش
@@ -1700,14 +1697,10 @@ function openEditTicketModal(button) {
     document.getElementById("ticketEditTitle").value = title;
     document.getElementById("ticketEditDescription").value = description;
 
-    // پیدا کردن گزینه صحیح و انتخاب آن در فیلد select
-    const receiverSelect = document.getElementById("ticketEditReceiver");
-    for (let option of receiverSelect.options) {
-        if (option.value === receiver) {
-            option.selected = true;
-            break;
-        }
-    }
+    // فهرست گیرندگان از سرور می‌آید؛ مقدار انتخابی بعد از بارگذاری اعمال می‌شود.
+    loadUsersForEdit(receiver).catch(error => {
+        console.error('Error fetching receivers for ticket edit:', error);
+    });
 
     // نمایش پاپ‌آپ
     document.getElementById("ticketEditModal").style.display = "block";
@@ -2216,7 +2209,7 @@ function openViewDialog(button) {
     const ticketTitle = button.getAttribute('data-title');
 
     // نمایش عنوان تیکت در پاپ‌آپ
-    document.querySelector('#ticketTitle').textContent = ticketTitle;
+    document.querySelector('#ticketConversationTitle').textContent = ticketTitle;
 
     // درخواست به سرور برای دریافت جزئیات تیکت
     fetch(`/get_ticket_details_payam/${ticketId}`)
@@ -2257,11 +2250,12 @@ function openViewDialog(button) {
                     messageDiv.classList.add('matn3');
                 }
 
-                messageDiv.innerHTML = `
-                    <p>${message.ticketDescription}</p>
-                    <div class="zaman">${message.ticket_date}</div>
-                `;
-
+                const messageText = document.createElement('p');
+                messageText.textContent = message.ticketDescription || '';
+                const messageTime = document.createElement('div');
+                messageTime.className = 'zaman';
+                messageTime.textContent = message.ticket_date || '';
+                messageDiv.append(messageText, messageTime);
                 kadrMatnContainer.appendChild(messageDiv);
             });
 
@@ -2322,12 +2316,8 @@ function sendTicketResponse() {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            ticketTitle: ticketTitle,
             ticketDescription: ticketDescription,
-            username: username,
-            target_username: target_username,
-            parent_id: parent_id,
-            ticket_status: ticket_status
+            parent_id: parent_id
         })
     })
     .then(response => response.json())
@@ -2340,11 +2330,12 @@ function sendTicketResponse() {
             messageDiv.classList.add('matn1');
             const currentDateTime = new Date();
             const formattedDate = `${currentDateTime.toLocaleDateString('fa-IR')} - ${currentDateTime.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}`;
-
-            messageDiv.innerHTML = `
-                <p>${ticketDescription}</p>
-                <div class="zaman">${formattedDate}</div>
-            `;
+            const messageText = document.createElement('p');
+            messageText.textContent = ticketDescription;
+            const messageTime = document.createElement('div');
+            messageTime.className = 'zaman';
+            messageTime.textContent = formattedDate;
+            messageDiv.append(messageText, messageTime);
             kadrMatnContainer.appendChild(messageDiv);
 
             // اسکرول به انتهای باکس
@@ -2368,8 +2359,11 @@ function openViewMassageBoxDialog(button) {
     document.querySelector('#popupMoshahedeoverlay').style.display = 'block';
     document.querySelector('#MoshahedePopupbox').style.display = 'block';
 
-    // استخراج شناسه تیکت
+    // استخراج شناسه و عنوان تیکت
     const ticketId = button.getAttribute('data-id');
+    const ticketTitle = button.querySelector('.onvanMassage')?.textContent?.trim();
+    const titleElement = document.querySelector('#ticketConversationTitle');
+    if (titleElement && ticketTitle) titleElement.textContent = ticketTitle;
 
     // ارسال درخواست به سرور برای به‌روزرسانی مقدار is_read
     fetch(`/mark_ticket_as_read/${ticketId}`, { method: 'POST' })
@@ -2424,11 +2418,12 @@ function openViewMassageBoxDialog(button) {
                     messageDiv.classList.add('matn3');
                 }
 
-                messageDiv.innerHTML = `
-                    <p>${message.ticketDescription}</p>
-                    <div class="zaman">${message.ticket_date}</div>
-                `;
-
+                const messageText = document.createElement('p');
+                messageText.textContent = message.ticketDescription || '';
+                const messageTime = document.createElement('div');
+                messageTime.className = 'zaman';
+                messageTime.textContent = message.ticket_date || '';
+                messageDiv.append(messageText, messageTime);
                 kadrMatnContainer.appendChild(messageDiv);
             });
 
@@ -2506,7 +2501,7 @@ function toggleDropdown(event) {
 
 function changeStatus(element, newStatus) {
     let td = element.closest('.vazeiyat-ticket');  // پیدا کردن والد `td`
-    let statusSpan = td.querySelector('#ticket-status'); // پیدا کردن span داخل td
+    let statusSpan = td.querySelector('.ticket-status'); // پیدا کردن span داخل td
     let dropdown = td.querySelector('.dropdown'); // پیدا کردن دراپ‌دان مربوطه
 
     // تغییر وضعیت
@@ -2539,7 +2534,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            let currentStatus = row.querySelector("#ticket-status").innerText.trim();
+            let currentStatus = row.querySelector(".ticket-status").innerText.trim();
             let newStatus = "تایید شده"; // مقدار جدید برای وضعیت تیکت
 
             fetch("/update_ticket_status", {
@@ -2555,7 +2550,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    row.querySelector("#ticket-status").innerText = newStatus;
+                    row.querySelector(".ticket-status").innerText = newStatus;
                     alert("وضعیت تیکت با موفقیت به‌روزرسانی شد!");
                 } else {
                     alert("خطا در به‌روزرسانی وضعیت: " + (data.error || "نامشخص"));

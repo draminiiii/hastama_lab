@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-mobile.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/responsive-tables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/tables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/ticketing.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/notification-system.css') }}">
     <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', path='css/dark-theme.css') }}">
@@ -642,8 +643,26 @@
                         </div>
 
                         <div class="panel-card ticket-status-card">
-                            <div class="panel-title-row">
-                                <h3 class="panel-title">وضعیت تیکت‌ها</h3>
+                            <div class="ticket-card-head">
+                                <div>
+                                    <span class="ticket-panel-kicker">مرکز پشتیبانی</span>
+                                    <h3>وضعیت تیکت‌ها</h3>
+                                    <p>پیگیری درخواست‌ها و پاسخ‌های شما</p>
+                                </div>
+                            </div>
+                            <div class="ticket-metrics">
+                                <div class="ticket-metric ticket-metric--accent"><span>کل مکالمه‌ها</span><strong id="userTicketTotal">۰</strong></div>
+                                <div class="ticket-metric"><span>در انتظار پاسخ</span><strong id="userTicketPending">۰</strong></div>
+                            </div>
+                            <div class="ticket-toolbar" role="search">
+                                <label class="ticket-search" for="userTicketSearch"><span class="sr-only">جستجو در تیکت‌ها</span><input type="search" id="userTicketSearch" placeholder="جستجو در تیکت‌ها…" autocomplete="off"></label>
+                                <select id="userTicketFilter" class="ticket-filter" aria-label="فیلتر وضعیت تیکت">
+                                    <option value="all">همه وضعیت‌ها</option>
+                                    <option value="ارسال شده">ارسال شده</option>
+                                    <option value="در حال پیگیری">در حال پیگیری</option>
+                                    <option value="خوانده شده">خوانده شده</option>
+                                    <option value="پاسخ داده شده">پاسخ داده شده</option>
+                                </select>
                             </div>
                             <div class="Jadvale-ticket">
                                 <table id="ticket-status-table">
@@ -665,13 +684,8 @@
                                             <td class="noe-ticket">{{ ticket.ticket_title }}</td>
                                             <td class="tarikh-ticket">{{ ticket.ticket_date }}</td>
                                             <td class="daryaft-ticket">{{ ticket.target_username }}</td>
-                                            <td class="vazeiyat-ticket" onclick="toggleDropdown(event)">
-                                                <span id="ticket-status">{{ ticket.ticket_status }}</span>
-                                                <div class="dropdown">
-                                                    <div class="goz1" onclick="changeStatus(this, 'خوانده شده'); event.stopPropagation();">خوانده شده</div>
-                                                    <div class="goz2" onclick="changeStatus(this, 'پاسخ داده شده'); event.stopPropagation();">پاسخ داده شده</div>
-                                                    <div class="goz3" onclick="changeStatus(this, 'در حال پیگیری'); event.stopPropagation();">در حال پیگیری</div>
-                                                </div>
+                                            <td class="vazeiyat-ticket">
+                                                <span class="ticket-status">{{ ticket.ticket_status }}</span>
                                             </td>
                                             <td class="tozihat-ticket">{{ ticket.ticket_description }}</td>
                                             <td class="virayesh-ticket">
@@ -690,15 +704,9 @@
                                                         <span class="tooltip-text-table-edit">ویرایش</span>
                                                     </button>
                                                 {% endif %}
-                                                {% if ticket.ticket_status != 'ارسال شده' %}
                                                 <button class="view-btn" onclick="openViewDialog(this)" data-id="{{ ticket.ticket_id }}" data-title="{{ ticket.ticket_title }}">
                                                     <img src="/static/images/view.png" alt="مشاهده">
                                                     <span class="tooltip-text-table-view">مشاهده</span>
-                                                </button>
-                                                {% endif %}
-                                                <button class="check-btn">
-                                                    <img src="/static/images/check-mark.png">
-                                                    <span class="tooltip-text-table-chk">تایید</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -930,10 +938,10 @@
                         </select>
                     
                         <label for="ticketTitle">عنوان تیکت</label>
-                        <input type="text" id="ticketTitle" name="ticketTitle" required autocomplete="off" autocapitalize="off" spellcheck="false">
+                        <input type="text" id="ticketCreateTitle" name="ticketTitle" required maxlength="180" autocomplete="off" autocapitalize="off" spellcheck="false">
                     
                         <label for="ticketDescription">توضیحات</label>
-                        <textarea id="ticketDescription" name="ticketDescription" rows="4" required></textarea>
+                        <textarea id="ticketDescription" name="ticketDescription" rows="4" required maxlength="4000"></textarea>
                     
                         <div class="modal-buttons">
                             <button type="submit" class="btn-confirm">تایید</button>
@@ -1140,19 +1148,10 @@
                                     <span class="tooltip-text-table-view">مشاهده</span>
                                 </button>
                                 {% endif %}
-                                <button class="check-btn">
-                                    <img src="/static/images/check-mark.png">
-                                    <span class="tooltip-text-table-chk">تایید</span>
-                                </button>
                             </td>
                             <td class="tozihat-ticket">{{ ticket.ticket_description }}</td>
-                            <td class="vazeiyat-ticket" onclick="toggleDropdown(event)">
-                                <span id="ticket-status">{{ ticket.ticket_status }}</span>
-                                <div class="dropdown">
-                                <div class="goz1" onclick="changeStatus(this, 'خوانده شده'); event.stopPropagation();">خوانده شده</div>
-                                <div class="goz2" onclick="changeStatus(this, 'پاسخ داده شده'); event.stopPropagation();">پاسخ داده شده</div>
-                                <div class="goz3" onclick="changeStatus(this, 'در حال پیگیری'); event.stopPropagation();">در حال پیگیری</div>
-                                </div>
+                            <td class="vazeiyat-ticket">
+                                <span class="ticket-status">{{ ticket.ticket_status }}</span>
                             </td>
                             <td class="daryaft-ticket">{{ ticket.target_username }}</td>
                             <td class="tarikh-ticket">{{ ticket.ticket_date }}</td>
@@ -1185,14 +1184,13 @@
                     <label for="ticketEditReceiver">دریافت کننده</label>
                     <select id="ticketEditReceiver" name="ticketEditReceiver" required>
                         <option value="" disabled selected>انتخاب کنید</option>
-                        <option value="admin" >admin</option>
                     </select>
                 
                     <label for="ticketEditTitle">عنوان تیکت</label>
-                    <input type="text" id="ticketEditTitle" name="ticketEditTitle" required autocomplete="off" autocapitalize="off" spellcheck="false">
+                    <input type="text" id="ticketEditTitle" name="ticketEditTitle" required maxlength="180" autocomplete="off" autocapitalize="off" spellcheck="false">
                 
                     <label for="ticketEditDescription">توضیحات</label>
-                    <textarea id="ticketEditDescription" name="ticketEditDescription" rows="4" required></textarea>
+                    <textarea id="ticketEditDescription" name="ticketEditDescription" rows="4" required maxlength="4000"></textarea>
                 
                     <div class="modal-buttons">
                         <button type="submitEditticket" class="btn-confirm">تایید</button>
@@ -1203,19 +1201,23 @@
         </div>
 
         <!-- پاپ‌آپ مشاهده تیکت ارسال شده -->
-        <div id="popupMoshahedeoverlay" class="MoshahedeOverlay" onclick="hideViewDialog()"></div>
-        <div id="MoshahedePopupbox" class="MoshahdePopup">
-            <p id="ticketTitle">عنوان تیکت</p>
+        <div id="popupMoshahedeoverlay" class="MoshahedeOverlay ticket-conversation-overlay" onclick="hideViewDialog()"></div>
+        <div id="MoshahedePopupbox" class="MoshahdePopup ticket-conversation-dialog" role="dialog" aria-modal="true" aria-labelledby="ticketConversationTitle">
+            <div class="ticket-conversation-head">
+                <div><p id="ticketConversationTitle">گفت‌وگوی تیکت</p><span>تاریخچه مکالمه</span></div>
+                <button type="button" class="ticket-conversation-close" onclick="hideViewDialog()" aria-label="بستن">×</button>
+            </div>
             <div class="bishtar">
                 <div class="kadr-matn">
                 
                 
                 </div>
                 <hr class="line-separator">
-                <input type="text" id="matnErsali" name="matnErsali" required>
-                <img src="/static/images/send.png" alt="ارسال" class="ersal-icon">
+                <div class="ticket-reply-bar">
+                    <input type="text" id="matnErsali" name="matnErsali" placeholder="پاسخ خود را بنویسید…" aria-label="متن پاسخ" maxlength="4000" autocomplete="off">
+                    <button type="button" class="ticket-reply-send ersal-icon" aria-label="ارسال پاسخ"><img src="/static/images/send.png" alt=""></button>
+                </div>
             </div>
-            <button onclick="hideViewDialog()">بستن</button>
         </div>
 
         <!-- پاپ اپ گزارش ساعت زن -->
@@ -1295,6 +1297,7 @@
 
             <script src="{{ url_for('static', path='js/responsive-tables.js') }}"></script>
 <script src="{{ url_for('static', path='js/user-panel-script.js') }}"></script>
+<script src="{{ url_for('static', path='js/ticketing.js') }}"></script>
 <script src="{{ url_for('static', path='js/notification-system.js') }}"></script>
 
     </body>

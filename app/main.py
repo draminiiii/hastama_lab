@@ -22,7 +22,7 @@ from app.services.attendance import compute_attendance_status, format_time_value
 from core.config import API_PREFIX, DEBUG, MEMOIZATION_FLAG, PROJECT_NAME, VERSION
 from core.events import create_start_app_handler
 from core.number_format import convert_to_persian_numbers
-from core.password_utils import hash_password, insert_user_with_optional_hash
+from core.password_utils import get_user_table_columns, hash_password, insert_user_with_optional_hash
 
 from fastapi import FastAPI, HTTPException, Request, Form, Query, Response, Path, Body, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, StreamingResponse
@@ -460,7 +460,13 @@ async def get_date():
 # تابع مربوط به دریافت اطلاعات کاربر# تابع مربوط به دریافت اطلاعات کاربر# تابع مربوط به دریافت اطلاعات کاربر# تابع مربوط به دریافت اطلاعات کاربر
 
 @app.get("/get_users")
-async def get_users():
+async def get_users(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
         # اتصال به دیتابیس SQL Server
         conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
@@ -471,22 +477,29 @@ async def get_users():
 
         # بازیابی اطلاعات کاربران
         cursor.execute("""
-            SELECT username, name
+            SELECT LTRIM(RTRIM(username)), name
             FROM user_table
-        """)
+            WHERE LTRIM(RTRIM(username)) <> ?
+            ORDER BY LTRIM(RTRIM(username))
+        """, (actor,))
         users = cursor.fetchall()
 
         # قالب‌بندی داده‌ها برای ارسال به کلاینت
-        user_list = [{'value': user[0], 'label': user[1]} for user in users]
+        user_list = [
+            {'value': str(user[0]).strip(), 'label': user[1]}
+            for user in users if user[0]
+        ]
 
         return JSONResponse(content={'success': True, 'users': user_list})
 
-    except Exception as e:
-        return JSONResponse(content={'success': False, 'message': str(e)})
+    except Exception:
+        return JSONResponse(content={'success': False, 'message': 'خطا در دریافت کاربران.'}, status_code=500)
 
     finally:
-        cursor.close()
-        conn.close()
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع مربوط به دریافت اطلاعات کاربر از سشن# تابع مربوط به دریافت اطلاعات کاربر از سشن# تابع مربوط به دریافت اطلاعات کاربر از سشن
 # تابع مربوط به دریافت اطلاعات کاربر از سشن# تابع مربوط به دریافت اطلاعات کاربر از سشن# تابع مربوط به دریافت اطلاعات کاربر از سشن
@@ -669,29 +682,31 @@ async def get_leave_info(request: Request):
 # تابع مربوط به دریافت لیست دریافت کنندگان# تابع مربوط به دریافت لیست دریافت کنندگان# تابع مربوط به دریافت لیست دریافت کنندگان
 
 @app.get("/get_receivers")
-async def get_receivers():
+async def get_receivers(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
-        # اتصال به دیتابیس SQL Server
-        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                              r'SERVER=localhost\SQLEXPRESS;'
-                              'DATABASE=userDB;'
-                              'Trusted_Connection=yes;')
+        conn = get_db_connection()
         cursor = conn.cursor()
-
-        # گرفتن لیست دریافت کنندگان از جدول user_table
-        cursor.execute("SELECT username FROM user_table")
-        receivers = cursor.fetchall()
-
-        # تبدیل لیست به فرمت JSON
-        receiver_list = [receiver[0] for receiver in receivers]  # دریافت فقط نام کاربری
+        cursor.execute("""
+            SELECT LTRIM(RTRIM(username))
+            FROM user_table
+            WHERE LTRIM(RTRIM(username)) <> ?
+            ORDER BY LTRIM(RTRIM(username))
+        """, (actor,))
+        receiver_list = [str(row[0]).strip() for row in cursor.fetchall() if row[0]]
         return JSONResponse(content=receiver_list)
-
-    except Exception as e:
-        return JSONResponse(content={'success': False, 'message': str(e)})
-
+    except Exception:
+        return JSONResponse(content={"success": False, "message": "خطا در دریافت کاربران."}, status_code=500)
     finally:
-        cursor.close()
-        conn.close()
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع ثبت درخواست مرخصی کاربر # تابع ثبت درخواست مرخصی کاربر # تابع ثبت درخواست مرخصی کاربر # تابع ثبت درخواست مرخصی کاربر
 # تابع ثبت درخواست مرخصی کاربر # تابع ثبت درخواست مرخصی کاربر # تابع ثبت درخواست مرخصی کاربر # تابع ثبت درخواست مرخصی کاربر
@@ -850,45 +865,179 @@ async def submit_hourly_pass(request: Request):
         conn.rollback()
         return JSONResponse(content={"success": False, "message": str(e)})
 
+# ابزارهای مشترک تیکتینگ
+TICKET_STATUSES = frozenset({"ارسال شده", "در حال پیگیری", "خوانده شده", "پاسخ داده شده"})
+TICKET_TITLE_MAX_LENGTH = 180
+TICKET_DESCRIPTION_MAX_LENGTH = 4000
+
+
+def _ticket_actor(request: Request, admin_only: bool = False):
+    """هویت امضاشده‌ی session را برای APIهای تیکت برمی‌گرداند."""
+    actor = str(request.session.get("username") or "").strip()
+    is_admin = request.session.get("is_admin") is True
+    if not actor or (admin_only and not is_admin):
+        return None, JSONResponse(status_code=403, content={"success": False, "error": "دسترسی غیرمجاز"})
+    return actor, None
+
+
+def _ticket_text(value, max_length: int, field_name: str):
+    value = str(value or "").replace("\x00", "").strip()
+    if not value:
+        raise ValueError(f"{field_name} الزامی است.")
+    if len(value) > max_length:
+        raise ValueError(f"طول {field_name} بیشتر از حد مجاز است.")
+    return value
+
+
+def _ticket_date_text(value):
+    if not value:
+        return "تاریخ نامشخص"
+    if isinstance(value, str):
+        try:
+            value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return value
+    return JalaliDate(value).strftime("%Y/%m/%d")
+
+
+def _ticket_accessible_row(cursor, ticket_id, actor, is_admin):
+    cursor.execute("""
+        SELECT id, ticketTitle, ticketDescription, username, ticket_date,
+               ticket_status, Parent_id, target_username
+        FROM ticket_table
+        WHERE id = ?
+    """, (ticket_id,))
+    ticket = cursor.fetchone()
+    if not ticket:
+        return None
+
+    if not is_admin:
+        cursor.execute("""
+            SELECT 1 FROM ticket_table
+            WHERE Parent_id = ?
+              AND (LTRIM(RTRIM(username)) = ? OR LTRIM(RTRIM(target_username)) = ?)
+        """, (ticket[6], actor, actor))
+        if cursor.fetchone() is None:
+            return None
+    return ticket
+
+
+async def _create_ticket_response(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    try:
+        data = await request.json()
+        parent_id = int(data.get("parent_id"))
+        description = _ticket_text(data.get("ticketDescription"), TICKET_DESCRIPTION_MAX_LENGTH, "توضیحات")
+    except (TypeError, ValueError):
+        return JSONResponse(status_code=400, content={"success": False, "error": "اطلاعات پاسخ تیکت معتبر نیست."})
+    except Exception:
+        return JSONResponse(status_code=400, content={"success": False, "error": "درخواست نامعتبر است."})
+
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        is_admin = request.session.get("is_admin") is True
+        cursor.execute("""
+            SELECT TOP 1 ticketTitle, username, target_username
+            FROM ticket_table
+            WHERE Parent_id = ?
+            ORDER BY ticket_date ASC, id ASC
+        """, (parent_id,))
+        original = cursor.fetchone()
+        if not original:
+            return JSONResponse(status_code=404, content={"success": False, "error": "مکالمه تیکت یافت نشد."})
+
+        original_sender = str(original[1] or "").strip()
+        original_target = str(original[2] or "").strip()
+        if is_admin and actor not in {original_sender, original_target}:
+            return JSONResponse(status_code=403, content={"success": False, "error": "دسترسی به این مکالمه مجاز نیست."})
+        if not is_admin and actor not in {original_sender, original_target}:
+            return JSONResponse(status_code=403, content={"success": False, "error": "دسترسی به این مکالمه مجاز نیست."})
+
+        recipient = original_target if actor == original_sender else original_sender
+        if not recipient:
+            return JSONResponse(status_code=400, content={"success": False, "error": "گیرنده پاسخ مشخص نیست."})
+
+        cursor.execute("""
+            INSERT INTO ticket_table
+                (ticketTitle, ticketDescription, username, target_username,
+                 parent_id, ticket_date, ticket_status, is_read)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (original[0], description, actor, recipient, parent_id,
+              datetime.now(), "پاسخ داده شده", 0))
+        conn.commit()
+        return JSONResponse(content={"success": True, "message": "پاسخ با موفقیت ارسال شد."})
+    except Exception as exc:
+        if conn is not None:
+            conn.rollback()
+        return JSONResponse(status_code=500, content={"success": False, "error": "خطا در ارسال پاسخ تیکت."})
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
+
+
 # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر
 # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر
 # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر # تابع ثبت تیکت کاربر
 
 @app.post("/submit_ticket")
 async def submit_ticket(request: Request):
-    session = request.session
-    username = session.get("username")
-    if not username:
-        return JSONResponse(content={"success": False, "message": "User not logged in"})
-
-    data = await request.json()
-    ticketTitle = data.get('ticketTitle')
-    ticketDescription = data.get('ticketDescription')
-    ticketReceiver = data.get('ticketReceiver')
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
 
     try:
-        ticketDate = datetime.now().strftime('%Y-%m-%d')
-        ticketStatus = 'ارسال شده'
+        data = await request.json()
+        title = _ticket_text(data.get("ticketTitle"), TICKET_TITLE_MAX_LENGTH, "عنوان تیکت")
+        description = _ticket_text(data.get("ticketDescription"), TICKET_DESCRIPTION_MAX_LENGTH, "توضیحات")
+        receiver = str(data.get("ticketReceiver") or "").strip()
+        if not receiver:
+            raise ValueError("دریافت‌کننده تیکت الزامی است.")
+        if receiver.casefold() == actor.casefold():
+            raise ValueError("ارسال تیکت برای خودتان مجاز نیست.")
+    except ValueError as exc:
+        return JSONResponse(status_code=400, content={"success": False, "message": str(exc)})
+    except Exception:
+        return JSONResponse(status_code=400, content={"success": False, "message": "درخواست ثبت تیکت نامعتبر است."})
 
-        # دریافت آخرین Parent_id از جدول
-        cursor.execute("SELECT MAX(Parent_id) FROM ticket_table")
-        last_parent_id = cursor.fetchone()[0]
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT TOP 1 username FROM user_table WHERE LTRIM(RTRIM(username)) = ?", (receiver,))
+        receiver_row = cursor.fetchone()
+        if receiver_row is None:
+            return JSONResponse(status_code=404, content={"success": False, "message": "دریافت‌کننده پیدا نشد."})
 
-        # تعیین Parent_id جدید
-        new_parent_id = 1 if last_parent_id is None else last_parent_id + 1
-
-        # ثبت تیکت
+        # قفل کوتاه‌مدت جدول از تولید Parent_id تکراری در ثبت هم‌زمان جلوگیری می‌کند.
+        cursor.execute("SELECT ISNULL(MAX(Parent_id), 0) + 1 FROM ticket_table WITH (TABLOCKX, HOLDLOCK)")
+        new_parent_id = int(cursor.fetchone()[0])
         cursor.execute("""
-            INSERT INTO ticket_table (Parent_id, ticketTitle, ticketDescription, username, target_username, ticket_date, ticket_status)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (new_parent_id, ticketTitle, ticketDescription, username, ticketReceiver, ticketDate, ticketStatus))
-
+            INSERT INTO ticket_table
+                (Parent_id, ticketTitle, ticketDescription, username, target_username,
+                 ticket_date, ticket_status, is_read)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (new_parent_id, title, description, actor, receiver,
+              datetime.now(), "ارسال شده", 0))
         conn.commit()
-        return JSONResponse(content={"success": True, "message": "Ticket submitted successfully!"})
-
-    except Exception as e:
-        conn.rollback()
-        return JSONResponse(content={"success": False, "message": str(e)})
+        return JSONResponse(status_code=201, content={"success": True, "message": "تیکت با موفقیت ثبت شد."})
+    except Exception:
+        if conn is not None:
+            conn.rollback()
+        return JSONResponse(status_code=500, content={"success": False, "message": "خطا در ثبت تیکت."})
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع
 # تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع# تابع دریافت اطلاعات کاربر برای صفحه گزارش جامع
@@ -1364,42 +1513,66 @@ async def add_user(
 
 @app.post("/update_user")
 async def update_user(request: Request):
+    conn = None
+    cursor = None
     try:
         data = await request.json()
 
-        username = data.get("username")
+        current_username = str(data.get("current_username") or data.get("username") or "").strip()
+        username = str(data.get("username") or "").strip()
+        password = data.get("password")
         substitute = data.get("substitute")
         work_hours = data.get("work_hours")
         department = data.get("department")
 
-        conn = pyodbc.connect(
-            'DRIVER={ODBC Driver 17 for SQL Server};'
-            r'SERVER=localhost\SQLEXPRESS;'
-            'DATABASE=userDB;'
-            'Trusted_Connection=yes;'
-        )
+        if not current_username or not username:
+            return {"success": False, "error": "نام کاربری الزامی است."}
 
+        conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute("""
-            UPDATE user_table
-            SET substitute = ?, work_hours = ?, department = ?
-            WHERE username = ?
-        """, (substitute, work_hours, department, username))
+        # رمز عبور خالی یعنی رمز فعلی حفظ شود؛ رمز جدید با همان سازوکار ورود ذخیره می‌شود.
+        password_value = str(password).strip() if password is not None else ""
+        columns = get_user_table_columns(cursor)
+        set_clauses = ["username = ?", "substitute = ?", "work_hours = ?", "department = ?"]
+        params = [username, substitute, work_hours, department]
+
+        if password_value:
+            set_clauses.append("password = ?")
+            params.append(password_value)
+            if "password_hash" in columns:
+                set_clauses.append("password_hash = ?")
+                params.append(hash_password(password_value))
+
+        params.append(current_username)
+        cursor.execute(
+            f"UPDATE user_table SET {', '.join(set_clauses)} "
+            "WHERE LTRIM(RTRIM(username)) = ?",
+            params,
+        )
 
         conn.commit()
-
         return {"success": True}
 
     except Exception as e:
+        if conn is not None:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
         return {"success": False, "error": str(e)}
 
     finally:
-        try:
-            cursor.close()
-            conn.close()
-        except:
-            pass
+        if cursor is not None:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass
 
 # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل
 # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل # تابع مدیریت شیفت‌های ماهانه پرسنل
@@ -2116,52 +2289,58 @@ async def get_overtime_report(data: dict):
 # تابع دریافت درخواست ها برای ادمین # تابع دریافت درخواست ها برای ادمین # تابع دریافت درخواست ها برای ادمین # تابع دریافت درخواست ها برای ادمین
 
 @app.get("/get_ticket_requests_admin")
-async def get_ticket_requests_admin():
-    try:
-        # اتصال به دیتابیس
-        conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                              r'SERVER=localhost\SQLEXPRESS;'
-                              'DATABASE=userDB;'
-                              'Trusted_Connection=yes;')
-        cursor = conn.cursor()
+async def get_ticket_requests_admin(request: Request):
+    actor, auth_error = _ticket_actor(request, admin_only=True)
+    if auth_error:
+        return auth_error
 
-        # کوئری با CTE برای گرفتن اولین پیام از هر مکالمه
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
         query = '''
             WITH RankedTickets AS (
-                SELECT 
-                    id, ticketTitle, ticketDescription, username, ticket_date, ticket_status, target_username, Parent_id,
-                    ROW_NUMBER() OVER (PARTITION BY Parent_id ORDER BY ticket_date ASC) AS RowNum
+                SELECT
+                    id, ticketTitle, ticketDescription, username, ticket_date,
+                    ticket_status, target_username, Parent_id, is_read,
+                    COUNT(*) OVER (PARTITION BY Parent_id) AS message_count,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY Parent_id ORDER BY ticket_date DESC, id DESC
+                    ) AS RowNum
                 FROM ticket_table
-                WHERE target_username = ?
+                WHERE LTRIM(RTRIM(target_username)) = ?
+                   OR LTRIM(RTRIM(username)) = ?
             )
-            SELECT id, ticketTitle, ticketDescription, username, ticket_date, ticket_status, target_username, Parent_id
+            SELECT id, ticketTitle, ticketDescription, username, ticket_date,
+                   ticket_status, target_username, Parent_id, is_read, message_count
             FROM RankedTickets
             WHERE RowNum = 1
+            ORDER BY ticket_date DESC, id DESC
         '''
-        cursor.execute(query, ('admin',))
-        tickets = cursor.fetchall()
-
-        # تبدیل داده‌ها به دیکشنری و تاریخ به شمسی
+        cursor.execute(query, (actor, actor))
         ticket_data = []
-        for ticket in tickets:
-            ticket_date_shamsi = JalaliDate(ticket.ticket_date).strftime('%Y/%m/%d') if ticket.ticket_date else 'تاریخ نامشخص'
+        for ticket in cursor.fetchall():
             ticket_data.append({
-                'id': ticket.id,
-                'ticketTitle': ticket.ticketTitle,
-                'ticketDescription': ticket.ticketDescription,
-                'username': ticket.username,
-                'ticket_date': ticket_date_shamsi,
-                'ticket_status': ticket.ticket_status,
-                'target_username': ticket.target_username
+                "id": ticket[0],
+                "ticketTitle": ticket[1],
+                "ticketDescription": ticket[2],
+                "username": str(ticket[3] or "").strip(),
+                "ticket_date": _ticket_date_text(ticket[4]),
+                "ticket_status": str(ticket[5] or "ارسال شده").strip(),
+                "target_username": str(ticket[6] or "").strip(),
+                "parent_id": ticket[7],
+                "is_read": bool(ticket[8]) if ticket[8] is not None else False,
+                "message_count": ticket[9],
             })
-
-        cursor.close()
-        conn.close()
-
         return JSONResponse(content=ticket_data)
-
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+    except Exception:
+        return JSONResponse(content={"success": False, "error": "خطا در دریافت تیکت‌ها."}, status_code=500)
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت
 # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت # تابع حذف تیکت
@@ -2169,34 +2348,35 @@ async def get_ticket_requests_admin():
 
 @app.post("/delete-ticket")
 async def delete_ticket(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
         data = await request.json()
-        ticket_id = data.get('ticket_id')
+        ticket_id = int(data.get("ticket_id"))
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        ticket = _ticket_accessible_row(cursor, ticket_id, actor, request.session.get("is_admin") is True)
+        if ticket is None:
+            return JSONResponse(status_code=404, content={"success": False, "error": "تیکت یافت نشد."})
 
-        if not ticket_id:
-            return JSONResponse(content={'success': False, 'error': 'شناسه تیکت معتبر نیست'}, status_code=400)
-
-        # تبدیل به عدد صحیح
-        ticket_id = int(ticket_id)
-
-        # گرفتن عنوان تیکت
-        cursor.execute("SELECT ticketTitle FROM ticket_table WHERE id = ?", (ticket_id,))
-        row = cursor.fetchone()
-
-        if row:
-            ticket_title = row[0]
-
-            # حذف همه تیکت‌هایی که عنوانشان یکسان است
-            cursor.execute("DELETE FROM ticket_table WHERE ticketTitle = ?", (ticket_title,))
-            conn.commit()
-
-            return JSONResponse(content={'success': True})
-        else:
-            return JSONResponse(content={'success': False, 'error': 'تیکت یافت نشد'}, status_code=404)
-
-    except Exception as e:
-        print(f"Error deleting ticket: {e}")
-        return JSONResponse(content={'success': False, 'error': str(e)}, status_code=500)
+        cursor.execute("DELETE FROM ticket_table WHERE Parent_id = ?", (ticket[6],))
+        conn.commit()
+        return JSONResponse(content={"success": True})
+    except (TypeError, ValueError):
+        return JSONResponse(status_code=400, content={"success": False, "error": "شناسه تیکت معتبر نیست."})
+    except Exception:
+        if conn is not None:
+            conn.rollback()
+        return JSONResponse(status_code=500, content={"success": False, "error": "خطا در حذف تیکت."})
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت
 # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت # تابع بروزرسانی تیکت
@@ -2204,57 +2384,94 @@ async def delete_ticket(request: Request):
 
 @app.post("/update_ticket")
 async def update_ticket(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
         data = await request.json()
-        receiver = data.get("receiver")
-        title = data.get("title")
-        description = data.get("description")
-        ticket_id = data.get("id")
+        ticket_id = int(data.get("id"))
+        receiver = str(data.get("receiver") or "").strip()
+        title = _ticket_text(data.get("title"), TICKET_TITLE_MAX_LENGTH, "عنوان تیکت")
+        description = _ticket_text(data.get("description"), TICKET_DESCRIPTION_MAX_LENGTH, "توضیحات")
+        if not receiver:
+            raise ValueError("دریافت‌کننده تیکت الزامی است.")
 
-        if not all([receiver, title, description, ticket_id]):
-            return JSONResponse(content={"success": False, "error": "اطلاعات ناقص است"}, status_code=400)
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        ticket = _ticket_accessible_row(cursor, ticket_id, actor, request.session.get("is_admin") is True)
+        if ticket is None or request.session.get("is_admin") is True or str(ticket[3] or "").strip() != actor:
+            return JSONResponse(status_code=403, content={"success": False, "error": "ویرایش این تیکت مجاز نیست."})
+        if str(ticket[5] or "").strip() != "ارسال شده":
+            return JSONResponse(status_code=409, content={"success": False, "error": "این تیکت دیگر قابل ویرایش نیست."})
+
+        cursor.execute("SELECT 1 FROM user_table WHERE LTRIM(RTRIM(username)) = ?", (receiver,))
+        if cursor.fetchone() is None:
+            return JSONResponse(status_code=404, content={"success": False, "error": "دریافت‌کننده پیدا نشد."})
 
         cursor.execute("""
             UPDATE ticket_table
             SET target_username = ?, ticketTitle = ?, ticketDescription = ?
-            WHERE id = ?;
-        """, (receiver, title, description, ticket_id))
+            WHERE id = ? AND LTRIM(RTRIM(username)) = ?
+        """, (receiver, title, description, ticket_id, actor))
         conn.commit()
-
         return JSONResponse(content={"success": True})
-
-    except Exception as e:
-        print("Error updating ticket:", e)
-        return JSONResponse(content={"success": False, "error": str(e)}, status_code=500)
+    except (TypeError, ValueError):
+        return JSONResponse(status_code=400, content={"success": False, "error": "اطلاعات تیکت معتبر نیست."})
+    except Exception:
+        if conn is not None:
+            conn.rollback()
+        return JSONResponse(status_code=500, content={"success": False, "error": "خطا در ویرایش تیکت."})
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها
 # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها
 # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها # تابع دریافت درخواست تیکت ها
 
 @app.get("/get_ticket_requests")
-async def get_ticket_requests():
+async def get_ticket_requests(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
-        # اجرای کوئری برای گرفتن رکوردها از جدول ticket_table
-        cursor.execute('SELECT id, ticketTitle, ticketDescription, username, ticket_date, ticket_status, target_username FROM ticket_table')
-        tickets = cursor.fetchall()
-
-        # تبدیل داده‌ها به یک لیست از دیکشنری‌ها
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, ticketTitle, ticketDescription, username, ticket_date,
+                   ticket_status, target_username, Parent_id
+            FROM ticket_table
+            WHERE LTRIM(RTRIM(username)) = ? OR LTRIM(RTRIM(target_username)) = ?
+            ORDER BY ticket_date DESC, id DESC
+        """, (actor, actor))
         ticket_data = []
-        for ticket in tickets:
+        for ticket in cursor.fetchall():
             ticket_data.append({
-                'id': ticket.id,
-                'ticketTitle': ticket.ticketTitle,
-                'ticketDescription': ticket.ticketDescription,
-                'username': ticket.username,
-                'ticket_date': ticket.ticket_date.strftime('%Y/%m/%d') if ticket.ticket_date else None,
-                'ticket_status': ticket.ticket_status,
-                'target_username': ticket.target_username
+                "id": ticket[0],
+                "ticketTitle": ticket[1],
+                "ticketDescription": ticket[2],
+                "username": str(ticket[3] or "").strip(),
+                "ticket_date": _ticket_date_text(ticket[4]),
+                "ticket_status": str(ticket[5] or "ارسال شده").strip(),
+                "target_username": str(ticket[6] or "").strip(),
+                "parent_id": ticket[7],
             })
-
         return JSONResponse(content=ticket_data)
-    
-    except Exception as e:
-        return JSONResponse(content={"success": False, "error": str(e)}, status_code=500)
+    except Exception:
+        return JSONResponse(content={"success": False, "error": "خطا در دریافت تیکت‌ها."}, status_code=500)
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت
 # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت # تابع بروزرسانی وضعیت تیکت
@@ -2262,35 +2479,47 @@ async def get_ticket_requests():
 
 @app.post("/update_ticket_status")
 async def update_ticket_status(request: Request):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
         data = await request.json()
-        ticket_id = data.get('id')
-        new_status = data.get('ticket_status')
+        ticket_id = int(data.get("id"))
+        new_status = str(data.get("ticket_status") or "").strip()
+        if new_status not in TICKET_STATUSES:
+            return JSONResponse(status_code=400, content={"success": False, "error": "وضعیت تیکت معتبر نیست."})
 
-        if not ticket_id or not new_status:
-            return JSONResponse(content={"error": "اطلاعات ناقص است"}, status_code=400)
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        ticket = _ticket_accessible_row(cursor, ticket_id, actor, request.session.get("is_admin") is True)
+        if ticket is None:
+            return JSONResponse(status_code=404, content={"success": False, "error": "تیکت یافت نشد."})
 
-        # دریافت Parent_id رکورد انتخاب‌شده
-        cursor.execute("SELECT Parent_id FROM ticket_table WHERE id = ?", (ticket_id,))
-        parent_id_row = cursor.fetchone()
-
-        if not parent_id_row:
-            return JSONResponse(content={"error": "تیکت مورد نظر یافت نشد"}, status_code=404)
-
-        parent_id = parent_id_row[0]
-
-        # به‌روزرسانی تمام رکوردهایی که Parent_id مشابه دارند
-        cursor.execute("UPDATE ticket_table SET ticket_status = ? WHERE Parent_id = ?", (new_status, parent_id))
+        cursor.execute("UPDATE ticket_table SET ticket_status = ? WHERE Parent_id = ?", (new_status, ticket[6]))
         conn.commit()
-
         return JSONResponse(content={"success": True})
-
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+    except (TypeError, ValueError):
+        return JSONResponse(status_code=400, content={"success": False, "error": "اطلاعات تیکت معتبر نیست."})
+    except Exception:
+        if conn is not None:
+            conn.rollback()
+        return JSONResponse(status_code=500, content={"success": False, "error": "خطا در تغییر وضعیت تیکت."})
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 
 @app.get('/get_ticket_details/{ticket_id}')
-async def get_ticket_details(ticket_id: int):
+async def get_ticket_details(request: Request, ticket_id: int):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+    is_admin = request.session.get("is_admin") is True
     try:
         # دریافت تیکت اصلی
         cursor.execute('''
@@ -2302,6 +2531,15 @@ async def get_ticket_details(ticket_id: int):
 
         if not ticket:
             return JSONResponse(content={"error": "Ticket not found"}, status_code=404)
+
+        if not is_admin:
+            cursor.execute("""
+                SELECT 1 FROM ticket_table
+                WHERE Parent_id = ?
+                  AND (LTRIM(RTRIM(username)) = ? OR LTRIM(RTRIM(target_username)) = ?)
+            """, (ticket.parent_id, actor, actor))
+            if cursor.fetchone() is None:
+                return JSONResponse(content={"error": "دسترسی غیرمجاز"}, status_code=403)
 
         ticket_datetime = ticket.ticket_date
         ticket_date_shamsi = JalaliDate(ticket_datetime).strftime('%Y/%m/%d')
@@ -2345,10 +2583,14 @@ async def get_ticket_details(ticket_id: int):
         return JSONResponse(content=ticket_details)
 
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        return JSONResponse(content={"error": "خطا در دریافت جزئیات تیکت."}, status_code=500)
 
 @app.get('/get_ticket_details_payam/{ticket_id}')
-async def get_ticket_details_payam(ticket_id: int):
+async def get_ticket_details_payam(request: Request, ticket_id: int):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+    is_admin = request.session.get("is_admin") is True
     try:
         # دریافت تیکت اصلی
         cursor.execute('''
@@ -2360,6 +2602,15 @@ async def get_ticket_details_payam(ticket_id: int):
 
         if not ticket:
             return JSONResponse(content={"error": "Ticket not found"}, status_code=404)
+
+        if not is_admin:
+            cursor.execute("""
+                SELECT 1 FROM ticket_table
+                WHERE Parent_id = ?
+                  AND (LTRIM(RTRIM(username)) = ? OR LTRIM(RTRIM(target_username)) = ?)
+            """, (ticket.parent_id, actor, actor))
+            if cursor.fetchone() is None:
+                return JSONResponse(content={"error": "دسترسی غیرمجاز"}, status_code=403)
 
         ticket_datetime = ticket.ticket_date
         ticket_date_shamsi = JalaliDate(ticket_datetime).strftime('%Y/%m/%d')
@@ -2403,79 +2654,47 @@ async def get_ticket_details_payam(ticket_id: int):
         return JSONResponse(content=ticket_details)
 
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        return JSONResponse(content={"error": "خطا در دریافت جزئیات تیکت."}, status_code=500)
 
 @app.post('/add_ticket_response')
 async def add_ticket_response(request: Request):
-    try:
-        data = await request.json()
+    return await _create_ticket_response(request)
 
-        ticketTitle = data.get('ticketTitle')
-        ticketDescription = data.get('ticketDescription')
-        username = data.get('username')  # فرستنده
-        target_username = data.get('target_username')  # هدف
-        parent_id = data.get('parent_id')
-        ticket_status = data.get('ticket_status')
-        ticket_date = datetime.now()
-
-        cursor.execute("""
-            INSERT INTO ticket_table (
-                ticketTitle, ticketDescription, username, target_username, parent_id, ticket_date, ticket_status, is_read
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (ticketTitle, ticketDescription, target_username, username, parent_id, ticket_date, ticket_status, 0))
-
-        conn.commit()
-        return JSONResponse(content={"success": True}, status_code=200)
-
-    except Exception as e:
-        print(str(e))
-        return JSONResponse(content={"error": "خطا در ثبت پاسخ تیکت"}, status_code=500)
-    
 @app.post('/add_ticket_response_userpanel')
 async def add_ticket_response_userpanel(request: Request):
-    try:
-        data = await request.json()
-
-        ticketTitle = data.get('ticketTitle')
-        ticketDescription = data.get('ticketDescription')
-        username = data.get('username')  # فرستنده (کاربر)
-        target_username = data.get('target_username')  # هدف (ادمین یا پاسخ‌دهنده)
-        parent_id = data.get('parent_id')
-        ticket_status = data.get('ticket_status')
-        ticket_date = datetime.now()
-
-        cursor.execute("""
-            INSERT INTO ticket_table (
-                ticketTitle, ticketDescription, username, target_username, parent_id, ticket_date, ticket_status, is_read
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (ticketTitle, ticketDescription, username, target_username, parent_id, ticket_date, ticket_status, 0))
-
-        conn.commit()
-        return JSONResponse(content={"success": True}, status_code=200)
-
-    except Exception as e:
-        print("Error:", e)
-        return JSONResponse(content={"error": "خطا در ثبت پاسخ تیکت"}, status_code=500)
+    return await _create_ticket_response(request)
     
 @app.post('/mark_ticket_as_read/{ticket_id}')
-async def mark_ticket_as_read(ticket_id: int):
+async def mark_ticket_as_read(request: Request, ticket_id: int):
+    actor, auth_error = _ticket_actor(request)
+    if auth_error:
+        return auth_error
+
+    conn = None
+    cursor = None
     try:
-        # دریافت Parent_id
-        cursor.execute("SELECT Parent_id FROM ticket_table WHERE id = ?", (ticket_id,))
-        parent_id_row = cursor.fetchone()
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        ticket = _ticket_accessible_row(cursor, ticket_id, actor, request.session.get("is_admin") is True)
+        if ticket is None:
+            return JSONResponse(status_code=404, content={"success": False, "error": "تیکت یافت نشد."})
 
-        if parent_id_row:
-            parent_id = parent_id_row[0]
-            # به‌روزرسانی رکوردها با همان parent_id
-            cursor.execute("UPDATE ticket_table SET is_read = 1 WHERE Parent_id = ?", (parent_id,))
-            conn.commit()
-            return JSONResponse(content={"success": True}, status_code=200)
-        else:
-            return JSONResponse(content={"success": False, "error": "Parent_id یافت نشد"}, status_code=404)
-
-    except Exception as e:
-        print("Error updating is_read:", str(e))
-        return JSONResponse(content={"success": False, "error": str(e)}, status_code=500)
+        # فقط پیام‌هایی که برای همین کاربر ارسال شده‌اند خوانده می‌شوند.
+        cursor.execute("""
+            UPDATE ticket_table SET is_read = 1
+            WHERE Parent_id = ? AND LTRIM(RTRIM(target_username)) = ?
+        """, (ticket[6], actor))
+        conn.commit()
+        return JSONResponse(content={"success": True})
+    except Exception:
+        if conn is not None:
+            conn.rollback()
+        return JSONResponse(status_code=500, content={"success": False, "error": "خطا در ثبت وضعیت خوانده‌شدن."})
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 # تابع دریافت گزارش حضور و غیاب # تابع دریافت گزارش حضور و غیاب # تابع دریافت گزارش حضور و غیاب # تابع دریافت گزارش حضور و غیاب
 # تابع دریافت گزارش حضور و غیاب # تابع دریافت گزارش حضور و غیاب # تابع دریافت گزارش حضور و غیاب # تابع دریافت گزارش حضور و غیاب
